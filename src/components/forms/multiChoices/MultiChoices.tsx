@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 import styles from "./multiChoices.module.css";
+import { actGetSubjects } from "@/store/single-actions";
 
 const {
   checkboxInput,
@@ -46,28 +47,29 @@ const MultiChoices = <T extends FieldValues>({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const intervalRef = useRef<number | null>(null);
 
-  const dispatch = useAppDispatch();
-
   const { user } = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    const getSubjects = async () => {
-      try {
-        const url =
-          "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/";
-        const config = {
-          headers: {
-            Authorization: `Token ${user?.token}`,
-          },
-        };
-        const response = await axios.get(url, config);
-        setData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const dispatch = useAppDispatch();
 
-    getSubjects();
+  useEffect(() => {
+    dispatch(actGetSubjects({token: user?.token})).unwrap().then((data) => setData(data));
+    // const getSubjects = async () => {
+    //   try {
+    //     const url =
+    //       "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/";
+    //     const config = {
+    //       headers: {
+    //         Authorization: `Token ${user?.token}`,
+    //       },
+    //     };
+    //     const response = await axios.get(url, config);
+    //     setData(response.data);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
+    // getSubjects();
   }, [dispatch, user?.token]);
 
   const onClickHandler = useCallback(

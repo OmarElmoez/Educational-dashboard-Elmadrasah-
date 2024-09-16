@@ -1,4 +1,3 @@
-import { EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
@@ -10,12 +9,10 @@ export const AddEmployeeSchema = z.object({
     .string()
     .min(1, "برجاء ادخال البريد الإلكتروني")
     .email("برجاء ادخال بريد إلكتروني صحيح"),
-  employee_type: z.enum(EmployeeTypesForSchema as [string, ...string[]], {
-    errorMap: () => ({ message: "برجاء اختيار نوع الموظف" }),
-  }),
-  title: z.enum(EmployeeTitleForSchema as [string, ...string[]], {
-    errorMap: () => ({ message: "برجاء اختيار اللقب" }),
-  }),
+  employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
+  title: z.string().min(1, "برجاء اختيار اللقب"),
+  wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
+  default_subject: z.string().min(1, "برجاء اختيار المادة"),
   is_active: z.union([z.boolean(), z.string()]),
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
@@ -38,11 +35,14 @@ export const AddEmployeeSchema = z.object({
   address_2: z.string().min(1, "برجاء ادخال العنوان"),
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
   additional_notes: z.string().optional(),
+  bio: z.string().optional(),
   birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
+  hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),
   national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
   subjects: z.array(z.string()).optional(),
+  position: z.string().min(1, "برجاء ادخال المسمى"),
   // city: z.enum(cityOptions, {
   //   errorMap: () => ({ message: "برجاء ادخال المدينة" }),
   // })

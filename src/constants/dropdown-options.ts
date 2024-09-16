@@ -29,6 +29,19 @@ const EMPLOYEE_TITLES = [
 
 const EmployeeTitleForSchema = generateValesForSchema(EMPLOYEE_TITLES);
 
+const WAGE_TYPES = [
+  {
+    label: "استخدام قائمة العمل و الأجور",
+    value: "استخدام قائمة العمل و الأجور",
+  },
+  {
+    label: "تعيين الاجر علي الملف الشخصي",
+    value: "تعيين الاجر علي الملف الشخصي",
+  },
+];
+
+const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
+
 export {
   EMPLOYEE_TYPES,
   EmployeeTypesForSchema,
@@ -36,4 +49,6 @@ export {
   EmployeeStatusForSchema,
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,
+  WAGE_TYPES,
+  WageTypesForSchema,
 };
