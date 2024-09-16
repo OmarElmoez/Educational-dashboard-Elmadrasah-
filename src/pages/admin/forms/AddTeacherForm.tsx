@@ -21,9 +21,10 @@ import {
 } from "@/schemas/AddEmployeeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
+import CloseButton from "@/assets/close-button.svg?react";
 
 const AddTeacherForm = () => {
   const dispatch = useAppDispatch();
@@ -41,6 +42,20 @@ const AddTeacherForm = () => {
     resolver: zodResolver(AddEmployeeSchema),
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "availabilities",
+  });
+
+  const handleAdd = () => {
+    append({ start_time: "", end_time: "", description: "" });
+  };
+
+
+
+  const handleRemove = (index: number) => {
+    remove(index); // Removes field at the specified index
+  };
   const onSubmit = (data: TAddEmployeeFormData) => {
     // Turn the string value of is_active into a boolean
     data["is_active"] = data["is_active"] === "true";
@@ -72,7 +87,7 @@ const AddTeacherForm = () => {
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
       <Heading text=" إضافة موظف جديد" />
-      <Row>
+       <Row>
         <Dropdown
           label="اختار نوع الموظف"
           name="employee_type"
@@ -88,7 +103,7 @@ const AddTeacherForm = () => {
           options={EMPLOYEE_STATUS}
           error={errors.is_active?.message as string}
         />
-      </Row>
+      </Row> 
 
       <Row>
         <InputField
@@ -327,11 +342,74 @@ const AddTeacherForm = () => {
         <MultiChoices register={register} name="subjects" />
 
         <article className="group"></article>
-      </Row>
+      </Row> 
 
 
       <hr className="hr" />
 
+      <Heading text='مواقيت العمل' />
+      <div>
+        {fields.map((field, index) => (
+          <Row key={field.id}>
+            <Dropdown
+              label="حدد اليوم"
+              isRequired
+              name={`availabilities.${index}.day`} // Pass name separately
+              options={TIMEZONES_OPTIONS}
+              register={register} // Pass the entire register function
+              error={errors?.availabilities?.[index]?.day?.message as string}
+            />
+
+            <InputField
+              label="وقت البدء"
+              placeholder="03:00 "
+              type="time"
+              name={`availabilities.${index}.start_time`} // Pass name separately
+              register={register} // Pass the entire register function
+              error={errors?.availabilities?.[index]?.start_time?.message as string}
+            />
+
+            <InputField
+              label="وقت الانتهاء"
+              placeholder="03:00 "
+              type="time"
+              name={`availabilities.${index}.end_time`} // Pass name separately
+              register={register} // Pass the entire register function
+              error={errors?.availabilities?.[index]?.end_time?.message as string}
+            />
+
+            <InputField
+              label="تفاصيل أخرى"
+              placeholder="03:00 "
+              type="text"
+              name={`availabilities.${index}.description`} // Pass name separately
+              register={register} // Pass the entire register function
+              error={errors?.availabilities?.[index]?.description?.message as string}
+            />
+
+            <button type="button" onClick={() => handleRemove(index)}>
+              <CloseButton />
+            </button>
+          </Row>
+        ))}
+
+        <button type="button" onClick={handleAdd} >
+          Add Time Entry
+        </button>
+
+        <br />
+        <span>  * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض مدى توفر الموظف على التقويم</span>
+      </div>
+
+      <hr className="hr" />
+
+        <button type="button" onClick={() => {
+          console.log("error", errors);
+          
+        }} >
+check
+       </button>
+          <hr className="hr" />
 
       <button type="submit">Submit</button>
     </form>

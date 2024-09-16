@@ -1,4 +1,3 @@
-import { TCountry } from "@/schemas/CountrySchema";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 type TOption = {

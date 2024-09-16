@@ -2,6 +2,14 @@ import {  EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
+// Define the time entry schema for each item in the field array
+const TimeEntrySchema = z.object({
+  day: z.string().optional(),
+  start_time: z.string().optional(),
+  end_time: z.string().optional(),
+  description: z.string().optional(),
+});
+
 export const AddEmployeeSchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
@@ -43,6 +51,10 @@ export const AddEmployeeSchema = z.object({
   passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
   subjects: z.array(z.string()).optional(),
+
+  availabilities: z.array(TimeEntrySchema).optional(),
+
+
   // city: z.enum(cityOptions, {
   //   errorMap: () => ({ message: "برجاء ادخال المدينة" }),
   // })
@@ -57,4 +69,5 @@ export const AddEmployeeSchema = z.object({
   //   message: 'Invalid date format',
   // }),
 });
+
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;

@@ -4,7 +4,7 @@ import styles from "./countriesDropdown.module.css";
 import { TCountry } from "@/schemas/CountrySchema";
 import actGetCities from "@/store/location/act/actGetCities";
 import { actGetStates, setChosenRegion } from "@/store/location/LocationSlice";
-import { Field, FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 const { results } = styles;
 
