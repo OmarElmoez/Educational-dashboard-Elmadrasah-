@@ -6,7 +6,7 @@ import { ProfileSchema, TProfile } from "@/schemas/ProfileSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { actGetUserProfile, actUpdateUserProfile } from "@/store/profile/ProfileSlice";
 
-const { form, row, group, content } = styles;
+const { form, row, content } = styles;
 
 const Profile = () => {
   const { user, loading } = useAppSelector((state) => state.profile);
