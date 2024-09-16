@@ -11,6 +11,7 @@ import ProdectedRoute from "./ProtectedRoute";
 // import Report from "@/assets/reports.svg?react";
 import {
   AddEmployeeForm,
+  AddTeacherForm,
   AdminClassesPage,
   AdminHomePage,
   AdminReportsPage,
@@ -100,7 +101,12 @@ const SIDEBAR_DATA = {
       title: "إضافة موظف",
       path: "add-employee",
       icon: <AddIcon />,
-    }
+    },
+    {
+      title: "إضافة معلم",
+      path: "add-teacher",
+      icon: <AddIcon />,
+    },
   ],
 
   Teacher: [
@@ -265,6 +271,10 @@ const router = createBrowserRouter([
       {
         path: 'add-employee',
         element: <AddEmployeeForm />,
+      },
+      {
+        path: 'add-teacher',
+        element: <AddTeacherForm />,
       }
     ],
   },

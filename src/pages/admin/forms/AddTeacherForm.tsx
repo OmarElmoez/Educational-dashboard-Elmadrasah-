@@ -11,7 +11,6 @@ import { InputField } from "@/components";
 import {
   EMPLOYEE_STATUS,
   EMPLOYEE_TITLES,
-  EMPLOYEE_TYPES,
   TIMEZONES_OPTIONS,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -26,7 +25,7 @@ import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 
-const AddEmployeeForm = () => {
+const AddTeacherForm = () => {
   const dispatch = useAppDispatch();
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
@@ -57,7 +56,7 @@ const AddEmployeeForm = () => {
 
     // Add region to timezone value
     data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
-    console.log(data);
+    console.log("DATA", data);
   };
 
   useEffect(() => {
@@ -72,13 +71,13 @@ const AddEmployeeForm = () => {
 
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="نوع الموظف" />
+      <Heading text=" إضافة موظف جديد" />
       <Row>
         <Dropdown
           label="اختار نوع الموظف"
           name="employee_type"
           register={register}
-          options={EMPLOYEE_TYPES}
+          options={[{ label: "مُعلم", value: "Teacher" }]}
           error={errors.employee_type?.message as string}
         />
 
@@ -94,6 +93,7 @@ const AddEmployeeForm = () => {
       <Row>
         <InputField
           label="الأسم الأول"
+          isRequired
           placeholder="الأسم الأول"
           register={register}
           name="first_name"
@@ -102,6 +102,7 @@ const AddEmployeeForm = () => {
 
         <InputField
           label="الأسم الأخير"
+          isRequired
           placeholder="الأسم الأخير"
           register={register}
           name="last_name"
@@ -112,6 +113,7 @@ const AddEmployeeForm = () => {
       <Row>
         <InputField
           label="الأسم بالكامل"
+          isRequired
           placeholder="الأسم بالكامل"
           register={register}
           name="full_name"
@@ -130,6 +132,7 @@ const AddEmployeeForm = () => {
 
         <InputField
           label="البريد الإلكتروني"
+          isRequired
           placeholder="البريد الإلكتروني"
           register={register}
           name="email"
@@ -141,6 +144,7 @@ const AddEmployeeForm = () => {
         <PhoneField
           control={control as any}
           error={errors.phone?.message as string}
+          isRequired
           label="الهاتف المحمول"
         />
 
@@ -200,6 +204,7 @@ const AddEmployeeForm = () => {
 
         <Dropdown
           label="التوقيت الزمني"
+          isRequired
           name="timezone"
           options={TIMEZONES_OPTIONS}
           register={register}
@@ -229,6 +234,7 @@ const AddEmployeeForm = () => {
       <Row>
         <InputField
           label="تاريخ الميلاد"
+          isRequired
           placeholder="يوم / شهر / سنه"
           type="date"
           register={register}
@@ -323,9 +329,13 @@ const AddEmployeeForm = () => {
         <article className="group"></article>
       </Row>
 
+
+      <hr className="hr" />
+
+
       <button type="submit">Submit</button>
     </form>
   );
 };
 
-export default AddEmployeeForm;
+export default AddTeacherForm;

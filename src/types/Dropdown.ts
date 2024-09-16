@@ -13,6 +13,7 @@ type TDropdownProps<T extends FieldValues> = {
   chosen?: string;
   register: UseFormRegister<T>;
   error: string;
+  isRequired?: boolean;
 };
 
 export type { TOption, TDropdownProps };

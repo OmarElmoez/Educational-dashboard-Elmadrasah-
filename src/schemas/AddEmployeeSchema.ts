@@ -1,4 +1,4 @@
-import { EmployeeStatusForSchema, EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
+import {  EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
@@ -25,7 +25,7 @@ export const AddEmployeeSchema = z.object({
     return /^[+]?[\d\s-]+$/.test(value);
   }, {
     message: "برجاء ادخال رقم هاتف صحيح",
-  }),
+  }).optional(),
   uploaded_pp: z.array(z.instanceof(File)),
   uploaded_cv: z.array(z.instanceof(File)),
   uploaded_id: z.array(z.instanceof(File)),
@@ -34,10 +34,10 @@ export const AddEmployeeSchema = z.object({
   city: z.string().min(1, "برجاء اختيار المدينة"),
   country: z.string().min(1, "برجاء اختيار الدولة"),
   timezone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
-  address: z.string().min(1, "برجاء ادخال العنوان"),
-  address_2: z.string().min(1, "برجاء ادخال العنوان"),
+  address: z.string().min(1, "برجاء ادخال العنوان").optional(),
+  address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
-  additional_notes: z.string().optional(),
+  additional_notes: z.string().optional().optional(),
   birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
   national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),

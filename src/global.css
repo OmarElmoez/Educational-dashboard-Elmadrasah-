@@ -19,7 +19,8 @@
 }
 
 html {
-  font-size: 62.5%; /* 1rem = 10px */
+  font-size: 62.5%;
+  /* 1rem = 10px */
 }
 
 body {
@@ -236,6 +237,7 @@ menu {
     opacity: 0;
     transform: translateY(-3rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -280,7 +282,7 @@ textarea {
 }
 
 .select_wrapper::after,
-.searchDropdownInput::after  {
+.searchDropdownInput::after {
   content: url("./assets/select_arrow.svg");
   position: absolute;
   top: 50%;
@@ -319,4 +321,9 @@ textarea::placeholder,
 .hr {
   border: 1px solid #e4e4e4;
   margin-bottom: 2.4rem;
+}
+
+.required-star {
+  color: #E11D48 ;
+  font-size: 2rem;
 }

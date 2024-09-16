@@ -5,17 +5,19 @@ const PhoneField = <T extends FieldValues>({
   control,
   name = "phone" as Path<T>,
   error,
-  label
+  label,
+  isRequired
 }: {
   control: Control<T>;
   name?: Path<T>;
   error?: string;
   label?: string;
+  isRequired?: boolean;
 }) => {
 
   return (
     <article className="group">
-      {label && <label className="adminFormLabel" htmlFor={name}>{label}</label>}
+      {label && <label className="adminFormLabel" htmlFor={name}>{label}   {isRequired && <span className="required-star" > * </span>}</label>}
       <Controller
         control={control}
         rules={{
