@@ -5,7 +5,6 @@ import { ChangeEvent, useRef, useState } from "react";
 // import { updateUserImg } from "@/store/profile/ProfileSlice";
 // import { useAppDispatch } from "@/store/hooks";
 import { FieldValues, UseFormRegister, Path } from "react-hook-form";
-import { set } from "date-fns";
 
 const { container, uploadBox, hiddenInput, previewBox } = styles;
 const UploadPhoto = <T extends FieldValues>({

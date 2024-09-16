@@ -1,9 +1,7 @@
 import { FieldValues } from "react-hook-form";
-import styles from "./dropDown.module.css";
 import { TDropdownProps } from "@/types/Dropdown";
 import React from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { set } from "date-fns";
 import { setChosenState } from "@/store/location/LocationSlice";
 
 const Dropdown = <T extends FieldValues>({
