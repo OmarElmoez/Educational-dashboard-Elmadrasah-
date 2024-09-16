@@ -26,7 +26,6 @@ import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import { WAGE_TYPES } from "@/constants/dropdown-options";
-import { TSubject } from "@/types/shared";
 import { actGetSubjects } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 
@@ -64,6 +63,14 @@ const AddEmployeeForm = () => {
 
     // Add region to timezone value
     data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
+
+    // Turn subject_choices into an array of numbers
+    data["subject_choices"] = data["subject_choices"]?.map((subject) => {
+      return parseInt(subject.toString());
+    });
+
+    // Turn default_subject into number
+    data["default_subject"] = parseInt(data["default_subject"].toString());
     console.log(data);
   };
 
@@ -339,7 +346,7 @@ const AddEmployeeForm = () => {
       <Heading text="المواد" />
 
       <Row>
-        <MultiChoices register={register} name="subjects" />
+        <MultiChoices register={register} name="subject_choices" />
 
         <article className="group"></article>
       </Row>

@@ -12,7 +12,7 @@ export const AddEmployeeSchema = z.object({
   employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
   title: z.string().min(1, "برجاء اختيار اللقب"),
   wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
-  default_subject: z.string().min(1, "برجاء اختيار المادة"),
+  default_subject: z.union([z.string(), z.number()]),
   is_active: z.union([z.boolean(), z.string()]),
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
@@ -41,7 +41,7 @@ export const AddEmployeeSchema = z.object({
   national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
-  subjects: z.array(z.string()).optional(),
+  subject_choices: z.array(z.union([z.string(), z.number()])).optional(),
   position: z.string().min(1, "برجاء ادخال المسمى"),
   // city: z.enum(cityOptions, {
   //   errorMap: () => ({ message: "برجاء ادخال المدينة" }),
