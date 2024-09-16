@@ -1,4 +1,4 @@
-import { EmployeeStatusForSchema, EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
+import { EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
@@ -57,4 +57,5 @@ export const AddEmployeeSchema = z.object({
   //   message: 'Invalid date format',
   // }),
 });
+
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;

@@ -318,7 +318,7 @@ const AddEmployeeForm = () => {
       <Heading text='المواد' />
 
       <Row>
-        <MultiChoices register={register} name="subjects" control={control} />
+        <MultiChoices register={register} name="subjects" />
 
         <article className="group"></article>
       </Row>
