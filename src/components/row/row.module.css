@@ -1,0 +1,15 @@
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 3.5rem;
+}
+
+@media (max-width: 991px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+.row:not(:last-of-type) {
+  margin-bottom: 2rem;
+}

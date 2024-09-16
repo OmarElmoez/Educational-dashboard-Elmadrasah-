@@ -1,0 +1,20 @@
+/* .select_wrapper {
+  position: relative;
+}
+
+.select_wrapper::after {
+  content: url("../../../assets/select_arrow.svg");
+  position: absolute;
+  top: 50%;
+  left: 1.6rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.select_wrapper select {
+  appearance: none;
+  width: 100%;
+  background-color: white;
+  cursor: pointer;
+  font-family: inherit;
+} */

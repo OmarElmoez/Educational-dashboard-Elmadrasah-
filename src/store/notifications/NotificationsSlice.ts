@@ -1,8 +1,9 @@
 import { TLoading } from "@/types/shared";
-import { TNotification } from "@/validations/NotificationsSchema";
+import { TNotification } from "@/schemas/NotificationsSchema";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetNotifications from "./act/actGetNotifications";
 import { isString } from "@/types/gurads";
+
 type TNotificationsState = {
   records: TNotification[];
   next: string;

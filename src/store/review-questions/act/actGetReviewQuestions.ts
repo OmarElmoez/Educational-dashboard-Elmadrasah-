@@ -1,5 +1,5 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import { TReviewQuestionsResponse } from "@/validations";
+import { TReviewQuestionsResponse } from "@/schemas";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 

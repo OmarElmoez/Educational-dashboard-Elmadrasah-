@@ -1,5 +1,5 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import { TNotificationResponse } from "@/validations";
+import { TNotificationResponse } from "@/schemas";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 

@@ -10,6 +10,7 @@ import ProdectedRoute from "./ProtectedRoute";
 // import Teacher from "@/assets/teacher.svg?react";
 // import Report from "@/assets/reports.svg?react";
 import {
+  AddEmployeeForm,
   AdminClassesPage,
   AdminHomePage,
   AdminReportsPage,
@@ -45,6 +46,8 @@ import {
   ReportsIcon,
   TeacherIcon,
 } from "@/assets/nav-icons";
+
+import AddIcon from "@/assets/add.svg?react";
 
 const SIDEBAR_DATA = {
   Student: [
@@ -93,6 +96,11 @@ const SIDEBAR_DATA = {
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
     },
+    {
+      title: "إضافة موظف",
+      path: "add-employee",
+      icon: <AddIcon />,
+    }
   ],
 
   Teacher: [
@@ -254,6 +262,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: 'add-employee',
+        element: <AddEmployeeForm />,
+      }
     ],
   },
 

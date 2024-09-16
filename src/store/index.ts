@@ -15,6 +15,7 @@ import lessons from "./lessons/LessonsSlice";
 import profile from "./profile/ProfileSlice";
 import reviewQuestions from "./review-questions/reviewSlice";
 import notifications from "./notifications/NotificationsSlice";
+import location from "./location/LocationSlice";
 
 // const rootPersistConfig = {
 //   key: 'root',
@@ -46,12 +47,19 @@ const authPersistConfig = {
   whitelist: ["user"],
 }
 
+const locationPersistConfig = {
+  key: 'location',
+  storage,
+  whitelist: ["countries"],
+}
+
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, auth),
   lessons: persistReducer(lessonsPersistConfig, lessons),
   profile: persistReducer(profilePersistConfig, profile),
   reviewQuestions: persistReducer(reviewQuestionsPersistConfig, reviewQuestions),
-  notifications
+  notifications,
+  location: persistReducer(locationPersistConfig, location),
 })
 
 // const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

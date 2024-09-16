@@ -35,6 +35,10 @@
   gap: 1.6rem;
 }
 
+.loginBox article {
+  padding-bottom: 0;
+}
+
 .loginBox form label {
   border: 1.5px solid #B5B7C0;
   border-radius: 0.4rem;

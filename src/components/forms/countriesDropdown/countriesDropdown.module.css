@@ -1,0 +1,20 @@
+.results {
+  position: absolute;
+  top: calc(100% - 2.4rem);
+  border: 1px solid;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 0.6rem;
+  z-index: 3;
+  background-color: #fff;
+}
+
+.results > div {
+  padding: 0.5rem 1rem;
+}
+
+.results > div:hover {
+  background-color: #2064d4;
+  color: #fff;
+}

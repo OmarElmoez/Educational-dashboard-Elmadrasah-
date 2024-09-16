@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { TLesson } from "@/validations/LessonSchema";
+import { TLesson } from "@/schemas/LessonSchema";
 import { TLoading } from "@/types/shared";
 import actGetLessons from "./act/actGetLessons";
 import { isString } from "@/types/gurads";

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetPasswordSchema, {
   TFormValues,
-} from "@/validations/SetPasswordSchema";
+} from "@/schemas/SetPasswordSchema";
 import { useNavigate } from "react-router-dom";
 import { actSetPassword } from "@/store/auth/authSlice";
 

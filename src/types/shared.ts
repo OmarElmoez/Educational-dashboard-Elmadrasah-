@@ -17,7 +17,7 @@ type TPath = {
   title: string;
   path: string;
   icon: React.ReactNode;
-  phone_icon: React.ReactNode;
+  phone_icon?: React.ReactNode;
 }
 
 type TModalRef = {

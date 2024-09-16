@@ -5,6 +5,7 @@ import { ChangeEvent, useRef, useState } from "react";
 // import { updateUserImg } from "@/store/profile/ProfileSlice";
 // import { useAppDispatch } from "@/store/hooks";
 import { FieldValues, UseFormRegister, Path } from "react-hook-form";
+import { set } from "date-fns";
 
 const { container, uploadBox, hiddenInput, previewBox } = styles;
 const UploadPhoto = <T extends FieldValues>({
@@ -16,7 +17,7 @@ const UploadPhoto = <T extends FieldValues>({
   img: string | undefined;
   register: UseFormRegister<T>;
   name: Path<T>,
-  setValue: (name: Path<T>, value: any) => void
+  setValue: (name: Path<T>, value: File) => void
 }) => {
   const [preview, setPreview] = useState<string | undefined>(img);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -27,11 +28,7 @@ const UploadPhoto = <T extends FieldValues>({
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setValue(name, file);
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        setPreview(e.target?.result as string);
-      };
+      setPreview(URL.createObjectURL(file));
     }
   };
 

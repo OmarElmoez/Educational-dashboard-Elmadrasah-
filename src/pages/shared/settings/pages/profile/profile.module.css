@@ -13,28 +13,11 @@
   margin-bottom: 3.2rem;
 }
 
-.group {
-  flex: 1;
-  display: grid;
-  gap: 0.8rem;
-  position: relative;
-}
-
-
 .group label {
   color: var(--gray-color);
 }
 
-.group input {
-  padding: 1.2rem 1.6rem;
-  border-radius: 0.4rem;
-  border: 1.5px solid #b5b7c0;
-  outline: none;
-  font-size: 1.6rem;
-  color: var(--primary-color);
-}
-
-.group input[type="tel"] {
+.row input[type="tel"] {
   text-align: right;
 }
 

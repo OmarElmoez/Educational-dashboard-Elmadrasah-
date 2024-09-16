@@ -2,7 +2,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 
-import LoginSchema, { TFormData } from "@/validations/LoginSchema";
+import LoginSchema, { TFormData } from "@/schemas/LoginSchema";
 
 import styles from "./login.module.css";
 

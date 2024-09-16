@@ -1,5 +1,5 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import { TProfile } from "@/validations/ProfileSchema";
+import { TProfile } from "@/schemas/ProfileSchema";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 

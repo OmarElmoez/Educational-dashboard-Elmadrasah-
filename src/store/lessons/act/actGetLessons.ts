@@ -7,7 +7,7 @@ import {
   TStudentResponse,
   TFamilyResponse,
   TTeacherResponse,
-} from "@/validations";
+} from "@/schemas";
 
 type TLessonsResponse =
   | TAdminResponse

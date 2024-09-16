@@ -1,0 +1,82 @@
+.options {
+  border-radius: 0.5rem;
+  box-shadow: 0px 4px 40px 0px #0000001A;
+  position: relative;
+}
+
+.checkboxLabel {
+  color: #818181;
+  font-size: 1.2rem;
+}
+
+.checkboxItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.checkboxItem:not(:last-of-type) {
+  border-bottom: 1px dashed #C0C0C0;
+}
+
+.checkmark {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #838383;
+  border-radius: 2px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkboxInput {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.checkboxItem:has(.checkboxInput:checked) .checkmark {
+  background-color: #1C8A44;
+  color: #fff;
+  border-color: #1C8A44
+}
+
+.checkboxItem:has(.checkboxInput:checked) .checkmark::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border-width: 0 2px 2px 0;
+  border-style: solid; 
+  transform: rotate(45deg);
+}
+
+.preview {
+  border: 1px dashed #7AB790;
+  border-radius: 0.6rem;
+  background-color: #F1F1F1;
+  color: #8A8A8A;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.loadingIndicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.circularProgress {
+  transform: rotate(-90deg);
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.05s;
+}

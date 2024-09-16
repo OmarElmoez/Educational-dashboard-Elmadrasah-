@@ -18,7 +18,7 @@ import Emoji_3 from "@/assets/emoji_3.svg?react";
 import Emoji_4 from "@/assets/emoji_4.svg?react";
 import Emoji_5 from "@/assets/emoji_5.svg?react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReviewSchema, TReview } from "@/validations/ReviewSchema";
+import { ReviewSchema, TReview } from "@/schemas/ReviewSchema";
 import { actPostReviewAnswers } from "@/store/review-questions/reviewSlice";
 import { ReviewFeedback } from "@/components";
 import { TModalRef } from "@/types/shared";

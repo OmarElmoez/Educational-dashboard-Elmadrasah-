@@ -1,5 +1,5 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import { TLesson } from "@/validations/LessonSchema";
+import { TLesson } from "@/schemas/LessonSchema";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 

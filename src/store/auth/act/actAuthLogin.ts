@@ -1,6 +1,6 @@
 import { TUserRole } from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import { TFormData } from "@/validations/LoginSchema";
+import { TFormData } from "@/schemas/LoginSchema";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 

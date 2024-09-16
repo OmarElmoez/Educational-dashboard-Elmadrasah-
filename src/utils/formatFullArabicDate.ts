@@ -8,7 +8,6 @@ const formatFullArabicDate = (isoDateString: string): string => {
     locale: ar,
   });
 
-  // Replace AM/PM with Arabic equivalents
   return formattedDate;
 };
 

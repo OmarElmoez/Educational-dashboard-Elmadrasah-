@@ -1,9 +1,7 @@
-import styles from './heading.module.css'
-
-
+import styles from "./heading.module.css";
 
 const Heading = ({ text }: { text: string }) => {
-  return <div className={styles.heading}>{text}</div>
-}
+  return <div className={styles.heading}>{text}</div>;
+};
 
-export default Heading
+export default Heading;

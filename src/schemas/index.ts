@@ -5,4 +5,11 @@ import { TTeacherResponse } from "./TeacherSchema";
 import { TReviewQuestionsResponse } from "./ReviewQuestions";
 import { TNotificationResponse } from "./NotificationsSchema";
 
-export type { TAdminResponse, TStudentResponse, TFamilyResponse, TTeacherResponse, TReviewQuestionsResponse, TNotificationResponse }
+export type {
+  TAdminResponse,
+  TStudentResponse,
+  TFamilyResponse,
+  TTeacherResponse,
+  TReviewQuestionsResponse,
+  TNotificationResponse,
+};

@@ -1,5 +1,5 @@
 import { TLoading } from "@/types/shared";
-import { TQuestion } from "@/validations/ReviewQuestions";
+import { TQuestion } from "@/schemas/ReviewQuestions";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetReviewQuestions from "./act/actGetReviewQuestions";
 import actPostReviewAnswers from "./act/actPostReviewAnswers";
