@@ -1,3 +1,4 @@
+import { TSubject } from "@/types/shared";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { isAxiosError } from "axios";
 
@@ -15,8 +16,7 @@ const actGetSubjects = createAsyncThunk(
           Authorization: `Token ${token}`,
         },
       };
-      const response = await axios.get(url, config);
-      console.log(response.data);
+      const response = await axios.get<TSubject[]>(url, config);
       return response.data;
     } catch (error) {
       return rejectWithValue(isAxiosError(error));

@@ -21,15 +21,22 @@ import {
   TAddEmployeeFormData,
 } from "@/schemas/AddEmployeeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
+import { WAGE_TYPES } from "@/constants/dropdown-options";
+import { TSubject } from "@/types/shared";
+import { actGetSubjects } from "@/store/single-actions";
+import { TOption } from "@/types/Dropdown";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
+
+  const [subjects, setSubjects] = useState<TOption[]>([]);
 
   const {
     register,
@@ -65,6 +72,20 @@ const AddEmployeeForm = () => {
       dispatch(actGetCountries());
     }
   }, [dispatch, countries]);
+
+  useEffect(() => {
+    dispatch(actGetSubjects({ token: user?.token }))
+      .unwrap()
+      .then((res) => {
+        const formattedSubjects = res.map((subject) => {
+          return {
+            label: subject.name,
+            value: subject.id.toString(),
+          };
+        });
+        setSubjects(formattedSubjects);
+      });
+  }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
 
@@ -315,12 +336,64 @@ const AddEmployeeForm = () => {
 
       <hr className="hr" />
 
-      <Heading text='المواد' />
+      <Heading text="المواد" />
 
       <Row>
         <MultiChoices register={register} name="subjects" />
 
         <article className="group"></article>
+      </Row>
+
+      <hr className="hr" />
+
+      <Heading text="تفاصيل التوظيف" />
+
+      <Row>
+        <InputField
+          label="مُسمي"
+          placeholder="مُعلم العلوم"
+          register={register}
+          name="position"
+          error={errors.position?.message as string}
+        />
+
+        <InputField
+          label="تاريخ التوظيف"
+          type="date"
+          placeholder="يوم / شهر / سنه"
+          register={register}
+          name="hire_date"
+          error={errors.hire_date?.message as string}
+        />
+      </Row>
+
+      <Row>
+        <Dropdown
+          label="نوع الأجر غير التدريسي"
+          name="wage_type"
+          register={register}
+          options={WAGE_TYPES}
+          error={errors.wage_type?.message as string}
+        />
+
+        <Dropdown
+          label="الموضوع"
+          name="default_subject"
+          register={register}
+          options={subjects}
+          error={errors.default_subject?.message as string}
+        />
+      </Row>
+
+      <Row>
+        <InputField
+          label="معلومات إضافية"
+          placeholder="اكتب معلوماتك الإضافية"
+          register={register}
+          name="bio"
+          error={errors.bio?.message as string}
+          textarea
+        />
       </Row>
 
       <button type="submit">Submit</button>

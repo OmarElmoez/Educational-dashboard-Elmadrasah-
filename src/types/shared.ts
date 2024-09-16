@@ -25,4 +25,9 @@ type TModalRef = {
   close: () => void;
 };
 
-export type { TLoading, TFirstDayOfWeek, TUserRole, TPath, TLessonStatus, TModalRef }
+type TSubject = {
+  id: number;
+  name: string;
+};
+
+export type { TLoading, TFirstDayOfWeek, TUserRole, TPath, TLessonStatus, TModalRef, TSubject }
