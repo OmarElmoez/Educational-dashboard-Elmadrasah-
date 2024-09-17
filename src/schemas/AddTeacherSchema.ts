@@ -35,7 +35,7 @@ export const AddTeacherSchema = z.object({
   title: z.enum(EmployeeTitleForSchema as [string, ...string[]], {
     errorMap: () => ({ message: "برجاء اختيار اللقب" }),
   }),
-  is_active: z.union([z.boolean(), z.string()]),
+  is_active: z.string().min(1, "برجاء اختيار الحالة"),
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
@@ -63,22 +63,16 @@ export const AddTeacherSchema = z.object({
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
   subjects: z.array(z.string()).optional(),
 
+  subject_choices: z.array(z.string()),
+
+  position: z.string().min(1, "برجاء ادخال المسمى"),
+  hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),
+  wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
+  default_subject: z.string().min(1, "برجاء اختيار المادة"),
+  bio: z.string().optional(),
+
   availabilities: z.array(TimeEntrySchema),
 
-
-  // city: z.enum(cityOptions, {
-  //   errorMap: () => ({ message: "برجاء ادخال المدينة" }),
-  // })
-  // phoneNumber: z.string().regex(/^\d{10}$/, 'Phone number must be 10 digits'),
-  // dateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
-  //   message: 'Invalid date format',
-  // }),
-  // department: z.string().min(1, 'Department is required'),
-  // position: z.string().min(1, 'Position is required'),
-  // salary: z.number().positive('Salary must be a positive number'),
-  // startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-  //   message: 'Invalid date format',
-  // }),
 });
 
 export type TAddTeacherFormData = z.infer<typeof AddTeacherSchema>;

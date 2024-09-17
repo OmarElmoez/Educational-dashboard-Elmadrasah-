@@ -18,21 +18,28 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
 import {
   AddTeacherSchema,
-  TAddTeacherFormData
+  TAddTeacherFormData,
 } from "@/schemas/AddTeacherSchema";
+import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import CloseButton from "@/assets/close-button.svg?react";
-
+import { WAGE_TYPES } from "@/constants/dropdown-options";
+import { actGetSubjects } from "@/store/single-actions";
+import { TOption } from "@/types/Dropdown";
 // -------------------------------------------------------------------------
 
 const AddTeacherForm = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
+
+  const [subjects, setSubjects] = useState<TOption[]>([]);
 
   const {
     register,
@@ -44,8 +51,10 @@ const AddTeacherForm = () => {
     mode: "onBlur",
     resolver: zodResolver(AddTeacherSchema),
     defaultValues: {
-      availabilities: [{ day: '', start_time: '', end_time: '', description: '' }] // Start with one entry
-    }
+      availabilities: [
+        { day: "", start_time: "", end_time: "", description: "" },
+      ], // Start with one entry
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -60,11 +69,7 @@ const AddTeacherForm = () => {
     remove(index); // Removes field at the specified index
   };
 
-
   const onSubmit = (data: TAddTeacherFormData) => {
-    // Turn the string value of is_active into a boolean
-    data["is_active"] = data["is_active"] === "true";
-
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -76,6 +81,17 @@ const AddTeacherForm = () => {
 
     // Add region to timezone value
     data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
+
+    const serverData: TAddEmployeeFormDataForServer = {
+      ...data,
+      default_subject: parseInt(data["default_subject"]),
+      subject_choices: data["subject_choices"]?.map((subject) => {
+        return parseInt(subject);
+      }),
+      is_active: data["is_active"] === "true",
+    };
+
+    console.log(serverData);
     console.log("DATA", data);
   };
 
@@ -83,8 +99,21 @@ const AddTeacherForm = () => {
     if (countries.length === 0) {
       dispatch(actGetCountries());
     }
-
   }, [dispatch, countries]);
+
+  useEffect(() => {
+    dispatch(actGetSubjects({ token: user?.token }))
+      .unwrap()
+      .then((res) => {
+        const formattedSubjects = res.map((subject) => {
+          return {
+            label: subject.name,
+            value: subject.id.toString(),
+          };
+        });
+        setSubjects(formattedSubjects);
+      });
+  }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
 
@@ -342,21 +371,80 @@ const AddTeacherForm = () => {
 
       <hr className="hr" />
 
-      <Heading text='المواد' />
+      <Heading text="المواد" />
 
       <Row>
-        <MultiChoices register={register} name="subjects" />
+        <MultiChoices register={register} name="subject_choices" />
 
         <article className="group"></article>
       </Row>
 
+      <hr className="hr" />
+
+      <Heading text="تفاصيل التوظيف" />
+
+      <Row>
+        <InputField
+          label="مُسمي"
+          placeholder="مُعلم العلوم"
+          register={register}
+          name="position"
+          error={errors.position?.message as string}
+        />
+
+        <InputField
+          label="تاريخ التوظيف"
+          type="date"
+          placeholder="يوم / شهر / سنه"
+          register={register}
+          name="hire_date"
+          error={errors.hire_date?.message as string}
+        />
+      </Row>
+
+      <Row>
+        <Dropdown
+          label="نوع أجر الدرس"
+          name="wage_type"
+          register={register}
+          options={WAGE_TYPES}
+          error={errors.wage_type?.message as string}
+        />
+
+        <Dropdown
+          label="نوع الأجر غير التدريسي"
+          name="wage_type"
+          register={register}
+          options={WAGE_TYPES}
+          error={errors.wage_type?.message as string}
+        />
+      </Row>
+
+      <Row>
+        <Dropdown
+          label="الموضوع"
+          name="default_subject"
+          register={register}
+          options={subjects}
+          error={errors.default_subject?.message as string}
+        />
+
+        <InputField
+          label="معلومات إضافية"
+          placeholder="اكتب معلوماتك الإضافية"
+          register={register}
+          name="bio"
+          error={errors.bio?.message as string}
+          textarea
+        />
+      </Row>
 
       <hr className="hr" />
 
-      <Heading text='مواقيت العمل' />
+      <Heading text="مواقيت العمل" />
       <div>
         {fields.map((field, index) => (
-          <Row key={field.id} style={{ alignItems: 'center' }}>
+          <Row key={field.id} style={{ alignItems: "center" }}>
             <Dropdown
               label="حدد اليوم"
               isRequired
@@ -372,7 +460,9 @@ const AddTeacherForm = () => {
               type="time"
               name={`availabilities.${index}.start_time`} // Pass name separately
               register={register} // Pass the entire register function
-              error={errors?.availabilities?.[index]?.start_time?.message as string}
+              error={
+                errors?.availabilities?.[index]?.start_time?.message as string
+              }
             />
 
             <InputField
@@ -381,7 +471,9 @@ const AddTeacherForm = () => {
               type="time"
               name={`availabilities.${index}.end_time`} // Pass name separately
               register={register} // Pass the entire register function
-              error={errors?.availabilities?.[index]?.end_time?.message as string}
+              error={
+                errors?.availabilities?.[index]?.end_time?.message as string
+              }
             />
 
             <InputField
@@ -390,40 +482,56 @@ const AddTeacherForm = () => {
               type="text"
               name={`availabilities.${index}.description`} // Pass name separately
               register={register} // Pass the entire register function
-              error={errors?.availabilities?.[index]?.description?.message as string}
+              error={
+                errors?.availabilities?.[index]?.description?.message as string
+              }
             />
 
-            {index > 0 ?
-              <div className="mainContainer" >
+            {index > 0 ? (
+              <div className="mainContainer">
                 <button type="button" onClick={() => handleRemove(index)}>
                   <CloseButton />
                 </button>
-                <button className="success-btn mr-1" type="button" onClick={handleAdd} >
+                <button
+                  className="success-btn mr-1"
+                  type="button"
+                  onClick={handleAdd}
+                >
                   + إضافة مواقيت عمل
                 </button>
               </div>
-
-              : <div style={{ alignItems: 'center' }}>
-                <button className="success-btn" type="button" onClick={handleAdd}>
+            ) : (
+              <div style={{ alignItems: "center" }}>
+                <button
+                  className="success-btn"
+                  type="button"
+                  onClick={handleAdd}
+                >
                   + إضافة مواقيت عمل
                 </button>
               </div>
-            }
+            )}
           </Row>
         ))}
 
         <br />
         <div className="flex-end">
-          <span className="helper-text">* تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض مدى توفر الموظف على التقويم</span>
+          <span className="helper-text">
+            * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
+            بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على
+            التقويم. سيتم عرض مدى توفر الموظف على التقويم
+          </span>
         </div>
       </div>
 
       <hr className="hr" />
 
-      <button type="button" onClick={() => {
-        console.log("error", errors);
-
-      }} >
+      <button
+        type="button"
+        onClick={() => {
+          console.log("error", errors);
+        }}
+      >
         check
       </button>
       <hr className="hr" />
