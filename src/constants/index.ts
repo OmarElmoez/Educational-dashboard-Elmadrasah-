@@ -7,6 +7,8 @@ import {
   EmployeeStatusForSchema,
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,
+  WAGE_TYPES,
+  WageTypesForSchema,
 } from "./dropdown-options";
 import END_POINTS from "./end-points";
 
@@ -20,4 +22,6 @@ export {
   EmployeeTitleForSchema,
   SIDEBAR_DATA,
   END_POINTS,
+  WAGE_TYPES,
+  WageTypesForSchema,
 };
