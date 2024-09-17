@@ -69,8 +69,8 @@ const AddEmployeeForm = () => {
       subject_choices: data["subject_choices"]?.map((subject) => {
         return parseInt(subject);
       }),
-      initial_students: data["subject_choices"]?.map((subject) => {
-        return parseInt(subject);
+      initial_students: data["initial_students"]?.map((student) => {
+        return parseInt(student);
       }),
       is_active: data["is_active"] === "true",
     };

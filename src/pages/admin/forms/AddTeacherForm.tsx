@@ -13,14 +13,15 @@ import {
   EMPLOYEE_TITLES,
   TIMEZONES_OPTIONS,
   DAYS_OPTIONS,
+  END_POINTS,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
 import {
   AddTeacherSchema,
   TAddTeacherFormData,
+  TAddTeacherFormDataForServer,
 } from "@/schemas/AddTeacherSchema";
-import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -28,7 +29,7 @@ import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import CloseButton from "@/assets/close-button.svg?react";
 import { WAGE_TYPES } from "@/constants/dropdown-options";
-import { actGetSubjects } from "@/store/single-actions";
+import { actGetChoices } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 // -------------------------------------------------------------------------
 
@@ -39,7 +40,7 @@ const AddTeacherForm = () => {
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
 
-  const [subjects, setSubjects] = useState<TOption[]>([]);
+  const [choices, setChoices] = useState<TOption[]>([]);
 
   const {
     register,
@@ -82,11 +83,14 @@ const AddTeacherForm = () => {
     // Add region to timezone value
     data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
 
-    const serverData: TAddEmployeeFormDataForServer = {
+    const serverData: TAddTeacherFormDataForServer = {
       ...data,
       default_subject: parseInt(data["default_subject"]),
       subject_choices: data["subject_choices"]?.map((subject) => {
         return parseInt(subject);
+      }),
+      initial_students: data["initial_students"]?.map((student) => {
+        return parseInt(student);
       }),
       is_active: data["is_active"] === "true",
     };
@@ -102,7 +106,12 @@ const AddTeacherForm = () => {
   }, [dispatch, countries]);
 
   useEffect(() => {
-    dispatch(actGetSubjects({ token: user?.token }))
+    dispatch(
+      actGetChoices({
+        token: user?.token,
+        url: END_POINTS["subject_choices"].url,
+      })
+    )
       .unwrap()
       .then((res) => {
         const formattedSubjects = res.map((subject) => {
@@ -111,7 +120,7 @@ const AddTeacherForm = () => {
             value: subject.id.toString(),
           };
         });
-        setSubjects(formattedSubjects);
+        setChoices(formattedSubjects);
       });
   }, [dispatch, user?.token]);
 
@@ -374,7 +383,11 @@ const AddTeacherForm = () => {
       <Heading text="المواد" />
 
       <Row>
-        <MultiChoices register={register} name="subject_choices" />
+        <MultiChoices
+          register={register}
+          name="subject_choices"
+          error={errors.subject_choices?.message as string}
+        />
 
         <article className="group"></article>
       </Row>
@@ -425,7 +438,7 @@ const AddTeacherForm = () => {
           label="الموضوع"
           name="default_subject"
           register={register}
-          options={subjects}
+          options={choices}
           error={errors.default_subject?.message as string}
         />
 
@@ -525,6 +538,35 @@ const AddTeacherForm = () => {
       </div>
 
       <hr className="hr" />
+
+      <Heading text="رابط موقع المعلم" />
+
+      <Row>
+        <InputField
+          label="رابط الموقع URL"
+          placeholder="https//test.com"
+          type="url"
+          register={register}
+          name="link"
+          error={errors.link?.message as string}
+        />
+
+        <article className="group"></article>
+      </Row>
+
+      <hr className="hr" />
+
+      <Heading text="الطلاب المعينون" />
+
+      <Row>
+        <MultiChoices
+          register={register}
+          name="initial_students"
+          error={errors.initial_students?.message as string}
+        />
+
+        <article className="group"></article>
+      </Row>
 
       <button
         type="button"
