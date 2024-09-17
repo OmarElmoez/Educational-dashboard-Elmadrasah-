@@ -17,9 +17,9 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
 import {
-  AddEmployeeSchema,
-  TAddEmployeeFormData,
-} from "@/schemas/AddEmployeeSchema";
+  AddTeacherSchema,
+  TAddTeacherFormData
+} from "@/schemas/AddTeacherSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -27,8 +27,6 @@ import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import CloseButton from "@/assets/close-button.svg?react";
 
-// -------------------------------------------------------------------------
-const DAYS = []
 // -------------------------------------------------------------------------
 
 const AddTeacherForm = () => {
@@ -42,9 +40,9 @@ const AddTeacherForm = () => {
     control,
     formState: { errors },
     setValue,
-  } = useForm<TAddEmployeeFormData>({
+  } = useForm<TAddTeacherFormData>({
     mode: "onBlur",
-    resolver: zodResolver(AddEmployeeSchema),
+    resolver: zodResolver(AddTeacherSchema),
     defaultValues: {
       availabilities: [{ day: '', start_time: '', end_time: '', description: '' }] // Start with one entry
     }
@@ -63,7 +61,7 @@ const AddTeacherForm = () => {
   };
 
 
-  const onSubmit = (data: TAddEmployeeFormData) => {
+  const onSubmit = (data: TAddTeacherFormData) => {
     // Turn the string value of is_active into a boolean
     data["is_active"] = data["is_active"] === "true";
 
@@ -416,7 +414,7 @@ const AddTeacherForm = () => {
 
         <br />
         <div className="flex-end">
-          <span className="helper-text">  * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض مدى توفر الموظف على التقويم</span>
+          <span className="helper-text">* تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض مدى توفر الموظف على التقويم</span>
         </div>
       </div>
 

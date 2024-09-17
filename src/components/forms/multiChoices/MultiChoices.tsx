@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 import styles from "./multiChoices.module.css";
+import { actGetSubjects } from "@/store/single-actions";
 
 const {
   checkboxInput,
@@ -15,7 +15,6 @@ const {
   loadingIndicator,
   circularProgress,
 } = styles;
-
 
 const LoadingIndicator = ({ progress }: { progress: number }) => (
   <div className={loadingIndicator}>
@@ -46,29 +45,17 @@ const MultiChoices = <T extends FieldValues>({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const intervalRef = useRef<number | null>(null);
 
-  const dispatch = useAppDispatch();
-
   const { user } = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    const getSubjects = async () => {
-      try {
-        const url =
-          "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/";
-        const config = {
-          headers: {
-            Authorization: `Token ${user?.token}`,
-          },
-        };
-        const response = await axios.get(url, config);
-        setData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const dispatch = useAppDispatch();
 
-    getSubjects();
+  useEffect(() => {
+    dispatch(actGetSubjects({ token: user?.token }))
+      .unwrap()
+      .then((data) => setData(data));
   }, [dispatch, user?.token]);
+
+  
 
   const onClickHandler = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
@@ -116,11 +103,9 @@ const MultiChoices = <T extends FieldValues>({
     ));
   };
 
-
-
   return (
     <article className="group">
-      <label htmlFor="" className="adminFormLabel">
+      <label htmlFor={name} className="adminFormLabel">
         يرجي اختيار المواد
       </label>
       <section
