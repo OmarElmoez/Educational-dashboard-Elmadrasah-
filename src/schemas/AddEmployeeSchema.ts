@@ -52,7 +52,7 @@ export const AddEmployeeSchema = z.object({
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
   subjects: z.array(z.string()).optional(),
 
-  availabilities: z.array(TimeEntrySchema).optional(),
+  availabilities: z.array(TimeEntrySchema),
 
 
   // city: z.enum(cityOptions, {

@@ -12,6 +12,7 @@ import {
   EMPLOYEE_STATUS,
   EMPLOYEE_TITLES,
   TIMEZONES_OPTIONS,
+  DAYS_OPTIONS,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
@@ -25,6 +26,10 @@ import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import CloseButton from "@/assets/close-button.svg?react";
+
+// -------------------------------------------------------------------------
+const DAYS = []
+// -------------------------------------------------------------------------
 
 const AddTeacherForm = () => {
   const dispatch = useAppDispatch();
@@ -40,6 +45,9 @@ const AddTeacherForm = () => {
   } = useForm<TAddEmployeeFormData>({
     mode: "onBlur",
     resolver: zodResolver(AddEmployeeSchema),
+    defaultValues: {
+      availabilities: [{ day: '', start_time: '', end_time: '', description: '' }] // Start with one entry
+    }
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -50,12 +58,11 @@ const AddTeacherForm = () => {
   const handleAdd = () => {
     append({ start_time: "", end_time: "", description: "" });
   };
-
-
-
   const handleRemove = (index: number) => {
     remove(index); // Removes field at the specified index
   };
+
+
   const onSubmit = (data: TAddEmployeeFormData) => {
     // Turn the string value of is_active into a boolean
     data["is_active"] = data["is_active"] === "true";
@@ -78,6 +85,7 @@ const AddTeacherForm = () => {
     if (countries.length === 0) {
       dispatch(actGetCountries());
     }
+
   }, [dispatch, countries]);
 
   const formattedCities = formatCities(cities, chosenState);
@@ -87,7 +95,7 @@ const AddTeacherForm = () => {
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
       <Heading text=" إضافة موظف جديد" />
-       <Row>
+      <Row>
         <Dropdown
           label="اختار نوع الموظف"
           name="employee_type"
@@ -103,7 +111,7 @@ const AddTeacherForm = () => {
           options={EMPLOYEE_STATUS}
           error={errors.is_active?.message as string}
         />
-      </Row> 
+      </Row>
 
       <Row>
         <InputField
@@ -342,7 +350,7 @@ const AddTeacherForm = () => {
         <MultiChoices register={register} name="subjects" />
 
         <article className="group"></article>
-      </Row> 
+      </Row>
 
 
       <hr className="hr" />
@@ -350,12 +358,12 @@ const AddTeacherForm = () => {
       <Heading text='مواقيت العمل' />
       <div>
         {fields.map((field, index) => (
-          <Row key={field.id}>
+          <Row key={field.id} style={{ alignItems: 'center' }}>
             <Dropdown
               label="حدد اليوم"
               isRequired
               name={`availabilities.${index}.day`} // Pass name separately
-              options={TIMEZONES_OPTIONS}
+              options={DAYS_OPTIONS}
               register={register} // Pass the entire register function
               error={errors?.availabilities?.[index]?.day?.message as string}
             />
@@ -387,29 +395,40 @@ const AddTeacherForm = () => {
               error={errors?.availabilities?.[index]?.description?.message as string}
             />
 
-            <button type="button" onClick={() => handleRemove(index)}>
-              <CloseButton />
-            </button>
+            {index > 0 ?
+              <div className="mainContainer" >
+                <button type="button" onClick={() => handleRemove(index)}>
+                  <CloseButton />
+                </button>
+                <button className="success-btn mr-1" type="button" onClick={handleAdd} >
+                  + إضافة مواقيت عمل
+                </button>
+              </div>
+
+              : <div style={{ alignItems: 'center' }}>
+                <button className="success-btn" type="button" onClick={handleAdd}>
+                  + إضافة مواقيت عمل
+                </button>
+              </div>
+            }
           </Row>
         ))}
 
-        <button type="button" onClick={handleAdd} >
-          Add Time Entry
-        </button>
-
         <br />
-        <span>  * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض مدى توفر الموظف على التقويم</span>
+        <div className="flex-end">
+          <span className="helper-text">  * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض مدى توفر الموظف على التقويم</span>
+        </div>
       </div>
 
       <hr className="hr" />
 
-        <button type="button" onClick={() => {
-          console.log("error", errors);
-          
-        }} >
-check
-       </button>
-          <hr className="hr" />
+      <button type="button" onClick={() => {
+        console.log("error", errors);
+
+      }} >
+        check
+      </button>
+      <hr className="hr" />
 
       <button type="submit">Submit</button>
     </form>
