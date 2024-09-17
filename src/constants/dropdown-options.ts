@@ -40,16 +40,16 @@ const WAGE_TYPES = [
   },
 ];
 
-const WORK_WAGE_TYPES = [
-  {
-    label: "استخدام قائمة العمل",
-    value: "work",
-  },
-  {
-    label: "تعيين الاجر علي الملف الشخصي",
-    value: "wage",
-  },
-];
+// const WORK_WAGE_TYPES = [
+//   {
+//     label: "استخدام قائمة العمل",
+//     value: "work",
+//   },
+//   {
+//     label: "تعيين الاجر علي الملف الشخصي",
+//     value: "wage",
+//   },
+// ];
 
 const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
 
