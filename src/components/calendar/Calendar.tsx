@@ -115,6 +115,7 @@ const Calendar = () => {
       successCallback(eventsInRange);
     },
     // if you add calendar_lessons in dependencies array, it will get into an infinite loop
+    // eslint-disable-next-line
     [dispatch, user?.token, setCurrentEvents]
   )
 

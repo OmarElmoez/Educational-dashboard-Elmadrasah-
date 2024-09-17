@@ -11,6 +11,7 @@ import ProdectedRoute from "./ProtectedRoute";
 // import Report from "@/assets/reports.svg?react";
 import {
   AddEmployeeForm,
+  AddTeacherForm,
   AdminClassesPage,
   AdminHomePage,
   AdminReportsPage,
@@ -35,7 +36,6 @@ import {
 } from "@/pages/shared";
 import { Login, PhoneNumber, SetPassword } from "@/pages/login";
 import { SIDEBAR_DATA } from "@/constants";
-
 
 const router = createBrowserRouter([
   // Login Routes
@@ -150,6 +150,10 @@ const router = createBrowserRouter([
       {
         path: 'add-employee',
         element: <AddEmployeeForm />,
+      },
+      {
+        path: 'add-teacher',
+        element: <AddTeacherForm />,
       }
     ],
   },

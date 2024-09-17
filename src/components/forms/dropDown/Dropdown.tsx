@@ -11,6 +11,7 @@ const Dropdown = <T extends FieldValues>({
   register,
   label,
   error,
+  isRequired,
 }: TDropdownProps<T>) => {
   const chosenValue = options.find((option) => option.value === chosen)?.value;
 
@@ -30,7 +31,7 @@ const Dropdown = <T extends FieldValues>({
 
   return (
     <article className="group">
-      <label className="adminFormLabel">{label}</label>
+      <label className="adminFormLabel">{label}  {isRequired && <span className="required-star"> * </span>}</label>
       <div className="select_wrapper">
         <select
           {...register(name)}

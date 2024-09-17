@@ -42,6 +42,22 @@ const WAGE_TYPES = [
 
 const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
 
+
+
+const DAYS_OPTIONS = [
+  { label: "كل الأيام", value: "0" },
+  { label: "السبت ", value: "1" },
+  { label: "الأحد ", value: "2" },
+  { label: "الأثنين ", value: "3" },
+  { label: "الثلاثاء ", value: "4" },
+  { label: "الاربعاء ", value: "5" },
+  { label: "الخميس ", value: "6" },
+  { label: "الجمعه ", value: "7" },
+]
+
+const DaysOptinsForSchema = generateValesForSchema(DAYS_OPTIONS);
+
+
 export {
   EMPLOYEE_TYPES,
   EmployeeTypesForSchema,
@@ -51,4 +67,6 @@ export {
   EmployeeTitleForSchema,
   WAGE_TYPES,
   WageTypesForSchema,
+  DAYS_OPTIONS,
+  DaysOptinsForSchema
 };
