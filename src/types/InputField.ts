@@ -8,5 +8,6 @@ export type TInputField<T extends FieldValues> = {
   label: string;
   placeholder?: string;
   textarea?: boolean;
+  isRequired?: boolean;
 }
 

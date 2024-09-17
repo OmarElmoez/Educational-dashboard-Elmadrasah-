@@ -7,6 +7,8 @@ import {
   EmployeeStatusForSchema,
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,
+  DAYS_OPTIONS,
+  DaysOptinsForSchema,
   WAGE_TYPES,
   WageTypesForSchema,
 } from "./dropdown-options";
@@ -17,6 +19,8 @@ export {
   EmployeeTypesForSchema,
   EMPLOYEE_STATUS,
   EmployeeStatusForSchema,
+  DAYS_OPTIONS,
+  DaysOptinsForSchema,
   TIMEZONES_OPTIONS,
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,

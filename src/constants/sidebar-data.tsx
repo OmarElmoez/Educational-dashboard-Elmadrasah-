@@ -64,6 +64,11 @@ const SIDEBAR_DATA = {
       title: "إضافة موظف",
       path: "add-employee",
       icon: <AddIcon />,
+    },
+    {
+      title: "إضافة معلم",
+      path: "add-teacher",
+      icon: <AddIcon />,
     }
   ],
 

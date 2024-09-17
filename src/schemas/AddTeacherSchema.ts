@@ -1,15 +1,27 @@
+import {  EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
+
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
-// // Define the time entry schema for each item in the field array
-// const TimeEntrySchema = z.object({
-//   day: z.string().optional(),
-//   start_time: z.string().optional(),
-//   end_time: z.string().optional(),
-//   description: z.string().optional(),
-// });
+// Define the time entry schema for each item in the field array
+const TimeEntrySchema = z.object({
+  day: z.string().optional(),
+  start_time: z.string().optional(),
+  end_time: z.string().optional(),
+  description: z.string().optional(),
+});
 
-export const AddEmployeeSchema = z.object({
+
+type TKeysToOmit = "default_subject" | "subject_choices" | "is_active";
+
+export type TAddEmployeeFormDataForServer = Omit<TAddTeacherFormData, TKeysToOmit> & {
+  default_subject: number;
+  subject_choices: number[];
+  is_active: boolean;
+};
+
+
+export const AddTeacherSchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
   full_name: z.string().min(1, "برجاء ادخال الاسم الكامل"),
@@ -17,10 +29,12 @@ export const AddEmployeeSchema = z.object({
     .string()
     .min(1, "برجاء ادخال البريد الإلكتروني")
     .email("برجاء ادخال بريد إلكتروني صحيح"),
-  employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
-  title: z.string().min(1, "برجاء اختيار اللقب"),
-  wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
-  default_subject: z.string().min(1, "برجاء اختيار المادة"),
+  employee_type: z.enum(EmployeeTypesForSchema as [string, ...string[]], {
+    errorMap: () => ({ message: "برجاء اختيار نوع الموظف" }),
+  }),
+  title: z.enum(EmployeeTitleForSchema as [string, ...string[]], {
+    errorMap: () => ({ message: "برجاء اختيار اللقب" }),
+  }),
   is_active: z.string().min(1, "برجاء اختيار الحالة"),
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
@@ -42,26 +56,23 @@ export const AddEmployeeSchema = z.object({
   address: z.string().min(1, "برجاء ادخال العنوان").optional(),
   address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
-  additional_notes: z.string().optional(),
-  bio: z.string().optional(),
+  additional_notes: z.string().optional().optional(),
   birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
-  hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),
   national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
-  subject_choices: z.array(z.string()).min(1, "برجاء اختيار مادة"),
-  initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
+  subjects: z.array(z.string()).optional(),
+
+  subject_choices: z.array(z.string()),
+
   position: z.string().min(1, "برجاء ادخال المسمى"),
-  link: z.string().optional(),
+  hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),
+  wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
+  default_subject: z.string().min(1, "برجاء اختيار المادة"),
+  bio: z.string().optional(),
+
+  availabilities: z.array(TimeEntrySchema),
+
 });
 
-export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
-
-type TKeysToOmit = "default_subject" | "subject_choices" | "is_active" |  "initial_students" ;
-
-export type TAddEmployeeFormDataForServer = Omit<TAddEmployeeFormData, TKeysToOmit> & {
-  default_subject: number;
-  subject_choices: number[];
-  initial_students: number[];
-  is_active: boolean;
-};
+export type TAddTeacherFormData = z.infer<typeof AddTeacherSchema>;
