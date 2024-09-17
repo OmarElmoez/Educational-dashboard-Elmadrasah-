@@ -49,16 +49,19 @@ export const AddEmployeeSchema = z.object({
   national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
-  subject_choices: z.array(z.string()),
+  subject_choices: z.array(z.string()).min(1, "برجاء اختيار مادة"),
+  initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
   position: z.string().min(1, "برجاء ادخال المسمى"),
+  link: z.string().optional(),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
 
-type TKeysToOmit = "default_subject" | "subject_choices" | "is_active";
+type TKeysToOmit = "default_subject" | "subject_choices" | "is_active" |  "initial_students" ;
 
 export type TAddEmployeeFormDataForServer = Omit<TAddEmployeeFormData, TKeysToOmit> & {
   default_subject: number;
   subject_choices: number[];
+  initial_students: number[];
   is_active: boolean;
 };

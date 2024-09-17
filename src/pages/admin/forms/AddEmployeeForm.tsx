@@ -12,6 +12,7 @@ import {
   EMPLOYEE_STATUS,
   EMPLOYEE_TITLES,
   EMPLOYEE_TYPES,
+  END_POINTS,
   TIMEZONES_OPTIONS,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -27,7 +28,7 @@ import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import { WAGE_TYPES } from "@/constants/dropdown-options";
-import { actGetSubjects } from "@/store/single-actions";
+import { actGetChoices } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 
 const AddEmployeeForm = () => {
@@ -36,7 +37,7 @@ const AddEmployeeForm = () => {
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
 
-  const [subjects, setSubjects] = useState<TOption[]>([]);
+  const [choices, setChoices] = useState<TOption[]>([]);
 
   const {
     register,
@@ -50,7 +51,6 @@ const AddEmployeeForm = () => {
   });
 
   const onSubmit = (data: TAddEmployeeFormData) => {
-
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -69,6 +69,9 @@ const AddEmployeeForm = () => {
       subject_choices: data["subject_choices"]?.map((subject) => {
         return parseInt(subject);
       }),
+      initial_students: data["initial_students"]?.map((student) => {
+        return parseInt(student);
+      }),
       is_active: data["is_active"] === "true",
     };
 
@@ -82,16 +85,21 @@ const AddEmployeeForm = () => {
   }, [dispatch, countries]);
 
   useEffect(() => {
-    dispatch(actGetSubjects({ token: user?.token }))
+    dispatch(
+      actGetChoices({
+        token: user?.token,
+        url: END_POINTS["subject_choices"].url,
+      })
+    )
       .unwrap()
       .then((res) => {
-        const formattedSubjects = res.map((subject) => {
+        const formattedChoices = res.map((subject) => {
           return {
             label: subject.name,
             value: subject.id.toString(),
           };
         });
-        setSubjects(formattedSubjects);
+        setChoices(formattedChoices);
       });
   }, [dispatch, user?.token]);
 
@@ -347,7 +355,11 @@ const AddEmployeeForm = () => {
       <Heading text="المواد" />
 
       <Row>
-        <MultiChoices register={register} name="subject_choices" />
+        <MultiChoices
+          register={register}
+          name="subject_choices"
+          error={errors.subject_choices?.message as string}
+        />
 
         <article className="group"></article>
       </Row>
@@ -398,10 +410,10 @@ const AddEmployeeForm = () => {
           label="الموضوع"
           name="default_subject"
           register={register}
-          options={subjects}
+          options={choices}
           error={errors.default_subject?.message as string}
         />
-        
+
         <InputField
           label="معلومات إضافية"
           placeholder="اكتب معلوماتك الإضافية"
@@ -410,6 +422,37 @@ const AddEmployeeForm = () => {
           error={errors.bio?.message as string}
           textarea
         />
+      </Row>
+
+      <hr className="hr" />
+
+      <Heading text="رابط موقع المعلم" />
+
+      <Row>
+        <InputField
+          label="رابط الموقع URL"
+          placeholder="https//test.com"
+          type="url"
+          register={register}
+          name="link"
+          error={errors.link?.message as string}
+        />
+
+        <article className="group"></article>
+      </Row>
+
+      <hr className="hr" />
+
+      <Heading text="الطلاب المعينون" />
+
+      <Row>
+        <MultiChoices
+          register={register}
+          name="initial_students"
+          error={errors.initial_students?.message as string}
+        />
+
+        <article className="group"></article>
       </Row>
 
       <button type="submit">Submit</button>
