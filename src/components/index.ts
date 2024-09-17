@@ -11,6 +11,8 @@ import ReviewFeedback from "./feedback/review-status/ReviewFeedback";
 import Row from "./row/Row";
 import Dropdown from "./forms/dropDown/Dropdown";
 import InputField from "./forms/inputField/InputField";
+import RadioField from "./forms/inputField/RadioField";
+import CheckboxGroup from "./forms/inputField/CheckboxGroup";
 import PhoneField from "./forms/phoneField/PhoneField";
 import UploadFile from "./forms/uploadFile/UploadFile";
 import CountriesDropdown from "./forms/countriesDropdown/CountriesDropdown";
@@ -30,6 +32,8 @@ export {
   Row,
   Dropdown,
   InputField,
+  RadioField,
+  CheckboxGroup,
   PhoneField,
   UploadFile,
   CountriesDropdown,

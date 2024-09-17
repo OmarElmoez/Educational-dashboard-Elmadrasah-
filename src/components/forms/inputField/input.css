@@ -1,0 +1,115 @@
+.radioOptions {
+    display: flex;
+    flex-direction: row;
+}
+
+.customRadioLabel {
+    display: flex;
+    align-items: center;
+    margin: 8px;
+    cursor: pointer;
+}
+
+.customRadioInput {
+    display: none;
+
+}
+
+.customRadio {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(28, 138, 68, 1);
+    display: inline-block;
+    position: relative;
+    margin-right: 8px;
+    vertical-align: middle;
+    transition: background-color 0.2s ease;
+    margin-left: 8px;
+
+
+}
+
+.customRadioInput:checked+.customRadio {
+    background-color: rgba(28, 138, 68, 1);
+}
+
+.customRadioInput:checked+.customRadio::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ffff;
+    position: absolute;
+    top: 4.5px;
+    left: 4.5px;
+
+}
+
+.radioGroupLabel {
+    font-weight: bold;
+}
+
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+
+/* ****************  CHECKBOX  ******************** */
+
+.checkboxOptions {
+    display: flex;
+    flex-direction: row;
+}
+
+.checkboxGroupLabel {
+    font-weight: bold;
+}
+
+
+.checkboxItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.checkmark {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #838383;
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkboxInput {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+}
+
+.checkboxItem:has(.checkboxInput:checked) .checkmark {
+    background-color: #1C8A44;
+    color: #fff;
+    border-color: #1C8A44
+}
+
+.checkboxItem:has(.checkboxInput:checked) .checkmark::after {
+    content: "";
+    display: flex;
+    box-sizing: border-box;
+    position: absolute;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    transform: rotate(45deg);
+}
