@@ -55,8 +55,6 @@ const MultiChoices = <T extends FieldValues>({
       .then((data) => setData(data));
   }, [dispatch, user?.token]);
 
-  
-
   const onClickHandler = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
       if (intervalRef.current !== null) {

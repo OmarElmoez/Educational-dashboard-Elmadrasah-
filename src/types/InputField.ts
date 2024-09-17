@@ -11,3 +11,20 @@ export type TInputField<T extends FieldValues> = {
   isRequired?: boolean;
 }
 
+export type TRadioField<T extends FieldValues> = {
+  name: Path<T>;
+  register: UseFormRegister<T>;
+  error: string;
+  label: string;
+  options: { label: string; value: string | number }[];
+  placeholder?: string;
+  isRequired?: boolean;
+}
+
+export interface TCheckboxGroup<T extends FieldValues> {
+  register: UseFormRegister<T>;
+  name: Path<T>;  
+  options: Array<{ label: string; value: string }>;
+  error?: string;
+  isRequired?: boolean;
+}

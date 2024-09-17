@@ -139,7 +139,6 @@ const AddTeacherForm = () => {
           error={errors.is_active?.message as string}
         />
       </Row>
-
       <Row>
         <InputField
           label="الأسم الأول"
