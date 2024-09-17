@@ -19,6 +19,7 @@ import { actGetCountries } from "@/store/location/LocationSlice";
 import {
   AddEmployeeSchema,
   TAddEmployeeFormData,
+  TAddEmployeeFormDataForServer,
 } from "@/schemas/AddEmployeeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -49,8 +50,6 @@ const AddEmployeeForm = () => {
   });
 
   const onSubmit = (data: TAddEmployeeFormData) => {
-    // Turn the string value of is_active into a boolean
-    data["is_active"] = data["is_active"] === "true";
 
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
@@ -64,14 +63,16 @@ const AddEmployeeForm = () => {
     // Add region to timezone value
     data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
 
-    // Turn subject_choices into an array of numbers
-    data["subject_choices"] = data["subject_choices"]?.map((subject) => {
-      return parseInt(subject.toString());
-    });
+    const serverData: TAddEmployeeFormDataForServer = {
+      ...data,
+      default_subject: parseInt(data["default_subject"]),
+      subject_choices: data["subject_choices"]?.map((subject) => {
+        return parseInt(subject);
+      }),
+      is_active: data["is_active"] === "true",
+    };
 
-    // Turn default_subject into number
-    data["default_subject"] = parseInt(data["default_subject"].toString());
-    console.log(data);
+    console.log(serverData);
   };
 
   useEffect(() => {
@@ -376,7 +377,7 @@ const AddEmployeeForm = () => {
 
       <Row>
         <Dropdown
-          label="نوع الأجر غير التدريسي"
+          label="نوع أجر الدرس"
           name="wage_type"
           register={register}
           options={WAGE_TYPES}
@@ -384,15 +385,23 @@ const AddEmployeeForm = () => {
         />
 
         <Dropdown
+          label="نوع الأجر غير التدريسي"
+          name="wage_type"
+          register={register}
+          options={WAGE_TYPES}
+          error={errors.wage_type?.message as string}
+        />
+      </Row>
+
+      <Row>
+        <Dropdown
           label="الموضوع"
           name="default_subject"
           register={register}
           options={subjects}
           error={errors.default_subject?.message as string}
         />
-      </Row>
-
-      <Row>
+        
         <InputField
           label="معلومات إضافية"
           placeholder="اكتب معلوماتك الإضافية"

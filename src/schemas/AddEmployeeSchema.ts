@@ -12,8 +12,8 @@ export const AddEmployeeSchema = z.object({
   employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
   title: z.string().min(1, "برجاء اختيار اللقب"),
   wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
-  default_subject: z.union([z.string(), z.number()]),
-  is_active: z.union([z.boolean(), z.string()]),
+  default_subject: z.string().min(1, "برجاء اختيار المادة"),
+  is_active: z.string().min(1, "برجاء اختيار الحالة"),
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
@@ -41,21 +41,16 @@ export const AddEmployeeSchema = z.object({
   national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
-  subject_choices: z.array(z.union([z.string(), z.number()])).optional(),
+  subject_choices: z.array(z.string()),
   position: z.string().min(1, "برجاء ادخال المسمى"),
-  // city: z.enum(cityOptions, {
-  //   errorMap: () => ({ message: "برجاء ادخال المدينة" }),
-  // })
-  // phoneNumber: z.string().regex(/^\d{10}$/, 'Phone number must be 10 digits'),
-  // dateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
-  //   message: 'Invalid date format',
-  // }),
-  // department: z.string().min(1, 'Department is required'),
-  // position: z.string().min(1, 'Position is required'),
-  // salary: z.number().positive('Salary must be a positive number'),
-  // startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-  //   message: 'Invalid date format',
-  // }),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
+
+type TKeysToOmit = "default_subject" | "subject_choices" | "is_active";
+
+export type TAddEmployeeFormDataForServer = Omit<TAddEmployeeFormData, TKeysToOmit> & {
+  default_subject: number;
+  subject_choices: number[];
+  is_active: boolean;
+};
