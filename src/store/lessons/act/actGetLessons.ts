@@ -19,27 +19,30 @@ type TGetLessonsPrams = {
   token: string | undefined;
   from_date?: string | undefined;
   next?: string | null;
-}
+};
 
+const actGetLessons = createAsyncThunk(
+  "lessons/actGetLessons",
+  async ({ token, next }: TGetLessonsPrams, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
 
-const actGetLessons = createAsyncThunk('lessons/actGetLessons', async ({token, next}: TGetLessonsPrams, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI;
-
-  try {
-    let url = 'https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/lesson/';
-    if (next) {
-      url = next;
-    }
-    const config = {
-      headers: {
-        'Authorization': `Token ${token}`
+    try {
+      let url =
+        "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/lesson/";
+      if (next) {
+        url = next;
       }
-    };
-    const response = await axios.get<TLessonsResponse>(url, config);
-    return response.data
-  } catch (error) {
-    return rejectWithValue(axiosErrorHandler(error));
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      };
+      const response = await axios.get<TLessonsResponse>(url, config);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(axiosErrorHandler(error));
+    }
   }
-});
+);
 
-export default actGetLessons
+export default actGetLessons;

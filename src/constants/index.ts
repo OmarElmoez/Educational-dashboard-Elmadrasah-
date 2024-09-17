@@ -12,6 +12,7 @@ import {
   WAGE_TYPES,
   WageTypesForSchema,
 } from "./dropdown-options";
+import END_POINTS from "./end-points";
 
 export {
   EMPLOYEE_TYPES,
@@ -24,6 +25,7 @@ export {
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,
   SIDEBAR_DATA,
+  END_POINTS,
   WAGE_TYPES,
   WageTypesForSchema,
 };

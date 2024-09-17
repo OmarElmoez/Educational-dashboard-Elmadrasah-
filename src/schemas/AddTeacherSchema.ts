@@ -12,11 +12,12 @@ const TimeEntrySchema = z.object({
 });
 
 
-type TKeysToOmit = "default_subject" | "subject_choices" | "is_active";
+type TKeysToOmit = "default_subject" | "subject_choices" | "is_active" | "initial_students";
 
-export type TAddEmployeeFormDataForServer = Omit<TAddTeacherFormData, TKeysToOmit> & {
+export type TAddTeacherFormDataForServer = Omit<TAddTeacherFormData, TKeysToOmit> & {
   default_subject: number;
   subject_choices: number[];
+  initial_students: number[];
   is_active: boolean;
 };
 
@@ -64,6 +65,9 @@ export const AddTeacherSchema = z.object({
   subjects: z.array(z.string()).optional(),
 
   subject_choices: z.array(z.string()),
+  initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
+
+  link: z.string().url("برجاء ادخال رابط صحيح"),
 
   position: z.string().min(1, "برجاء ادخال المسمى"),
   hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),

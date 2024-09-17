@@ -3,7 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 import styles from "./multiChoices.module.css";
-import { actGetSubjects } from "@/store/single-actions";
+import { END_POINTS } from "@/constants";
+import actGetChoices, { TResponse } from "@/store/single-actions/actGetChoices";
 
 const {
   checkboxInput,
@@ -35,13 +36,15 @@ const LoadingIndicator = ({ progress }: { progress: number }) => (
 const MultiChoices = <T extends FieldValues>({
   register,
   name,
+  error,
 }: {
   register: UseFormRegister<T>;
   name: Path<T>;
+  error: string;
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
-  const [data, setData] = useState<{ id: number; name: string }[]>([]);
-  const [selectedSubjects, setSelectedSubjects] = useState<number[]>([]);
+  const [data, setData] = useState<TResponse>([]);
+  const [selectedChoices, setSelectedChoices] = useState<number[]>([]);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const intervalRef = useRef<number | null>(null);
 
@@ -50,10 +53,15 @@ const MultiChoices = <T extends FieldValues>({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(actGetSubjects({ token: user?.token }))
+    dispatch(
+      actGetChoices({
+        token: user?.token,
+        url: END_POINTS[name as keyof typeof END_POINTS].url,
+      })
+    )
       .unwrap()
       .then((data) => setData(data));
-  }, [dispatch, user?.token]);
+  }, [dispatch, user?.token, name]);
 
   const onClickHandler = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
@@ -61,13 +69,13 @@ const MultiChoices = <T extends FieldValues>({
         clearInterval(intervalRef.current);
       }
       const { value } = e.currentTarget;
-      const isSelected = selectedSubjects.includes(Number(value));
+      const isSelected = selectedChoices.includes(Number(value));
       if (isSelected) {
-        setSelectedSubjects(
-          selectedSubjects.filter((item) => item !== Number(value))
+        setSelectedChoices(
+          selectedChoices.filter((item) => item !== Number(value))
         );
       } else {
-        setSelectedSubjects([...selectedSubjects, Number(value)]);
+        setSelectedChoices([...selectedChoices, Number(value)]);
       }
 
       setLoadingProgress(0);
@@ -86,17 +94,17 @@ const MultiChoices = <T extends FieldValues>({
         });
       }, 500);
     },
-    [selectedSubjects]
+    [selectedChoices]
   );
 
   const renderPreview = () => {
-    if (selectedSubjects.length === 0) {
-      return <span className="firstOption">المواد</span>;
+    if (selectedChoices.length === 0) {
+      return <span className="firstOption">{END_POINTS[name as keyof typeof END_POINTS].placeholder}</span>;
     }
 
-    return selectedSubjects.map((subject) => (
-      <span key={subject} className={preview}>
-        {data.find((subject2) => subject2.id === subject)?.name}
+    return selectedChoices.map((choice) => (
+      <span key={choice} className={preview}>
+        {data.find((dataItem) => dataItem.id === choice)?.name}
       </span>
     ));
   };
@@ -104,7 +112,7 @@ const MultiChoices = <T extends FieldValues>({
   return (
     <article className="group">
       <label htmlFor={name} className="adminFormLabel">
-        يرجي اختيار المواد
+        يرجي اختيار {END_POINTS[name as keyof typeof END_POINTS].placeholder}
       </label>
       <section
         className="select_wrapper inputField"
@@ -113,6 +121,7 @@ const MultiChoices = <T extends FieldValues>({
       >
         {renderPreview()}
       </section>
+      {error && <span className="error">{error}</span>}
       {isWrapperClicked && (
         <section className={options}>
           <LoadingIndicator progress={loadingProgress} />
