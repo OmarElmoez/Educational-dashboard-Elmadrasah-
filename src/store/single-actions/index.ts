@@ -1,3 +1,3 @@
-import actGetSubjects from "./actGetSubjects";
+import actGetChoices from "./actGetChoices";
 
-export { actGetSubjects };
+export { actGetChoices };

@@ -8,6 +8,7 @@ import {
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,
 } from "./dropdown-options";
+import END_POINTS from "./end-points";
 
 export {
   EMPLOYEE_TYPES,
@@ -17,5 +18,6 @@ export {
   TIMEZONES_OPTIONS,
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,
-  SIDEBAR_DATA
+  SIDEBAR_DATA,
+  END_POINTS,
 };
