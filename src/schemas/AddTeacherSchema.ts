@@ -1,4 +1,4 @@
-import {  EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
+import { EmployeeTitleForSchema, EmployeeTypesForSchema } from "@/constants";
 
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
@@ -11,16 +11,21 @@ const TimeEntrySchema = z.object({
   description: z.string().optional(),
 });
 
+type TKeysToOmit =
+  | "default_subject"
+  | "subject_choices"
+  | "is_active"
+  | "initial_students";
 
-type TKeysToOmit = "default_subject" | "subject_choices" | "is_active" | "initial_students";
-
-export type TAddTeacherFormDataForServer = Omit<TAddTeacherFormData, TKeysToOmit> & {
+export type TAddTeacherFormDataForServer = Omit<
+  TAddTeacherFormData,
+  TKeysToOmit
+> & {
   default_subject: number;
   subject_choices: number[];
   initial_students: number[];
   is_active: boolean;
 };
-
 
 export const AddTeacherSchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
@@ -40,12 +45,18 @@ export const AddTeacherSchema = z.object({
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
-  home_phone: z.string().refine((value) => {
-    // This regex only allows digits, spaces, dashes, and a plus sign at the start
-    return /^[+]?[\d\s-]+$/.test(value);
-  }, {
-    message: "برجاء ادخال رقم هاتف صحيح",
-  }).optional(),
+  home_phone: z
+    .string()
+    .refine(
+      (value) => {
+        // This regex only allows digits, spaces, dashes, and a plus sign at the start
+        return /^[+]?[\d\s-]+$/.test(value);
+      },
+      {
+        message: "برجاء ادخال رقم هاتف صحيح",
+      }
+    )
+    .optional(),
   uploaded_pp: z.array(z.instanceof(File)),
   uploaded_cv: z.array(z.instanceof(File)),
   uploaded_id: z.array(z.instanceof(File)),
@@ -59,8 +70,12 @@ export const AddTeacherSchema = z.object({
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
   additional_notes: z.string().optional().optional(),
   birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
-  national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
-  passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
+  national_id_expiration_date: z
+    .string()
+    .min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
+  passport_expiration_date: z
+    .string()
+    .min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
   subjects: z.array(z.string()).optional(),
 
@@ -73,10 +88,18 @@ export const AddTeacherSchema = z.object({
   hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),
   wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
   default_subject: z.string().min(1, "برجاء اختيار المادة"),
-  bio: z.string().optional(),
 
+  bio: z.string().optional(),
   availabilities: z.array(TimeEntrySchema),
 
+  calendar_setting: z.enum(["Day", "Month", "Week"], {
+    errorMap: () => ({ message: "برجاء اختيار اعدادات التقويم" }),
+  }),
+
+  calendar_color_by: z.enum(["Student", "Website", "Lesson"], {
+    errorMap: () => ({ message: "برجاء اختيار درس التقويم" }),
+  }),
+  calendar_color: z.string().optional(),
 });
 
 export type TAddTeacherFormData = z.infer<typeof AddTeacherSchema>;

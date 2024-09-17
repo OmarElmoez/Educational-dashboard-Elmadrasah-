@@ -31,6 +31,7 @@ import CloseButton from "@/assets/close-button.svg?react";
 import { WAGE_TYPES } from "@/constants/dropdown-options";
 import { actGetChoices } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
+import CalendarSettingsForm from "@/components/mini-forms/calendarSettingsForm";
 // -------------------------------------------------------------------------
 
 const AddTeacherForm = () => {
@@ -567,10 +568,30 @@ const AddTeacherForm = () => {
         <article className="group"></article>
       </Row>
 
+      <hr className="hr" />
+
+      <CalendarSettingsForm
+        register={register}
+        calendar_setting="calendar_setting"
+        calendar_color="calendar_color"
+        calendar_color_by="calendar_color_by"
+        errors={errors}
+      />
+
+      <hr className="hr" />
       <button
         type="button"
         onClick={() => {
           console.log("error", errors);
+          console.log(
+            "calendar_setting",
+            control._getWatch("calendar_setting")
+          );
+          console.log("calendar_color", control._getWatch("calendar_color"));
+          console.log(
+            "calendar_color_by",
+            control._getWatch("calendar_color_by")
+          );
         }}
       >
         check
