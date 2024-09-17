@@ -31,7 +31,7 @@ const EmployeeTitleForSchema = generateValesForSchema(EMPLOYEE_TITLES);
 
 const WAGE_TYPES = [
   {
-    label: "استخدام قائمةالخدمات ",
+    label: "استخدام قائمة الخدمات ",
     value: "service",
   },
   {

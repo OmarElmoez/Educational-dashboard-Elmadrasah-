@@ -45,6 +45,7 @@ const AddEmployeeForm = () => {
     control,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<TAddEmployeeFormData>({
     mode: "onBlur",
     resolver: zodResolver(AddEmployeeSchema),
@@ -396,13 +397,39 @@ const AddEmployeeForm = () => {
           error={errors.wage_type?.message as string}
         />
 
+        {watch("wage_type") === "wage" ? (
+          <InputField
+            label="معدل الأجر"
+            placeholder="معدل الأجر"
+            register={register}
+            name="employee_wage"
+            error={errors.employee_wage?.message as string}
+          />
+        ) : (
+          <article className="group"></article>
+        )}
+      </Row>
+
+      <Row>
         <Dropdown
           label="نوع الأجر غير التدريسي"
-          name="wage_type"
+          name="work_wage_type"
           register={register}
           options={WAGE_TYPES}
-          error={errors.wage_type?.message as string}
+          error={errors.work_wage_type?.message as string}
         />
+
+        {watch("work_wage_type") === "wage" ? (
+          <InputField
+            label="معدل الأجر"
+            placeholder="معدل الأجر"
+            register={register}
+            name="work_wage"
+            error={errors.work_wage?.message as string}
+          />
+        ) : (
+          <article className="group"></article>
+        )}
       </Row>
 
       <Row>
