@@ -53,8 +53,6 @@ const WAGE_TYPES = [
 
 const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
 
-
-
 const DAYS_OPTIONS = [
   // { label: "كل الأيام", value: "0" },
   { label: "الأحد ", value: "0" },
@@ -64,10 +62,16 @@ const DAYS_OPTIONS = [
   { label: "الخميس ", value: "4" },
   { label: "الجمعه ", value: "5" },
   { label: "السبت ", value: "6" },
-]
+];
 
 const DaysOptinsForSchema = generateValesForSchema(DAYS_OPTIONS);
 
+const FAMILY_STATUS = [
+  { label: "نشط", value: "family" },
+  { label: "غير نشط", value: "" },
+];
+
+const FamilyStatusForSchema = generateValesForSchema([{ label: "نشط", value: "family" }]);
 
 export {
   EMPLOYEE_TYPES,
@@ -79,5 +83,7 @@ export {
   WAGE_TYPES,
   WageTypesForSchema,
   DAYS_OPTIONS,
-  DaysOptinsForSchema
+  DaysOptinsForSchema,
+  FAMILY_STATUS,
+  FamilyStatusForSchema,
 };

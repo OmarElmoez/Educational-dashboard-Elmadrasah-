@@ -6,29 +6,28 @@
 .customRadioLabel {
     display: flex;
     align-items: center;
-    margin: 2rem;
+    margin: 2rem 0 2rem 5rem;
     cursor: pointer;
 }
 
 .customRadioInput {
     display: none;
-
 }
 
 .customRadio {
     width: 22px;
     height: 22px;
+    margin: 0;
     border-radius: 50%;
-    border: 2px solid rgba(28, 138, 68, 1);
     display: inline-block;
-    margin-right: .5rem;
     vertical-align: middle;
     transition: background-color 0.2s ease;
-    margin-left: .5rem;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    border: 1px solid rgba(181, 183, 192, 1);
+    background-color: rgba(245, 245, 245, 1);
 }
 
 .customRadioInput:checked+.customRadio {
@@ -60,6 +59,10 @@
 .checkboxOptions {
     display: flex;
     flex-direction: row;
+}
+
+.flex-start {
+    align-self: flex-start;
 }
 
 .checkboxGroupLabel {
