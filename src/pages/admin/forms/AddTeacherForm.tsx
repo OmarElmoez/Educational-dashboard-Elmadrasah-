@@ -49,6 +49,7 @@ const AddTeacherForm = () => {
     control,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<TAddTeacherFormData>({
     mode: "onBlur",
     resolver: zodResolver(AddTeacherSchema),
@@ -528,13 +529,14 @@ const AddTeacherForm = () => {
         ))}
 
         <br />
-        <div className="flex-end">
-          <span className="helper-text">
-            * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
-            بشكل عام هنا. يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على
-            التقويم. سيتم عرض مدى توفر الموظف على التقويم
-          </span>
-        </div>
+        <span className="helper-text">
+          * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
+          بشكل عام هنا.
+        </span>
+        <span className="helper-text">
+          يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض
+          مدى توفر الموظف على التقويم
+        </span>
       </div>
 
       <hr className="hr" />
@@ -575,32 +577,47 @@ const AddTeacherForm = () => {
         calendar_setting="calendar_setting"
         calendar_color="calendar_color"
         calendar_color_by="calendar_color_by"
+        sms_lesson_reminders="sms_lesson_reminders"
+        email_lesson_reminders="email_lesson_reminders"
+        whatsapp_reminders="whatsapp_reminders"
+        app_reminders="app_reminders"
+        web_reminders="web_reminders"
+        send_welcome_email="send_welcome_email"
+        user_account="user_account"
         errors={errors}
+        setValue={setValue}
       />
 
       <hr className="hr" />
-      <button
-        type="button"
-        onClick={() => {
-          console.log("error", errors);
-          console.log(
-            "calendar_setting",
-            control._getWatch("calendar_setting")
-          );
-          console.log("calendar_color", control._getWatch("calendar_color"));
-          console.log(
-            "calendar_color_by",
-            control._getWatch("calendar_color_by")
-          );
-        }}
-      >
-        check
-      </button>
-      <hr className="hr" />
 
-      <button type="submit">Submit</button>
+      <div className="flex-end">
+        <button type="submit" className="btn submit-btn">
+          حفظ
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            reset()
+          }}
+          className="btn"
+        >
+          يلغى
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            console.log("error", errors);
+          }}
+          className="btn"
+        >
+          فحص
+        </button>
+      </div>
     </form>
   );
 };
 
 export default AddTeacherForm;
+

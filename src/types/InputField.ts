@@ -19,12 +19,23 @@ export type TRadioField<T extends FieldValues> = {
   options: { label: string; value: string | number }[];
   placeholder?: string;
   isRequired?: boolean;
+  className?: string;
 }
 
-export interface TCheckboxGroup<T extends FieldValues> {
+export type TCheckboxGroup<T extends FieldValues> = {
   register: UseFormRegister<T>;
   name: Path<T>;  
   options: Array<{ label: string; value: string }>;
   error?: string;
   isRequired?: boolean;
+}
+
+export type TSingleCheckbox<T extends FieldValues> = {
+  register: UseFormRegister<T>;
+  name: Path<T>;  
+  label: string;
+  isRequired?: boolean;
+  error?: string;
+  className?: string;
+
 }
