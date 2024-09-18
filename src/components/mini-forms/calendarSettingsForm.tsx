@@ -1,10 +1,15 @@
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import {
+  FieldValues,
+  Path,
+  UseFormRegister,
+  FieldErrors,
+} from "react-hook-form";
 import {
   SingleCheckbox,
   Heading,
-  InputField,
   RadioField,
   Row,
+  ColorField,
 } from "@/components";
 
 export interface TCalendarSettingsFormProps<T extends FieldValues> {
@@ -19,7 +24,8 @@ export interface TCalendarSettingsFormProps<T extends FieldValues> {
   web_reminders: Path<T>;
   user_account: Path<T>;
   send_welcome_email: Path<T>;
-  errors: any;
+  setValue: (name: Path<T>, value: string) => void;
+  errors: FieldErrors<T>;
 }
 
 const CalendarSettingsForm = <T extends FieldValues>({
@@ -34,6 +40,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
   web_reminders,
   user_account,
   send_welcome_email,
+  setValue,
   errors,
 }: TCalendarSettingsFormProps<T>) => {
   return (
@@ -49,7 +56,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
             { label: "يوم", value: "Day" },
           ]}
           register={register}
-          error={errors.calendar_setting?.message}
+          error={errors.calendar_setting?.message as string}
           isRequired={true}
           className="flex-1"
         />
@@ -62,17 +69,16 @@ const CalendarSettingsForm = <T extends FieldValues>({
             { label: "درس", value: "Lesson" },
           ]}
           register={register}
-          error={errors.calendar_color_by?.message}
+          error={errors.calendar_color_by?.message as string}
           isRequired={true}
           className="flex-1"
         />
       </div>
       <Row>
-        <InputField
-          type="color"
+        <ColorField
           label="لون التقويم"
-          placeholder="#1C8A44 "
           register={register}
+          setValue={setValue}
           name={calendar_color}
           error={errors.calendar_color?.message as string}
         />
@@ -90,7 +96,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
           name={sms_lesson_reminders}
           label="تفعيل تذكيرات الدروس"
           isRequired={true}
-          error={errors.sms_lesson_reminders?.message}
+          error={errors.sms_lesson_reminders?.message as string}
         />
         <SingleCheckbox
           className="flex-2"
@@ -98,7 +104,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
           name={email_lesson_reminders}
           label="تلقي رسائل البريد الإلكتروني الخاصة بملاحظات الدروس"
           isRequired={true}
-          error={errors.sms_lesson_reminders?.message}
+          error={errors.email_lesson_reminders?.message as string}
         />
       </div>
       <div className="mainContainer flex-wrap">
@@ -108,7 +114,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
           name={whatsapp_reminders}
           label="تفعيل إشعارات الواتساب"
           isRequired={true}
-          error={errors.sms_lesson_reminders?.message}
+          error={errors.whatsapp_reminders?.message as string}
         />
 
         <SingleCheckbox
@@ -117,7 +123,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
           name={app_reminders}
           label="تفعيل إشعارات التطبيق"
           isRequired={true}
-          error={errors.sms_lesson_reminders?.message}
+          error={errors.app_reminders?.message as string}
         />
         <SingleCheckbox
           className="flex-1"
@@ -125,7 +131,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
           name={web_reminders}
           label="تفعيل اشعارات الويب"
           isRequired={true}
-          error={errors.sms_lesson_reminders?.message}
+          error={errors.web_reminders?.message as string}
         />
       </div>
       <br />
@@ -135,7 +141,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
         name={send_welcome_email}
         label="إرسال بريد إلكتروني ترحيبي"
         isRequired={true}
-        error={errors.sms_lesson_reminders?.message}
+        error={errors.send_welcome_email?.message as string}
       />
 
       <br />
@@ -147,7 +153,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
           name={user_account}
           label="تمكين حساب المستخدم"
           isRequired={true}
-          error={errors.sms_lesson_reminders?.message}
+          error={errors.user_account?.message as string}
         />
         <span className="helper-text">
           يسمح حساب المستخدم للطالب باستخدام عنوان بريده الإلكتروني لتسجيل

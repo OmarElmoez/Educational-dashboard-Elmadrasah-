@@ -330,6 +330,26 @@ textarea::placeholder,
 }
 
 /* ******************** GLOBAL CLASSES  *********************** */
+/* ******************** BUTTONS  *********************** */
+
+.btn {
+  width: 10rem;
+  height: 6vh;
+  margin: 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(28, 138, 68, 1);
+  background-color: #fff;
+  color: rgba(28, 138, 68, 1);
+}
+
+.submit-btn {
+  background-color: rgba(28, 138, 68, 1);
+  color: #fff;
+}
+
+
+
+
 
 .helper-text {
   font-size: 1rem;

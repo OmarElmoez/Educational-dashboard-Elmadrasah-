@@ -49,6 +49,7 @@ const AddTeacherForm = () => {
     control,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<TAddTeacherFormData>({
     mode: "onBlur",
     resolver: zodResolver(AddTeacherSchema),
@@ -584,24 +585,43 @@ const AddTeacherForm = () => {
         send_welcome_email="send_welcome_email"
         user_account="user_account"
         errors={errors}
+        setValue={setValue}
       />
 
       <hr className="hr" />
-      <button
-        type="button"
-        onClick={() => {
-          console.log("error", errors);
-        }}
-      >
-        check
-      </button>
-      <hr className="hr" />
 
-      <button type="submit">Submit</button>
+      <div className="flex-end">
+        <button type="submit" className="btn submit-btn">
+          حفظ
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            reset()
+          }}
+          className="btn"
+        >
+          يلغى
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            console.log("error", errors);
+          }}
+          className="btn"
+        >
+          فحص
+        </button>
+      </div>
     </form>
   );
 };
 
 export default AddTeacherForm;
 
-
+// Create SingleCheckbox in CheckboxGroup.tsx add TSingleCheckbox in InputField.ts
+// Complete AddTeacherSchema with rest names
+// Add reminders to CalendarSettingsForm and complete the form
+// Upd styles & Add some global classes --> global.css & input.css
