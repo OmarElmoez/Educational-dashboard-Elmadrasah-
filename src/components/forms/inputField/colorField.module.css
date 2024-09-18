@@ -1,0 +1,28 @@
+.colorInput {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.previewBox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.colorPreview {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid;
+  border-color: var(--main-color);
+  display: inline-block;
+}
+
+.colorValue {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #CDCDCD;
+  direction: ltr;
+}

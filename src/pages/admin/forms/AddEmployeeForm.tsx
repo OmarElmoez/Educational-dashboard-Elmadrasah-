@@ -1,4 +1,5 @@
 import {
+  ColorField,
   CountriesDropdown,
   Dropdown,
   Heading,
@@ -111,6 +112,17 @@ const AddEmployeeForm = () => {
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
       <Heading text="نوع الموظف" />
+
+      <Row>
+        <ColorField
+          label="لون التقويم"
+          register={register}
+          setValue={setValue}
+          name="calendar_color"
+          error={errors.calendar_color?.message as string}
+        />
+      </Row>
+
       <Row>
         <Dropdown
           label="اختار نوع الموظف"
@@ -481,7 +493,6 @@ const AddEmployeeForm = () => {
 
         <article className="group"></article>
       </Row>
-
       <button type="submit">Submit</button>
     </form>
   );
