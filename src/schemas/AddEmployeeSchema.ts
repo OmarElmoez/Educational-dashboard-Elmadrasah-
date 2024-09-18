@@ -64,8 +64,9 @@ export const AddEmployeeSchema = z.object({
   initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
   position: z.string().min(1, "برجاء ادخال المسمى"),
   link: z.string().optional(),
-  employee_wage: z.string().min(1, "برجاء ادخال الأجر"),
-  work_wage: z.string().min(1, "برجاء ادخال الأجر"),
+  employee_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
+  work_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
+  calendar_color: z.string().min(1, "برجاء اختيار لون التقويم"),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
