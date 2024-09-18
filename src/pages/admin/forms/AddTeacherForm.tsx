@@ -621,7 +621,3 @@ const AddTeacherForm = () => {
 
 export default AddTeacherForm;
 
-// Create SingleCheckbox in CheckboxGroup.tsx add TSingleCheckbox in InputField.ts
-// Complete AddTeacherSchema with rest names
-// Add reminders to CalendarSettingsForm and complete the form
-// Upd styles & Add some global classes --> global.css & input.css
