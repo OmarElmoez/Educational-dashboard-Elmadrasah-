@@ -13,6 +13,7 @@ import {
   WageTypesForSchema,
 } from "./dropdown-options";
 import END_POINTS from "./end-points";
+import { INITIAL_CALENDAR_COLOR } from "./initial-values";
 
 export {
   EMPLOYEE_TYPES,
@@ -28,4 +29,5 @@ export {
   END_POINTS,
   WAGE_TYPES,
   WageTypesForSchema,
+  INITIAL_CALENDAR_COLOR,
 };

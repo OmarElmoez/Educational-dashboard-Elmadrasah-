@@ -1,4 +1,5 @@
 import {
+  ColorField,
   CountriesDropdown,
   Dropdown,
   Heading,
@@ -45,6 +46,7 @@ const AddEmployeeForm = () => {
     control,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<TAddEmployeeFormData>({
     mode: "onBlur",
     resolver: zodResolver(AddEmployeeSchema),
@@ -110,6 +112,17 @@ const AddEmployeeForm = () => {
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
       <Heading text="نوع الموظف" />
+
+      <Row>
+        <ColorField
+          label="لون التقويم"
+          register={register}
+          setValue={setValue}
+          name="calendar_color"
+          error={errors.calendar_color?.message as string}
+        />
+      </Row>
+
       <Row>
         <Dropdown
           label="اختار نوع الموظف"
@@ -396,13 +409,39 @@ const AddEmployeeForm = () => {
           error={errors.wage_type?.message as string}
         />
 
+        {watch("wage_type") === "wage" ? (
+          <InputField
+            label="معدل الأجر"
+            placeholder="معدل الأجر"
+            register={register}
+            name="employee_wage"
+            error={errors.employee_wage?.message as string}
+          />
+        ) : (
+          <article className="group"></article>
+        )}
+      </Row>
+
+      <Row>
         <Dropdown
           label="نوع الأجر غير التدريسي"
-          name="wage_type"
+          name="work_wage_type"
           register={register}
           options={WAGE_TYPES}
-          error={errors.wage_type?.message as string}
+          error={errors.work_wage_type?.message as string}
         />
+
+        {watch("work_wage_type") === "wage" ? (
+          <InputField
+            label="معدل الأجر"
+            placeholder="معدل الأجر"
+            register={register}
+            name="work_wage"
+            error={errors.work_wage?.message as string}
+          />
+        ) : (
+          <article className="group"></article>
+        )}
       </Row>
 
       <Row>
@@ -454,7 +493,6 @@ const AddEmployeeForm = () => {
 
         <article className="group"></article>
       </Row>
-
       <button type="submit">Submit</button>
     </form>
   );

@@ -18,6 +18,7 @@ import PhoneField from "./forms/phoneField/PhoneField";
 import UploadFile from "./forms/uploadFile/UploadFile";
 import CountriesDropdown from "./forms/countriesDropdown/CountriesDropdown";
 import MultiChoices from "./forms/multiChoices/MultiChoices";
+import ColorField from "./forms/inputField/ColorField";
 
 export {
   Header,
@@ -40,4 +41,5 @@ export {
   UploadFile,
   CountriesDropdown,
   MultiChoices,
+  ColorField,
 };

@@ -20,17 +20,24 @@ export const AddEmployeeSchema = z.object({
   employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
   title: z.string().min(1, "برجاء اختيار اللقب"),
   wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
+  work_wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
   default_subject: z.string().min(1, "برجاء اختيار المادة"),
   is_active: z.string().min(1, "برجاء اختيار الحالة"),
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
-  home_phone: z.string().refine((value) => {
-    // This regex only allows digits, spaces, dashes, and a plus sign at the start
-    return /^[+]?[\d\s-]+$/.test(value);
-  }, {
-    message: "برجاء ادخال رقم هاتف صحيح",
-  }).optional(),
+  home_phone: z
+    .string()
+    .refine(
+      (value) => {
+        // This regex only allows digits, spaces, dashes, and a plus sign at the start
+        return /^[+]?[\d\s-]+$/.test(value);
+      },
+      {
+        message: "برجاء ادخال رقم هاتف صحيح",
+      }
+    )
+    .optional(),
   uploaded_pp: z.array(z.instanceof(File)),
   uploaded_cv: z.array(z.instanceof(File)),
   uploaded_id: z.array(z.instanceof(File)),
@@ -46,20 +53,34 @@ export const AddEmployeeSchema = z.object({
   bio: z.string().optional(),
   birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
   hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),
-  national_id_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
-  passport_expiration_date: z.string().min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
+  national_id_expiration_date: z
+    .string()
+    .min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
+  passport_expiration_date: z
+    .string()
+    .min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
   place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
   subject_choices: z.array(z.string()).min(1, "برجاء اختيار مادة"),
   initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
   position: z.string().min(1, "برجاء ادخال المسمى"),
   link: z.string().optional(),
+  employee_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
+  work_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
+  calendar_color: z.string().min(1, "برجاء اختيار لون التقويم"),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
 
-type TKeysToOmit = "default_subject" | "subject_choices" | "is_active" |  "initial_students" ;
+type TKeysToOmit =
+  | "default_subject"
+  | "subject_choices"
+  | "is_active"
+  | "initial_students"
 
-export type TAddEmployeeFormDataForServer = Omit<TAddEmployeeFormData, TKeysToOmit> & {
+export type TAddEmployeeFormDataForServer = Omit<
+  TAddEmployeeFormData,
+  TKeysToOmit
+> & {
   default_subject: number;
   subject_choices: number[];
   initial_students: number[];
