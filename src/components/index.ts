@@ -12,7 +12,8 @@ import Row from "./row/Row";
 import Dropdown from "./forms/dropDown/Dropdown";
 import InputField from "./forms/inputField/InputField";
 import RadioField from "./forms/inputField/RadioField";
-import CheckboxGroup from "./forms/inputField/CheckboxGroup";
+import { CheckboxGroup } from "./forms/inputField/CheckboxGroup";
+import { SingleCheckbox } from "./forms/inputField/CheckboxGroup";
 import PhoneField from "./forms/phoneField/PhoneField";
 import UploadFile from "./forms/uploadFile/UploadFile";
 import CountriesDropdown from "./forms/countriesDropdown/CountriesDropdown";
@@ -34,6 +35,7 @@ export {
   InputField,
   RadioField,
   CheckboxGroup,
+  SingleCheckbox,
   PhoneField,
   UploadFile,
   CountriesDropdown,

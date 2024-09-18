@@ -1,8 +1,8 @@
-import { TCheckboxGroup } from "@/types/InputField";
+import { TCheckboxGroup, TSingleCheckbox } from "@/types/InputField";
 import { FieldValues } from "react-hook-form";
 import "./input.css";
 
-const CheckboxGroup = <T extends FieldValues>({
+export const CheckboxGroup = <T extends FieldValues>({
   register,
   name,
   options,
@@ -34,4 +34,28 @@ const CheckboxGroup = <T extends FieldValues>({
   );
 };
 
-export default CheckboxGroup;
+// -----------------------------------------------------------
+
+export const SingleCheckbox = <T extends FieldValues>({
+  register,
+  name,
+  label,
+  isRequired = false,
+  error,
+  className,
+}: TSingleCheckbox<T>) => {
+  return (
+    <div className={`checkboxOptions ${className}`} >
+      <label className="checkboxItem">
+        <span className="checkmark"></span>
+        <input
+          type="checkbox"
+          {...register(name, { required: isRequired })}
+          className="checkboxInput"
+        />
+        {label}
+      </label>
+      {error && <p className="error">{error}</p>}
+    </div>
+  );
+};

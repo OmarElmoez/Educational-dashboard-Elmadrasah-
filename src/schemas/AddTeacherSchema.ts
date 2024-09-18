@@ -100,6 +100,30 @@ export const AddTeacherSchema = z.object({
     errorMap: () => ({ message: "برجاء اختيار درس التقويم" }),
   }),
   calendar_color: z.string().optional(),
+
+  sms_lesson_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  email_lesson_reminders: z
+    .boolean()
+    .refine((val) => typeof val === "boolean", {
+      message: "برجاء اختيار الحالة",
+    }),
+  whatsapp_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  app_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  web_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  send_welcome_email: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  user_account: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
 });
 
 export type TAddTeacherFormData = z.infer<typeof AddTeacherSchema>;

@@ -9,9 +9,10 @@ const RadioField = <T extends FieldValues>({
   options,
   error,
   isRequired = false,
+  className,
 }: TRadioField<T>) => {
   return (
-    <article>
+    <article className={className}>
       <label className="radioGroupLabel">
         {label} {isRequired && <span className="required-star"> * </span>}
       </label>
