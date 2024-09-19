@@ -42,10 +42,10 @@ export const SingleCheckbox = <T extends FieldValues>({
   label,
   isRequired = false,
   error,
-  className,
+  className ="",
 }: TSingleCheckbox<T>) => {
   return (
-    <div className={`checkboxOptions ${className}`} >
+    <div className={`flex-start ${className}`} >
       <label className="checkboxItem">
         <span className="checkmark"></span>
         <input

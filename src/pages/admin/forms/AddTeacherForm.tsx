@@ -31,7 +31,10 @@ import CloseButton from "@/assets/close-button.svg?react";
 import { WAGE_TYPES } from "@/constants/dropdown-options";
 import { actGetChoices } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
-import CalendarSettingsForm from "@/components/mini-forms/calendarSettingsForm";
+import {
+  CalendarSettingsForm,
+  NotificationForm,
+} from "@/components/mini-forms/";
 // -------------------------------------------------------------------------
 
 const AddTeacherForm = () => {
@@ -577,6 +580,12 @@ const AddTeacherForm = () => {
         calendar_setting="calendar_setting"
         calendar_color="calendar_color"
         calendar_color_by="calendar_color_by"
+        errors={errors}
+        setValue={setValue}
+      />
+
+      <NotificationForm
+        register={register}
         sms_lesson_reminders="sms_lesson_reminders"
         email_lesson_reminders="email_lesson_reminders"
         whatsapp_reminders="whatsapp_reminders"
@@ -585,9 +594,7 @@ const AddTeacherForm = () => {
         send_welcome_email="send_welcome_email"
         user_account="user_account"
         errors={errors}
-        setValue={setValue}
       />
-
       <hr className="hr" />
 
       <div className="flex-end">
@@ -598,21 +605,11 @@ const AddTeacherForm = () => {
         <button
           type="button"
           onClick={() => {
-            reset()
+            reset();
           }}
           className="btn"
         >
           يلغى
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            console.log("error", errors);
-          }}
-          className="btn"
-        >
-          فحص
         </button>
       </div>
     </form>
@@ -620,4 +617,3 @@ const AddTeacherForm = () => {
 };
 
 export default AddTeacherForm;
-

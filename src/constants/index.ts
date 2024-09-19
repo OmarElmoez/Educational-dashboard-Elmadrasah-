@@ -11,6 +11,8 @@ import {
   DaysOptinsForSchema,
   WAGE_TYPES,
   WageTypesForSchema,
+  FAMILY_STATUS,
+  FamilyStatusForSchema,
 } from "./dropdown-options";
 import END_POINTS from "./end-points";
 import { INITIAL_CALENDAR_COLOR } from "./initial-values";
@@ -30,4 +32,6 @@ export {
   WAGE_TYPES,
   WageTypesForSchema,
   INITIAL_CALENDAR_COLOR,
+  FAMILY_STATUS,
+  FamilyStatusForSchema,
 };

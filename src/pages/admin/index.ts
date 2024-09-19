@@ -5,5 +5,6 @@ import AdminReportsPage from "./Reports";
 import AdminStudentsPage from "./Students";
 import AddEmployeeForm from "./forms/AddEmployeeForm";
 import AddTeacherForm from "./forms/AddTeacherForm";
+import AddParentForm from "./forms/AddParentForm";
 
-export { AdminClassesPage, AdminHomePage, AdminTeachersPage, AdminReportsPage, AdminStudentsPage, AddEmployeeForm, AddTeacherForm };
+export { AdminClassesPage, AdminHomePage, AdminTeachersPage, AdminReportsPage, AdminStudentsPage, AddEmployeeForm, AddTeacherForm, AddParentForm };

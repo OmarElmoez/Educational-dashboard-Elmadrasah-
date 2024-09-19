@@ -12,6 +12,7 @@ import ProdectedRoute from "./ProtectedRoute";
 import {
   AddEmployeeForm,
   AddTeacherForm,
+  AddParentForm,
   AdminClassesPage,
   AdminHomePage,
   AdminReportsPage,
@@ -154,7 +155,11 @@ const router = createBrowserRouter([
       {
         path: 'add-teacher',
         element: <AddTeacherForm />,
-      }
+      },
+      {
+        path: 'add-parent',
+        element: <AddParentForm />,
+      },
     ],
   },
 
