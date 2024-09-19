@@ -1,13 +1,12 @@
 import { FieldValues } from "react-hook-form";
 import { TDropdownProps } from "@/types/Dropdown";
-import React, { useRef } from "react";
+import React from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { setChosenState } from "@/store/location/LocationSlice";
 import styles from "./dropDown.module.css";
-import AddNewSubjectModal from "@/components/add-new-subject-model/AddNewSubjectModal";
-import { TModalRef } from "@/types/shared";
 
-const { feedback, action } = styles;
+
+const { feedback } = styles;
 
 const Dropdown = <T extends FieldValues>({
   name,
