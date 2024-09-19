@@ -1,4 +1,5 @@
-import CalendarSettingsForm from "./CalendarSettingsForm";
 import NotificationForm from "./NotificationForm";
+import CalendarSettingsForm from "./CalendarSettingsForm";
 
-export { CalendarSettingsForm, NotificationForm };
+export { NotificationForm, CalendarSettingsForm };
+
