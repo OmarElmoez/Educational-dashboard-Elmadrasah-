@@ -1,13 +1,13 @@
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
-// // Define the time entry schema for each item in the field array
-// const TimeEntrySchema = z.object({
-//   day: z.string().optional(),
-//   start_time: z.string().optional(),
-//   end_time: z.string().optional(),
-//   description: z.string().optional(),
-// });
+// Define the time entry schema for each item in the field array
+const TimeEntrySchema = z.object({
+  day: z.string().optional(),
+  start_time: z.string().optional(),
+  end_time: z.string().optional(),
+  description: z.string().optional(),
+});
 
 export const AddEmployeeSchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
@@ -67,6 +67,36 @@ export const AddEmployeeSchema = z.object({
   employee_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
   work_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
   calendar_color: z.string().min(1, "برجاء اختيار لون التقويم"),
+  calendar_setting: z.enum(["Day", "Month", "Week"], {
+    errorMap: () => ({ message: "برجاء اختيار اعدادات التقويم" }),
+  }),
+  availabilities: z.array(TimeEntrySchema),
+  calendar_color_by: z.enum(["Student", "Website", "Lesson"], {
+    errorMap: () => ({ message: "برجاء اختيار درس التقويم" }),
+  }),
+  sms_lesson_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  email_lesson_reminders: z
+    .boolean()
+    .refine((val) => typeof val === "boolean", {
+      message: "برجاء اختيار الحالة",
+    }),
+  whatsapp_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  app_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  web_reminders: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  send_welcome_email: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
+  user_account: z.boolean().refine((val) => typeof val === "boolean", {
+    message: "برجاء اختيار الحالة",
+  }),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;

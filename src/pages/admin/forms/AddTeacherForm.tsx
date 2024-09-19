@@ -510,7 +510,7 @@ const AddTeacherForm = () => {
                   <CloseButton />
                 </button>
                 <button
-                  className="success-btn mr-1"
+                  className="add-action-btn mr-1"
                   type="button"
                   onClick={handleAdd}
                 >
@@ -520,7 +520,7 @@ const AddTeacherForm = () => {
             ) : (
               <div style={{ alignItems: "center" }}>
                 <button
-                  className="success-btn"
+                  className="add-action-btn"
                   type="button"
                   onClick={handleAdd}
                 >
