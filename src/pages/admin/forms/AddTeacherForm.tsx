@@ -577,9 +577,6 @@ const AddTeacherForm = () => {
 
       <CalendarSettingsForm
         register={register}
-        calendar_setting="calendar_setting"
-        calendar_color="calendar_color"
-        calendar_color_by="calendar_color_by"
         errors={errors}
         setValue={setValue}
       />
