@@ -16,6 +16,7 @@ import profile from "./profile/ProfileSlice";
 import reviewQuestions from "./review-questions/reviewSlice";
 import notifications from "./notifications/NotificationsSlice";
 import location from "./location/LocationSlice";
+import formSubjects from "./form-subjects/FormSubjectsSlice";
 
 // const rootPersistConfig = {
 //   key: 'root',
@@ -60,6 +61,7 @@ const rootReducer = combineReducers({
   reviewQuestions: persistReducer(reviewQuestionsPersistConfig, reviewQuestions),
   notifications,
   location: persistReducer(locationPersistConfig, location),
+  formSubjects,
 })
 
 // const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

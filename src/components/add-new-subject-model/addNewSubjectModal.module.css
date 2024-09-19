@@ -1,0 +1,27 @@
+.modal {
+  margin: auto;
+  border: none;
+  outline: none;
+  width: 500px;
+  padding: 2.4rem;
+  border-radius: 1.6rem;
+  font-family: 'Expo Arabic', sans-serif;
+}
+
+.modal h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding-bottom: 1.8rem;
+  border-bottom: 1px solid #D2DAC9;
+}
+
+.modal form {
+  margin-top: 1.6rem;
+}
+
+.modal_actions {
+  margin-top: 3.2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}

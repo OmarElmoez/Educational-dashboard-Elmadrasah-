@@ -267,16 +267,6 @@ const AddParentForm = () => {
         >
           يلغى
         </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            console.log("error", errors);
-          }}
-          className="btn"
-        >
-          فحص
-        </button>
       </div>
     </form>
   );
