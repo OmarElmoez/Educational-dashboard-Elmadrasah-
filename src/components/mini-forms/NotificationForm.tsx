@@ -30,7 +30,7 @@ const NotificationForm = <T extends FieldValues>({
   errors,
 }: TNotificationFormProps<T>) => {
   return (
-    <div>
+    <>
       <Heading text="إشعارات الدرس" />
       <Row>
         <SingleCheckbox
@@ -72,7 +72,7 @@ const NotificationForm = <T extends FieldValues>({
         />
       </Row>
       <hr className="hr" />
-      <br />
+
       <Heading text="إشعارات الترحيب" />
       <SingleCheckbox
         register={register}
@@ -83,7 +83,6 @@ const NotificationForm = <T extends FieldValues>({
       />
 
       <hr className="hr" />
-      <br />
 
       <Heading text="حساب المستخدم" />
       <div className="flex-start-center">
@@ -99,7 +98,7 @@ const NotificationForm = <T extends FieldValues>({
           الدخول إلى حسابه الشخصي.يلغي
         </span>
       </div>
-    </div>
+    </>
   );
 };
 
