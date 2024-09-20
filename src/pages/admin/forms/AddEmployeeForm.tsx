@@ -36,7 +36,7 @@ import {
   NotificationForm,
 } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
-
+import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
@@ -87,7 +87,7 @@ const AddEmployeeForm = () => {
     data["phone"] = enteredPhoneParts.join("");
 
     // Add region to timezone value
-    data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
+    data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
 
     const serverData: TAddEmployeeFormDataForServer = {
       ...data,
@@ -101,7 +101,19 @@ const AddEmployeeForm = () => {
       is_active: data["is_active"] === "true",
     };
 
-    console.log(serverData);
+    dispatch(
+      actSendDataToServer({
+        token: user?.token,
+        formData: serverData,
+        hasFiles: true,
+        purpose: "add_employee",
+      })
+    )
+      .unwrap()
+      .then(() => {
+        console.log("Employee added successfully");
+      });
+
   };
 
   useEffect(() => {
@@ -202,6 +214,7 @@ const AddEmployeeForm = () => {
         <Row>
           <PhoneField
             control={control as any}
+            name="phone"
             error={errors.phone?.message as string}
             label="الهاتف المحمول"
           />
@@ -262,10 +275,10 @@ const AddEmployeeForm = () => {
 
           <Dropdown
             label="التوقيت الزمني"
-            name="timezone"
+            name="time_zone"
             options={TIMEZONES_OPTIONS}
             register={register}
-            error={errors.timezone?.message as string}
+            error={errors.time_zone?.message as string}
           />
         </Row>
 

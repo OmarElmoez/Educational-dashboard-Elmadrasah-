@@ -206,6 +206,7 @@ const AddTeacherForm = () => {
       <Row>
         <PhoneField
           control={control as any}
+          name="phone"
           error={errors.phone?.message as string}
           isRequired
           label="الهاتف المحمول"

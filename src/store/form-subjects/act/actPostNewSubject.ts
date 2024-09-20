@@ -1,5 +1,6 @@
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 type TNewSubject = {
   name_ar: string;
@@ -24,7 +25,7 @@ const actPostNewSubject = createAsyncThunk(
       const response = await axios.post(url, data, config);
       return response.data;
     } catch (error) {
-      return rejectWithValue(isAxiosError(error));
+      return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );

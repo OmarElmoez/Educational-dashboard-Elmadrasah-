@@ -37,21 +37,21 @@ const NotificationForm = <T extends FieldValues>({
           register={register}
           name={sms_lesson_reminders}
           label="تفعيل تذكيرات الدروس"
-          isRequired={true}
+
           error={errors.sms_lesson_reminders?.message as string}
         />
         <SingleCheckbox
           register={register}
           name={email_lesson_reminders}
           label="تلقي رسائل البريد الإلكتروني الخاصة بملاحظات الدروس"
-          isRequired={true}
+
           error={errors.email_lesson_reminders?.message as string}
         />
         <SingleCheckbox
           register={register}
           name={whatsapp_reminders}
           label="تفعيل إشعارات الواتساب"
-          isRequired={true}
+
           error={errors.whatsapp_reminders?.message as string}
         />
       </Row>
@@ -60,14 +60,14 @@ const NotificationForm = <T extends FieldValues>({
           register={register}
           name={app_reminders}
           label="تفعيل إشعارات التطبيق"
-          isRequired={true}
+
           error={errors.app_reminders?.message as string}
         />
         <SingleCheckbox
           register={register}
           name={web_reminders}
           label="تفعيل اشعارات الويب"
-          isRequired={true}
+
           error={errors.web_reminders?.message as string}
         />
       </Row>
@@ -78,7 +78,6 @@ const NotificationForm = <T extends FieldValues>({
         register={register}
         name={send_welcome_email}
         label="إرسال بريد إلكتروني ترحيبي"
-        isRequired={true}
         error={errors.send_welcome_email?.message as string}
       />
 
@@ -90,7 +89,6 @@ const NotificationForm = <T extends FieldValues>({
           register={register}
           name={user_account}
           label="تمكين حساب المستخدم"
-          isRequired={true}
           error={errors.user_account?.message as string}
         />
         <span className="helper-text">

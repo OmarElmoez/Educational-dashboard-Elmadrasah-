@@ -67,11 +67,11 @@ const DAYS_OPTIONS = [
 const DaysOptinsForSchema = generateValesForSchema(DAYS_OPTIONS);
 
 const FAMILY_STATUS = [
-  { label: "نشط", value: "family" },
-  { label: "غير نشط", value: "" },
+  { label: "نشط", value: 'Active' },
+  { label: "غير نشط", value: "not-active" },
 ];
 
-const FamilyStatusForSchema = generateValesForSchema([{ label: "نشط", value: "family" }]);
+const FamilyStatusForSchema = generateValesForSchema(FAMILY_STATUS);
 
 export {
   EMPLOYEE_TYPES,

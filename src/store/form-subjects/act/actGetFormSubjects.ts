@@ -1,6 +1,7 @@
 import { TSubject } from "@/types/shared";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 const actGetFormSubjects = createAsyncThunk(
   "formSubjects/actGetFormSubjects",
@@ -27,7 +28,7 @@ const actGetFormSubjects = createAsyncThunk(
       return formattedChoices;
 
     } catch (error) {
-      return rejectWithValue(isAxiosError(error));
+      return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );

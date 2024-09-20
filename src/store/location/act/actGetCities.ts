@@ -1,6 +1,7 @@
 import { TCity } from "@/schemas/CitySchema";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 type TResponse = {
   geonames: TCity[];
@@ -20,7 +21,7 @@ const actGetCities = createAsyncThunk(
 
       return response.data.geonames;
     } catch (error) {
-      return rejectWithValue(isAxiosError(error));
+      return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );

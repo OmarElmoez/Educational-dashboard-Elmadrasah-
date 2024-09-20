@@ -1,33 +1,17 @@
-import { EmployeeTitleForSchema, FamilyStatusForSchema } from "@/constants";
+import { EmployeeTitleForSchema } from "@/constants";
 
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
-type TKeysToOmit =
-  | "default_subject"
-  | "subject_choices"
-  | "is_active"
-  | "initial_students";
-
-export type TAddParentFormDataForServer = Omit<
-  TAddParentFormData,
-  TKeysToOmit
-> & {
-  default_subject: number;
-  subject_choices: number[];
-  initial_students: number[];
-  is_active: boolean;
-};
-
 export const AddParentSchema = z.object({
-  // customer_type: z.string().min(1, "برجاء اختيار الحالة"),
-  customer_type: z.enum(FamilyStatusForSchema as [string, ...string[]], {
-    errorMap: () => ({ message: "برجاء اختيار نوع الموظف" }),
-  }),
+  customer_type: z.string().optional(),
+  // customer_type: z.enum(FamilyStatusForSchema as [string, ...string[]], {
+  //   errorMap: () => ({ message: "برجاء اختيار نوع الموظف" }),
+  // }),
   salutation: z.enum(EmployeeTitleForSchema as [string, ...string[]], {
     errorMap: () => ({ message: "برجاء اختيار اللقب" }),
   }),
-
+  status: z.string().min(1, "برجاء اختيار الحالة"),
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
   full_name: z.string().min(1, "برجاء ادخال الاسم الكامل"),
@@ -36,7 +20,7 @@ export const AddParentSchema = z.object({
     .min(1, "برجاء ادخال البريد الإلكتروني")
     .email("برجاء ادخال بريد إلكتروني صحيح"),
 
-  phone: z.string().refine((phoneNumber) => {
+  mobile_phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
 
@@ -65,7 +49,7 @@ export const AddParentSchema = z.object({
   country: z.string().min(1, "برجاء اختيار الدولة"),
   state: z.string().min(1, "برجاء اختيار الولاية/المحافظة"),
   city: z.string().min(1, "برجاء اختيار المدينة"),
-  timezone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
+  time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
   additional_notes: z.string().optional(),
 
@@ -97,3 +81,9 @@ export const AddParentSchema = z.object({
 });
 
 export type TAddParentFormData = z.infer<typeof AddParentSchema>;
+
+// type TKeysToOmit = 'status';
+
+// export type TAddParentFormDataForServer = Omit<TAddParentFormData, TKeysToOmit> & {
+//   status: boolean;
+// };
