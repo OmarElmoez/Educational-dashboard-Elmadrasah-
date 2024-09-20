@@ -45,7 +45,7 @@ export const AddEmployeeSchema = z.object({
   state: z.string().min(1, "برجاء اختيار الولاية/المحافظة"),
   city: z.string().min(1, "برجاء اختيار المدينة"),
   country: z.string().min(1, "برجاء اختيار الدولة"),
-  timezone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
+  time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
   address: z.string().min(1, "برجاء ادخال العنوان").optional(),
   address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),

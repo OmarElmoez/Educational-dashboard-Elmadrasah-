@@ -1,6 +1,7 @@
 import { TState } from "@/schemas/StateSchema";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 type TResponse = {
   data: {
@@ -19,7 +20,7 @@ const actGetStates = createAsyncThunk('location/actGetStates', async ({country}:
     const response = await axios.post<TResponse>(url, data);
     return response.data.data.states;
   } catch (error) {
-    return rejectWithValue(isAxiosError(error));
+    return rejectWithValue(axiosErrorHandler(error));
   }
 })
 

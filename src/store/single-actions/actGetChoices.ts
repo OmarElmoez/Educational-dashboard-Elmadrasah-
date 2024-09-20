@@ -1,6 +1,7 @@
 import { TStudent, TSubject } from "@/types/shared";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 type TSubjectsResponse = TSubject[];
 type TStudentsResponse = TStudent[];
@@ -34,7 +35,7 @@ const actGetChoices = createAsyncThunk(
       const response = await axios.get<TResponse>(endPoint, config);
       return response.data;
     } catch (error) {
-      return rejectWithValue(isAxiosError(error));
+      return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );
