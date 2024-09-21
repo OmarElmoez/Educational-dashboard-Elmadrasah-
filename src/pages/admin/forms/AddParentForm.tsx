@@ -6,23 +6,18 @@ import {
   Row,
 } from "@/components";
 import { InputField } from "@/components";
-import {
-  EMPLOYEE_TITLES,
-  TIMEZONES_OPTIONS,
-} from "@/constants";
+import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import {
-  TAddParentFormData,
-  AddParentSchema,
-} from "@/schemas/AddParentSchema";
+import { TAddParentFormData, AddParentSchema } from "@/schemas/AddParentSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect,  } from "react";
-import {  useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { FAMILY_STATUS,  } from "@/constants/dropdown-options";
-import { NotificationForm,  } from "@/components/mini-forms";
+import { FAMILY_STATUS } from "@/constants/dropdown-options";
+import { NotificationForm } from "@/components/mini-forms";
+import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 // -------------------------------------------------------------------------
 
 const AddParentForm = () => {
@@ -31,6 +26,7 @@ const AddParentForm = () => {
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
 
+  const { user } = useAppSelector((state) => state.auth);
 
   const {
     register,
@@ -42,22 +38,31 @@ const AddParentForm = () => {
   } = useForm<TAddParentFormData>({
     mode: "onBlur",
     resolver: zodResolver(AddParentSchema),
- 
   });
 
   const onSubmit = (data: TAddParentFormData) => {
-    console.log("DATA", data);
+    data['customer_type'] = 'family';
 
-    const enteredPhoneParts = data["phone"].split(" ");
+    const enteredPhoneParts = data["mobile_phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
     if (firstPartOfNumber[0] === "0") {
       firstPartOfNumber = firstPartOfNumber.slice(1);
       enteredPhoneParts[1] = firstPartOfNumber;
     }
-    data["phone"] = enteredPhoneParts.join("");
+    data["mobile_phone"] = enteredPhoneParts.join("");
 
-    // Add region to time_zone value
+    // Add region to timezone value
     data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
+
+    dispatch(
+      actSendDataToServer({
+        token: user?.token,
+        purpose: "add_family",
+        formData: data,
+      })
+    ).unwrap().then(() => {
+      console.log("Parent added successfully");
+    });
   };
 
   useEffect(() => {
@@ -65,7 +70,6 @@ const AddParentForm = () => {
       dispatch(actGetCountries());
     }
   }, [dispatch, countries]);
-
 
   const formattedCities = formatCities(cities, chosenState);
 
@@ -79,10 +83,10 @@ const AddParentForm = () => {
       <Row>
         <Dropdown
           label="الحالة"
-          name="customer_type"
+          name="status"
           register={register}
           options={FAMILY_STATUS}
-          error={errors.customer_type?.message as string}
+          error={errors.status?.message as string}
         />
 
         <Dropdown
@@ -139,7 +143,8 @@ const AddParentForm = () => {
       <Row>
         <PhoneField
           control={control as any}
-          error={errors.phone?.message as string}
+          name="mobile_phone"
+          error={errors.mobile_phone?.message as string}
           isRequired
           label="الهاتف المحمول"
         />
@@ -157,7 +162,7 @@ const AddParentForm = () => {
       <Row>
         <PhoneField
           control={control as any}
-          error={errors.phone?.message as string}
+          error={errors.work_phone?.message as string}
           name="work_phone"
           label="هاتف العمل"
         />
@@ -264,19 +269,9 @@ const AddParentForm = () => {
           onClick={() => {
             reset();
           }}
-          className="btn"
+          className="btn cancel-btn"
         >
           يلغى
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            console.log("error", errors);
-          }}
-          className="btn"
-        >
-          فحص
         </button>
       </div>
     </form>

@@ -1,6 +1,7 @@
 import { TStudent, TSubject } from "@/types/shared";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 type TSubjectsResponse = TSubject[];
 type TStudentsResponse = TStudent[];
@@ -14,13 +15,7 @@ type TProps = {
 
 const actGetChoices = createAsyncThunk(
   "actGetSubjects",
-  async (
-    {
-      token,
-      url,
-    }: TProps,
-    thunkAPI
-  ) => {
+  async ({ token, url }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
@@ -34,7 +29,7 @@ const actGetChoices = createAsyncThunk(
       const response = await axios.get<TResponse>(endPoint, config);
       return response.data;
     } catch (error) {
-      return rejectWithValue(isAxiosError(error));
+      return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );

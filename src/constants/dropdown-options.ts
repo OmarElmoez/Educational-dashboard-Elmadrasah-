@@ -55,7 +55,6 @@ const WAGE_TYPES = [
 const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
 
 const DAYS_OPTIONS = [
-  // { label: "كل الأيام", value: "0" },
   { label: "الأحد ", value: "0" },
   { label: "الأثنين ", value: "1" },
   { label: "الثلاثاء ", value: "2" },
@@ -68,8 +67,8 @@ const DAYS_OPTIONS = [
 const DaysOptinsForSchema = generateValesForSchema(DAYS_OPTIONS);
 
 const FAMILY_STATUS = [
-  { label: "نشط", value: "family" },
-  { label: "غير نشط", value: "" },
+  { label: "نشط", value: 'Active' },
+  { label: "غير نشط", value: "not-active" },
 ];
 
 const FamilyStatusForSchema = generateValesForSchema([
@@ -85,10 +84,6 @@ const StudentStatusForSchema = generateValesForSchema([
   { label: "نشط", value: "Active" },
 ]);
 
-// <option value="Service List Cost">Use Service List Price</option>
-// <option value="Student Cost">Use Student Profile Price</option>
-// <option value="Flat Fee">Charge Flat Fee</option>
-// <option value="Package">Package</option></select>
 const SERVICE_OPTIONS = [
   {
     label: "Use Service List Price",
@@ -96,7 +91,7 @@ const SERVICE_OPTIONS = [
   },
   {
     label: "Use Student Profile Price",
-    value: "Student Cost",
+    value: "Use Student Profile Price",
   },
   {
     label: "Charge Flat Fee",
@@ -107,6 +102,8 @@ const SERVICE_OPTIONS = [
     value: "Package",
   },
 ];
+
+
 
 const ServicesOptionsForSchema = generateValesForSchema(SERVICE_OPTIONS);
 

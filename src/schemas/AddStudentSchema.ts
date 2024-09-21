@@ -86,7 +86,7 @@ export const AddStudentSchema = z.object({
     initial_location: z.string().optional(),
     initial_teachers: z.array(z.string()).optional(),
     calendar_color: z.string().optional(),
-    billing_method: z.enum(["Student Cost", "Other"], {
+    billing_method: z.enum(["Use Student Profile Price"], {
       errorMap: () => ({ message: "برجاء اختيار طريقة الدفع" }),
     }),
     student_cost: z.string().optional(),

@@ -319,7 +319,7 @@ textarea::placeholder,
 }
 
 .hr {
-  border: 1px solid #e4e4e4;
+  border: 1px solid #E4E4E452;
   margin-bottom: 2.4rem;
 }
 
@@ -333,36 +333,33 @@ textarea::placeholder,
 /* ******************** BUTTONS  *********************** */
 
 .btn {
-  width: 10rem;
-  height: 6vh;
-  margin: 1rem;
-  border-radius: 10px;
-  border: 1px solid rgba(28, 138, 68, 1);
-  background-color: #fff;
-  color: rgba(28, 138, 68, 1);
+  font-size: 1.6rem;
+  font-weight: 500;
+  padding-block: 1.5rem;
+  border-radius: 1rem;
+  min-width: 130px;
 }
 
 .submit-btn {
-  background-color: rgba(28, 138, 68, 1);
+  background-color: var(--main-color);
   color: #fff;
 }
 
-
-
-
+.cancel-btn {
+  background-color: #fff;
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
+}
 
 .helper-text {
   font-size: 1rem;
   color: rgba(205, 205, 205, 1);
-
 }
 
-.success-btn {
-  font-family: Expo Arabic;
-  font-size: 12px;
-  font-weight: 400;
-  color: rgba(28, 138, 68, 1);
-
+.add-action-btn {
+  color: var(--main-color);
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
 .m-1 {

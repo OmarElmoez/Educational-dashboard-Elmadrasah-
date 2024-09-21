@@ -1,3 +1,7 @@
+import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
+import { TAddParentFormData } from "@/schemas/AddParentSchema";
+import { TAddStudentFormData } from "@/schemas/AddStudentSchema";
+
 const END_POINTS = {
   subject_choices: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
@@ -20,16 +24,34 @@ const END_POINTS = {
     placeholder: "المعلمون ",
   },
   "students_attributes.student_curriculum": {
-      url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum/?paginate=false",
-      placeholder: " منهج الطالب  ",
-
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum?paginate=false",
+    placeholder: " منهج الطالب  ",
   },
   "students_attributes.initial_location": {
-      url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
-      placeholder: " الموقع الافتراضي",
-
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
+    placeholder: " الموقع الافتراضي",
   },
-  
 };
 
-export default END_POINTS;
+const POST_END_POINTS = {
+  add_employee: {
+    url: "http://127.0.0.1:8000/employee/modify/",
+    dataType: {} as TAddEmployeeFormDataForServer,
+  },
+  add_family: {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/family/",
+    dataType: {} as TAddParentFormData,
+  },
+  add_individual_student: {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/individual/",
+    dataType: {} as TAddStudentFormData,
+  },
+};
+
+type TPurpose = keyof typeof POST_END_POINTS;
+
+type TPostEndPoints = typeof POST_END_POINTS;
+
+export type { TPurpose, TPostEndPoints };
+
+export { END_POINTS, POST_END_POINTS };

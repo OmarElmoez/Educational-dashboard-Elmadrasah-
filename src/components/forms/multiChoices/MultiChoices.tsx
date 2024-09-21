@@ -53,8 +53,6 @@ const MultiChoices = <T extends FieldValues>({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("name", name);
-    
     dispatch(
       actGetChoices({
         token: user?.token,
@@ -64,8 +62,6 @@ const MultiChoices = <T extends FieldValues>({
       .unwrap()
       .then((data) => setData(data));
   }, [dispatch, user?.token, name]);
-
-  
 
   const onClickHandler = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
@@ -103,7 +99,11 @@ const MultiChoices = <T extends FieldValues>({
 
   const renderPreview = () => {
     if (selectedChoices.length === 0) {
-      return <span className="firstOption">{END_POINTS[name as keyof typeof END_POINTS].placeholder}</span>;
+      return (
+        <span className="firstOption">
+          {END_POINTS[name as keyof typeof END_POINTS].placeholder}
+        </span>
+      );
     }
 
     return selectedChoices.map((choice) => (

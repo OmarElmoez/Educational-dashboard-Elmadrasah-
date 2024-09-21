@@ -1,4 +1,6 @@
+import React from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { TModalRef } from "./shared";
 
 type TOption = {
   value: string;
@@ -13,6 +15,7 @@ type TDropdownProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   error: string;
   isRequired?: boolean;
+  subjectRef?: React.RefObject<TModalRef>;
 };
 
 export type { TOption, TDropdownProps };

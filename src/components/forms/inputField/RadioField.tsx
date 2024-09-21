@@ -1,6 +1,7 @@
 import { TRadioField } from "@/types/InputField";
 import { FieldValues } from "react-hook-form";
 import "./input.css"; 
+import Heading from "@/components/heading/Heading";
 
 const RadioField = <T extends FieldValues>({
   register,
@@ -8,25 +9,21 @@ const RadioField = <T extends FieldValues>({
   label,
   options,
   error,
-  isRequired = false,
-  className,
 }: TRadioField<T>) => {
   return (
-    <article className={className}>
-      <label className="radioGroupLabel">
-        {label} {isRequired && <span className="required-star"> * </span>}
-      </label>
+    <article className='group'>
+      <Heading text={label} />
       <div className="radioOptions">
         {options.map((option) => (
           <label key={option.value} className="customRadioLabel">
             <input
               type="radio"
               value={option.value}
-              {...register(name, { required: isRequired })}
+              {...register(name)}
               className="customRadioInput"
             />
             <span className="customRadio"></span>
-            {option.label}
+            <span className="radioLabel">{option.label}</span>
           </label>
         ))}
       </div>

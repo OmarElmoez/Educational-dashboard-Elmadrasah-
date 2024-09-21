@@ -25,14 +25,17 @@ import { NotificationForm } from "@/components/mini-forms";
 import { actGetChoices } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 import { format } from "date-fns";
+import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+
 // -------------------------------------------------------------------------
 
 const AddStudentForm = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-  const { countries, cities, states, chosenState, chosenRegion } =
-    useAppSelector((state) => state.location);
+  const { countries, cities, states, chosenState } = useAppSelector(
+    (state) => state.location
+  );
 
   const [locationOptions, setLocationOptions] = useState<TOption[]>([]);
 
@@ -49,8 +52,6 @@ const AddStudentForm = () => {
   });
 
   const onSubmit = (data: TAddStudentFormData) => {
-    console.log("DATA", data);
-
     const enteredPhoneParts = data["mobile_phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
     if (firstPartOfNumber[0] === "0") {
@@ -58,9 +59,6 @@ const AddStudentForm = () => {
       enteredPhoneParts[1] = firstPartOfNumber;
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
-
-    // Add region to time_zone value
-    // data["time_zone"] = `${data["time_zone"]}`;
 
     data.students_attributes.birth_date = format(
       data.students_attributes.birth_date || "",
@@ -70,7 +68,6 @@ const AddStudentForm = () => {
       data.students_attributes.start_date || "",
       "yyyy-MM-dd"
     );
-    // data.students_attributes = "individual";
 
     data.students_attributes.first_name = data.first_name;
     data.students_attributes.last_name = data.last_name;
@@ -82,8 +79,17 @@ const AddStudentForm = () => {
       customer_type: "individual",
     };
 
-
-    console.log("serverData", serverData);
+    dispatch(
+      actSendDataToServer({
+        token: user?.token,
+        purpose: "add_individual_student",
+        formData: serverData,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        console.log("Parent added successfully");
+      });
   };
 
   useEffect(() => {
@@ -109,7 +115,7 @@ const AddStudentForm = () => {
         });
         setLocationOptions(formattedChoices);
       });
-  }, []);
+  }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
 
@@ -429,16 +435,6 @@ const AddStudentForm = () => {
           className="btn"
         >
           يلغى
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            console.log("error", errors);
-          }}
-          className="btn"
-        >
-          فحص
         </button>
       </div>
     </form>

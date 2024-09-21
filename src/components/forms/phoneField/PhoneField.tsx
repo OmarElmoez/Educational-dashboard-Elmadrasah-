@@ -3,13 +3,13 @@ import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
 const PhoneField = <T extends FieldValues>({
   control,
-  name = "phone" as Path<T>,
+  name,
   error,
   label,
   isRequired
 }: {
   control: Control<T>;
-  name?: Path<T>;
+  name: Path<T>;
   error?: string;
   label?: string;
   isRequired?: boolean;
