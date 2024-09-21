@@ -1,6 +1,5 @@
 import {
   AddNewSubjectModal,
-  ColorField,
   CountriesDropdown,
   Dropdown,
   Heading,
