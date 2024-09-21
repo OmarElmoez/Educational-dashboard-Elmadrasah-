@@ -1,32 +1,43 @@
 import {
+  ColorField,
   CountriesDropdown,
   Dropdown,
   Heading,
+  MultiChoices,
   PhoneField,
   Row,
 } from "@/components";
 import { InputField } from "@/components";
-import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
+import { EMPLOYEE_TITLES, END_POINTS, TIMEZONES_OPTIONS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import { TAddParentFormData, AddParentSchema } from "@/schemas/AddParentSchema";
+import {
+  AddStudentSchema,
+  TAddStudentFormData,
+} from "@/schemas/AddStudentSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { FAMILY_STATUS } from "@/constants/dropdown-options";
+import { SERVICE_OPTIONS, STUDENT_STATUS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
+import { actGetChoices } from "@/store/single-actions";
+import { TOption } from "@/types/Dropdown";
+import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+
 // -------------------------------------------------------------------------
 
-const AddParentForm = () => {
+const AddStudentForm = () => {
   const dispatch = useAppDispatch();
-
-  const { countries, cities, states, chosenState, chosenRegion } =
-    useAppSelector((state) => state.location);
-
   const { user } = useAppSelector((state) => state.auth);
+
+  const { countries, cities, states, chosenState } = useAppSelector(
+    (state) => state.location
+  );
+
+  const [locationOptions, setLocationOptions] = useState<TOption[]>([]);
 
   const {
     register,
@@ -35,14 +46,12 @@ const AddParentForm = () => {
     formState: { errors },
     setValue,
     reset,
-  } = useForm<TAddParentFormData>({
+  } = useForm<TAddStudentFormData>({
     mode: "onBlur",
-    resolver: zodResolver(AddParentSchema),
+    resolver: zodResolver(AddStudentSchema),
   });
 
-  const onSubmit = (data: TAddParentFormData) => {
-    data['customer_type'] = 'family';
-
+  const onSubmit = (data: TAddStudentFormData) => {
     const enteredPhoneParts = data["mobile_phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
     if (firstPartOfNumber[0] === "0") {
@@ -51,18 +60,36 @@ const AddParentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
-    // Add region to timezone value
-    data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
+    data.students_attributes.birth_date = format(
+      data.students_attributes.birth_date || "",
+      "yyyy-MM-dd"
+    );
+    data.students_attributes.start_date = format(
+      data.students_attributes.start_date || "",
+      "yyyy-MM-dd"
+    );
+
+    data.students_attributes.first_name = data.first_name;
+    data.students_attributes.last_name = data.last_name;
+    data.students_attributes.email = data.email;
+    data.students_attributes.mobile_phone = data.mobile_phone;
+
+    const serverData = {
+      ...data,
+      customer_type: "individual",
+    };
 
     dispatch(
       actSendDataToServer({
         token: user?.token,
-        purpose: "add_family",
-        formData: data,
+        purpose: "add_individual_student",
+        formData: serverData,
       })
-    ).unwrap().then(() => {
-      console.log("Parent added successfully");
-    });
+    )
+      .unwrap()
+      .then(() => {
+        console.log("Parent added successfully");
+      });
   };
 
   useEffect(() => {
@@ -71,13 +98,32 @@ const AddParentForm = () => {
     }
   }, [dispatch, countries]);
 
+  useEffect(() => {
+    dispatch(
+      actGetChoices({
+        token: user?.token,
+        url: END_POINTS["students_attributes.initial_location"].url,
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        const formattedChoices = res.map((location) => {
+          return {
+            label: location.name,
+            value: location.id.toString(),
+          };
+        });
+        setLocationOptions(formattedChoices);
+      });
+  }, [dispatch, user?.token]);
+
   const formattedCities = formatCities(cities, chosenState);
 
   const formattedStates = formatStates(states);
 
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="إضافة عائلة جديدة" />
+      <Heading text="إضافة طالب جديد مستقل" />
       <Heading text="معلومات الاتصال" />
 
       <Row>
@@ -85,7 +131,7 @@ const AddParentForm = () => {
           label="الحالة"
           name="status"
           register={register}
-          options={FAMILY_STATUS}
+          options={STUDENT_STATUS}
           error={errors.status?.message as string}
         />
 
@@ -138,12 +184,21 @@ const AddParentForm = () => {
           name="email"
           error={errors.email?.message as string}
         />
+
+        <InputField
+          label="البريد الإلكتروني أخر"
+          isRequired
+          placeholder="البريد الإلكتروني أخر"
+          register={register}
+          name="additional_email"
+          error={errors.additional_email?.message as string}
+        />
       </Row>
 
       <Row>
         <PhoneField
-          control={control as any}
           name="mobile_phone"
+          control={control as any}
           error={errors.mobile_phone?.message as string}
           isRequired
           label="الهاتف المحمول"
@@ -184,16 +239,16 @@ const AddParentForm = () => {
           name="address_2"
           error={errors.address_2?.message as string}
         />
-      </Row>
 
-      <Row>
         <CountriesDropdown
           name="country"
           register={register}
           setValue={setValue}
           error={errors.country?.message as string}
         />
+      </Row>
 
+      <Row>
         <Dropdown
           label="الولاية/المحافظة"
           name="state"
@@ -201,9 +256,7 @@ const AddParentForm = () => {
           options={formattedStates}
           error={errors.state?.message as string}
         />
-      </Row>
 
-      <Row>
         <Dropdown
           label="المدينة"
           name="city"
@@ -211,17 +264,7 @@ const AddParentForm = () => {
           options={formattedCities}
           error={errors.city?.message as string}
         />
-
-        <Dropdown
-          label="التوقيت الزمني"
-          isRequired
-          name="time_zone"
-          options={TIMEZONES_OPTIONS}
-          register={register}
-          error={errors.time_zone?.message as string}
-        />
       </Row>
-
 
       <Row>
         <InputField
@@ -231,8 +274,73 @@ const AddParentForm = () => {
           name="zip"
           error={errors.zip?.message as string}
         />
+        <Dropdown
+          label="التوقيت الزمني"
+          isRequired
+          name="time_zone"
+          options={TIMEZONES_OPTIONS}
+          register={register}
+          error={errors.time_zone?.message as string}
+        />
+      </Row>
+      <hr className="hr" />
+      <Heading text="تفاصيل الطالب " />
 
-        {/* ***************************** اضافة جهات اتصال ************************** */}
+      <Row>
+        <InputField
+          type="date"
+          label="تاريخ الميلاد "
+          placeholder=" يوم / شهر / سنه"
+          register={register}
+          name="students_attributes.birth_date"
+          error={errors.students_attributes?.birth_date?.message as string}
+        />
+
+        <InputField
+          type="date"
+          label="تاريخ البدء"
+          placeholder="يوم / شهر / سنه"
+          register={register}
+          name="students_attributes.start_date"
+          error={errors.students_attributes?.start_date?.message as string}
+        />
+      </Row>
+
+      <Row>
+        <InputField
+          label="المدرسة "
+          placeholder=" المدرسة"
+          register={register}
+          name="students_attributes.school"
+          error={errors.students_attributes?.school?.message as string}
+        />
+
+        <InputField
+          label="الصف/السنة"
+          placeholder="الصف/السنة"
+          register={register}
+          name="students_attributes.grade"
+          error={errors.students_attributes?.grade?.message as string}
+        />
+      </Row>
+
+      <Row>
+        <MultiChoices
+          register={register}
+          name="students_attributes.student_curriculum"
+          error={
+            errors.students_attributes?.student_curriculum?.message as string
+          }
+        />
+
+        <MultiChoices
+          register={register}
+          name="students_attributes.subject_choices"
+          error={errors.students_attributes?.subject_choices?.message as string}
+        />
+      </Row>
+
+      <Row>
         <InputField
           label="معلومات إضافية"
           placeholder="اكتب معلوماتك الإضافية"
@@ -243,7 +351,62 @@ const AddParentForm = () => {
         />
       </Row>
 
+      <Row>
+        <MultiChoices
+          register={register}
+          name="students_attributes.initial_services"
+          error={
+            errors.students_attributes?.initial_services?.message as string
+          }
+        />
+
+        <Dropdown
+          label=" الموقع الافتراضي"
+          register={register}
+          options={locationOptions}
+          name="students_attributes.initial_location"
+          error={
+            errors.students_attributes?.initial_location?.message as string
+          }
+        />
+      </Row>
+
+      <Row>
+        <MultiChoices
+          register={register}
+          name="students_attributes.initial_teachers"
+          error={
+            errors.students_attributes?.initial_teachers?.message as string
+          }
+        />
+
+        <ColorField
+          label="لون التقويم"
+          register={register}
+          setValue={setValue}
+          name="students_attributes.calendar_color"
+          error={errors.students_attributes?.calendar_color?.message as string}
+        />
+      </Row>
       <hr className="hr" />
+      <Heading text=" تفاصيل الفاتورة" />
+      <Row>
+        <Dropdown
+          label="طريقة الدفع"
+          name="students_attributes.billing_method"
+          register={register}
+          options={SERVICE_OPTIONS}
+          error={errors.students_attributes?.billing_method?.message as string}
+        />
+
+        <InputField
+          label=" خصم الطالب %"
+          placeholder="اكتب الخصم"
+          register={register}
+          name="students_attributes.student_cost"
+          error={errors.students_attributes?.student_cost?.message as string}
+        />
+      </Row>
 
       <NotificationForm
         register={register}
@@ -269,7 +432,7 @@ const AddParentForm = () => {
           onClick={() => {
             reset();
           }}
-          className="btn cancel-btn"
+          className="btn"
         >
           يلغى
         </button>
@@ -278,4 +441,4 @@ const AddParentForm = () => {
   );
 };
 
-export default AddParentForm;
+export default AddStudentForm;

@@ -13,6 +13,7 @@ import {
   AddEmployeeForm,
   AddTeacherForm,
   AddParentForm,
+  AddStudentForm,
   AdminClassesPage,
   AdminHomePage,
   AdminReportsPage,
@@ -159,6 +160,10 @@ const router = createBrowserRouter([
       {
         path: 'add-parent',
         element: <AddParentForm />,
+      },
+      {
+        path: 'add-student',
+        element: <AddStudentForm />,
       },
     ],
   },

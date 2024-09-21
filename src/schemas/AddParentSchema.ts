@@ -77,7 +77,6 @@ export const AddParentSchema = z.object({
   user_account: z.boolean().refine((val) => typeof val === "boolean", {
     message: "برجاء اختيار الحالة",
   }),
-
 });
 
 export type TAddParentFormData = z.infer<typeof AddParentSchema>;

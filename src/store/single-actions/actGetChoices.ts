@@ -15,13 +15,7 @@ type TProps = {
 
 const actGetChoices = createAsyncThunk(
   "actGetSubjects",
-  async (
-    {
-      token,
-      url,
-    }: TProps,
-    thunkAPI
-  ) => {
+  async ({ token, url }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {

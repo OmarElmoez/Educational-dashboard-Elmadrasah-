@@ -16,6 +16,7 @@ const EMPLOYEE_STATUS = [
 
 const EmployeeStatusForSchema = generateValesForSchema(EMPLOYEE_STATUS);
 
+// ********************** SHOULD BE Miss/  *****************************
 const EMPLOYEE_TITLES = [
   {
     label: "Mr",
@@ -54,7 +55,6 @@ const WAGE_TYPES = [
 const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
 
 const DAYS_OPTIONS = [
-  // { label: "كل الأيام", value: "0" },
   { label: "الأحد ", value: "0" },
   { label: "الأثنين ", value: "1" },
   { label: "الثلاثاء ", value: "2" },
@@ -71,7 +71,41 @@ const FAMILY_STATUS = [
   { label: "غير نشط", value: "not-active" },
 ];
 
-const FamilyStatusForSchema = generateValesForSchema(FAMILY_STATUS);
+const FamilyStatusForSchema = generateValesForSchema([
+  { label: "نشط", value: "family" },
+]);
+
+const STUDENT_STATUS = [
+  { label: "نشط", value: "Active" },
+  { label: "غير نشط", value: "" },
+];
+
+const StudentStatusForSchema = generateValesForSchema([
+  { label: "نشط", value: "Active" },
+]);
+
+const SERVICE_OPTIONS = [
+  {
+    label: "Use Service List Price",
+    value: "Service List Cost",
+  },
+  {
+    label: "Use Student Profile Price",
+    value: "Use Student Profile Price",
+  },
+  {
+    label: "Charge Flat Fee",
+    value: "Flat Fee",
+  },
+  {
+    label: "Package",
+    value: "Package",
+  },
+];
+
+
+
+const ServicesOptionsForSchema = generateValesForSchema(SERVICE_OPTIONS);
 
 export {
   EMPLOYEE_TYPES,
@@ -86,4 +120,8 @@ export {
   DaysOptinsForSchema,
   FAMILY_STATUS,
   FamilyStatusForSchema,
+  STUDENT_STATUS,
+  StudentStatusForSchema,
+  SERVICE_OPTIONS,
+  ServicesOptionsForSchema,
 };
