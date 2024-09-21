@@ -68,8 +68,19 @@ const Calendar = () => {
       info: { start: Date; end: Date },
       successCallback: (events: TEvent[]) => void
     ) => {
-      const startStr = info.start.toISOString().split("T")[0];
-      const endStr = info.end.toISOString().split("T")[0];
+      // To make them in this format: 02-05-2024
+      const startStr = info.start
+        .toISOString()
+        .split("T")[0]
+        .split("-")
+        .reverse()
+        .join("-");
+      const endStr = info.end
+        .toISOString()
+        .split("T")[0]
+        .split("-")
+        .reverse()
+        .join("-");
 
       const events = calendar_lessons.map((event) => ({
         id: event.id.toString(),
@@ -99,7 +110,7 @@ const Calendar = () => {
               start_date: startStr,
               end_date: endStr,
             })
-          )
+          );
         } catch (error) {
           console.error("Error fetching events:", error);
         }
@@ -117,7 +128,7 @@ const Calendar = () => {
     // if you add calendar_lessons in dependencies array, it will get into an infinite loop
     // eslint-disable-next-line
     [dispatch, user?.token, setCurrentEvents]
-  )
+  );
 
   return (
     <div className="calendar_container">

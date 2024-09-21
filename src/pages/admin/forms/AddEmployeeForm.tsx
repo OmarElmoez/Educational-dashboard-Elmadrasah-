@@ -11,9 +11,10 @@ import {
 } from "@/components";
 import { InputField } from "@/components";
 import {
-  EMPLOYEE_STATUS,
+  STATUS_OPTIONS,
   EMPLOYEE_TITLES,
   EMPLOYEE_TYPES,
+  INITIAL_CALENDAR_COLOR,
   TIMEZONES_OPTIONS,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -61,6 +62,7 @@ const AddEmployeeForm = () => {
       availabilities: [
         { day: "", start_time: "", end_time: "", description: "" },
       ], // Start with one entry
+      calendar_color: INITIAL_CALENDAR_COLOR,
     },
   });
 
@@ -77,6 +79,7 @@ const AddEmployeeForm = () => {
   };
 
   const onSubmit = (data: TAddEmployeeFormData) => {
+    console.log(data['subject_choices']);
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -92,14 +95,13 @@ const AddEmployeeForm = () => {
     const serverData: TAddEmployeeFormDataForServer = {
       ...data,
       default_subject: parseInt(data["default_subject"]),
-      subject_choices: data["subject_choices"]?.map((subject) => {
-        return parseInt(subject);
-      }),
-      initial_students: data["initial_students"]?.map((student) => {
-        return parseInt(student);
-      }),
+      subject_choices: data["subject_choices"].map((subject) => parseInt(subject)),
+      initial_students: data["initial_students"].map((student) => parseInt(student)),
       is_active: data["is_active"] === "true",
     };
+
+    console.log(serverData["subject_choices"]);
+    console.log(serverData);
 
     dispatch(
       actSendDataToServer({
@@ -115,7 +117,6 @@ const AddEmployeeForm = () => {
       });
 
   };
-
   useEffect(() => {
     if (countries.length === 0) {
       dispatch(actGetCountries());
@@ -138,16 +139,6 @@ const AddEmployeeForm = () => {
         <Heading text="نوع الموظف" />
 
         <Row>
-          <ColorField
-            label="لون التقويم"
-            register={register}
-            setValue={setValue}
-            name="calendar_color"
-            error={errors.calendar_color?.message as string}
-          />
-        </Row>
-
-        <Row>
           <Dropdown
             label="اختار نوع الموظف"
             name="employee_type"
@@ -160,7 +151,7 @@ const AddEmployeeForm = () => {
             label="الحالة"
             name="is_active"
             register={register}
-            options={EMPLOYEE_STATUS}
+            options={STATUS_OPTIONS}
             error={errors.is_active?.message as string}
           />
         </Row>
@@ -629,6 +620,7 @@ const AddEmployeeForm = () => {
         <button type="submit" className="btn submit-btn">
           حفظ
         </button>
+        <button type="button" className="btn cancel-btn" onClick={() => console.log(errors)}>check</button>
       </form>
     </>
   );

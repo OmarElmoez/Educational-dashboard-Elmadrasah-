@@ -35,7 +35,7 @@ const END_POINTS = {
 
 const POST_END_POINTS = {
   add_employee: {
-    url: "http://127.0.0.1:8000/employee/modify/",
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/modify/",
     dataType: {} as TAddEmployeeFormDataForServer,
   },
   add_family: {

@@ -9,12 +9,12 @@ const EMPLOYEE_TYPES = [
 
 const EmployeeTypesForSchema = generateValesForSchema(EMPLOYEE_TYPES);
 
-const EMPLOYEE_STATUS = [
+const STATUS_OPTIONS = [
   { label: "نشط", value: "true" },
   { label: "غير نشط", value: "false" },
 ];
 
-const EmployeeStatusForSchema = generateValesForSchema(EMPLOYEE_STATUS);
+const StatusOptionsForSchema = generateValesForSchema(STATUS_OPTIONS);
 
 // ********************** SHOULD BE Miss/  *****************************
 const EMPLOYEE_TITLES = [
@@ -41,17 +41,6 @@ const WAGE_TYPES = [
   },
 ];
 
-// const WORK_WAGE_TYPES = [
-//   {
-//     label: "استخدام قائمة العمل",
-//     value: "work",
-//   },
-//   {
-//     label: "تعيين الاجر علي الملف الشخصي",
-//     value: "wage",
-//   },
-// ];
-
 const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
 
 const DAYS_OPTIONS = [
@@ -66,23 +55,23 @@ const DAYS_OPTIONS = [
 
 const DaysOptinsForSchema = generateValesForSchema(DAYS_OPTIONS);
 
-const FAMILY_STATUS = [
-  { label: "نشط", value: 'Active' },
-  { label: "غير نشط", value: "not-active" },
-];
+// const FAMILY_STATUS = [
+//   { label: "نشط", value: 'Active' },
+//   { label: "غير نشط", value: "not-active" },
+// ];
 
-const FamilyStatusForSchema = generateValesForSchema([
-  { label: "نشط", value: "family" },
-]);
+// const FamilyStatusForSchema = generateValesForSchema([
+//   { label: "نشط", value: "family" },
+// ]);
 
-const STUDENT_STATUS = [
-  { label: "نشط", value: "Active" },
-  { label: "غير نشط", value: "" },
-];
+// const STUDENT_STATUS = [
+//   { label: "نشط", value: "Active" },
+//   { label: "غير نشط", value: "" },
+// ];
 
-const StudentStatusForSchema = generateValesForSchema([
-  { label: "نشط", value: "Active" },
-]);
+// const StudentStatusForSchema = generateValesForSchema([
+//   { label: "نشط", value: "Active" },
+// ]);
 
 const SERVICE_OPTIONS = [
   {
@@ -110,18 +99,14 @@ const ServicesOptionsForSchema = generateValesForSchema(SERVICE_OPTIONS);
 export {
   EMPLOYEE_TYPES,
   EmployeeTypesForSchema,
-  EMPLOYEE_STATUS,
-  EmployeeStatusForSchema,
+  STATUS_OPTIONS,
+  StatusOptionsForSchema,
   EMPLOYEE_TITLES,
   EmployeeTitleForSchema,
   WAGE_TYPES,
   WageTypesForSchema,
   DAYS_OPTIONS,
   DaysOptinsForSchema,
-  FAMILY_STATUS,
-  FamilyStatusForSchema,
-  STUDENT_STATUS,
-  StudentStatusForSchema,
   SERVICE_OPTIONS,
   ServicesOptionsForSchema,
 };
