@@ -78,6 +78,8 @@ const MultiChoices = <T extends FieldValues>({
         setSelectedChoices([...selectedChoices, Number(value)]);
       }
 
+      console.log(value);
+
       setLoadingProgress(0);
       intervalRef.current = window.setInterval(() => {
         setLoadingProgress((prev) => {

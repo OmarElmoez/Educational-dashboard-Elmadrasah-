@@ -5,9 +5,6 @@ import { z } from "zod";
 
 export const AddParentSchema = z.object({
   customer_type: z.string().optional(),
-  // customer_type: z.enum(FamilyStatusForSchema as [string, ...string[]], {
-  //   errorMap: () => ({ message: "برجاء اختيار نوع الموظف" }),
-  // }),
   salutation: z.enum(EmployeeTitleForSchema as [string, ...string[]], {
     errorMap: () => ({ message: "برجاء اختيار اللقب" }),
   }),
@@ -61,22 +58,11 @@ export const AddParentSchema = z.object({
     .refine((val) => typeof val === "boolean", {
       message: "برجاء اختيار الحالة",
     }),
-  whatsapp_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  app_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  web_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-
-  send_welcome_email: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  user_account: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
+  whatsapp_reminders: z.boolean().optional(),
+  app_reminders: z.boolean().optional(),
+  web_reminders: z.boolean().optional(),
+  send_welcome_email: z.boolean().optional(),
+  user_account: z.boolean().optional(),
 });
 
 export type TAddParentFormData = z.infer<typeof AddParentSchema>;

@@ -1,9 +1,9 @@
-import { EmployeeTitleForSchema, StudentStatusForSchema } from "@/constants";
+import { EmployeeTitleForSchema, StatusOptionsForSchema } from "@/constants";
 
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
-type TKeysToOmit = "default_subject" | "subject_choices";
+type TKeysToOmit = "subject_choices";
 
 export type TAddStudentFormDataForServer = Omit<
   TAddStudentFormData,
@@ -14,7 +14,6 @@ export type TAddStudentFormDataForServer = Omit<
     last_name?: string;
     email?: string;
     mobile_phone?: string;
-
     birth_date?: string | null;
     start_date: string;
     school?: string | null;
@@ -32,7 +31,7 @@ export type TAddStudentFormDataForServer = Omit<
 };
 
 export const AddStudentSchema = z.object({
-  status: z.enum(StudentStatusForSchema as [string, ...string[]], {
+  status: z.enum(StatusOptionsForSchema as [string, ...string[]], {
     errorMap: () => ({ message: "برجاء اختيار الحالة نشط" }),
   }),
   salutation: z.enum(EmployeeTitleForSchema as [string, ...string[]], {

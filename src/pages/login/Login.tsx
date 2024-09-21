@@ -55,8 +55,8 @@ const Login = () => {
           dispatch(
             actGetLessonsByRange({
               token: data.user.token,
-              start_date: format(startDate, "yyyy-MM-dd"),
-              end_date: format(endDate, "yyyy-MM-dd"),
+              start_date: format(startDate, "dd-MM-yyyy"),
+              end_date: format(endDate, "dd-MM-yyyy"),
             })
           );
           if (fcmToken) {
