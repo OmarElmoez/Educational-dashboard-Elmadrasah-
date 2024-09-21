@@ -76,6 +76,11 @@ const SIDEBAR_DATA = {
       icon: <AddIcon />,
     },
     {
+      title: "إضافة طالب الى عائلة",
+      path: "add-family-student",
+      icon: <AddIcon />,
+    },
+    {
       title: "إضافة طالب",
       path: "add-student",
       icon: <AddIcon />,

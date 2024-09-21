@@ -19,6 +19,7 @@ import {
   AdminReportsPage,
   AdminStudentsPage,
   AdminTeachersPage,
+  AddStudentToFamilyForm,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -164,6 +165,10 @@ const router = createBrowserRouter([
       {
         path: 'add-student',
         element: <AddStudentForm />,
+      },
+      {
+        path: 'add-family-student',
+        element: <AddStudentToFamilyForm />,
       },
     ],
   },

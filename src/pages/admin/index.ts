@@ -7,6 +7,7 @@ import AddEmployeeForm from "./forms/AddEmployeeForm";
 import AddTeacherForm from "./forms/AddTeacherForm";
 import AddParentForm from "./forms/AddParentForm";
 import AddStudentForm from "./forms/AddStudentForm";
+import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
 
 export {
   AdminClassesPage,
@@ -18,4 +19,5 @@ export {
   AddTeacherForm,
   AddParentForm,
   AddStudentForm,
+  AddStudentToFamilyForm,
 };

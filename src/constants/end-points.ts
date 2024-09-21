@@ -1,19 +1,20 @@
 import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
 import { TAddParentFormData } from "@/schemas/AddParentSchema";
 import { TAddStudentFormData } from "@/schemas/AddStudentSchema";
+import { TAddStudentToFamilyFormData } from "@/schemas/AddStudentToFamilySchema";
 
 const END_POINTS = {
   subject_choices: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
     placeholder: "المواد",
   },
-  "students_attributes.subject_choices": {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
-    placeholder: "المواد",
-  },
   initial_students: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/student/",
     placeholder: "الطلاب",
+  },
+  "students_attributes.subject_choices": {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
+    placeholder: "المواد",
   },
   "students_attributes.initial_services": {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/service/?paginate=false",
@@ -45,6 +46,10 @@ const POST_END_POINTS = {
   add_individual_student: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/individual/",
     dataType: {} as TAddStudentFormData,
+  },
+  add_family_student: {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/family-student/",
+    dataType: {} as TAddStudentToFamilyFormData,
   },
 };
 
