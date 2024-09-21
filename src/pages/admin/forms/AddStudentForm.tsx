@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { SERVICE_OPTIONS, STUDENT_STATUS } from "@/constants/dropdown-options";
+import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
 import { actGetChoices } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
@@ -131,7 +131,7 @@ const AddStudentForm = () => {
           label="الحالة"
           name="status"
           register={register}
-          options={STUDENT_STATUS}
+          options={STATUS_OPTIONS}
           error={errors.status?.message as string}
         />
 

@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { FAMILY_STATUS } from "@/constants/dropdown-options";
+import { STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 // -------------------------------------------------------------------------
@@ -85,7 +85,7 @@ const AddParentForm = () => {
           label="الحالة"
           name="status"
           register={register}
-          options={FAMILY_STATUS}
+          options={STATUS_OPTIONS}
           error={errors.status?.message as string}
         />
 

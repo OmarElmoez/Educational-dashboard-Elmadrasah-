@@ -82,21 +82,11 @@ export const AddEmployeeSchema = z.object({
     .refine((val) => typeof val === "boolean", {
       message: "برجاء اختيار الحالة",
     }),
-  whatsapp_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  app_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  web_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  send_welcome_email: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  user_account: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
+    whatsapp_reminders: z.boolean().optional(),
+    app_reminders: z.boolean().optional(),
+    web_reminders: z.boolean().optional(),
+    send_welcome_email: z.boolean().optional(),
+    user_account: z.boolean().optional(),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
@@ -112,7 +102,7 @@ export type TAddEmployeeFormDataForServer = Omit<
   TKeysToOmit
 > & {
   default_subject: number;
-  subject_choices: number[];
+  subject_choices: Array<number>;
   initial_students: number[];
   is_active: boolean;
 };

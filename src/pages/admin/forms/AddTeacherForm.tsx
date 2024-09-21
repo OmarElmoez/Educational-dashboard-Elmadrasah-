@@ -9,7 +9,7 @@ import {
 } from "@/components";
 import { InputField } from "@/components";
 import {
-  EMPLOYEE_STATUS,
+  STATUS_OPTIONS,
   EMPLOYEE_TITLES,
   TIMEZONES_OPTIONS,
   DAYS_OPTIONS,
@@ -148,7 +148,7 @@ const AddTeacherForm = () => {
           label="الحالة"
           name="is_active"
           register={register}
-          options={EMPLOYEE_STATUS}
+          options={STATUS_OPTIONS}
           error={errors.is_active?.message as string}
         />
       </Row>

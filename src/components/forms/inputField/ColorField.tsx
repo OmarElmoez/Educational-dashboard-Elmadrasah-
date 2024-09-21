@@ -38,6 +38,7 @@ const ColorField = <T extends FieldValues>({
           {...register(name)}
           style={{ visibility: "hidden" }}
           className={colorInput}
+          value={selectedColor}
           ref={inputColorRef}
           onChange={(e) => {
             setValue(name, e.target.value);
