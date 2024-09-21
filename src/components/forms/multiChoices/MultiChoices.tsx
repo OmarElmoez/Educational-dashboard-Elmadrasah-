@@ -53,6 +53,8 @@ const MultiChoices = <T extends FieldValues>({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log("name", name);
+    
     dispatch(
       actGetChoices({
         token: user?.token,

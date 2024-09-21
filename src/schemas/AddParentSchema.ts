@@ -22,7 +22,7 @@ export type TAddParentFormDataForServer = Omit<
 export const AddParentSchema = z.object({
   // customer_type: z.string().min(1, "برجاء اختيار الحالة"),
   customer_type: z.enum(FamilyStatusForSchema as [string, ...string[]], {
-    errorMap: () => ({ message: "برجاء اختيار نوع الموظف" }),
+    errorMap: () => ({ message: "برجاء اختيار  الحالة" }),
   }),
   salutation: z.enum(EmployeeTitleForSchema as [string, ...string[]], {
     errorMap: () => ({ message: "برجاء اختيار اللقب" }),
@@ -65,7 +65,7 @@ export const AddParentSchema = z.object({
   country: z.string().min(1, "برجاء اختيار الدولة"),
   state: z.string().min(1, "برجاء اختيار الولاية/المحافظة"),
   city: z.string().min(1, "برجاء اختيار المدينة"),
-  timezone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
+  time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
   additional_notes: z.string().optional(),
 
@@ -93,7 +93,6 @@ export const AddParentSchema = z.object({
   user_account: z.boolean().refine((val) => typeof val === "boolean", {
     message: "برجاء اختيار الحالة",
   }),
-
 });
 
 export type TAddParentFormData = z.infer<typeof AddParentSchema>;

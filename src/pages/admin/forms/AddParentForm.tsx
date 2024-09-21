@@ -56,8 +56,8 @@ const AddParentForm = () => {
     }
     data["phone"] = enteredPhoneParts.join("");
 
-    // Add region to timezone value
-    data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
+    // Add region to time_zone value
+    data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
   };
 
   useEffect(() => {
@@ -210,12 +210,13 @@ const AddParentForm = () => {
         <Dropdown
           label="التوقيت الزمني"
           isRequired
-          name="timezone"
+          name="time_zone"
           options={TIMEZONES_OPTIONS}
           register={register}
-          error={errors.timezone?.message as string}
+          error={errors.time_zone?.message as string}
         />
       </Row>
+
 
       <Row>
         <InputField

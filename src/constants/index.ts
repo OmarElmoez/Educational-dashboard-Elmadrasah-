@@ -13,6 +13,10 @@ import {
   WageTypesForSchema,
   FAMILY_STATUS,
   FamilyStatusForSchema,
+  STUDENT_STATUS,
+  StudentStatusForSchema,
+  SERVICE_OPTIONS,
+  ServicesOptionsForSchema,
 } from "./dropdown-options";
 import END_POINTS from "./end-points";
 import { INITIAL_CALENDAR_COLOR } from "./initial-values";
@@ -34,4 +38,8 @@ export {
   INITIAL_CALENDAR_COLOR,
   FAMILY_STATUS,
   FamilyStatusForSchema,
+  STUDENT_STATUS,
+  StudentStatusForSchema,
+  SERVICE_OPTIONS,
+  ServicesOptionsForSchema,
 };

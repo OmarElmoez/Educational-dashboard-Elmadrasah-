@@ -41,8 +41,7 @@ const AddTeacherForm = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-  const { countries, cities, states, chosenState, chosenRegion } =
-    useAppSelector((state) => state.location);
+  const { countries, cities, states, chosenState, chosenRegion } = useAppSelector((state) => state.location);
 
   const [choices, setChoices] = useState<TOption[]>([]);
 
@@ -601,7 +600,7 @@ const AddTeacherForm = () => {
         <button type="submit" className="btn submit-btn">
           حفظ
         </button>
-
+        
         <button
           type="button"
           onClick={() => {

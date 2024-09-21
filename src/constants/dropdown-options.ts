@@ -16,6 +16,7 @@ const EMPLOYEE_STATUS = [
 
 const EmployeeStatusForSchema = generateValesForSchema(EMPLOYEE_STATUS);
 
+// ********************** SHOULD BE Miss/  *****************************
 const EMPLOYEE_TITLES = [
   {
     label: "Mr",
@@ -71,7 +72,43 @@ const FAMILY_STATUS = [
   { label: "غير نشط", value: "" },
 ];
 
-const FamilyStatusForSchema = generateValesForSchema([{ label: "نشط", value: "family" }]);
+const FamilyStatusForSchema = generateValesForSchema([
+  { label: "نشط", value: "family" },
+]);
+
+const STUDENT_STATUS = [
+  { label: "نشط", value: "Active" },
+  { label: "غير نشط", value: "" },
+];
+
+const StudentStatusForSchema = generateValesForSchema([
+  { label: "نشط", value: "Active" },
+]);
+
+// <option value="Service List Cost">Use Service List Price</option>
+// <option value="Student Cost">Use Student Profile Price</option>
+// <option value="Flat Fee">Charge Flat Fee</option>
+// <option value="Package">Package</option></select>
+const SERVICE_OPTIONS = [
+  {
+    label: "Use Service List Price",
+    value: "Service List Cost",
+  },
+  {
+    label: "Use Student Profile Price",
+    value: "Student Cost",
+  },
+  {
+    label: "Charge Flat Fee",
+    value: "Flat Fee",
+  },
+  {
+    label: "Package",
+    value: "Package",
+  },
+];
+
+const ServicesOptionsForSchema = generateValesForSchema(SERVICE_OPTIONS);
 
 export {
   EMPLOYEE_TYPES,
@@ -86,4 +123,8 @@ export {
   DaysOptinsForSchema,
   FAMILY_STATUS,
   FamilyStatusForSchema,
+  STUDENT_STATUS,
+  StudentStatusForSchema,
+  SERVICE_OPTIONS,
+  ServicesOptionsForSchema,
 };

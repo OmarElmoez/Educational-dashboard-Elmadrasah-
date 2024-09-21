@@ -75,6 +75,11 @@ const SIDEBAR_DATA = {
       path: "add-parent",
       icon: <AddIcon />,
     },
+    {
+      title: "إضافة طالب",
+      path: "add-student",
+      icon: <AddIcon />,
+    },
   ],
 
   Teacher: [
