@@ -36,7 +36,7 @@ import {
 } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
-import { actGetDropdownOptions } from "@/store/single-actions";
+import { actGetFormSubjects } from "@/store/form-subjects/FormSubjectsSlice";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
@@ -93,8 +93,12 @@ const AddEmployeeForm = () => {
     const serverData: TAddEmployeeFormDataForServer = {
       ...data,
       default_subject: parseInt(data["default_subject"]),
-      subject_choices: data["subject_choices"].map((subject) => parseInt(subject)),
-      initial_students: data["initial_students"].map((student) => parseInt(student)),
+      subject_choices: data["subject_choices"].map((subject) =>
+        parseInt(subject)
+      ),
+      initial_students: data["initial_students"].map((student) =>
+        parseInt(student)
+      ),
       is_active: data["is_active"] === "true",
     };
 
@@ -110,7 +114,6 @@ const AddEmployeeForm = () => {
       .then(() => {
         console.log("Employee added successfully");
       });
-
   };
   useEffect(() => {
     if (countries.length === 0) {
@@ -119,7 +122,7 @@ const AddEmployeeForm = () => {
   }, [dispatch, countries]);
 
   useEffect(() => {
-    dispatch(actGetDropdownOptions({ token: user?.token, optionsFor: "subjects" }));
+    dispatch(actGetFormSubjects({ token: user?.token }));
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
@@ -382,6 +385,7 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="subject_choices"
+            keyName="subject_choices"
             error={errors.subject_choices?.message as string}
           />
 
@@ -587,6 +591,7 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="initial_students"
+            keyName="initial_students"
             error={errors.initial_students?.message as string}
           />
 
@@ -608,14 +613,20 @@ const AddEmployeeForm = () => {
           whatsapp_reminders="whatsapp_reminders"
           app_reminders="app_reminders"
           web_reminders="web_reminders"
-          send_welcome_email="send_welcome_email"
+          // send_welcome_email="send_welcome_email"
           user_account="user_account"
           errors={errors}
         />
         <button type="submit" className="btn submit-btn">
           حفظ
         </button>
-        <button type="button" className="btn cancel-btn" onClick={() => console.log(errors)}>check</button>
+        <button
+          type="button"
+          className="btn cancel-btn"
+          onClick={() => console.log(errors)}
+        >
+          check
+        </button>
       </form>
     </>
   );

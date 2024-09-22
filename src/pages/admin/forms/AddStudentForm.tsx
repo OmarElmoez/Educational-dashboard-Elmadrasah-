@@ -331,6 +331,7 @@ const AddStudentForm = () => {
         {/* <MultiChoices
           register={register}
           name="students_attributes.student_curriculum"
+          keyName="student_curriculum"
           error={
             errors.students_attributes?.student_curriculum?.message as string
           }
@@ -349,6 +350,7 @@ const AddStudentForm = () => {
         <MultiChoices
           register={register}
           name="students_attributes.subject_choices"
+          keyName="subject_choices"
           error={errors.students_attributes?.subject_choices?.message as string}
         />
       </Row>
@@ -368,13 +370,14 @@ const AddStudentForm = () => {
         <MultiChoices
           register={register}
           name="students_attributes.initial_services"
+          keyName="initial_services"
           error={
             errors.students_attributes?.initial_services?.message as string
           }
         />
 
         <Dropdown
-          label=" الموقع الافتراضي"
+          label=" رابط دخول الحصة"
           register={register}
           options={locationOptions}
           name="students_attributes.initial_location"
@@ -388,6 +391,7 @@ const AddStudentForm = () => {
         <MultiChoices
           register={register}
           name="students_attributes.initial_teachers"
+          keyName="initial_teachers"
           error={
             errors.students_attributes?.initial_teachers?.message as string
           }
@@ -428,7 +432,7 @@ const AddStudentForm = () => {
         whatsapp_reminders="whatsapp_reminders"
         app_reminders="app_reminders"
         web_reminders="web_reminders"
-        send_welcome_email="send_welcome_email"
+        // send_welcome_email="send_welcome_email"
         user_account="user_account"
         errors={errors}
       />

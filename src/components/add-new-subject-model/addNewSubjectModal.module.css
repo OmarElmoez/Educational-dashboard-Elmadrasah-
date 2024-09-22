@@ -2,7 +2,7 @@
   margin: auto;
   border: none;
   outline: none;
-  width: 500px;
+  min-width: 500px;
   padding: 2.4rem;
   border-radius: 1.6rem;
   font-family: 'Expo Arabic', sans-serif;

@@ -33,7 +33,7 @@ const Dropdown = <T extends FieldValues>({
       }
     }
   };
-
+  
   return (
       <article className="group">
         <label className="adminFormLabel">
@@ -55,8 +55,8 @@ const Dropdown = <T extends FieldValues>({
         </div>
         <div className={feedback}>
           {error ? <p className="error">{error}</p> : <p></p>}
-          {name === "default_subject" && (
-            <p className='add-action-btn' onClick={() => subjectRef?.current?.open()}>+ إضافة موضوع جديد</p>
+          {(name === "default_subject" || name === "customer") && (
+            <p className='add-action-btn' onClick={() => subjectRef?.current?.open()}>+ إضافة موضوع جديد </p>
           )}
         </div>
       </article>

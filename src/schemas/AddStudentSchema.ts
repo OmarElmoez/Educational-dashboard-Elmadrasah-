@@ -20,7 +20,7 @@ export type TAddStudentFormDataForServer = Omit<
     grade?: string | null;
     additional_notes?: string | null;
     calendar_color: string;
-    status: string;
+    status: boolean;
     billing_method: string;
     student_cost: string;
     initial_services?: number[];
@@ -91,13 +91,12 @@ export const AddStudentSchema = z.object({
     student_cost: z.string().optional(),
   }),
 
-
   sms_lesson_reminders: z.boolean(),
   email_lesson_reminders: z.boolean(),
   whatsapp_reminders: z.boolean(),
   app_reminders: z.boolean(),
   web_reminders: z.boolean(),
-  send_welcome_email: z.boolean(),
+  // send_welcome_email: z.boolean(),
   user_account: z.boolean(),
 });
 

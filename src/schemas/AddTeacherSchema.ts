@@ -118,9 +118,9 @@ export const AddTeacherSchema = z.object({
   web_reminders: z.boolean().refine((val) => typeof val === "boolean", {
     message: "برجاء اختيار الحالة",
   }),
-  send_welcome_email: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
+  // send_welcome_email: z.boolean().refine((val) => typeof val === "boolean", {
+  //   message: "برجاء اختيار الحالة",
+  // }),
   user_account: z.boolean().refine((val) => typeof val === "boolean", {
     message: "برجاء اختيار الحالة",
   }),

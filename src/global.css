@@ -353,7 +353,7 @@ textarea::placeholder,
 
 .helper-text {
   font-size: 1rem;
-  color: rgba(205, 205, 205, 1);
+  color: #cdcdcd;
 }
 
 .add-action-btn {
