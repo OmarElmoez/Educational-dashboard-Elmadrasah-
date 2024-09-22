@@ -37,10 +37,12 @@ const MultiChoices = <T extends FieldValues>({
   register,
   name,
   error,
+  keyName,
 }: {
   register: UseFormRegister<T>;
   name: Path<T>;
   error: string;
+  keyName: string;
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
@@ -56,12 +58,13 @@ const MultiChoices = <T extends FieldValues>({
     dispatch(
       actGetChoices({
         token: user?.token,
-        url: END_POINTS[name as keyof typeof END_POINTS].url,
+        // url: END_POINTS[name as keyof typeof END_POINTS].url,
+        url: END_POINTS[keyName as keyof typeof END_POINTS].url,
       })
     )
       .unwrap()
       .then((data) => setData(data));
-  }, [dispatch, user?.token, name]);
+  }, [dispatch, user?.token, name, keyName]);
 
   const onClickHandler = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {

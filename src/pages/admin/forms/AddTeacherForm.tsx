@@ -41,7 +41,8 @@ const AddTeacherForm = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-  const { countries, cities, states, chosenState, chosenRegion } = useAppSelector((state) => state.location);
+  const { countries, cities, states, chosenState, chosenRegion } =
+    useAppSelector((state) => state.location);
 
   const [choices, setChoices] = useState<TOption[]>([]);
 
@@ -390,6 +391,7 @@ const AddTeacherForm = () => {
         <MultiChoices
           register={register}
           name="subject_choices"
+          keyName="subject_choices"
           error={errors.subject_choices?.message as string}
         />
 
@@ -567,6 +569,7 @@ const AddTeacherForm = () => {
         <MultiChoices
           register={register}
           name="initial_students"
+          keyName="initial_students"
           error={errors.initial_students?.message as string}
         />
 
@@ -588,7 +591,7 @@ const AddTeacherForm = () => {
         whatsapp_reminders="whatsapp_reminders"
         app_reminders="app_reminders"
         web_reminders="web_reminders"
-        send_welcome_email="send_welcome_email"
+        // send_welcome_email="send_welcome_email"
         user_account="user_account"
         errors={errors}
       />
@@ -598,7 +601,7 @@ const AddTeacherForm = () => {
         <button type="submit" className="btn submit-btn">
           حفظ
         </button>
-        
+
         <button
           type="button"
           onClick={() => {

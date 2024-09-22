@@ -78,7 +78,7 @@ const AddEmployeeForm = () => {
   };
 
   const onSubmit = (data: TAddEmployeeFormData) => {
-    console.log(data['subject_choices']);
+    console.log(data["subject_choices"]);
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -94,8 +94,12 @@ const AddEmployeeForm = () => {
     const serverData: TAddEmployeeFormDataForServer = {
       ...data,
       default_subject: parseInt(data["default_subject"]),
-      subject_choices: data["subject_choices"].map((subject) => parseInt(subject)),
-      initial_students: data["initial_students"].map((student) => parseInt(student)),
+      subject_choices: data["subject_choices"].map((subject) =>
+        parseInt(subject)
+      ),
+      initial_students: data["initial_students"].map((student) =>
+        parseInt(student)
+      ),
       is_active: data["is_active"] === "true",
     };
 
@@ -114,7 +118,6 @@ const AddEmployeeForm = () => {
       .then(() => {
         console.log("Employee added successfully");
       });
-
   };
   useEffect(() => {
     if (countries.length === 0) {
@@ -386,6 +389,7 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="subject_choices"
+            keyName="subject_choices"
             error={errors.subject_choices?.message as string}
           />
 
@@ -591,6 +595,7 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="initial_students"
+            keyName="initial_students"
             error={errors.initial_students?.message as string}
           />
 
@@ -612,14 +617,20 @@ const AddEmployeeForm = () => {
           whatsapp_reminders="whatsapp_reminders"
           app_reminders="app_reminders"
           web_reminders="web_reminders"
-          send_welcome_email="send_welcome_email"
+          // send_welcome_email="send_welcome_email"
           user_account="user_account"
           errors={errors}
         />
         <button type="submit" className="btn submit-btn">
           حفظ
         </button>
-        <button type="button" className="btn cancel-btn" onClick={() => console.log(errors)}>check</button>
+        <button
+          type="button"
+          className="btn cancel-btn"
+          onClick={() => console.log(errors)}
+        >
+          check
+        </button>
       </form>
     </>
   );

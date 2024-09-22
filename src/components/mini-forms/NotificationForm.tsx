@@ -14,7 +14,7 @@ export interface TNotificationFormProps<T extends FieldValues> {
   app_reminders: Path<T>;
   web_reminders: Path<T>;
   user_account: Path<T>;
-  send_welcome_email: Path<T>;
+  // send_welcome_email: Path<T>;
   errors: FieldErrors<T>;
 }
 
@@ -26,7 +26,7 @@ const NotificationForm = <T extends FieldValues>({
   app_reminders,
   web_reminders,
   user_account,
-  send_welcome_email,
+  // send_welcome_email,
   errors,
 }: TNotificationFormProps<T>) => {
   return (
@@ -71,15 +71,15 @@ const NotificationForm = <T extends FieldValues>({
           error={errors.web_reminders?.message as string}
         />
       </Row>
-      <hr className="hr" />
+      {/* <hr className="hr" /> */}
 
-      <Heading text="إشعارات الترحيب" />
-      <SingleCheckbox
+      {/* <Heading text="إشعارات الترحيب" /> */}
+      {/* <SingleCheckbox
         register={register}
         name={send_welcome_email}
         label="إرسال بريد إلكتروني ترحيبي"
         error={errors.send_welcome_email?.message as string}
-      />
+      /> */}
 
       <hr className="hr" />
 
