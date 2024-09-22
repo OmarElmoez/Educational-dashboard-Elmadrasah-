@@ -8,7 +8,7 @@ import {
   Row,
 } from "@/components";
 import { InputField } from "@/components";
-import { EMPLOYEE_TITLES, END_POINTS, TIMEZONES_OPTIONS } from "@/constants";
+import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
 import {
@@ -22,7 +22,7 @@ import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
-import { actGetChoices, actGetDropdownOptions } from "@/store/single-actions";
+import { actGetDropdownOptions } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
