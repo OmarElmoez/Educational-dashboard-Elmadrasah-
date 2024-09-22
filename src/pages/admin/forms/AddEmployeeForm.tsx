@@ -28,8 +28,7 @@ import { useEffect, useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { DAYS_OPTIONS, WAGE_TYPES } from "@/constants/dropdown-options";
-import { actGetFormSubjects } from "@/store/form-subjects/FormSubjectsSlice";
+import { DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES } from "@/constants/dropdown-options";
 import { TModalRef } from "@/types/shared";
 import {
   CalendarSettingsForm,
@@ -37,6 +36,7 @@ import {
 } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import { actGetFormSubjects } from "@/store/form-subjects/FormSubjectsSlice";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
@@ -78,7 +78,6 @@ const AddEmployeeForm = () => {
   };
 
   const onSubmit = (data: TAddEmployeeFormData) => {
-    console.log(data["subject_choices"]);
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -102,9 +101,6 @@ const AddEmployeeForm = () => {
       ),
       is_active: data["is_active"] === "true",
     };
-
-    console.log(serverData["subject_choices"]);
-    console.log(serverData);
 
     dispatch(
       actSendDataToServer({
@@ -446,7 +442,7 @@ const AddEmployeeForm = () => {
             label="نوع الأجر غير التدريسي"
             name="work_wage_type"
             register={register}
-            options={WAGE_TYPES}
+            options={WORK_WAGE_TYPES}
             error={errors.work_wage_type?.message as string}
           />
 

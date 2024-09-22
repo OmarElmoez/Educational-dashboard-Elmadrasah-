@@ -121,10 +121,10 @@ const AddStudentToFamilyForm = () => {
     )
       .unwrap()
       .then((res) => {
-        const formattedChoices = res.map((location) => {
+        const formattedChoices = res.map((curriculum) => {
           return {
-            label: location.name,
-            value: location.id.toString(),
+            label: curriculum.name,
+            value: curriculum.id.toString(),
           };
         });
         setCurriculumOptions(formattedChoices);
@@ -138,12 +138,10 @@ const AddStudentToFamilyForm = () => {
     )
       .unwrap()
       .then((res) => {
-        console.log("rrrrrr", res);
-
-        const formattedChoices = res.map((location) => {
+        const formattedChoices = res.map((family) => {
           return {
-            label: location.name,
-            value: location.id.toString(),
+            label: family.name,
+            value: family.id.toString(),
           };
         });
         setFamiliesList(formattedChoices);
