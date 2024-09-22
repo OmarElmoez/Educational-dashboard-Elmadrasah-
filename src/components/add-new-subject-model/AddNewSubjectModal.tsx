@@ -9,9 +9,9 @@ import AddSubjectSchema, {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  actGetFormSubjects,
   actPostNewSubject,
 } from "@/store/form-subjects/FormSubjectsSlice";
+import { actGetDropdownOptions } from "@/store/single-actions";
 const { modal, modal_actions } = styles;
 
 const AddNewSubjectModal = forwardRef((_, ref) => {
@@ -44,7 +44,7 @@ const AddNewSubjectModal = forwardRef((_, ref) => {
       .then(() => {
         reset();
         dialog.current?.close();
-        dispatch(actGetFormSubjects({ token: user?.token }));
+        dispatch(actGetDropdownOptions({ token: user?.token, optionsFor: "subjects" }));
       });
   };
 

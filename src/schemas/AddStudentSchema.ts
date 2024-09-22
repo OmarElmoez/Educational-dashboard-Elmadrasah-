@@ -79,7 +79,7 @@ export const AddStudentSchema = z.object({
     start_date: z.string(),
     school: z.string().nullable().optional(),
     grade: z.string().nullable().optional(),
-    student_curriculum: z.array(z.string()),
+    student_curriculum: z.string().min(1, "برجاء اختيار المنهج الدراسي"),
     subject_choices: z.array(z.string()),
     initial_services: z.array(z.string()).optional(),
     initial_location: z.string().optional(),
