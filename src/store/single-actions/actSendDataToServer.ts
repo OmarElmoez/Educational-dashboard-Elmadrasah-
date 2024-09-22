@@ -1,4 +1,8 @@
-import { POST_END_POINTS, TPostEndPoints, TPurpose } from "@/constants/end-points";
+import {
+  POST_END_POINTS,
+  TPostEndPoints,
+  TPurpose,
+} from "@/constants/end-points";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -7,33 +11,35 @@ type TProps = {
   token: string | undefined;
   hasFiles?: boolean;
   purpose: TPurpose;
-  formData: TPostEndPoints[TPurpose]['dataType'];
-}
+  formData: TPostEndPoints[TPurpose]["dataType"];
+};
 
 const actSendDataToServer = createAsyncThunk(
   "single-actions/actSendDataToServer",
-  async ({token, hasFiles = false, purpose, formData}: TProps, thunkAPI) => {
+  async ({ token, hasFiles = false, purpose, formData }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
-    let data: FormData | object;
+      console.log(formData);
 
-      if (hasFiles) {
-        data = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-          if (data instanceof FormData) {
-            if (Array.isArray(value)) {
-              data.append(key, JSON.stringify(value));
-            } else if (value instanceof File) {
-              data.append(key, value);
-            } else {
-              data.append(key, String(value));
-            }
-          }
+    // Create a new FormData object with validated data
+    const validatedFormData = new FormData();
+
+    // Add validated regular data to FormData
+    Object.entries(formData).forEach(([key, value]) => {
+      if (
+        typeof value === "object" &&
+        value !== null &&
+        !(value[0] instanceof File)
+      ) {
+        validatedFormData.append(key, JSON.stringify(value));
+      } else if (Array.isArray(value) && value[0] instanceof File) {
+        value.forEach((file, index) => {
+          validatedFormData.append(`${key}[${index}]`, file);
         });
       } else {
-        data = formData;
+        validatedFormData.append(key, String(value));
       }
-
+    });
     try {
       const url = POST_END_POINTS[purpose].url;
       const config = {
@@ -43,12 +49,15 @@ const actSendDataToServer = createAsyncThunk(
         },
       };
 
-      const response = await axios.post<TProps['formData']>(url, data, config);
+      const response = await axios.post<TProps["formData"]>(
+        url,
+        validatedFormData,
+        config
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );
-
 export default actSendDataToServer;

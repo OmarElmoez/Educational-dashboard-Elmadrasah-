@@ -43,6 +43,19 @@ const WAGE_TYPES = [
 
 const WageTypesForSchema = generateValesForSchema(WAGE_TYPES);
 
+const WORK_WAGE_TYPES = [
+  {
+    label: "استخدام قائمة الخدمات ",
+    value: "work",
+  },
+  {
+    label: "تعيين الاجر علي الملف الشخصي",
+    value: "wage",
+  },
+];
+
+const WorkWageTypesForSchema = generateValesForSchema(WORK_WAGE_TYPES);
+
 const DAYS_OPTIONS = [
   { label: "الأحد ", value: "0" },
   { label: "الأثنين ", value: "1" },
@@ -91,4 +104,6 @@ export {
   DaysOptinsForSchema,
   SERVICE_OPTIONS,
   ServicesOptionsForSchema,
+  WORK_WAGE_TYPES,
+  WorkWageTypesForSchema,
 };

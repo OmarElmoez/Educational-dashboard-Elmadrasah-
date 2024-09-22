@@ -28,7 +28,7 @@ import { useEffect, useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { DAYS_OPTIONS, WAGE_TYPES } from "@/constants/dropdown-options";
+import { DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES } from "@/constants/dropdown-options";
 import { TModalRef } from "@/types/shared";
 import {
   CalendarSettingsForm,
@@ -78,7 +78,6 @@ const AddEmployeeForm = () => {
   };
 
   const onSubmit = (data: TAddEmployeeFormData) => {
-    console.log(data['subject_choices']);
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -98,9 +97,6 @@ const AddEmployeeForm = () => {
       initial_students: data["initial_students"].map((student) => parseInt(student)),
       is_active: data["is_active"] === "true",
     };
-
-    console.log(serverData["subject_choices"]);
-    console.log(serverData);
 
     dispatch(
       actSendDataToServer({
@@ -442,7 +438,7 @@ const AddEmployeeForm = () => {
             label="نوع الأجر غير التدريسي"
             name="work_wage_type"
             register={register}
-            options={WAGE_TYPES}
+            options={WORK_WAGE_TYPES}
             error={errors.work_wage_type?.message as string}
           />
 
