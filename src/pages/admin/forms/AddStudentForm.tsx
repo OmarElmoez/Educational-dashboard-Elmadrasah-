@@ -8,7 +8,7 @@ import {
   Row,
 } from "@/components";
 import { InputField } from "@/components";
-import { EMPLOYEE_TITLES, END_POINTS, TIMEZONES_OPTIONS } from "@/constants";
+import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
 import {
@@ -22,7 +22,7 @@ import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
-import { actGetChoices } from "@/store/single-actions";
+import { actGetDropdownOptions } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
@@ -38,7 +38,6 @@ const AddStudentForm = () => {
   );
 
   const [locationOptions, setLocationOptions] = useState<TOption[]>([]);
-  const [curriculumOptions, setCurriculumOptions] = useState<TOption[]>([]);
 
   const {
     register,
@@ -89,7 +88,7 @@ const AddStudentForm = () => {
     )
       .unwrap()
       .then(() => {
-        console.log("Parent added successfully");
+        console.log("Student added successfully");
       });
   };
 
@@ -101,45 +100,29 @@ const AddStudentForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetChoices({
-        token: user?.token,
-        url: END_POINTS["initial_location"].url,
-      })
+      actGetDropdownOptions({ token: user?.token, optionsFor: "locations" })
     )
       .unwrap()
-      .then((res) => {
-        const formattedChoices = res.map((location) => {
-          return {
-            label: location.name,
-            value: location.id.toString(),
-          };
-        });
-        setLocationOptions(formattedChoices);
+      .then((data) => {
+        setLocationOptions(data);
       });
-
-    dispatch(
-      actGetChoices({
-        token: user?.token,
-        url: END_POINTS["student_curriculum"].url,
-      })
-    )
-      .unwrap()
-      .then((res) => {
-        const formattedChoices = res.map((location) => {
-          return {
-            label: location.name,
-            value: location.id.toString(),
-          };
-        });
-        setCurriculumOptions(formattedChoices);
-      });
-
-
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
 
   const formattedStates = formatStates(states);
+
+  const [curriculumOptions, setCurriculumOptions] = useState<TOption[]>([]);
+
+  useEffect(() => {
+    dispatch(
+      actGetDropdownOptions({ token: user?.token, optionsFor: "curriculums" })
+    )
+      .unwrap()
+      .then((res) => {
+        setCurriculumOptions(res);
+      });
+  }, [dispatch, user?.token]);
 
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
@@ -355,10 +338,10 @@ const AddStudentForm = () => {
         /> */}
 
         <Dropdown
-          label="منهج الطالب"
+          label="المنهج الدراسي"
+          name="students_attributes.student_curriculum"
           register={register}
           options={curriculumOptions}
-          name="students_attributes.student_curriculum"
           error={
             errors.students_attributes?.student_curriculum?.message as string
           }

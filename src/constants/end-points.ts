@@ -32,7 +32,7 @@ const END_POINTS = {
 
   // *********** test ***
   family: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families/?paginate=false",
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families?paginate=false",
     placeholder: "  العائلة",
   },
  
@@ -64,3 +64,16 @@ type TPostEndPoints = typeof POST_END_POINTS;
 export type { TPurpose, TPostEndPoints };
 
 export { END_POINTS, POST_END_POINTS };
+
+
+const DROPDOWN_END_POINTS = {
+  subjects: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
+  curriculums: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum?paginate=false",
+  locations: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
+}
+
+type TOptionsFor = keyof typeof DROPDOWN_END_POINTS;
+
+export type { TOptionsFor };
+
+export { DROPDOWN_END_POINTS };

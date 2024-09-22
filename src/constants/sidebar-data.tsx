@@ -65,11 +65,11 @@ const SIDEBAR_DATA = {
       path: "add-employee",
       icon: <AddIcon />,
     },
-    {
-      title: "إضافة معلم",
-      path: "add-teacher",
-      icon: <AddIcon />,
-    },
+    // {
+    //   title: "إضافة معلم",
+    //   path: "add-teacher",
+    //   icon: <AddIcon />,
+    // },
     {
       title: "إضافة عائلة",
       path: "add-parent",

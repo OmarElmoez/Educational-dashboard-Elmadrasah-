@@ -25,6 +25,11 @@ type TModalRef = {
   close: () => void;
 };
 
+type TResponseOption = {
+  id: number;
+  name: string;
+}
+
 type TSubject = {
   id: number;
   name: string;
@@ -35,13 +40,4 @@ type TStudent = {
   name: string;
 };
 
-export type {
-  TLoading,
-  TFirstDayOfWeek,
-  TUserRole,
-  TPath,
-  TLessonStatus,
-  TModalRef,
-  TSubject,
-  TStudent,
-};
+export type { TLoading, TFirstDayOfWeek, TUserRole, TPath, TLessonStatus, TModalRef, TSubject, TStudent, TResponseOption }

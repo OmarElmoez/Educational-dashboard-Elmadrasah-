@@ -55,24 +55,6 @@ const DAYS_OPTIONS = [
 
 const DaysOptinsForSchema = generateValesForSchema(DAYS_OPTIONS);
 
-// const FAMILY_STATUS = [
-//   { label: "نشط", value: 'Active' },
-//   { label: "غير نشط", value: "not-active" },
-// ];
-
-// const FamilyStatusForSchema = generateValesForSchema([
-//   { label: "نشط", value: "family" },
-// ]);
-
-// const STUDENT_STATUS = [
-//   { label: "نشط", value: "Active" },
-//   { label: "غير نشط", value: "" },
-// ];
-
-// const StudentStatusForSchema = generateValesForSchema([
-//   { label: "نشط", value: "Active" },
-// ]);
-
 const SERVICE_OPTIONS = [
   {
     label: "Use Service List Price",

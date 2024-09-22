@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import actGetFormSubjects from "./act/actGetFormSubjects";
 import actPostNewSubject from "./act/actPostNewSubject";
 import { isString } from "@/types/gurads";
+import { actGetDropdownOptions } from "../single-actions";
 
 type TFormSubjectsInitailState = {
   subjects: TOption[];
@@ -23,15 +24,15 @@ const formSubjectsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(actGetFormSubjects.pending, (state) => {
+      .addCase(actGetDropdownOptions.pending, (state) => {
         state.loading = "pending";
         state.error = null;
       })
-      .addCase(actGetFormSubjects.fulfilled, (state, action) => {
+      .addCase(actGetDropdownOptions.fulfilled, (state, action) => {
         state.loading = "succeeded";
         state.subjects = action.payload;
       })
-      .addCase(actGetFormSubjects.rejected, (state, action) => {
+      .addCase(actGetDropdownOptions.rejected, (state, action) => {
         state.loading = "failed";
         if (isString(action.payload)) {
           state.error = action.payload;
