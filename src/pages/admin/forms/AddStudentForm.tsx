@@ -22,7 +22,7 @@ import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
-import { actGetChoices } from "@/store/single-actions";
+import { actGetChoices, actGetDropdownOptions } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
@@ -88,7 +88,7 @@ const AddStudentForm = () => {
     )
       .unwrap()
       .then(() => {
-        console.log("Parent added successfully");
+        console.log("Student added successfully");
       });
   };
 
@@ -100,26 +100,29 @@ const AddStudentForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetChoices({
-        token: user?.token,
-        url: END_POINTS["students_attributes.initial_location"].url,
-      })
+      actGetDropdownOptions({ token: user?.token, optionsFor: "locations" })
     )
       .unwrap()
-      .then((res) => {
-        const formattedChoices = res.map((location) => {
-          return {
-            label: location.name,
-            value: location.id.toString(),
-          };
-        });
-        setLocationOptions(formattedChoices);
+      .then((data) => {
+        setLocationOptions(data);
       });
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
 
   const formattedStates = formatStates(states);
+
+  const [curriculumOptions, setCurriculumOptions] = useState<TOption[]>([]);
+
+  useEffect(() => {
+    dispatch(
+      actGetDropdownOptions({ token: user?.token, optionsFor: "curriculums" })
+    )
+      .unwrap()
+      .then((res) => {
+        setCurriculumOptions(res);
+      });
+  }, [dispatch, user?.token]);
 
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
@@ -325,9 +328,19 @@ const AddStudentForm = () => {
       </Row>
 
       <Row>
-        <MultiChoices
+        {/* <MultiChoices
           register={register}
           name="students_attributes.student_curriculum"
+          error={
+            errors.students_attributes?.student_curriculum?.message as string
+          }
+        /> */}
+
+        <Dropdown
+          label="المنهج الدراسي"
+          name="students_attributes.student_curriculum"
+          register={register}
+          options={curriculumOptions}
           error={
             errors.students_attributes?.student_curriculum?.message as string
           }

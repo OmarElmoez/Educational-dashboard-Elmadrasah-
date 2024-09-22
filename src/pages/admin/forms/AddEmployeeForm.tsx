@@ -37,6 +37,7 @@ import {
 } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import { actGetDropdownOptions } from "@/store/single-actions";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
@@ -123,7 +124,7 @@ const AddEmployeeForm = () => {
   }, [dispatch, countries]);
 
   useEffect(() => {
-    dispatch(actGetFormSubjects({ token: user?.token }));
+    dispatch(actGetDropdownOptions({ token: user?.token, optionsFor: "subjects" }));
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
