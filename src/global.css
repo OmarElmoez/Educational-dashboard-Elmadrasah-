@@ -254,6 +254,12 @@ menu {
   align-self: flex-start;
 }
 
+@media (max-width: 991px) {
+  .group {
+    align-self: stretch;
+  }
+}
+
 .inputField,
 select,
 .searchDropdownInput,
