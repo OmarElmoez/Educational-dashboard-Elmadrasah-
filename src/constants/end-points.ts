@@ -1,6 +1,6 @@
 import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
 import { TAddParentFormData } from "@/schemas/AddParentSchema";
-import { TAddStudentFormData } from "@/schemas/AddStudentSchema";
+import { TAddStudentFormDataForServer } from "@/schemas/AddStudentSchema";
 import { TAddStudentToFamilyFormDataForServer } from "@/schemas/AddStudentToFamilySchema";
 
 const END_POINTS = {
@@ -49,7 +49,7 @@ const POST_END_POINTS = {
   },
   add_individual_student: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/individual/",
-    dataType: {} as TAddStudentFormData,
+    dataType: {} as TAddStudentFormDataForServer,
   },
   add_family_student: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/family-student/",
@@ -70,6 +70,7 @@ const DROPDOWN_END_POINTS = {
   subjects: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
   curriculums: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum?paginate=false",
   locations: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
+  families: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families?paginate=false",
 }
 
 type TOptionsFor = keyof typeof DROPDOWN_END_POINTS;

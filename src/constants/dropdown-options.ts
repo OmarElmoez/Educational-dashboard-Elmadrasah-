@@ -71,7 +71,7 @@ const DaysOptinsForSchema = generateValesForSchema(DAYS_OPTIONS);
 const SERVICE_OPTIONS = [
   {
     label: "Use Service List Price",
-    value: "Service List Cost",
+    value: "Use Service List Price",
   },
   {
     label: "Use Student Profile Price",
@@ -79,15 +79,13 @@ const SERVICE_OPTIONS = [
   },
   {
     label: "Charge Flat Fee",
-    value: "Flat Fee",
+    value: "Charge Flat Fee",
   },
   {
     label: "Package",
     value: "Package",
   },
 ];
-
-
 
 const ServicesOptionsForSchema = generateValesForSchema(SERVICE_OPTIONS);
 

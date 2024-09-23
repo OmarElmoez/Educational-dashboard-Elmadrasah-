@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import {
   ColorField,
   Dropdown,
@@ -21,14 +20,14 @@ import {
 import { TOption } from "@/types/Dropdown";
 import { TModalRef } from "@/types/shared";
 import {
-  END_POINTS,
   TIMEZONES_OPTIONS,
   SERVICE_OPTIONS,
   STATUS_OPTIONS,
+  INITIAL_CALENDAR_COLOR,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import { actGetChoices } from "@/store/single-actions";
+import { actGetDropdownOptions } from "@/store/single-actions";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 import AddParentForm from "./AddParentForm";
 // -------------------------------------------------------------------------
@@ -53,6 +52,9 @@ const AddStudentToFamilyForm = () => {
   } = useForm<TAddStudentToFamilyFormData>({
     mode: "onBlur",
     resolver: zodResolver(AddStudentToFamilySchema),
+    defaultValues: {
+      calendar_color: INITIAL_CALENDAR_COLOR,
+    }
   });
 
   const onSubmit = (data: TAddStudentToFamilyFormData) => {
@@ -64,19 +66,25 @@ const AddStudentToFamilyForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
-    data['is_superuser'] = false;
+    data["is_superuser"] = false;
 
-    data.birth_date = format(data.birth_date || "", "yyyy-MM-dd");
-    data.start_date = format(data.start_date || "", "yyyy-MM-dd");
-
+    // data.birth_date = format(data.birth_date || "", "yyyy-MM-dd");
+    // data.start_date = format(data.start_date || "", "yyyy-MM-dd");
 
     const serverData: TAddStudentToFamilyFormDataForServer = {
       ...data,
       student_type: "child",
       status: data["status"] === "true",
+      subject_choices: data["subject_choices"]?.map((subject) =>
+        parseInt(subject)
+      ),
+      initial_services: data["initial_services"]?.map((service) =>
+        parseInt(service)
+      ),
+      initial_teachers: data["initial_teachers"]?.map((teacher) =>
+        parseInt(teacher)
+      ),
     };
-
-
 
     dispatch(
       actSendDataToServer({
@@ -99,62 +107,78 @@ const AddStudentToFamilyForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetChoices({
-        token: user?.token,
-        url: END_POINTS["initial_location"].url,
-      })
+      actGetDropdownOptions({ token: user?.token, optionsFor: "locations" })
     )
       .unwrap()
-      .then((res) => {
-        const formattedChoices = res.map((location) => {
-          return {
-            label: location.name,
-            value: location.id.toString(),
-          };
-        });
-        setLocationOptions(formattedChoices);
-      });
+      .then((data) => setLocationOptions(data));
+    // dispatch(
+    //   actGetChoices({
+    //     token: user?.token,
+    //     url: END_POINTS["initial_location"].url,
+    //   })
+    // )
+    //   .unwrap()
+    //   .then((res) => {
+    //     const formattedChoices = res.map((location) => {
+    //       return {
+    //         label: location.name,
+    //         value: location.id.toString(),
+    //       };
+    //     });
+    //     setLocationOptions(formattedChoices);
+    //   });
 
     dispatch(
-      actGetChoices({
-        token: user?.token,
-        url: END_POINTS["student_curriculum"].url,
-      })
+      actGetDropdownOptions({ token: user?.token, optionsFor: "curriculums" })
     )
       .unwrap()
-      .then((res) => {
-        const formattedChoices = res.map((curriculum) => {
-          return {
-            label: curriculum.name,
-            value: curriculum.id.toString(),
-          };
-        });
-        setCurriculumOptions(formattedChoices);
-      });
+      .then((data) => setCurriculumOptions(data));
+
+    // dispatch(
+    //   actGetChoices({
+    //     token: user?.token,
+    //     url: END_POINTS["student_curriculum"].url,
+    //   })
+    // )
+    //   .unwrap()
+    //   .then((res) => {
+    //     const formattedChoices = res.map((curriculum) => {
+    //       return {
+    //         label: curriculum.name,
+    //         value: curriculum.id.toString(),
+    //       };
+    //     });
+    //     setCurriculumOptions(formattedChoices);
+    //   });
 
     dispatch(
-      actGetChoices({
-        token: user?.token,
-        url: END_POINTS["family"].url,
-      })
+      actGetDropdownOptions({ token: user?.token, optionsFor: "families" })
     )
       .unwrap()
-      .then((res) => {
-        const formattedChoices = res.map((family) => {
-          return {
-            label: family.name,
-            value: family.id.toString(),
-          };
-        });
-        setFamiliesList(formattedChoices);
-      });
+      .then((data) => setFamiliesList(data));
+    // dispatch(
+    //   actGetChoices({
+    //     token: user?.token,
+    //     url: END_POINTS["family"].url,
+    //   })
+    // )
+    //   .unwrap()
+    //   .then((res) => {
+    //     const formattedChoices = res.map((family) => {
+    //       return {
+    //         label: family.name,
+    //         value: family.id.toString(),
+    //       };
+    //     });
+    //     setFamiliesList(formattedChoices);
+    //   });
   }, [dispatch, user?.token]);
 
   const addNewFamilyRef = useRef<TModalRef>(null);
 
   return (
     <>
-      <BasicModal ref={addNewFamilyRef} >
+      <BasicModal ref={addNewFamilyRef}>
         {/* <ModalChildren onCloseHandler={handleCloseModal} /> */}
         <AddParentForm />
       </BasicModal>
@@ -318,7 +342,6 @@ const AddStudentToFamilyForm = () => {
           <MultiChoices
             register={register}
             name="subject_choices"
-            keyName="subject_choices"
             error={errors.subject_choices?.message as string}
           />
           <InputField
@@ -335,7 +358,6 @@ const AddStudentToFamilyForm = () => {
           <MultiChoices
             register={register}
             name="initial_services"
-            keyName="initial_services"
             error={errors.initial_services?.message as string}
           />
 
@@ -352,7 +374,6 @@ const AddStudentToFamilyForm = () => {
           <MultiChoices
             register={register}
             name="initial_teachers"
-            keyName="initial_teachers"
             error={errors.initial_teachers?.message as string}
           />
 
@@ -428,4 +449,3 @@ const AddStudentToFamilyForm = () => {
 };
 
 export default AddStudentToFamilyForm;
-

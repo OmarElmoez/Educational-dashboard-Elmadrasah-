@@ -14,6 +14,7 @@ import { actGetCountries } from "@/store/location/LocationSlice";
 import {
   AddStudentSchema,
   TAddStudentFormData,
+  TAddStudentFormDataForServer,
 } from "@/schemas/AddStudentSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -24,7 +25,6 @@ import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
 import { actGetDropdownOptions } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
-import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 
 // -------------------------------------------------------------------------
@@ -60,25 +60,35 @@ const AddStudentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
-    data['is_superuser'] = false;
 
-    data.students_attributes.birth_date = format(
-      data.students_attributes.birth_date || "",
-      "yyyy-MM-dd"
-    );
-    data.students_attributes.start_date = format(
-      data.students_attributes.start_date || "",
-      "yyyy-MM-dd"
-    );
-
-    data.students_attributes.first_name = data.first_name;
-    data.students_attributes.last_name = data.last_name;
-    data.students_attributes.email = data.email;
-    data.students_attributes.mobile_phone = data.mobile_phone;
-
-    const serverData = {
+    const serverData: TAddStudentFormDataForServer = {
       ...data,
+      is_superuser: false,
       customer_type: "individual",
+      students_attributes: {
+        student_type: "individual",
+        student_curriculum: Number(data.student_curriculum),
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        mobile_phone: data.mobile_phone,
+        birth_date: data.birth_date,
+        start_date: data.start_date,
+        school: data.school,
+        grade: data.grade,
+        additional_notes: data.additional_notes,
+        calendar_color: data.calendar_color,
+        status: data['status'] === 'true',
+        billing_method: data.billing_method,
+        student_cost: data.student_cost,
+        initial_services: data["initial_services"]?.map((student) =>
+          parseInt(student)
+        ),
+        initial_teachers: data["initial_teachers"]?.map((student) =>
+          parseInt(student)
+        ),
+        initial_location: Number(data["initial_location"]),
+      },
     };
 
     dispatch(
@@ -297,8 +307,8 @@ const AddStudentForm = () => {
           label="تاريخ الميلاد "
           placeholder=" يوم / شهر / سنه"
           register={register}
-          name="students_attributes.birth_date"
-          error={errors.students_attributes?.birth_date?.message as string}
+          name="birth_date"
+          error={errors.birth_date?.message as string}
         />
 
         <InputField
@@ -306,8 +316,8 @@ const AddStudentForm = () => {
           label="تاريخ البدء"
           placeholder="يوم / شهر / سنه"
           register={register}
-          name="students_attributes.start_date"
-          error={errors.students_attributes?.start_date?.message as string}
+          name="start_date"
+          error={errors.start_date?.message as string}
         />
       </Row>
 
@@ -316,44 +326,41 @@ const AddStudentForm = () => {
           label="المدرسة "
           placeholder=" المدرسة"
           register={register}
-          name="students_attributes.school"
-          error={errors.students_attributes?.school?.message as string}
+          name="school"
+          error={errors.school?.message as string}
         />
 
         <InputField
           label="الصف/السنة"
           placeholder="الصف/السنة"
           register={register}
-          name="students_attributes.grade"
-          error={errors.students_attributes?.grade?.message as string}
+          name="grade"
+          error={errors.grade?.message as string}
         />
       </Row>
 
       <Row>
         {/* <MultiChoices
           register={register}
-          name="students_attributes.student_curriculum"
+          name="student_curriculum"
           keyName="student_curriculum"
           error={
-            errors.students_attributes?.student_curriculum?.message as string
+            errors.student_curriculum?.message as string
           }
         /> */}
 
         <Dropdown
           label="المنهج الدراسي"
-          name="students_attributes.student_curriculum"
+          name="student_curriculum"
           register={register}
           options={curriculumOptions}
-          error={
-            errors.students_attributes?.student_curriculum?.message as string
-          }
+          error={errors.student_curriculum?.message as string}
         />
 
         <MultiChoices
           register={register}
-          name="students_attributes.subject_choices"
-          keyName="subject_choices"
-          error={errors.students_attributes?.subject_choices?.message as string}
+          name="subject_choices"
+          error={errors.subject_choices?.message as string}
         />
       </Row>
 
@@ -371,40 +378,32 @@ const AddStudentForm = () => {
       <Row>
         <MultiChoices
           register={register}
-          name="students_attributes.initial_services"
-          keyName="initial_services"
-          error={
-            errors.students_attributes?.initial_services?.message as string
-          }
+          name="initial_services"
+          error={errors.initial_services?.message as string}
         />
 
         <Dropdown
           label=" رابط دخول الحصة"
           register={register}
           options={locationOptions}
-          name="students_attributes.initial_location"
-          error={
-            errors.students_attributes?.initial_location?.message as string
-          }
+          name="initial_location"
+          error={errors.initial_location?.message as string}
         />
       </Row>
 
       <Row>
         <MultiChoices
           register={register}
-          name="students_attributes.initial_teachers"
-          keyName="initial_teachers"
-          error={
-            errors.students_attributes?.initial_teachers?.message as string
-          }
+          name="initial_teachers"
+          error={errors.initial_teachers?.message as string}
         />
 
         <ColorField
           label="لون التقويم"
           register={register}
           setValue={setValue}
-          name="students_attributes.calendar_color"
-          error={errors.students_attributes?.calendar_color?.message as string}
+          name="calendar_color"
+          error={errors.calendar_color?.message as string}
         />
       </Row>
       <hr className="hr" />
@@ -412,18 +411,18 @@ const AddStudentForm = () => {
       <Row>
         <Dropdown
           label="طريقة الدفع"
-          name="students_attributes.billing_method"
+          name="billing_method"
           register={register}
           options={SERVICE_OPTIONS}
-          error={errors.students_attributes?.billing_method?.message as string}
+          error={errors.billing_method?.message as string}
         />
 
         <InputField
           label=" خصم الطالب %"
           placeholder="اكتب الخصم"
           register={register}
-          name="students_attributes.student_cost"
-          error={errors.students_attributes?.student_cost?.message as string}
+          name="student_cost"
+          error={errors.student_cost?.message as string}
         />
       </Row>
 
@@ -449,7 +448,7 @@ const AddStudentForm = () => {
         <button
           type="button"
           onClick={() => {
-            reset();
+            reset()
           }}
           className="btn"
         >

@@ -1,43 +1,9 @@
-import { EmployeeTitleForSchema, StatusOptionsForSchema } from "@/constants";
-
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
-type TKeysToOmit = "subject_choices";
-
-export type TAddStudentFormDataForServer = Omit<
-  TAddStudentFormData,
-  TKeysToOmit
-> & {
-  students_attributes: {
-    first_name?: string;
-    last_name?: string;
-    email?: string;
-    mobile_phone?: string;
-    birth_date?: string | null;
-    start_date: string;
-    school?: string | null;
-    grade?: string | null;
-    additional_notes?: string | null;
-    calendar_color: string;
-    status: boolean;
-    billing_method: string;
-    student_cost: string;
-    initial_services?: number[];
-    initial_teachers?: number[];
-    initial_location?: number;
-    subject_choices?: number[];
-  };
-};
-
 export const AddStudentSchema = z.object({
-  status: z.enum(StatusOptionsForSchema as [string, ...string[]], {
-    errorMap: () => ({ message: "برجاء اختيار الحالة نشط" }),
-  }),
-  salutation: z.enum(EmployeeTitleForSchema as [string, ...string[]], {
-    errorMap: () => ({ message: "برجاء اختيار اللقب" }),
-  }),
-
+  status: z.string().min(1, "برجاء اختيار الحالة"),
+  salutation: z.string().min(1, "برجاء اختيار اللقب"),
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
   full_name: z.string().min(1, "برجاء ادخال الاسم الكامل"),
@@ -68,29 +34,18 @@ export const AddStudentSchema = z.object({
   zip: z.string().optional(),
   time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
   additional_notes: z.string().optional(),
-
-  students_attributes: z.object({
-    first_name: z.string().nullable().optional(),
-    last_name: z.string().nullable().optional(),
-    email: z.string().nullable().optional(),
-    mobile_phone: z.string().nullable().optional(),
-
-    birth_date: z.string().nullable().optional(),
-    start_date: z.string(),
-    school: z.string().nullable().optional(),
-    grade: z.string().nullable().optional(),
-    student_curriculum: z.string().min(1, "برجاء اختيار المنهج الدراسي"),
-    subject_choices: z.array(z.string()),
-    initial_services: z.array(z.string()).optional(),
-    initial_location: z.string().optional(),
-    initial_teachers: z.array(z.string()).optional(),
-    calendar_color: z.string().optional(),
-    billing_method: z.enum(["Use Student Profile Price"], {
-      errorMap: () => ({ message: "برجاء اختيار طريقة الدفع" }),
-    }),
-    student_cost: z.string().optional(),
-  }),
-
+  birth_date: z.string().nullable().optional(),
+  start_date: z.string(),
+  school: z.string().nullable().optional(),
+  grade: z.string().nullable().optional(),
+  student_curriculum: z.string().min(1, "برجاء اختيار المنهج الدراسي"),
+  subject_choices: z.array(z.string()),
+  initial_services: z.array(z.string()).optional(),
+  initial_location: z.string().optional(),
+  initial_teachers: z.array(z.string()).optional(),
+  calendar_color: z.string().optional(),
+  billing_method: z.string().min(1, "برجاء اختيار طريقة الدفع"),
+  student_cost: z.string().optional(),
   sms_lesson_reminders: z.boolean(),
   email_lesson_reminders: z.boolean(),
   whatsapp_reminders: z.boolean(),
@@ -98,7 +53,37 @@ export const AddStudentSchema = z.object({
   web_reminders: z.boolean(),
   // send_welcome_email: z.boolean(),
   user_account: z.boolean(),
-  is_superuser: z.boolean(),
 });
 
 export type TAddStudentFormData = z.infer<typeof AddStudentSchema>;
+
+type TKeysToOmit = "subject_choices" | "status" | "student_curriculum";
+
+export type TAddStudentFormDataForServer = Omit<
+  TAddStudentFormData,
+  TKeysToOmit
+> & {
+  customer_type: string,
+  is_superuser: boolean;
+  students_attributes: {
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    mobile_phone?: string;
+    birth_date?: string | null;
+    start_date: string;
+    school?: string | null;
+    grade?: string | null;
+    additional_notes?: string | null;
+    calendar_color?: string;
+    status: boolean;
+    billing_method: string;
+    student_cost?: string;
+    initial_services?: number[];
+    initial_teachers?: number[];
+    initial_location?: number;
+    subject_choices?: number[];
+    student_type: string,
+    student_curriculum: number,
+  };
+};
