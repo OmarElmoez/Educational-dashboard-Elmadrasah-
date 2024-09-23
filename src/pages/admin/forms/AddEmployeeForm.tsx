@@ -400,7 +400,6 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="subject_choices"
-            keyName="subject_choices"
             error={errors.subject_choices?.message as string}
           />
 
@@ -607,7 +606,6 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="initial_students"
-            keyName="initial_students"
             error={errors.initial_students?.message as string}
           />
 
@@ -634,7 +632,7 @@ const AddEmployeeForm = () => {
           errors={errors}
         />
         <button type="submit" className="btn submit-btn">
-          {!isSubmitting ? (
+          {isSubmitting ? (
             <CircleLoadingIndecator size={16} color="#fff" />
           ) : (
             " حفظ"

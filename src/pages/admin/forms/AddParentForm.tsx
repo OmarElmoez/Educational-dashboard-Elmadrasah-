@@ -270,7 +270,7 @@ const AddParentForm = () => {
 
       <div className="flex-end">
         <button type="submit" className="btn submit-btn">
-          {!isSubmitting ? (
+          {isSubmitting ? (
             <CircleLoadingIndecator size={16} color="#fff" />
           ) : (
             " حفظ"

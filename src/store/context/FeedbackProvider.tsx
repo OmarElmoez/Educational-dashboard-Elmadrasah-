@@ -47,11 +47,11 @@ export const FeedbackProvider = ({
       {children}
 
       <FeedbackAlert
-        ref={feedbackAlertRef}
         status={feedbackData.status}
         title={feedbackData.title}
         desc={feedbackData.desc}
         timeout={feedbackData.timeout}
+        ref={feedbackAlertRef}
       />
     </FeedbackContext.Provider>
   );

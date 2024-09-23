@@ -72,7 +72,7 @@ const FeedbackAlert = forwardRef(
           <p className="error">{contentForStatus[status].desc}</p>
         )}
       </dialog>,
-      document.getElementById("modal")! // Ensure your modal container exists in your root HTML
+      document.getElementById("modal")! 
     );
   }
 );

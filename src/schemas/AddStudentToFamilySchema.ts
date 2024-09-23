@@ -1,14 +1,10 @@
-import { StatusOptionsForSchema } from "@/constants";
-
 import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
 
 export const AddStudentToFamilySchema = z.object({
   customer: z.string().min(1, "برجاء اختيار العائلة  "),
 
-  status: z.enum(StatusOptionsForSchema as [string, ...string[]], {
-    errorMap: () => ({ message: "برجاء اختيار الحالة نشط" }),
-  }),
+  status: z.string().min(1, "برجاء اختيار الحالة"),
 
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
@@ -28,17 +24,14 @@ export const AddStudentToFamilySchema = z.object({
   school: z.string().nullable().optional(),
   grade: z.string().nullable().optional(),
   student_curriculum: z.string().nullable(),
-
-  subject_choices: z.array(z.string()),//*
+  subject_choices: z.array(z.string()).optional(),
   additional_notes: z.string().optional(),
   initial_services: z.array(z.string()).optional(),//*
   initial_location: z.string().optional(),
   initial_teachers: z.array(z.string()).optional(), //*
 
   calendar_color: z.string().optional(),
-  billing_method: z.enum(["Use Student Profile Price"], {
-    errorMap: () => ({ message: "برجاء اختيار طريقة الدفع" }),
-  }),
+  billing_method: z.string().min(1, "برجاء اختيار طريقة الدفع"),
   student_cost: z.string().optional(),
 
   sms_lesson_reminders: z.boolean(),
@@ -48,14 +41,14 @@ export const AddStudentToFamilySchema = z.object({
   web_reminders: z.boolean(),
   // send_welcome_email: z.boolean(),
   user_account: z.boolean(),
-  is_superuser: z.boolean(),
+  is_superuser: z.boolean().optional(),
 });
 
 export type TAddStudentToFamilyFormData = z.infer<
   typeof AddStudentToFamilySchema
 >;
 
-type TKeysToOmit = "status" ;
+type TKeysToOmit = "status" | "initial_services" | "initial_teachers" | 'subject_choices';
 
 export type TAddStudentToFamilyFormDataForServer = Omit<
   TAddStudentToFamilyFormData,
@@ -63,4 +56,7 @@ export type TAddStudentToFamilyFormDataForServer = Omit<
 > & {
   status: boolean;
   student_type: string;
+  initial_services?: number[];
+  initial_teachers?: number[];
+  subject_choices?: number[];
 };

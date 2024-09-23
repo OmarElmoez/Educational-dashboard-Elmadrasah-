@@ -11,7 +11,7 @@ type TProps = {
   token: string | undefined;
   hasFiles?: boolean;
   purpose: TPurpose;
-  formData: TPostEndPoints[TPurpose]["dataType"];
+  formData: TPostEndPoints[TPurpose]["dataType"] | FormData;
 };
 
 const actSendDataToServer = createAsyncThunk(
@@ -19,25 +19,29 @@ const actSendDataToServer = createAsyncThunk(
   async ({ token, hasFiles = false, purpose, formData }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
-    // Create a new FormData object with validated data
-    const validatedFormData = new FormData();
+    if (hasFiles) {
+      // Create a new FormData object with validated data
+      const validatedFormData = new FormData();
 
-    // Add validated regular data to FormData
-    Object.entries(formData).forEach(([key, value]) => {
-      if (
-        typeof value === "object" &&
-        value !== null &&
-        !(value[0] instanceof File)
-      ) {
-        validatedFormData.append(key, JSON.stringify(value));
-      } else if (Array.isArray(value) && value[0] instanceof File) {
-        value.forEach((file, index) => {
-          validatedFormData.append(`${key}[${index}]`, file);
-        });
-      } else {
-        validatedFormData.append(key, String(value));
-      }
-    });
+      // Add validated regular data to FormData
+      Object.entries(formData).forEach(([key, value]) => {
+        if (
+          typeof value === "object" &&
+          value !== null &&
+          !(value[0] instanceof File)
+        ) {
+          validatedFormData.append(key, JSON.stringify(value));
+        } else if (Array.isArray(value) && value[0] instanceof File) {
+          value.forEach((file, index) => {
+            validatedFormData.append(`${key}[${index}]`, file);
+          });
+        } else {
+          validatedFormData.append(key, String(value));
+        }
+      });
+      formData = validatedFormData;
+    }
+    
     try {
       const url = POST_END_POINTS[purpose].url;
       const config = {
@@ -49,7 +53,7 @@ const actSendDataToServer = createAsyncThunk(
 
       const response = await axios.post<TProps["formData"]>(
         url,
-        validatedFormData,
+        formData,
         config
       );
       console.log("response", response);

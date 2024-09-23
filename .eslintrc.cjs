@@ -24,4 +24,12 @@ module.exports = {
     ],
     "no-unused-vars": "off",
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'], // Apply these rules only for TypeScript files
+      rules: {
+        'react/prop-types': 'off', // Disable prop-types validation for TypeScript files
+      },
+    },
+  ],
 }
