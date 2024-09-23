@@ -28,11 +28,13 @@ export const AddStudentToFamilySchema = z.object({
   school: z.string().nullable().optional(),
   grade: z.string().nullable().optional(),
   student_curriculum: z.string().nullable(),
-  subject_choices: z.array(z.string()),
+
+  subject_choices: z.array(z.string()),//*
   additional_notes: z.string().optional(),
-  initial_services: z.array(z.string()).optional(),
+  initial_services: z.array(z.string()).optional(),//*
   initial_location: z.string().optional(),
-  initial_teachers: z.array(z.string()).optional(),
+  initial_teachers: z.array(z.string()).optional(), //*
+
   calendar_color: z.string().optional(),
   billing_method: z.enum(["Use Student Profile Price"], {
     errorMap: () => ({ message: "برجاء اختيار طريقة الدفع" }),

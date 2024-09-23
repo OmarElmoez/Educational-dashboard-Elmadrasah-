@@ -26,6 +26,7 @@ import { actGetDropdownOptions } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import { useFeedback } from "@/store/context/FeedbackProvider";
 
 // -------------------------------------------------------------------------
 
@@ -36,6 +37,8 @@ const AddStudentForm = () => {
   const { countries, cities, states, chosenState } = useAppSelector(
     (state) => state.location
   );
+
+  const { openFeedbackModal } = useFeedback();
 
   const [locationOptions, setLocationOptions] = useState<TOption[]>([]);
 
@@ -87,8 +90,10 @@ const AddStudentForm = () => {
       })
     )
       .unwrap()
-      .then(() => {
-        console.log("Student added successfully");
+        .then(() => {
+        openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+      }).catch((error) => {
+        openFeedbackModal("failed","حدثت مشكلة أثناء إرسال طلبك.", error);
       });
   };
 

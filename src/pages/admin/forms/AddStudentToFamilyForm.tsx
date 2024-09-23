@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
+import { useFeedback } from "@/store/context/FeedbackProvider";
 import {
   ColorField,
   Dropdown,
@@ -36,6 +37,7 @@ import AddParentForm from "./AddParentForm";
 const AddStudentToFamilyForm = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const { openFeedbackModal } = useFeedback();
 
   const { countries } = useAppSelector((state) => state.location);
 
@@ -85,8 +87,11 @@ const AddStudentToFamilyForm = () => {
     )
       .unwrap()
       .then(() => {
-        console.log("student added successfully");
+        openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+      }).catch((error) => {
+        openFeedbackModal("failed","حدثت مشكلة أثناء إرسال طلبك.", error);
       });
+
   };
 
   useEffect(() => {

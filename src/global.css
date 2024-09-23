@@ -251,7 +251,9 @@ menu {
   gap: 0.8rem;
   position: relative;
   padding-bottom: 2.4rem;
-  align-self: flex-start;
+  max-width: 991px;
+  align-self: stretch;
+
 }
 
 .inputField,

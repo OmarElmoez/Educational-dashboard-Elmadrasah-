@@ -52,9 +52,12 @@ const actSendDataToServer = createAsyncThunk(
         validatedFormData,
         config
       );
+      console.log("response", response);
+      
       return response.data;
-    } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+    } catch (error: any) {
+      console.log("error", error?.response?.data?.detail);
+      return rejectWithValue(axiosErrorHandler( error));
     }
   }
 );

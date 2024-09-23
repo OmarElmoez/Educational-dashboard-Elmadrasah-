@@ -245,7 +245,10 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
                 )}
               </article>
             ))}
-            <button type="submit" disabled={loading === "pending" || error !== null}>
+            <button
+              type="submit"
+              disabled={loading === "pending" || error !== null}
+            >
               {loading === "pending" ? "...جاري الارسال" : "ارسال"}
             </button>
             {error && (
