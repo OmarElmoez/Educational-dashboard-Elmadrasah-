@@ -16,6 +16,11 @@ export const AddParentSchema = z.object({
     .string()
     .min(1, "برجاء ادخال البريد الإلكتروني")
     .email("برجاء ادخال بريد إلكتروني صحيح"),
+  additional_email: z
+    .string()
+    .min(1, "برجاء ادخال البريد الإلكتروني")
+    .email("برجاء ادخال بريد إلكتروني صحيح")
+    .optional(),
 
   mobile_phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);

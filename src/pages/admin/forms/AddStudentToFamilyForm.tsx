@@ -58,7 +58,7 @@ const AddStudentToFamilyForm = () => {
     resolver: zodResolver(AddStudentToFamilySchema),
     defaultValues: {
       calendar_color: INITIAL_CALENDAR_COLOR,
-    }
+    },
   });
 
   const onSubmit = (data: TAddStudentToFamilyFormData) => {
@@ -118,22 +118,6 @@ const AddStudentToFamilyForm = () => {
     )
       .unwrap()
       .then((data) => setLocationOptions(data));
-    // dispatch(
-    //   actGetChoices({
-    //     token: user?.token,
-    //     url: END_POINTS["initial_location"].url,
-    //   })
-    // )
-    //   .unwrap()
-    //   .then((res) => {
-    //     const formattedChoices = res.map((location) => {
-    //       return {
-    //         label: location.name,
-    //         value: location.id.toString(),
-    //       };
-    //     });
-    //     setLocationOptions(formattedChoices);
-    //   });
 
     dispatch(
       actGetDropdownOptions({ token: user?.token, optionsFor: "curriculums" })
@@ -141,44 +125,11 @@ const AddStudentToFamilyForm = () => {
       .unwrap()
       .then((data) => setCurriculumOptions(data));
 
-    // dispatch(
-    //   actGetChoices({
-    //     token: user?.token,
-    //     url: END_POINTS["student_curriculum"].url,
-    //   })
-    // )
-    //   .unwrap()
-    //   .then((res) => {
-    //     const formattedChoices = res.map((curriculum) => {
-    //       return {
-    //         label: curriculum.name,
-    //         value: curriculum.id.toString(),
-    //       };
-    //     });
-    //     setCurriculumOptions(formattedChoices);
-    //   });
-
     dispatch(
       actGetDropdownOptions({ token: user?.token, optionsFor: "families" })
     )
       .unwrap()
       .then((data) => setFamiliesList(data));
-    // dispatch(
-    //   actGetChoices({
-    //     token: user?.token,
-    //     url: END_POINTS["family"].url,
-    //   })
-    // )
-    //   .unwrap()
-    //   .then((res) => {
-    //     const formattedChoices = res.map((family) => {
-    //       return {
-    //         label: family.name,
-    //         value: family.id.toString(),
-    //       };
-    //     });
-    //     setFamiliesList(formattedChoices);
-    //   });
   }, [dispatch, user?.token]);
 
   const addNewFamilyRef = useRef<TModalRef>(null);
@@ -186,7 +137,6 @@ const AddStudentToFamilyForm = () => {
   return (
     <>
       <BasicModal ref={addNewFamilyRef}>
-        {/* <ModalChildren onCloseHandler={handleCloseModal} /> */}
         <AddParentForm />
       </BasicModal>
 
@@ -291,6 +241,7 @@ const AddStudentToFamilyForm = () => {
           />
           <InputField
             type="date"
+            isRequired
             label="تاريخ الميلاد "
             placeholder=" يوم / شهر / سنه"
             register={register}
@@ -423,7 +374,7 @@ const AddStudentToFamilyForm = () => {
 
         <hr className="hr" />
 
-        <div className="flex-end">
+        <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
             {isSubmitting ? (
               <CircleLoadingIndecator size={16} color="#fff" />
@@ -437,7 +388,7 @@ const AddStudentToFamilyForm = () => {
             onClick={() => {
               reset();
             }}
-            className="btn"
+            className="btn cancel-btn"
           >
             يلغى
           </button>

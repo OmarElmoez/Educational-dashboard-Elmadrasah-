@@ -103,6 +103,7 @@ const AddParentForm = () => {
           label="اللقب"
           register={register}
           options={EMPLOYEE_TITLES}
+          isRequired
           name="salutation"
           error={errors.salutation?.message as string}
         />
@@ -110,7 +111,7 @@ const AddParentForm = () => {
 
       <Row>
         <InputField
-          label="الأسم الأول"
+          label="الأسم  الأول"
           isRequired
           placeholder="الأسم الأول"
           register={register}
@@ -147,6 +148,14 @@ const AddParentForm = () => {
           register={register}
           name="email"
           error={errors.email?.message as string}
+        />
+        <InputField
+          label=" البريد الإلكتروني اخر"
+          isRequired
+          placeholder="البريد الإلكتروني"
+          register={register}
+          name="additional_email"
+          error={errors.additional_email?.message as string}
         />
       </Row>
 
@@ -268,7 +277,7 @@ const AddParentForm = () => {
 
       <hr className="hr" />
 
-      <div className="flex-end">
+      <div className="submit-buttons-container">
         <button type="submit" className="btn submit-btn">
           {isSubmitting ? (
             <CircleLoadingIndecator size={16} color="#fff" />

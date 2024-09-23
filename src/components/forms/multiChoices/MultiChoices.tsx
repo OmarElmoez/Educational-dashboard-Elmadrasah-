@@ -37,10 +37,12 @@ const MultiChoices = <T extends FieldValues>({
   register,
   name,
   error,
+  isRequired,
 }: {
   register: UseFormRegister<T>;
   name: Path<T>;
   error: string;
+  isRequired?: boolean;
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
@@ -118,7 +120,10 @@ const MultiChoices = <T extends FieldValues>({
 
   return (
     <article className="group">
-      <label htmlFor={name} className="adminFormLabel">
+      <label
+        htmlFor={name}
+        className={`adminFormLabel ${isRequired && "required"}`}
+      >
         يرجي اختيار {END_POINTS[name as keyof typeof END_POINTS].placeholder}
       </label>
       <section

@@ -9,21 +9,27 @@ const InputField = <T extends FieldValues>({
   label,
   placeholder,
   textarea,
-  isRequired=false,
+  isRequired = false,
 }: TInputField<T>) => {
-
   return (
     <article className="group">
-      <label htmlFor={name} className="adminFormLabel">
-        {label} {isRequired && <span className="required-star"> * </span>}
+      <label
+        htmlFor={name}
+        className={`adminFormLabel ${isRequired && "required"}`}
+      >
+        {label}
       </label>
-      {textarea ? <textarea id="name" {...register(name)} placeholder={placeholder} /> : <input
-        type={type}
-        className="inputField"
-        id={name}
-        {...register(name)}
-        placeholder={placeholder}
-      />}
+      {textarea ? (
+        <textarea id="name" {...register(name)} placeholder={placeholder} />
+      ) : (
+        <input
+          type={type}
+          className="inputField"
+          id={name}
+          {...register(name)}
+          placeholder={placeholder}
+        />
+      )}
       <p className="error" style={{ position: "absolute", bottom: "0" }}>
         {error}
       </p>

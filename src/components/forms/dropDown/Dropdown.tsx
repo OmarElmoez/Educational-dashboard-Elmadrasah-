@@ -36,8 +36,8 @@ const Dropdown = <T extends FieldValues>({
 
   return (
     <article className="group">
-      <label className="adminFormLabel">
-        {label} {isRequired && <span className="required-star"> * </span>}
+      <label className={`adminFormLabel ${isRequired && 'required' }`}>
+        {label}
       </label>
       <div className="select_wrapper">
         <select

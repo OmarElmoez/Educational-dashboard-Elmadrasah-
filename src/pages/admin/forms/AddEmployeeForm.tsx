@@ -61,6 +61,7 @@ const AddEmployeeForm = () => {
     control,
     formState: { errors, isSubmitting },
     setValue,
+    reset,
     watch,
   } = useForm<TAddEmployeeFormData>({
     mode: "onBlur",
@@ -157,6 +158,7 @@ const AddEmployeeForm = () => {
             name="employee_type"
             register={register}
             options={EMPLOYEE_TYPES}
+            isRequired
             error={errors.employee_type?.message as string}
           />
 
@@ -173,6 +175,7 @@ const AddEmployeeForm = () => {
           <InputField
             label="الأسم الأول"
             placeholder="الأسم الأول"
+            isRequired
             register={register}
             name="first_name"
             error={errors.first_name?.message as string}
@@ -181,6 +184,7 @@ const AddEmployeeForm = () => {
           <InputField
             label="الأسم الأخير"
             placeholder="الأسم الأخير"
+            isRequired
             register={register}
             name="last_name"
             error={errors.last_name?.message as string}
@@ -192,6 +196,7 @@ const AddEmployeeForm = () => {
             label="الأسم بالكامل"
             placeholder="الأسم بالكامل"
             register={register}
+            isRequired
             name="full_name"
             error={errors.full_name?.message as string}
           />
@@ -203,12 +208,14 @@ const AddEmployeeForm = () => {
             register={register}
             options={EMPLOYEE_TITLES}
             name="title"
+            isRequired
             error={errors.title?.message as string}
           />
 
           <InputField
             label="البريد الإلكتروني"
             placeholder="البريد الإلكتروني"
+            isRequired
             register={register}
             name="email"
             error={errors.email?.message as string}
@@ -219,6 +226,7 @@ const AddEmployeeForm = () => {
           <PhoneField
             control={control as any}
             name="phone"
+            isRequired
             error={errors.phone?.message as string}
             label="الهاتف المحمول"
           />
@@ -280,6 +288,7 @@ const AddEmployeeForm = () => {
           <Dropdown
             label="التوقيت الزمني"
             name="time_zone"
+            isRequired
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors.time_zone?.message as string}
@@ -310,6 +319,7 @@ const AddEmployeeForm = () => {
             label="تاريخ الميلاد"
             placeholder="يوم / شهر / سنه"
             type="date"
+            isRequired
             register={register}
             name="birth_date"
             error={errors.birth_date?.message as string}
@@ -326,7 +336,9 @@ const AddEmployeeForm = () => {
 
         <hr className="hr" />
 
-        <Heading text="المرفقات" />
+        <span className="mainContainer">
+          <Heading text="المرفقات" /> <span className="required"></span>
+        </span>
 
         <Row>
           <UploadFile
@@ -400,6 +412,7 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="subject_choices"
+            isRequired
             error={errors.subject_choices?.message as string}
           />
 
@@ -631,20 +644,26 @@ const AddEmployeeForm = () => {
           user_account="user_account"
           errors={errors}
         />
-        <button type="submit" className="btn submit-btn">
-          {isSubmitting ? (
-            <CircleLoadingIndecator size={16} color="#fff" />
-          ) : (
-            " حفظ"
-          )}
-        </button>
-        <button
-          type="button"
-          className="btn cancel-btn"
-          onClick={() => console.log(errors)}
-        >
-          check
-        </button>
+
+        <div className="submit-buttons-container">
+          <button type="submit" className="btn submit-btn">
+            {isSubmitting ? (
+              <CircleLoadingIndecator size={16} color="#fff" />
+            ) : (
+              " حفظ"
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              reset();
+            }}
+            className="btn cancel-btn"
+          >
+            يلغى
+          </button>
+        </div>
       </form>
     </>
   );
