@@ -63,6 +63,7 @@ export const AddParentSchema = z.object({
   web_reminders: z.boolean().optional(),
   // send_welcome_email: z.boolean().optional(),
   user_account: z.boolean().optional(),
+  is_superuser: z.boolean(),
 });
 
 export type TAddParentFormData = z.infer<typeof AddParentSchema>;

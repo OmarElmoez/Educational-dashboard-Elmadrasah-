@@ -51,6 +51,8 @@ const AddParentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
+    data['is_superuser'] = false;
+
     // Add region to timezone value
     data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
 

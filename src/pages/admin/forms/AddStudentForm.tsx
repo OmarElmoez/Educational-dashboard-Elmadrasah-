@@ -63,6 +63,8 @@ const AddStudentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
+    data['is_superuser'] = false;
+
     data.students_attributes.birth_date = format(
       data.students_attributes.birth_date || "",
       "yyyy-MM-dd"

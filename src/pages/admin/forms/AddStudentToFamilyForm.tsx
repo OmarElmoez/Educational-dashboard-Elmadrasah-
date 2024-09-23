@@ -66,9 +66,11 @@ const AddStudentToFamilyForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
+    data['is_superuser'] = false;
+
     data.birth_date = format(data.birth_date || "", "yyyy-MM-dd");
     data.start_date = format(data.start_date || "", "yyyy-MM-dd");
-    console.log("data", data);
+
 
     const serverData: TAddStudentToFamilyFormDataForServer = {
       ...data,
@@ -76,7 +78,7 @@ const AddStudentToFamilyForm = () => {
       status: data["status"] === "true",
     };
 
-    console.log("serverData", serverData);
+
 
     dispatch(
       actSendDataToServer({
