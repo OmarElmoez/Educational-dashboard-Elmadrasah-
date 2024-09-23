@@ -87,7 +87,7 @@ export const AddEmployeeSchema = z.object({
     web_reminders: z.boolean().optional(),
     // send_welcome_email: z.boolean().optional(),
     user_account: z.boolean().optional(),
-    is_superuser: z.boolean(),
+    is_superuser: z.boolean().optional(),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;

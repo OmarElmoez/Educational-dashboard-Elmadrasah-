@@ -393,7 +393,6 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="subject_choices"
-            keyName="subject_choices"
             error={errors.subject_choices?.message as string}
           />
 
@@ -599,7 +598,6 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="initial_students"
-            keyName="initial_students"
             error={errors.initial_students?.message as string}
           />
 
