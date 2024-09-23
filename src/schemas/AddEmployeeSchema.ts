@@ -10,19 +10,17 @@ const TimeEntrySchema = z.object({
 });
 
 export const AddEmployeeSchema = z.object({
+  employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
+  is_active: z.string().min(1, "برجاء اختيار الحالة"),
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
   full_name: z.string().min(1, "برجاء ادخال الاسم الكامل"),
+  title: z.string().min(1, "برجاء اختيار اللقب"),
   email: z
     .string()
     .min(1, "برجاء ادخال البريد الإلكتروني")
     .email("برجاء ادخال بريد إلكتروني صحيح"),
-  employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
-  title: z.string().min(1, "برجاء اختيار اللقب"),
-  wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
-  work_wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
-  default_subject: z.string().min(1, "برجاء اختيار المادة"),
-  is_active: z.string().min(1, "برجاء اختيار الحالة"),
+
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
@@ -33,40 +31,47 @@ export const AddEmployeeSchema = z.object({
         // This regex only allows digits, spaces, dashes, and a plus sign at the start
         return /^[+]?[\d\s-]+$/.test(value);
       },
-      {
-        message: "برجاء ادخال رقم هاتف صحيح",
-      }
+      { message: "برجاء ادخال رقم هاتف صحيح" }
     )
     .optional(),
+
+  address: z.string().min(1, "برجاء ادخال العنوان").optional(),
+  address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
+  country: z.string().min(1, "برجاء اختيار الدولة").optional(),
+
+  state: z.string().min(1, "برجاء اختيار الولاية/المحافظة").optional(),
+  city: z.string().min(1, "برجاء اختيار المدينة").optional(),
+  zip: z.string().min(1, "برجاء ادخال الرمز البريدي").optional(),
+  additional_notes: z.string().optional(),
+  time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
+  birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
+  place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
+
+  wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
+  work_wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
+  default_subject: z.string().min(1, "برجاء اختيار المادة"),
   uploaded_pp: z.array(z.instanceof(File)),
   uploaded_cv: z.array(z.instanceof(File)),
   uploaded_id: z.array(z.instanceof(File)),
   uploaded_passport: z.array(z.instanceof(File)),
-  state: z.string().min(1, "برجاء اختيار الولاية/المحافظة"),
-  city: z.string().min(1, "برجاء اختيار المدينة"),
-  country: z.string().min(1, "برجاء اختيار الدولة"),
-  time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
-  address: z.string().min(1, "برجاء ادخال العنوان").optional(),
-  address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
-  zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
-  additional_notes: z.string().optional(),
-  bio: z.string().optional(),
-  birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
-  hire_date: z.string().min(1, "برجاء ادخال تاريخ التوظيف"),
+
   national_id_expiration_date: z
     .string()
     .min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z
     .string()
     .min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
-  place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
+
   subject_choices: z.array(z.string()).min(1, "برجاء اختيار مادة"),
-  initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
   position: z.string().min(1, "برجاء ادخال المسمى"),
+  bio: z.string().optional().optional(),
+  hire_date: z.string(),
+
+  initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
   link: z.string().optional(),
   employee_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
   work_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
-  calendar_color: z.string().min(1, "برجاء اختيار لون التقويم"),
+  calendar_color: z.string().optional(),
   calendar_setting: z.enum(["Day", "Month", "Week"], {
     errorMap: () => ({ message: "برجاء اختيار اعدادات التقويم" }),
   }),
@@ -74,20 +79,14 @@ export const AddEmployeeSchema = z.object({
   calendar_color_by: z.enum(["Student", "Website", "Lesson"], {
     errorMap: () => ({ message: "برجاء اختيار درس التقويم" }),
   }),
-  sms_lesson_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  email_lesson_reminders: z
-    .boolean()
-    .refine((val) => typeof val === "boolean", {
-      message: "برجاء اختيار الحالة",
-    }),
-    whatsapp_reminders: z.boolean().optional(),
-    app_reminders: z.boolean().optional(),
-    web_reminders: z.boolean().optional(),
-    // send_welcome_email: z.boolean().optional(),
-    user_account: z.boolean().optional(),
-    is_superuser: z.boolean().optional(),
+  sms_lesson_reminders: z.boolean().optional(),
+  email_lesson_reminders: z.boolean().optional(),
+  whatsapp_reminders: z.boolean().optional(),
+  app_reminders: z.boolean().optional(),
+  web_reminders: z.boolean().optional(),
+  // send_welcome_email: z.boolean().optional(),
+  user_account: z.boolean().optional(),
+  is_superuser: z.boolean().optional(),
 });
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
@@ -96,7 +95,7 @@ type TKeysToOmit =
   | "default_subject"
   | "subject_choices"
   | "is_active"
-  | "initial_students"
+  | "initial_students";
 
 export type TAddEmployeeFormDataForServer = Omit<
   TAddEmployeeFormData,

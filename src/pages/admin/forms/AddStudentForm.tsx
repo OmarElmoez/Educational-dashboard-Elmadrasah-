@@ -75,8 +75,8 @@ const AddStudentForm = () => {
         last_name: data.last_name,
         email: data.email,
         mobile_phone: data.mobile_phone,
-        birth_date: data.birth_date,
-        start_date: data.start_date,
+        birth_date: data?.birth_date || null,
+        start_date: data?.start_date || null,
         school: data.school,
         grade: data.grade,
         additional_notes: data.additional_notes,
@@ -446,7 +446,7 @@ const AddStudentForm = () => {
 
       <hr className="hr" />
 
-      <div className="flex-end">
+      <div className="submit-buttons-container">
         <button type="submit" className="btn submit-btn">
           {isSubmitting ? (
             <CircleLoadingIndecator size={16} color="#fff" />
@@ -460,7 +460,7 @@ const AddStudentForm = () => {
           onClick={() => {
             reset();
           }}
-          className="btn"
+          className="btn cancel-btn"
         >
           يلغى
         </button>
