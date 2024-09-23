@@ -46,6 +46,7 @@ export const AddStudentToFamilySchema = z.object({
   web_reminders: z.boolean(),
   // send_welcome_email: z.boolean(),
   user_account: z.boolean(),
+  is_superuser: z.boolean(),
 });
 
 export type TAddStudentToFamilyFormData = z.infer<
