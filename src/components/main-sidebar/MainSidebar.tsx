@@ -61,7 +61,7 @@ const MainSidebar = ({ data }: TSidebarProps) => {
       style={
         isPhone
           ? undefined
-          : { width: expanded ? "200px" : "85px", transition: "0.3s" }
+          : { width: expanded ? "250px" : "85px", transition: "0.3s" }
       }
     >
       {isPhone ? (

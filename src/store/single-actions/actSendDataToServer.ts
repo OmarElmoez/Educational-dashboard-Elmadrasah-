@@ -19,8 +19,6 @@ const actSendDataToServer = createAsyncThunk(
   async ({ token, hasFiles = false, purpose, formData }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
-      console.log(formData);
-
     // Create a new FormData object with validated data
     const validatedFormData = new FormData();
 

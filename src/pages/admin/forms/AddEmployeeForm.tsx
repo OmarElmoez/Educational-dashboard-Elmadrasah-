@@ -28,7 +28,11 @@ import { useEffect, useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES } from "@/constants/dropdown-options";
+import {
+  DAYS_OPTIONS,
+  WAGE_TYPES,
+  WORK_WAGE_TYPES,
+} from "@/constants/dropdown-options";
 import { TModalRef } from "@/types/shared";
 import {
   CalendarSettingsForm,
@@ -36,7 +40,7 @@ import {
 } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
-import { actGetFormSubjects } from "@/store/form-subjects/FormSubjectsSlice";
+import { actGetDropdownOptions } from "@/store/single-actions";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
@@ -122,7 +126,9 @@ const AddEmployeeForm = () => {
   }, [dispatch, countries]);
 
   useEffect(() => {
-    dispatch(actGetFormSubjects({ token: user?.token }));
+    dispatch(
+      actGetDropdownOptions({ token: user?.token, optionsFor: "subjects" })
+    );
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
