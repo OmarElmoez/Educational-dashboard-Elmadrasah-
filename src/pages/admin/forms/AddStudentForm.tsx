@@ -1,4 +1,5 @@
 import {
+  CircleLoadingIndecator,
   ColorField,
   CountriesDropdown,
   Dropdown,
@@ -26,7 +27,7 @@ import { actGetDropdownOptions } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
 import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
-import { useFeedback } from "@/store/context/FeedbackProvider";
+import { useFeedback } from "@/store/context";
 
 // -------------------------------------------------------------------------
 
@@ -46,7 +47,7 @@ const AddStudentForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     reset,
   } = useForm<TAddStudentFormData>({
@@ -63,7 +64,7 @@ const AddStudentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
-    data['is_superuser'] = false;
+    data["is_superuser"] = false;
 
     data.students_attributes.birth_date = format(
       data.students_attributes.birth_date || "",
@@ -92,10 +93,11 @@ const AddStudentForm = () => {
       })
     )
       .unwrap()
-        .then(() => {
+      .then(() => {
         openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
-      }).catch((error) => {
-        openFeedbackModal("failed","حدثت مشكلة أثناء إرسال طلبك.", error);
+      })
+      .catch((error) => {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
       });
   };
 
@@ -448,7 +450,11 @@ const AddStudentForm = () => {
 
       <div className="flex-end">
         <button type="submit" className="btn submit-btn">
-          حفظ
+          {!isSubmitting ? (
+            <CircleLoadingIndecator size={16} color="#fff" />
+          ) : (
+            " حفظ"
+          )}
         </button>
 
         <button

@@ -1,7 +1,5 @@
 import { FeedbackProvider } from "./FeedbackProvider";
 import { SidebarContextProvider } from "./SidebarContext";
+import { useFeedback } from "./useFeedback";
 
-export {
-    FeedbackProvider,
-    SidebarContextProvider,
-}
+export { useFeedback, FeedbackProvider, SidebarContextProvider };

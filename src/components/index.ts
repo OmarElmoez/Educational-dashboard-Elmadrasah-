@@ -7,6 +7,7 @@ import ReviewForm from "./review-form/ReviewForm";
 import InfoCard from "./info-card/InfoCard";
 import Heading from "./heading/Heading";
 import LoadingIndicator from "./loadingIndicator/LoadingIndicator";
+import CircleLoadingIndecator from "./loadingIndicator/CircleLoadingIndecator";
 import ReviewFeedback from "./feedback/review-status/ReviewFeedback";
 import FeedbackAlert from "./feedback/alertbar/FeedbackAlert";
 import Row from "./row/Row";
@@ -32,6 +33,7 @@ export {
   InfoCard,
   Heading,
   LoadingIndicator,
+  CircleLoadingIndecator,
   ReviewFeedback,
   FeedbackAlert,
   Row,

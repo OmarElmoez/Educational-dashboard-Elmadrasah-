@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { useFeedback } from "@/store/context/FeedbackProvider";
+import { useFeedback } from "@/store/context";
 import {
   ColorField,
   Dropdown,
@@ -10,6 +10,7 @@ import {
   MultiChoices,
   PhoneField,
   Row,
+  CircleLoadingIndecator,
 } from "@/components";
 import { InputField } from "@/components";
 import { NotificationForm } from "@/components/mini-forms";
@@ -49,7 +50,7 @@ const AddStudentToFamilyForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     reset,
   } = useForm<TAddStudentToFamilyFormData>({
@@ -66,19 +67,16 @@ const AddStudentToFamilyForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
-    data['is_superuser'] = false;
+    data["is_superuser"] = false;
 
     data.birth_date = format(data.birth_date || "", "yyyy-MM-dd");
     data.start_date = format(data.start_date || "", "yyyy-MM-dd");
-
 
     const serverData: TAddStudentToFamilyFormDataForServer = {
       ...data,
       student_type: "child",
       status: data["status"] === "true",
     };
-
-
 
     dispatch(
       actSendDataToServer({
@@ -90,10 +88,10 @@ const AddStudentToFamilyForm = () => {
       .unwrap()
       .then(() => {
         openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
-      }).catch((error) => {
-        openFeedbackModal("failed","حدثت مشكلة أثناء إرسال طلبك.", error);
+      })
+      .catch((error) => {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
       });
-
   };
 
   useEffect(() => {
@@ -159,7 +157,7 @@ const AddStudentToFamilyForm = () => {
 
   return (
     <>
-      <BasicModal ref={addNewFamilyRef} >
+      <BasicModal ref={addNewFamilyRef}>
         {/* <ModalChildren onCloseHandler={handleCloseModal} /> */}
         <AddParentForm />
       </BasicModal>
@@ -175,10 +173,7 @@ const AddStudentToFamilyForm = () => {
             name="customer"
             register={register}
             options={familiesList}
-            // options={[
-            //   { label: "test", value: "1" },
-            //   { label: " test_2", value: "17" },
-            // ]}
+            isWithPopup
             subjectRef={addNewFamilyRef}
             error={errors.customer?.message as string}
           />
@@ -405,7 +400,11 @@ const AddStudentToFamilyForm = () => {
 
         <div className="flex-end">
           <button type="submit" className="btn submit-btn">
-            حفظ
+            {!isSubmitting ? (
+              <CircleLoadingIndecator size={16} color="#fff" />
+            ) : (
+              " حفظ"
+            )}
           </button>
 
           <button
@@ -417,15 +416,6 @@ const AddStudentToFamilyForm = () => {
           >
             يلغى
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              console.log("errors", errors);
-            }}
-            className="btn"
-          >
-            test
-          </button>
         </div>
       </form>
     </>
@@ -433,4 +423,3 @@ const AddStudentToFamilyForm = () => {
 };
 
 export default AddStudentToFamilyForm;
-

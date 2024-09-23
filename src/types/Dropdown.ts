@@ -16,6 +16,7 @@ type TDropdownProps<T extends FieldValues> = {
   error: string;
   isRequired?: boolean;
   subjectRef?: React.RefObject<TModalRef>;
+  isWithPopup?: boolean;
 };
 
 export type { TOption, TDropdownProps };
