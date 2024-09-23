@@ -1,5 +1,6 @@
 import {
   AddNewSubjectModal,
+  CircleLoadingIndecator,
   CountriesDropdown,
   Dropdown,
   Heading,
@@ -41,12 +42,15 @@ import {
 import CloseButton from "@/assets/close-button.svg?react";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 import { actGetDropdownOptions } from "@/store/single-actions";
+import { useFeedback } from "@/store/context";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
+
+  const { openFeedbackModal } = useFeedback();
 
   // const [choices, setChoices] = useState<TOption[]>([]);
   const { subjects } = useAppSelector((state) => state.formSubjects);
@@ -55,7 +59,7 @@ const AddEmployeeForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     watch,
   } = useForm<TAddEmployeeFormData>({
@@ -91,7 +95,7 @@ const AddEmployeeForm = () => {
     }
     data["phone"] = enteredPhoneParts.join("");
 
-    data['is_superuser'] = false;
+    data["is_superuser"] = false;
 
     // Add region to timezone value
     data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
@@ -118,7 +122,10 @@ const AddEmployeeForm = () => {
     )
       .unwrap()
       .then(() => {
-        console.log("Employee added successfully");
+        openFeedbackModal("succeeded", "تم اضافة الموظف بنجاح!");
+      })
+      .catch((error) => {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
       });
   };
   useEffect(() => {
@@ -470,6 +477,7 @@ const AddEmployeeForm = () => {
           <Dropdown
             label="الموضوع"
             name="default_subject"
+            isWithPopup
             register={register}
             options={subjects}
             subjectRef={addNewSubjectRef}
@@ -624,7 +632,11 @@ const AddEmployeeForm = () => {
           errors={errors}
         />
         <button type="submit" className="btn submit-btn">
-          حفظ
+          {isSubmitting ? (
+            <CircleLoadingIndecator size={16} color="#fff" />
+          ) : (
+            " حفظ"
+          )}
         </button>
         <button
           type="button"

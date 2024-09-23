@@ -26,9 +26,10 @@ export const AddStudentToFamilySchema = z.object({
   student_curriculum: z.string().nullable(),
   subject_choices: z.array(z.string()).optional(),
   additional_notes: z.string().optional(),
-  initial_services: z.array(z.string()).optional(),
+  initial_services: z.array(z.string()).optional(),//*
   initial_location: z.string().optional(),
-  initial_teachers: z.array(z.string()).optional(),
+  initial_teachers: z.array(z.string()).optional(), //*
+
   calendar_color: z.string().optional(),
   billing_method: z.string().min(1, "برجاء اختيار طريقة الدفع"),
   student_cost: z.string().optional(),

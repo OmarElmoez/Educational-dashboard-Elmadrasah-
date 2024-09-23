@@ -1,4 +1,8 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  CircleLoadingIndecator,
   CountriesDropdown,
   Dropdown,
   Heading,
@@ -6,18 +10,16 @@ import {
   Row,
 } from "@/components";
 import { InputField } from "@/components";
-import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { NotificationForm } from "@/components/mini-forms";
+import { useFeedback } from "@/store/context";
 import { actGetCountries } from "@/store/location/LocationSlice";
+import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
+import { STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { TAddParentFormData, AddParentSchema } from "@/schemas/AddParentSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { STATUS_OPTIONS } from "@/constants/dropdown-options";
-import { NotificationForm } from "@/components/mini-forms";
-import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 // -------------------------------------------------------------------------
 
 const AddParentForm = () => {
@@ -25,6 +27,7 @@ const AddParentForm = () => {
 
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
+  const { openFeedbackModal } = useFeedback();
 
   const { user } = useAppSelector((state) => state.auth);
 
@@ -32,7 +35,7 @@ const AddParentForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     reset,
   } = useForm<TAddParentFormData>({
@@ -41,7 +44,7 @@ const AddParentForm = () => {
   });
 
   const onSubmit = (data: TAddParentFormData) => {
-    data['customer_type'] = 'family';
+    data["customer_type"] = "family";
 
     const enteredPhoneParts = data["mobile_phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -51,7 +54,7 @@ const AddParentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
-    data['is_superuser'] = false;
+    data["is_superuser"] = false;
 
     // Add region to timezone value
     data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
@@ -62,9 +65,14 @@ const AddParentForm = () => {
         purpose: "add_family",
         formData: data,
       })
-    ).unwrap().then(() => {
-      console.log("Parent added successfully");
-    });
+    )
+      .unwrap()
+      .then(() => {
+        openFeedbackModal("succeeded", "تم اضافة العائلة بنجاح!");
+      })
+      .catch((error) => {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
+      });
   };
 
   useEffect(() => {
@@ -224,7 +232,6 @@ const AddParentForm = () => {
         />
       </Row>
 
-
       <Row>
         <InputField
           label="الرمز البريدي"
@@ -263,7 +270,11 @@ const AddParentForm = () => {
 
       <div className="flex-end">
         <button type="submit" className="btn submit-btn">
-          حفظ
+          {isSubmitting ? (
+            <CircleLoadingIndecator size={16} color="#fff" />
+          ) : (
+            " حفظ"
+          )}
         </button>
 
         <button

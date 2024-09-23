@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+// import { format } from "date-fns";
+import { useFeedback } from "@/store/context";
 import {
   ColorField,
   Dropdown,
@@ -8,6 +10,7 @@ import {
   MultiChoices,
   PhoneField,
   Row,
+  CircleLoadingIndecator,
 } from "@/components";
 import { InputField } from "@/components";
 import { NotificationForm } from "@/components/mini-forms";
@@ -35,6 +38,7 @@ import AddParentForm from "./AddParentForm";
 const AddStudentToFamilyForm = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const { openFeedbackModal } = useFeedback();
 
   const { countries } = useAppSelector((state) => state.location);
 
@@ -46,7 +50,7 @@ const AddStudentToFamilyForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     reset,
   } = useForm<TAddStudentToFamilyFormData>({
@@ -95,7 +99,10 @@ const AddStudentToFamilyForm = () => {
     )
       .unwrap()
       .then(() => {
-        console.log("student added successfully");
+        openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+      })
+      .catch((error) => {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
       });
   };
 
@@ -194,10 +201,7 @@ const AddStudentToFamilyForm = () => {
             name="customer"
             register={register}
             options={familiesList}
-            // options={[
-            //   { label: "test", value: "1" },
-            //   { label: " test_2", value: "17" },
-            // ]}
+            isWithPopup
             subjectRef={addNewFamilyRef}
             error={errors.customer?.message as string}
           />
@@ -421,7 +425,11 @@ const AddStudentToFamilyForm = () => {
 
         <div className="flex-end">
           <button type="submit" className="btn submit-btn">
-            حفظ
+            {isSubmitting ? (
+              <CircleLoadingIndecator size={16} color="#fff" />
+            ) : (
+              " حفظ"
+            )}
           </button>
 
           <button
@@ -432,15 +440,6 @@ const AddStudentToFamilyForm = () => {
             className="btn"
           >
             يلغى
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              console.log("errors", errors);
-            }}
-            className="btn"
-          >
-            test
           </button>
         </div>
       </form>

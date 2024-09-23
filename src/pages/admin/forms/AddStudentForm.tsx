@@ -1,4 +1,8 @@
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  CircleLoadingIndecator,
   ColorField,
   CountriesDropdown,
   Dropdown,
@@ -8,24 +12,22 @@ import {
   Row,
 } from "@/components";
 import { InputField } from "@/components";
-import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
+import { NotificationForm } from "@/components/mini-forms";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
+import { actGetDropdownOptions } from "@/store/single-actions";
+import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import { useFeedback } from "@/store/context";
 import {
   AddStudentSchema,
   TAddStudentFormData,
   TAddStudentFormDataForServer,
 } from "@/schemas/AddStudentSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { TOption } from "@/types/Dropdown";
+import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
+import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
-import { NotificationForm } from "@/components/mini-forms";
-import { actGetDropdownOptions } from "@/store/single-actions";
-import { TOption } from "@/types/Dropdown";
-import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 
 // -------------------------------------------------------------------------
 
@@ -37,13 +39,15 @@ const AddStudentForm = () => {
     (state) => state.location
   );
 
+  const { openFeedbackModal } = useFeedback();
+
   const [locationOptions, setLocationOptions] = useState<TOption[]>([]);
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     reset,
   } = useForm<TAddStudentFormData>({
@@ -59,7 +63,6 @@ const AddStudentForm = () => {
       enteredPhoneParts[1] = firstPartOfNumber;
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
-
 
     const serverData: TAddStudentFormDataForServer = {
       ...data,
@@ -78,7 +81,7 @@ const AddStudentForm = () => {
         grade: data.grade,
         additional_notes: data.additional_notes,
         calendar_color: data.calendar_color,
-        status: data['status'] === 'true',
+        status: data["status"] === "true",
         billing_method: data.billing_method,
         student_cost: data.student_cost,
         initial_services: data["initial_services"]?.map((student) =>
@@ -100,7 +103,10 @@ const AddStudentForm = () => {
     )
       .unwrap()
       .then(() => {
-        console.log("Student added successfully");
+        openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+      })
+      .catch((error) => {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
       });
   };
 
@@ -442,13 +448,17 @@ const AddStudentForm = () => {
 
       <div className="flex-end">
         <button type="submit" className="btn submit-btn">
-          حفظ
+          {isSubmitting ? (
+            <CircleLoadingIndecator size={16} color="#fff" />
+          ) : (
+            " حفظ"
+          )}
         </button>
 
         <button
           type="button"
           onClick={() => {
-            reset()
+            reset();
           }}
           className="btn"
         >
