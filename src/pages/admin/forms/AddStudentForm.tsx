@@ -25,7 +25,6 @@ import { SERVICE_OPTIONS, STATUS_OPTIONS } from "@/constants/dropdown-options";
 import { NotificationForm } from "@/components/mini-forms";
 import { actGetDropdownOptions } from "@/store/single-actions";
 import { TOption } from "@/types/Dropdown";
-import { format } from "date-fns";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 
 // -------------------------------------------------------------------------
@@ -61,19 +60,6 @@ const AddStudentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
-    // data.birth_date = format(
-    //   data.birth_date || "",
-    //   "yyyy-MM-dd"
-    // );
-    // data.start_date = format(
-    //   data.start_date || "",
-    //   "yyyy-MM-dd"
-    // );
-
-    // data.first_name = data.first_name;
-    // data.last_name = data.last_name;
-    // data.email = data.email;
-    // data.mobile_phone = data.mobile_phone;
 
     const serverData: TAddStudentFormDataForServer = {
       ...data,
@@ -462,7 +448,7 @@ const AddStudentForm = () => {
         <button
           type="button"
           onClick={() => {
-            console.log(errors);
+            reset()
           }}
           className="btn"
         >

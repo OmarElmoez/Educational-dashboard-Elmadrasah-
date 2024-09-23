@@ -1,6 +1,6 @@
 import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
 import { TAddParentFormData } from "@/schemas/AddParentSchema";
-import { TAddStudentFormData, TAddStudentFormDataForServer } from "@/schemas/AddStudentSchema";
+import { TAddStudentFormDataForServer } from "@/schemas/AddStudentSchema";
 import { TAddStudentToFamilyFormDataForServer } from "@/schemas/AddStudentToFamilySchema";
 
 const END_POINTS = {
