@@ -11,8 +11,8 @@ export const CheckboxGroup = <T extends FieldValues>({
 }: TCheckboxGroup<T>) => {
   return (
     <article>
-      <label className="checkboxGroupLabel">
-        {name} {isRequired && <span className="required-star"> * </span>}
+      <label className={`checkboxGroupLabel ${isRequired && 'required' }`}>
+        {name} 
       </label>
       <div className="checkboxOptions">
         {options.map((option) => (

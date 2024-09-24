@@ -331,26 +331,24 @@ textarea::placeholder,
   margin-top: 2.4rem;
 }
 
-.required-star {
-  color: #E11D48;
-  margin-left: 5px;
-  vertical-align: middle;
-}
-
 .required::after {
   content: " *";
-  color: red; 
+  color: red;
   font-weight: 400;
-  font-size: 1.5rem;
-  margin-left: .5rem; 
+  font-size: 2.5rem;
+  position: absolute;
+  top: -10px;
+
 }
+
 /* ******************** GLOBAL CLASSES  *********************** */
 /* ******************** BUTTONS  *********************** */
 .submit-buttons-container {
   display: flex;
   justify-content: flex-end;
-  margin-inline-end: 10.1rem;
-
+  /* margin-inline-end: 10.1rem; */
+  margin-top: 2rem;
+  gap: 1rem;
 }
 
 .btn {
@@ -359,8 +357,6 @@ textarea::placeholder,
   padding-block: 1.5rem;
   border-radius: 1rem;
   min-width: 130px;
-  margin-right: 1.9rem;
-  margin-bottom: 3.6rem;
 }
 
 .submit-btn {
@@ -387,8 +383,6 @@ textarea::placeholder,
 
 
 /* ******************** FLEX & M  *********************** */
-
-
 
 
 .m-1 {
