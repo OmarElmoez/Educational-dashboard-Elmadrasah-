@@ -1,0 +1,2 @@
+1- Notification component needs to be more dynamic. ( get rid of passing names ).
+2- Apply (disable) for the whole section not just the input. ( ask for a design )
