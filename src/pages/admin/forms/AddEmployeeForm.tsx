@@ -337,7 +337,7 @@ const AddEmployeeForm = () => {
         <hr className="hr" />
 
         <span className="mainContainer">
-          <Heading text="المرفقات" /> <span className="required"></span>
+          <Heading text="المرفقات" /> <span className="required" style={{position: "relative", top: "0px"}}></span>
         </span>
 
         <Row>
