@@ -39,13 +39,13 @@
   cursor: pointer;
 }
 
-.checkboxItem:has(.checkboxInput:checked) .checkmark {
+.checkmark.checked {
   background-color: #1C8A44;
   color: #fff;
   border-color: #1C8A44
 }
 
-.checkboxItem:has(.checkboxInput:checked) .checkmark::after {
+.checkmark.checked::after {
   content: "";
   display: block;
   box-sizing: border-box;
@@ -54,7 +54,7 @@
   width: 6px;
   height: 10px;
   border-width: 0 2px 2px 0;
-  border-style: solid; 
+  border-style: solid;
   transform: rotate(45deg);
 }
 
@@ -79,4 +79,24 @@
   transform: rotate(-90deg);
   stroke-linecap: round;
   transition: stroke-dasharray 0.05s;
+}
+
+
+.select_box_flex {
+  display: flex;
+  gap: .5rem;
+}
+
+.close_btn {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer
 }
