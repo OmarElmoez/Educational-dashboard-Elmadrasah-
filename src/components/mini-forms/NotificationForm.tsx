@@ -16,6 +16,7 @@ export interface TNotificationFormProps<T extends FieldValues> {
   user_account: Path<T>;
   // send_welcome_email: Path<T>;
   errors: FieldErrors<T>;
+  disabled?: boolean;
 }
 
 const NotificationForm = <T extends FieldValues>({
@@ -28,46 +29,47 @@ const NotificationForm = <T extends FieldValues>({
   user_account,
   // send_welcome_email,
   errors,
+  disabled = false,
 }: TNotificationFormProps<T>) => {
   return (
     <>
       <Heading text="إشعارات الدرس" />
       <Row>
         <SingleCheckbox
+          disabled={disabled}
           register={register}
           name={sms_lesson_reminders}
           label="تفعيل تذكيرات الدروس"
-
           error={errors.sms_lesson_reminders?.message as string}
         />
         <SingleCheckbox
+          disabled={disabled}
           register={register}
           name={email_lesson_reminders}
           label="تلقي رسائل البريد الإلكتروني الخاصة بملاحظات الدروس"
-
           error={errors.email_lesson_reminders?.message as string}
         />
         <SingleCheckbox
+          disabled={disabled}
           register={register}
           name={whatsapp_reminders}
           label="تفعيل إشعارات الواتساب"
-
           error={errors.whatsapp_reminders?.message as string}
         />
       </Row>
       <Row>
         <SingleCheckbox
+          disabled={disabled}
           register={register}
           name={app_reminders}
           label="تفعيل إشعارات التطبيق"
-
           error={errors.app_reminders?.message as string}
         />
         <SingleCheckbox
+          disabled={disabled}
           register={register}
           name={web_reminders}
           label="تفعيل اشعارات الويب"
-
           error={errors.web_reminders?.message as string}
         />
       </Row>
@@ -75,6 +77,7 @@ const NotificationForm = <T extends FieldValues>({
 
       {/* <Heading text="إشعارات الترحيب" /> */}
       {/* <SingleCheckbox
+      disabled={disabled}
         register={register}
         name={send_welcome_email}
         label="إرسال بريد إلكتروني ترحيبي"
@@ -86,6 +89,7 @@ const NotificationForm = <T extends FieldValues>({
       <Heading text="حساب المستخدم" />
       <div className="flex-start-center">
         <SingleCheckbox
+          // disabled={disabled}
           register={register}
           name={user_account}
           label="تمكين حساب المستخدم"

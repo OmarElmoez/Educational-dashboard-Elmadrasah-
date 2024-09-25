@@ -41,7 +41,7 @@
 
 
 /* style for input that is disabled */
-input:disabled {
+input:disabled, .disabled {
   cursor: not-allowed;
 }
 
@@ -65,7 +65,9 @@ input:disabled {
   }
 }
 
-.form button[disabled] {
+.form button[disabled], 
+.select_wrapper.disabled_btn
+{
   background-color: #D8DADC;
   cursor: not-allowed;
 }

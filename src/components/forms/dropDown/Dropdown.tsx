@@ -17,6 +17,8 @@ const Dropdown = <T extends FieldValues>({
   isRequired,
   subjectRef,
   isWithPopup = false,
+  disabled = false,
+  children = null,
 }: TDropdownProps<T>) => {
   const chosenValue = options.find((option) => option.value === chosen)?.value;
 
@@ -44,6 +46,9 @@ const Dropdown = <T extends FieldValues>({
           {...register(name)}
           defaultValue={chosenValue}
           onClick={handleChosenState}
+          disabled={disabled || false}
+          className={`${disabled && 'disabled_btn'}`}
+
         >
           <option value="">--اختر--</option>
           {options.map((option, index) => (
@@ -63,6 +68,7 @@ const Dropdown = <T extends FieldValues>({
             + إضافة جديد{" "}
           </p>
         )}
+        {children && children}
       </div>
     </article>
   );

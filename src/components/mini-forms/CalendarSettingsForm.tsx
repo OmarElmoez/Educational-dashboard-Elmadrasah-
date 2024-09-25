@@ -11,12 +11,14 @@ export interface TCalendarSettingsFormProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   setValue: (name: Path<T>, value: string) => void;
   errors: FieldErrors<T>;
+  disabled?: boolean;
 }
 
 const CalendarSettingsForm = <T extends FieldValues>({
   register,
   setValue,
   errors,
+  disabled = false,
 }: TCalendarSettingsFormProps<T>) => {
   return (
     <>
@@ -28,6 +30,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
             label={field.label}
             options={field.options}
             register={register}
+            disabled={disabled}
             error={errors[field.name as Path<T>]?.message as string}
           />
         ))}
@@ -37,6 +40,7 @@ const CalendarSettingsForm = <T extends FieldValues>({
           label="لون التقويم"
           register={register}
           setValue={setValue}
+          disabled={disabled}
           name={"calendar_color" as Path<T>}
           error={errors.calendar_color?.message as string}
         />

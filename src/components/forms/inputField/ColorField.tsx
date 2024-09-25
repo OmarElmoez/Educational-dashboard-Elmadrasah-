@@ -11,12 +11,14 @@ const ColorField = <T extends FieldValues>({
   register,
   label,
   error,
-  setValue
+  setValue,
+  disabled = false,
 }: {
   name: Path<T>;
   register: UseFormRegister<T>;
   label: string;
   error?: string;
+  disabled?: boolean;
   setValue: (name: Path<T>, value: string) => void;
 }) => {
   const [selectedColor, setSelectedColor] = useState(INITIAL_CALENDAR_COLOR);
@@ -28,9 +30,11 @@ const ColorField = <T extends FieldValues>({
 
   return (
     <article className="group">
-      <label htmlFor={name} className="adminFormLabel">{label}</label>
+      <label htmlFor={name} className="adminFormLabel">
+        {label}
+      </label>
       <section
-        className={`select_wrapper inputField ${color_wrapper}`}
+        className={`select_wrapper inputField ${color_wrapper} ${disabled && 'disabled_btn'}`}
         onClick={onClickHandler}
       >
         <input
@@ -44,6 +48,7 @@ const ColorField = <T extends FieldValues>({
             setValue(name, e.target.value);
             setSelectedColor(e.target.value);
           }}
+          disabled={disabled}
         />
         <div className={previewBox}>
           <span

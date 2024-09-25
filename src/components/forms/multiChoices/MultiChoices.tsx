@@ -17,7 +17,7 @@ const {
   loadingIndicator,
   circularProgress,
   select_box_flex,
-  close_btn
+  close_btn,
 } = styles;
 
 const LoadingIndicator = ({ progress }: { progress: number }) => (
@@ -41,11 +41,13 @@ const MultiChoices = <T extends FieldValues>({
   name,
   error,
   isRequired,
+  disabled = false,
 }: {
   register: UseFormRegister<T>;
   name: Path<T>;
   error: string;
   isRequired?: boolean;
+  disabled?: boolean;
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
@@ -119,7 +121,7 @@ const MultiChoices = <T extends FieldValues>({
   );
 
   const renderPreview = () => {
-    if (selectedChoices.length === 0) {
+    if (disabled || selectedChoices.length === 0) {
       return (
         <span className="firstOption">
           {END_POINTS[name as keyof typeof END_POINTS].placeholder}
@@ -128,14 +130,18 @@ const MultiChoices = <T extends FieldValues>({
     }
 
     return selectedChoices.map((choice) => (
-      <span key={choice} className={preview} style={{position: 'relative', paddingLeft: '2rem'}}>
-          {data.find((dataItem) => dataItem.id === choice)?.name}
+      <span
+        key={choice}
+        className={preview}
+        style={{ position: "relative", paddingLeft: "2rem" }}
+      >
+        {data.find((dataItem) => dataItem.id === choice)?.name}
         <button
           type="button"
           className={close_btn}
           onClick={(e) => onRemove(choice, e)}
         >
-         <svg
+          <svg
             width="5"
             height="5"
             viewBox="0 0 5 5"
@@ -161,9 +167,11 @@ const MultiChoices = <T extends FieldValues>({
         يرجي اختيار {END_POINTS[name as keyof typeof END_POINTS].placeholder}
       </label>
       <section
-        className={`select_wrapper inputField ${select_box_flex}`}
+        className={`select_wrapper inputField ${select_box_flex} ${disabled && 'disabled_btn'}`}
         onClick={() => {
-          setIsWrapperClicked(!isWrapperClicked);
+          if(!disabled){
+            setIsWrapperClicked(!isWrapperClicked);
+          }
         }}
         // onBlur={() => setIsWrapperClicked(false)}
       >
@@ -177,7 +185,7 @@ const MultiChoices = <T extends FieldValues>({
             <label key={item.id} className={checkboxItem}>
               <span
                 className={`${checkmark}  ${
-                  selectedChoices.includes(item.id) ? checked : ""
+                  !disabled && selectedChoices.includes(item.id) ? checked : ""
                 } `}
               ></span>
               <input
@@ -187,6 +195,7 @@ const MultiChoices = <T extends FieldValues>({
                 {...register(name)}
                 onClick={onClickHandler}
                 checked={selectedChoices.includes(item.id)}
+                disabled={disabled}
               />
               <span className={checkboxLabel}>{item.name}</span>
             </label>
