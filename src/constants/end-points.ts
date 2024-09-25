@@ -71,6 +71,7 @@ const DROPDOWN_END_POINTS = {
   curriculums: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum?paginate=false",
   locations: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
   families: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families?paginate=false",
+  customers: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/customers/?paginate=false",
 }
 
 type TOptionsFor = keyof typeof DROPDOWN_END_POINTS;

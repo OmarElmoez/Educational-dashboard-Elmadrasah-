@@ -9,6 +9,8 @@ import {
   PH_teacherIcon,
   ReportsIcon,
   TeacherIcon,
+  Invoice,
+  InvoiceIcon
 } from "@/assets/nav-icons";
 
 import AddIcon from "@/assets/add.svg?react";
@@ -85,6 +87,12 @@ const SIDEBAR_DATA = {
       path: "add-student",
       icon: <AddIcon />,
     },
+    {
+      title: "انشاء فاتورة" ,
+      path: "create-invoice",
+      icon: <InvoiceIcon />,
+    },
+ 
   ],
 
   Teacher: [
