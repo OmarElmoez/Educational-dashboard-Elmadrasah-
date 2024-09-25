@@ -45,18 +45,7 @@ export const AddTeacherSchema = z.object({
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
-  home_phone: z
-    .string()
-    .refine(
-      (value) => {
-        // This regex only allows digits, spaces, dashes, and a plus sign at the start
-        return /^[+]?[\d\s-]+$/.test(value);
-      },
-      {
-        message: "برجاء ادخال رقم هاتف صحيح",
-      }
-    )
-    .optional(),
+  home_phone: z.string().optional(),
   uploaded_pp: z.array(z.instanceof(File)),
   uploaded_cv: z.array(z.instanceof(File)),
   uploaded_id: z.array(z.instanceof(File)),
@@ -65,10 +54,10 @@ export const AddTeacherSchema = z.object({
   city: z.string().min(1, "برجاء اختيار المدينة"),
   country: z.string().min(1, "برجاء اختيار الدولة"),
   timezone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
-  address: z.string().min(1, "برجاء ادخال العنوان").optional(),
-  address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
+  address: z.string().optional(),
+  address_2: z.string().optional(),
   zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
-  additional_notes: z.string().optional().optional(),
+  additional_notes: z.string().optional(),
   birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
   national_id_expiration_date: z
     .string()
@@ -101,29 +90,15 @@ export const AddTeacherSchema = z.object({
   }),
   calendar_color: z.string().optional(),
 
-  sms_lesson_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  email_lesson_reminders: z
-    .boolean()
-    .refine((val) => typeof val === "boolean", {
-      message: "برجاء اختيار الحالة",
-    }),
-  whatsapp_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  app_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  web_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
+  sms_lesson_reminders: z.boolean().optional(),
+  email_lesson_reminders: z.boolean().optional(),
+  whatsapp_reminders: z.boolean().optional(),
+  app_reminders: z.boolean().optional(),
+  web_reminders: z.boolean().optional(),
   // send_welcome_email: z.boolean().refine((val) => typeof val === "boolean", {
   //   message: "برجاء اختيار الحالة",
   // }),
-  user_account: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
+  user_account: z.boolean(),
 });
 
 export type TAddTeacherFormData = z.infer<typeof AddTeacherSchema>;

@@ -100,3 +100,8 @@
   border: none;
   cursor: pointer
 }
+
+/* .disabled_btn{
+  cursor: not-allowed !important;
+  background-color: #C0C0C0;
+} */

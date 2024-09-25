@@ -441,3 +441,14 @@ textarea::placeholder,
   display: grid;
   grid-template-columns: auto auto auto;
 }
+
+
+
+/* ************************ */
+.form button[disabled], 
+.disabled_btn
+{
+  background-color: #fafafa !important;
+  /* background-color: #D8DADC !important; */
+  cursor: not-allowed !important;
+}

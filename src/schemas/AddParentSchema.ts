@@ -45,29 +45,23 @@ export const AddParentSchema = z.object({
       return matchIsValidTel(phoneNumber);
     }, "رقم الهاتف غير صالح")
     .optional(),
-  address: z.string().min(1, "برجاء ادخال العنوان").optional(),
-  address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
+  address: z.string().optional(),
+  address_2: z.string().optional(),
 
-  country: z.string().min(1, "برجاء اختيار الدولة"),
-  state: z.string().min(1, "برجاء اختيار الولاية/المحافظة"),
-  city: z.string().min(1, "برجاء اختيار المدينة"),
+  country: z.string().optional(),
+  state: z.string().optional(),
+  city: z.string().optional(),
   time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
-  zip: z.string().min(1, "برجاء ادخال الرمز البريدي"),
+  zip: z.string().optional(),
   additional_notes: z.string().optional(),
 
-  sms_lesson_reminders: z.boolean().refine((val) => typeof val === "boolean", {
-    message: "برجاء اختيار الحالة",
-  }),
-  email_lesson_reminders: z
-    .boolean()
-    .refine((val) => typeof val === "boolean", {
-      message: "برجاء اختيار الحالة",
-    }),
+  sms_lesson_reminders: z.boolean().optional(),
+  email_lesson_reminders: z.boolean().optional(),
   whatsapp_reminders: z.boolean().optional(),
   app_reminders: z.boolean().optional(),
   web_reminders: z.boolean().optional(),
   // send_welcome_email: z.boolean().optional(),
-  user_account: z.boolean().optional(),
+  user_account: z.boolean(),
   is_superuser: z.boolean().optional(),
 });
 

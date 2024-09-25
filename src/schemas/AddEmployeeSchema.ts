@@ -11,6 +11,7 @@ const TimeEntrySchema = z.object({
 
 export const AddEmployeeSchema = z.object({
   employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
+  include_as_teacher: z.boolean().optional(),
   is_active: z.string().min(1, "برجاء اختيار الحالة"),
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
@@ -24,32 +25,23 @@ export const AddEmployeeSchema = z.object({
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
-  home_phone: z
-    .string()
-    .refine(
-      (value) => {
-        // This regex only allows digits, spaces, dashes, and a plus sign at the start
-        return /^[+]?[\d\s-]+$/.test(value);
-      },
-      { message: "برجاء ادخال رقم هاتف صحيح" }
-    )
-    .optional(),
+  home_phone: z.string().optional(),
 
-  address: z.string().min(1, "برجاء ادخال العنوان").optional(),
-  address_2: z.string().min(1, "برجاء ادخال العنوان").optional(),
-  country: z.string().min(1, "برجاء اختيار الدولة").optional(),
+  address: z.string().optional(),
+  address_2: z.string().optional(),
+  country: z.string().optional(),
 
-  state: z.string().min(1, "برجاء اختيار الولاية/المحافظة").optional(),
-  city: z.string().min(1, "برجاء اختيار المدينة").optional(),
-  zip: z.string().min(1, "برجاء ادخال الرمز البريدي").optional(),
+  state: z.string().optional(),
+  city: z.string().optional(),
+  zip: z.string().optional(),
   additional_notes: z.string().optional(),
   time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
   birth_date: z.string().min(1, "برجاء ادخال تاريخ الميلاد"),
-  place_of_birth: z.string().min(1, "برجاء ادخال مكان الميلاد"),
+  place_of_birth: z.string().optional(),
 
-  wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
-  work_wage_type: z.string().min(1, "برجاء اختيار نوع الأجر"),
-  default_subject: z.string().min(1, "برجاء اختيار المادة"),
+  wage_type: z.string(),
+  work_wage_type: z.string(),
+  default_subject: z.string().nullable(),
   uploaded_pp: z.array(z.instanceof(File)),
   uploaded_cv: z.array(z.instanceof(File)),
   uploaded_id: z.array(z.instanceof(File)),
@@ -62,30 +54,29 @@ export const AddEmployeeSchema = z.object({
     .string()
     .min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
 
-  subject_choices: z.array(z.string()).min(1, "برجاء اختيار مادة"),
+  subject_choices: z.array(z.string()),
   position: z.string().min(1, "برجاء ادخال المسمى"),
-  bio: z.string().optional().optional(),
-  hire_date: z.string(),
+  bio: z.string().optional(),
+  hire_date: z.string().optional(),
 
-  initial_students: z.array(z.string()).min(1, "برجاء اختيار طلاب"),
+  initial_students: z.array(z.string()),
   link: z.string().optional(),
-  employee_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
-  work_wage: z.string().min(1, "برجاء ادخال الأجر").optional(),
+  employee_wage: z.string().optional(),
+  work_wage: z.string().optional(),
   calendar_color: z.string().optional(),
-  calendar_setting: z.enum(["Day", "Month", "Week"], {
-    errorMap: () => ({ message: "برجاء اختيار اعدادات التقويم" }),
-  }),
+  // calendar_setting: z.enum(["Day", "Month", "Week"], {
+  //   errorMap: () => ({ message: "برجاء اختيار اعدادات التقويم" }),
+  // }),
+  calendar_setting: z.enum(["Day", "Month", "Week", ""]).optional(),
   availabilities: z.array(TimeEntrySchema),
-  calendar_color_by: z.enum(["Student", "Website", "Lesson"], {
-    errorMap: () => ({ message: "برجاء اختيار درس التقويم" }),
-  }),
+  calendar_color_by: z.enum(["Student", "Website", "Lesson",""]).optional(),
   sms_lesson_reminders: z.boolean().optional(),
   email_lesson_reminders: z.boolean().optional(),
   whatsapp_reminders: z.boolean().optional(),
   app_reminders: z.boolean().optional(),
   web_reminders: z.boolean().optional(),
   // send_welcome_email: z.boolean().optional(),
-  user_account: z.boolean().optional(),
+  user_account: z.boolean(),
   is_superuser: z.boolean().optional(),
 });
 
@@ -101,7 +92,7 @@ export type TAddEmployeeFormDataForServer = Omit<
   TAddEmployeeFormData,
   TKeysToOmit
 > & {
-  default_subject: number;
+  default_subject: number | null;
   subject_choices: Array<number>;
   initial_students: number[];
   is_active: boolean;

@@ -9,6 +9,7 @@ const InputField = <T extends FieldValues>({
   label,
   placeholder,
   textarea,
+  disabled = false,
   isRequired = false,
 }: TInputField<T>) => {
   return (
@@ -24,10 +25,11 @@ const InputField = <T extends FieldValues>({
       ) : (
         <input
           type={type}
-          className="inputField"
+          className={`inputField ${disabled && 'disabled_btn'}`}
           id={name}
           {...register(name)}
           placeholder={placeholder}
+          disabled={disabled}
         />
       )}
       <p className="error" style={{ position: "absolute", bottom: "0" }}>

@@ -8,11 +8,12 @@ export const CheckboxGroup = <T extends FieldValues>({
   options,
   error,
   isRequired = false,
+  disabled = false,
 }: TCheckboxGroup<T>) => {
   return (
     <article>
-      <label className={`checkboxGroupLabel ${isRequired && 'required' }`}>
-        {name} 
+      <label className={`checkboxGroupLabel ${isRequired && "required"}`}>
+        {name}
       </label>
       <div className="checkboxOptions">
         {options.map((option) => (
@@ -23,6 +24,7 @@ export const CheckboxGroup = <T extends FieldValues>({
               value={option.value}
               {...register(name, { required: isRequired })}
               className="checkboxInput"
+              disabled={disabled}
             />
             <span className="checkboxLabel"></span>
             {option.label}
@@ -41,17 +43,19 @@ export const SingleCheckbox = <T extends FieldValues>({
   name,
   label,
   isRequired = false,
+  disabled = false,
   error,
-  className ="",
+  className = "",
 }: TSingleCheckbox<T>) => {
   return (
-    <div className={`flex-start ${className}`} >
+    <div className={`flex-start ${className}`}>
       <label className="checkboxItem">
-        <span className="checkmark"></span>
+        <span className={`checkmark ${disabled && 'disabled_btn'}`}></span>
         <input
           type="checkbox"
           {...register(name, { required: isRequired })}
           className="checkboxInput"
+          disabled={disabled}
         />
         {label}
       </label>

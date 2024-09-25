@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import { TModalRef } from "./shared";
 
@@ -17,6 +17,8 @@ type TDropdownProps<T extends FieldValues> = {
   isRequired?: boolean;
   subjectRef?: React.RefObject<TModalRef>;
   isWithPopup?: boolean;
+  children?: ReactNode | null;
+  disabled?: boolean;  
 };
 
 export type { TOption, TDropdownProps };

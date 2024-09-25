@@ -7,6 +7,7 @@ import {
   MultiChoices,
   PhoneField,
   Row,
+  SingleCheckbox,
   UploadFile,
 } from "@/components";
 import { InputField } from "@/components";
@@ -68,11 +69,29 @@ const AddEmployeeForm = () => {
     resolver: zodResolver(AddEmployeeSchema),
     defaultValues: {
       availabilities: [
-        { day: "", start_time: "", end_time: "", description: "" },
+        // { day: "", start_time: "", end_time: "", description: "" },
       ], // Start with one entry
       calendar_color: INITIAL_CALENDAR_COLOR,
+      subject_choices: [],
+      initial_students: [],
+      calendar_setting: "",
+      calendar_color_by: "",
+      sms_lesson_reminders: false,
+      email_lesson_reminders: false,
+      whatsapp_reminders: false,
+      app_reminders: false,
+      web_reminders: false,
+      link: "",
+      wage_type: "",
+      work_wage_type: "",
+      default_subject: null,
+      employee_wage: "",
+      work_wage: "",
     },
   });
+
+  const isTeacher = watch("include_as_teacher");
+  const employType = watch("employee_type");
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -87,6 +106,18 @@ const AddEmployeeForm = () => {
   };
 
   const onSubmit = (data: TAddEmployeeFormData) => {
+    if (
+      (isTeacher || data.employee_type === "Teacher") &&
+      (data.initial_students.length === 0 || data.subject_choices.length === 0)
+    ) {
+      console.log("in");
+      
+      return openFeedbackModal(
+       "warning",
+        "اذا كان الموظف معلم يجب اختيار المواد والطلاب المعنيين"
+      );
+    }
+
     // Remove the 0 digit from the phone number
     const enteredPhoneParts = data["phone"].split(" ");
     let firstPartOfNumber = enteredPhoneParts[1];
@@ -103,7 +134,7 @@ const AddEmployeeForm = () => {
 
     const serverData: TAddEmployeeFormDataForServer = {
       ...data,
-      default_subject: parseInt(data["default_subject"]),
+      default_subject: data["default_subject"] ? parseInt(data["default_subject"]) : null,
       subject_choices: data["subject_choices"].map((subject) =>
         parseInt(subject)
       ),
@@ -133,7 +164,14 @@ const AddEmployeeForm = () => {
     if (countries.length === 0) {
       dispatch(actGetCountries());
     }
+
+    console.log("isTeacher", isTeacher);
   }, [dispatch, countries]);
+
+  useEffect(() => {
+    console.log("isTeacher", isTeacher);
+    console.log("employType", employType);
+  }, [isTeacher, employType]);
 
   useEffect(() => {
     dispatch(
@@ -160,6 +198,16 @@ const AddEmployeeForm = () => {
             options={EMPLOYEE_TYPES}
             isRequired
             error={errors.employee_type?.message as string}
+            children={
+              employType === "Staff" && (
+                <SingleCheckbox
+                  register={register}
+                  name="include_as_teacher"
+                  label="تضمين كمعلم"
+                  error={errors.include_as_teacher?.message as string}
+                />
+              )
+            }
           />
 
           <Dropdown
@@ -337,7 +385,11 @@ const AddEmployeeForm = () => {
         <hr className="hr" />
 
         <span className="mainContainer">
-          <Heading text="المرفقات" /> <span className="required" style={{position: "relative", top: "0px"}}></span>
+          <Heading text="المرفقات" />{" "}
+          <span
+            className="required"
+            style={{ position: "relative", top: "0px" }}
+          ></span>
         </span>
 
         <Row>
@@ -413,6 +465,7 @@ const AddEmployeeForm = () => {
             register={register}
             name="subject_choices"
             isRequired
+            disabled={!isTeacher && employType === "Staff"}
             error={errors.subject_choices?.message as string}
           />
 
@@ -448,6 +501,7 @@ const AddEmployeeForm = () => {
             name="wage_type"
             register={register}
             options={WAGE_TYPES}
+            disabled={!isTeacher && employType === "Staff"}
             error={errors.wage_type?.message as string}
           />
 
@@ -457,6 +511,7 @@ const AddEmployeeForm = () => {
               placeholder="معدل الأجر"
               register={register}
               name="employee_wage"
+              disabled={!isTeacher && employType === "Staff"}
               error={errors.employee_wage?.message as string}
             />
           ) : (
@@ -470,6 +525,7 @@ const AddEmployeeForm = () => {
             name="work_wage_type"
             register={register}
             options={WORK_WAGE_TYPES}
+            disabled={!isTeacher && employType === "Staff"}
             error={errors.work_wage_type?.message as string}
           />
 
@@ -479,6 +535,7 @@ const AddEmployeeForm = () => {
               placeholder="معدل الأجر"
               register={register}
               name="work_wage"
+              disabled={!isTeacher && employType === "Staff"}
               error={errors.work_wage?.message as string}
             />
           ) : (
@@ -491,6 +548,7 @@ const AddEmployeeForm = () => {
             label="الموضوع"
             name="default_subject"
             isWithPopup
+            disabled={!isTeacher && employType === "Staff"}
             register={register}
             options={subjects}
             subjectRef={addNewSubjectRef}
@@ -508,14 +566,14 @@ const AddEmployeeForm = () => {
         </Row>
 
         <hr className="hr" />
-
         <Heading text="مواقيت العمل" />
-        <div>
+        <>
           {fields.map((field, index) => (
             <Row key={field.id} style={{ alignItems: "center" }}>
               <Dropdown
                 label="حدد اليوم"
                 isRequired
+                disabled={!isTeacher && employType === "Staff"}
                 name={`availabilities.${index}.day`} // Pass name separately
                 options={DAYS_OPTIONS}
                 register={register} // Pass the entire register function
@@ -526,6 +584,7 @@ const AddEmployeeForm = () => {
                 label="وقت البدء"
                 placeholder="03:00 "
                 type="time"
+                disabled={!isTeacher && employType === "Staff"}
                 name={`availabilities.${index}.start_time`} // Pass name separately
                 register={register} // Pass the entire register function
                 error={
@@ -537,6 +596,7 @@ const AddEmployeeForm = () => {
                 label="وقت الانتهاء"
                 placeholder="03:00 "
                 type="time"
+                disabled={!isTeacher && employType === "Staff"}
                 name={`availabilities.${index}.end_time`} // Pass name separately
                 register={register} // Pass the entire register function
                 error={
@@ -548,6 +608,7 @@ const AddEmployeeForm = () => {
                 label="تفاصيل أخرى"
                 placeholder="03:00 "
                 type="text"
+                disabled={!isTeacher && employType === "Staff"}
                 name={`availabilities.${index}.description`} // Pass name separately
                 register={register} // Pass the entire register function
                 error={
@@ -592,12 +653,10 @@ const AddEmployeeForm = () => {
             يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض
             مدى توفر الموظف على التقويم
           </span>
-        </div>
+        </>
 
         <hr className="hr" />
-
         <Heading text="رابط موقع المعلم" />
-
         <Row>
           <InputField
             label="رابط الموقع URL"
@@ -605,6 +664,7 @@ const AddEmployeeForm = () => {
             type="url"
             register={register}
             name="link"
+            disabled={!isTeacher && employType === "Staff"}
             error={errors.link?.message as string}
           />
 
@@ -619,6 +679,7 @@ const AddEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="initial_students"
+            disabled={!isTeacher && employType === "Staff"}
             error={errors.initial_students?.message as string}
           />
 
@@ -631,6 +692,7 @@ const AddEmployeeForm = () => {
           register={register}
           errors={errors}
           setValue={setValue}
+          disabled={!isTeacher && employType === "Staff"}
         />
 
         <NotificationForm
@@ -643,6 +705,7 @@ const AddEmployeeForm = () => {
           // send_welcome_email="send_welcome_email"
           user_account="user_account"
           errors={errors}
+          disabled={!isTeacher && employType === "Staff"}
         />
 
         <div className="submit-buttons-container">
@@ -653,7 +716,7 @@ const AddEmployeeForm = () => {
               " حفظ"
             )}
           </button>
-
+          *{isSubmitting}*
           <button
             type="button"
             onClick={() => {
@@ -662,6 +725,16 @@ const AddEmployeeForm = () => {
             className="btn cancel-btn"
           >
             يلغى
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              console.log("errors", errors);
+              console.log("values", control._getWatch("subject_choices"));
+            }}
+            className="btn cancel-btn"
+          >
+            test
           </button>
         </div>
       </form>
