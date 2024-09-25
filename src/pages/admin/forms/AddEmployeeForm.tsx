@@ -69,7 +69,7 @@ const AddEmployeeForm = () => {
     resolver: zodResolver(AddEmployeeSchema),
     defaultValues: {
       availabilities: [
-        // { day: "", start_time: "", end_time: "", description: "" },
+        { day: "", start_time: "", end_time: "", description: "" },
       ], // Start with one entry
       calendar_color: INITIAL_CALENDAR_COLOR,
       subject_choices: [],
@@ -111,11 +111,14 @@ const AddEmployeeForm = () => {
       (data.initial_students.length === 0 || data.subject_choices.length === 0)
     ) {
       console.log("in");
-      
+
       return openFeedbackModal(
-       "warning",
+        "warning",
         "اذا كان الموظف معلم يجب اختيار المواد والطلاب المعنيين"
       );
+    }
+    if (data.employee_type === "Staff") {
+      data.availabilities = [];
     }
 
     // Remove the 0 digit from the phone number
@@ -134,7 +137,9 @@ const AddEmployeeForm = () => {
 
     const serverData: TAddEmployeeFormDataForServer = {
       ...data,
-      default_subject: data["default_subject"] ? parseInt(data["default_subject"]) : null,
+      default_subject: data["default_subject"]
+        ? parseInt(data["default_subject"])
+        : null,
       subject_choices: data["subject_choices"].map((subject) =>
         parseInt(subject)
       ),
@@ -164,14 +169,7 @@ const AddEmployeeForm = () => {
     if (countries.length === 0) {
       dispatch(actGetCountries());
     }
-
-    console.log("isTeacher", isTeacher);
   }, [dispatch, countries]);
-
-  useEffect(() => {
-    console.log("isTeacher", isTeacher);
-    console.log("employType", employType);
-  }, [isTeacher, employType]);
 
   useEffect(() => {
     dispatch(
@@ -198,18 +196,16 @@ const AddEmployeeForm = () => {
             options={EMPLOYEE_TYPES}
             isRequired
             error={errors.employee_type?.message as string}
-            children={
-              employType === "Staff" && (
-                <SingleCheckbox
-                  register={register}
-                  name="include_as_teacher"
-                  label="تضمين كمعلم"
-                  error={errors.include_as_teacher?.message as string}
-                />
-              )
-            }
-          />
-
+          >
+            {employType === "Staff" && (
+              <SingleCheckbox
+                register={register}
+                name="include_as_teacher"
+                label="تضمين كمعلم"
+                error={errors.include_as_teacher?.message as string}
+              />
+            )}
+          </Dropdown>
           <Dropdown
             label="الحالة"
             name="is_active"
