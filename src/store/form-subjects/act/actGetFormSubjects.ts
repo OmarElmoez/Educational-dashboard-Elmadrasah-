@@ -1,4 +1,4 @@
-import { TSubject } from "@/types/shared";
+import { TResponseOption } from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -17,7 +17,7 @@ const actGetFormSubjects = createAsyncThunk(
         },
       };
 
-      const response = await axios.get<TSubject[]>(url, config);
+      const response = await axios.get<TResponseOption[]>(url, config);
       const formattedChoices = response.data.map((subject) => {
         return {
           label: subject.name,

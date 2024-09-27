@@ -1,0 +1,67 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+.table th,
+.table td {
+  font-weight: 500;
+  font-size: 1.3rem;
+  padding: 2rem 2.4rem;
+  position: relative;
+  text-align: center;
+}
+
+.table th {
+  color: #8D8D8D;
+}
+
+.table td {
+  color: #000;
+}
+
+.hiddenInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+th.checkmarkBox,
+td.checkmarkBox {
+  padding-inline: 0;
+  width: fit-content
+}
+
+.checkmark {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #838383;
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-inline: auto;
+}
+
+.checkmark.checked {
+  background-color: var(--main-color);
+  color: #fff;
+  border-color: var(--main-color)
+}
+
+.checkmark.checked::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border-width: 0 2px 2px 0;
+  border-style: solid;
+  transform: rotate(45deg);
+}

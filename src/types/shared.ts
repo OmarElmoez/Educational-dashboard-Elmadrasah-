@@ -30,14 +30,4 @@ type TResponseOption = {
   name: string;
 }
 
-type TSubject = {
-  id: number;
-  name: string;
-};
-
-type TStudent = {
-  id: number;
-  name: string;
-};
-
-export type { TLoading, TFirstDayOfWeek, TUserRole, TPath, TLessonStatus, TModalRef, TSubject, TStudent, TResponseOption }
+export type { TLoading, TFirstDayOfWeek, TUserRole, TPath, TLessonStatus, TModalRef, TResponseOption }
