@@ -1,0 +1,30 @@
+.searchContainer {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1rem;
+  flex: 1
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.actions button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #E9E9E9;
+  border-radius: 4px;
+  padding: 0.8rem 1.2rem;
+  color: #313131;
+  font-size: 1.4rem;
+}
+
+.actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+

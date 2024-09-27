@@ -14,11 +14,10 @@ import {
   SERVICE_OPTIONS,
   ServicesOptionsForSchema,
 } from "./dropdown-options";
-import {END_POINTS, POST_END_POINTS} from "./end-points";
+import { END_POINTS, POST_END_POINTS } from "./end-points";
 import { INITIAL_CALENDAR_COLOR } from "./initial-values";
-import {
-  RADIO_FIELDS_FOR_CALENDAR
-} from "./radio-buttons";
+import { RADIO_FIELDS_FOR_CALENDAR } from "./radio-buttons";
+import { TABLE_HEAD_DATA, TABLE_SEARCH_END_POINTS } from "./table-data";
 
 export {
   EMPLOYEE_TYPES,
@@ -39,4 +38,6 @@ export {
   POST_END_POINTS,
   SERVICE_OPTIONS,
   ServicesOptionsForSchema,
+  TABLE_HEAD_DATA,
+  TABLE_SEARCH_END_POINTS,
 };
