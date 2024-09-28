@@ -40,9 +40,9 @@
 }
 
 .checkmark.checked {
-  background-color: #1C8A44;
+  background-color: var(--main-color);
   color: #fff;
-  border-color: #1C8A44
+  border-color: var(--main-color)
 }
 
 .checkmark.checked::after {

@@ -13,10 +13,10 @@ export const CreateInvoiceSchema = z.object({
   end_date: z.string().optional(),
   
   tax_treatment: z.enum(["Tax Exclusive", "Tax Inclusive", "Tax Exempt"]).default("Tax Exclusive"),
-  subtotal: z.string().min(1, "برجاء ادخال الإجمالي الفرعي"),
-  sales_tax_total: z.string().min(1, "برجاء ادخال إجمالي ضريبة المبيعات"),
-  tax_count: z.string().nullable(),
-  total: z.string().nullable(),
+  subtotal: z.string().optional(),
+  sales_tax_total: z.string(),
+  tax_count: z.string().nullable().optional(),
+  total: z.string().nullable().optional(),
 
   terms_text: z.string().nullable().optional(),
 

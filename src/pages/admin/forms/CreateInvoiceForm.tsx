@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import React, { useEffect, useRef, useState } from "react";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetDropdownOptions } from "@/store/single-actions";
@@ -46,8 +46,8 @@ const CreateInvoiceForm = () => {
 
   const [customersList, setCustomersList] = useState<TOption[]>([]);
   const [servicesList, setServicesList] = useState<TOption[]>([]);
+  const [dataStatus, setDataStatus] = useState<"Saved" | "Approved" | "Paid" | "Void">("Saved");
 
-  // const { openFeedbackModal } = useFeedback();
 
   const {
     register,
@@ -61,14 +61,17 @@ const CreateInvoiceForm = () => {
     mode: "onBlur",
     resolver: zodResolver(CreateInvoiceSchema),
     defaultValues: {
+      tax_treatment: "Tax Exclusive",
+      // ***** update it to get sales_tax_total dynamicaly from an API
+      sales_tax_total: "10",
       charges: [
         // {
-        // title: "",
-        // description: "",
-        // quantity: 0,
-        // unit_price: 0,
-        // discount_rate: 0,
-        // amount:0,
+        //   title: "",
+        //   description: "",
+        //   quantity: "",
+        //   unit_price: "",
+        //   discount_rate: "",
+        //   amount: "",
         // },
       ],
       packages: [
@@ -124,7 +127,6 @@ const CreateInvoiceForm = () => {
   };
 
   const handleAddpackages = () => {
-    console.log("add packages");
     appendpackages({
       service: "",
       description: "",
@@ -140,7 +142,6 @@ const CreateInvoiceForm = () => {
   };
 
   const handleAddLessons = () => {
-    console.log("add lessons");
     appendfiltration({
       start_date: "",
       end_date: "",
@@ -155,8 +156,6 @@ const CreateInvoiceForm = () => {
 
 
   const handleFilter = async () => {
-    console.log("watchFiltration", watchFiltration);
-
     if (watchFiltration) {
       const { start_date, end_date, report } = watchFiltration[0];
       const token = user?.token;
@@ -210,109 +209,118 @@ const CreateInvoiceForm = () => {
   }
 
 
+  //  calculate packagesAmount and chargesAmount
+  const calculateAmounts = () => {
+    let packagesAmount = 0;
+    let chargesAmount = 0;
+
+    packagesFields?.forEach((item, index) => {
+      packagesAmount += Number(watch(`packages.${index}.amount`)) || 0;
+    });
+
+    chargesFields?.forEach((item, index) => {
+      chargesAmount += Number(watch(`charges.${index}.amount`)) || 0;
+    });
+
+    return { packagesAmount, chargesAmount };
+  };
+
   // TAX
   const calculateTotal = (
     taxTreatment: "Tax Exclusive" | "Tax Inclusive" | "Tax Exempt" | null,
     subtotal: number,
     salesTaxRate: number
-  ): { total: number; salesTax: number } => {
+  ): { total: number; salesTax: number, subtotal: number } => {
     let total = subtotal;
     let salesTax = 0;
+
 
     switch (taxTreatment) {
       case "Tax Exclusive":
         salesTax = (salesTaxRate / 100) * subtotal;
         total = subtotal + salesTax;
+        subtotal;
         break;
 
       case "Tax Inclusive":
+
         salesTax = subtotal * (salesTaxRate / (100 + salesTaxRate));
-        total = subtotal; 
+        // total = subtotal;
+        total = subtotal - (salesTaxRate / (100 + salesTaxRate));
+        subtotal = subtotal - salesTax;
+        console.log("Tax Inclusive", subtotal, total, salesTax);
         break;
 
       case "Tax Exempt":
         salesTax = 0;
-        total = subtotal; 
+        total = subtotal;
+        subtotal;
         break;
 
       default:
         throw new Error("Invalid tax treatment");
     }
 
-    return { total, salesTax };
+    return { total, salesTax, subtotal };
   };
 
-  const watchFields = watch(["tax_treatment", "subtotal", "sales_tax_total"]);
+  const watchFields = watch(["tax_treatment", "sales_tax_total"]);
 
   const handleCalcTax = () => {
-    const [tax_treatment, subtotal, sales_tax_total] = watchFields; 
-    console.log("tax_treatment, subtotal, sales_tax_total", tax_treatment, subtotal, sales_tax_total);
-    if (tax_treatment !== null && subtotal !== "" && sales_tax_total !== "") {
 
-      const { total, salesTax } = calculateTotal(
+    const { packagesAmount, chargesAmount } = calculateAmounts();
+
+    const sub_total = packagesAmount + chargesAmount;
+
+    setValue("subtotal", sub_total.toFixed(2));
+
+    const [tax_treatment, sales_tax_total] = watchFields;
+
+    if (tax_treatment !== null && sales_tax_total !== "") {
+      const { total, salesTax, subtotal } = calculateTotal(
         tax_treatment || "Tax Exclusive",
-        parseFloat(subtotal),
-        parseFloat(sales_tax_total)
+        parseFloat(sub_total.toString()),
+        parseFloat(sales_tax_total )
       );
 
       setValue("total", total.toFixed(2));
       setValue("tax_count", salesTax.toFixed(2));
-      console.log("total", total)
-      console.log("salesTax", salesTax)
+      setValue("subtotal", subtotal.toFixed(2));
     }
-  }
+  };
 
+  const handleChargeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    const { name, value } = e.target;
 
+    const unitPrice = name.includes("unit_price") ? parseFloat(value) : parseFloat(watch(`charges.${index}.unit_price`)) || 0;
+    const quantity = name.includes("quantity") ? parseFloat(value) : parseFloat(watch(`charges.${index}.quantity`)) || 0;
+    const discountRate = name.includes("discount_rate") ? parseFloat(value) : parseFloat(watch(`charges.${index}.discount_rate`)) || 0;
 
-  // useEffect(() => {
-  //   handleCalcTax();
-  // }, [watchFields]);
+    const amount = (unitPrice * quantity) * (1 - discountRate / 100);
 
-  // Use effect to calculate whenever tax treatment or values change
-  // useEffect(() => {
-  //   const [tax_treatment, subtotal, sales_tax_total] = watchFields; 
-  //   console.log("tax_treatment, subtotal, sales_tax_total", tax_treatment, subtotal, sales_tax_total);
-  //   if (tax_treatment !== null && subtotal !== "" && sales_tax_total !== "") {
-
-  //     const { total, salesTax } = calculateTotal(
-  //       tax_treatment,
-  //       parseFloat(subtotal),
-  //       parseFloat(sales_tax_total)
-  //     );
-
-  //     setCalculatedValues({ total, salesTax });
-  //     setValue("total", total.toFixed(2));
-  //     console.log("total", total.toFixed(2))
-  //     console.log("salesTax", salesTax)
-  //   }
-
-  // }, [watchFields, setValue]);
-
-
-
-  const onSubmit = (data: TCreateInvoiceFormData) => {
-
-    console.log("data", data);
-
-    data.status = "Saved";
-    if (data?.charges?.length === 0 && data?.packages?.length === 0) {
-
-      openFeedbackModal("failed", "يجب عليك اختيار خدمة");
+    if (!isNaN(amount)) {
+      setValue(`charges.${index}.amount`, amount.toFixed(2));
     }
-    dispatch(
-      actSendDataToServer({
-        token: user?.token,
-        formData: data,
-        purpose: "create_invoice",
-      })
-    )
-      .unwrap()
-      .then(() => {
-        openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!");
-      })
-      .catch((error) => {
-        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
-      });
+
+    calculateAmounts();
+    handleCalcTax();
+  };
+
+  const handlePackagesChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    const { name, value } = e.target;
+
+    const unitPrice = name.includes("unit_price") ? parseFloat(value) : parseFloat(watch(`packages.${index}.unit_price`)) || 0;
+    const quantity = name.includes("quantity") ? parseFloat(value) : parseFloat(watch(`packages.${index}.quantity`)) || 0;
+    const discountRate = name.includes("discount_rate") ? parseFloat(value) : parseFloat(watch(`packages.${index}.discount_rate`)) || 0;
+
+    const amount = (unitPrice * quantity) * (1 - discountRate / 100);
+
+    if (!isNaN(amount)) {
+      setValue(`packages.${index}.amount`, amount.toFixed(2));
+    }
+
+    calculateAmounts();
+    handleCalcTax();
   };
 
 
@@ -331,9 +339,31 @@ const CreateInvoiceForm = () => {
       if (Array.isArray(res?.payload)) {
         setServicesList(res.payload);
       }
-      console.log("xxxr", res);
     });
   }, [dispatch, user?.token]);
+
+
+
+  const onSubmit = (data: TCreateInvoiceFormData) => {
+
+    console.log("data", data);
+
+    data.status = dataStatus;
+    if (chargesFields?.length === 0 && packagesFields?.length === 0) {
+     return openFeedbackModal("failed", "يجب عليك اختيار خدمة");
+    }
+
+    dispatch(
+      actSendDataToServer({
+        token: user?.token,
+        formData: data,
+        purpose: "create_invoice",
+      })
+    )
+      .unwrap()
+      .then(() => openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!"))
+      .catch((error) =>  openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error));
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -398,6 +428,7 @@ const CreateInvoiceForm = () => {
           options={TAX_TREATMENT_OPTIONS}
           name="tax_treatment"
           isRequired
+          // onChange={handleCalcTax}
           error={errors?.tax_treatment?.message as string}
         />
       </div>
@@ -427,6 +458,7 @@ const CreateInvoiceForm = () => {
             placeholder="الخدمة"
             name={`charges.${index}.title`}
             register={register}
+
             error={errors?.charges?.[index]?.title?.message as string}
           />
           <InputField
@@ -441,6 +473,7 @@ const CreateInvoiceForm = () => {
           <InputField
             label="الكمية"
             placeholder="الكمية"
+            onChange={(e) => handleChargeChange(e, index)}
             name={`charges.${index}.quantity`}
             register={register}
             error={errors?.charges?.[index]?.quantity?.message as string}
@@ -449,6 +482,7 @@ const CreateInvoiceForm = () => {
           <InputField
             label="سعر الوحدة"
             placeholder="سعر الوحدة"
+            onChange={(e) => handleChargeChange(e, index)}
             name={`charges.${index}.unit_price`}
             register={register}
             error={errors?.charges?.[index]?.unit_price?.message as string}
@@ -457,6 +491,7 @@ const CreateInvoiceForm = () => {
           <InputField
             label="خصم% "
             placeholder="خصم% "
+            onChange={(e) => handleChargeChange(e, index)}
             name={`charges.${index}.discount_rate`}
             register={register}
             error={errors?.charges?.[index]?.discount_rate?.message as string}
@@ -467,6 +502,7 @@ const CreateInvoiceForm = () => {
             placeholder="المبلغ"
             name={`charges.${index}.amount`}
             register={register}
+            disabled
             error={errors?.charges?.[index]?.amount?.message as string}
           />
           <div className={close_btn_container}>
@@ -506,6 +542,7 @@ const CreateInvoiceForm = () => {
             placeholder="الكمية"
             name={`packages.${index}.quantity`}
             register={register}
+            onChange={(e) => handlePackagesChange(e, index)}
             error={errors?.packages?.[index]?.quantity?.message as string}
           />
 
@@ -514,6 +551,7 @@ const CreateInvoiceForm = () => {
             placeholder="سعر الوحدة"
             name={`packages.${index}.unit_price`}
             register={register}
+            onChange={(e) => handlePackagesChange(e, index)}
             error={errors?.packages?.[index]?.unit_price?.message as string}
           />
 
@@ -522,11 +560,13 @@ const CreateInvoiceForm = () => {
             placeholder="خصم% "
             name={`packages.${index}.discount_rate`}
             register={register}
+            onChange={(e) => handlePackagesChange(e, index)}
             error={errors?.packages?.[index]?.discount_rate?.message as string}
           />
           <InputField
             label="المبلغ"
             placeholder="المبلغ"
+            disabled
             name={`packages.${index}.amount`}
             register={register}
             error={errors?.packages?.[index]?.amount?.message as string}
@@ -578,11 +618,6 @@ const CreateInvoiceForm = () => {
               </button>
             </div>
           </Row>
-          <div className={close_btn_container}>
-            <button type="button" onClick={handleFilter}>
-              اذهب
-            </button>
-          </div>
         </>
       ))}
       {/* ********* END ROW ********************* */}
@@ -596,7 +631,7 @@ const CreateInvoiceForm = () => {
         <InputField
           label="المجموع الفرعى"
           placeholder="0.00"
-          isRequired
+          disabled
           register={register}
           name="subtotal"
           error={errors?.subtotal?.message as string}
@@ -605,8 +640,8 @@ const CreateInvoiceForm = () => {
         <InputField
           label=" ضريبة المبيعات"
           placeholder=" 0.00"
-          isRequired
           register={register}
+          disabled
           name="sales_tax_total"
           error={errors?.sales_tax_total?.message as string}
         />
@@ -614,7 +649,6 @@ const CreateInvoiceForm = () => {
         <InputField
           label=" الاجمالى "
           placeholder=" 0.00"
-          isRequired
           register={register}
           name="tax_count"
           disabled
@@ -629,7 +663,6 @@ const CreateInvoiceForm = () => {
         <InputField
           label=" المجموع "
           placeholder=" 0.00"
-          isRequired
           disabled
           register={register}
           name="total"
@@ -637,10 +670,7 @@ const CreateInvoiceForm = () => {
         />
         <article className="group"></article>
       </Row>
-      <Row>
-        <button type="button" onClick={handleCalcTax}> handleCalcTax </button>
-        <article className="group"></article>
-      </Row>
+      
       <Row>
         <SingleCheckbox
           register={register}
@@ -664,7 +694,7 @@ const CreateInvoiceForm = () => {
 
       </Row>
       <div className="submit-buttons-container">
-        <DropdownButton />
+      
         <button type="submit" className="btn submit-btn">
           {isSubmitting ? (
             <CircleLoadingIndecator size={16} color="#fff" />
@@ -674,9 +704,9 @@ const CreateInvoiceForm = () => {
         </button>
 
         <button
-          type="button"
+         
           onClick={() => {
-            console.log("errors", errors);
+            setDataStatus("Approved")
           }}
           className="btn cancel-btn"
         >
@@ -700,64 +730,9 @@ const CreateInvoiceForm = () => {
 export default CreateInvoiceForm;
 
 
-// -------------------------------------------------
-
-
-const DropdownButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<any>(null); // Ref to track the dropdown
-
-  // Function to handle dropdown toggle
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  // Function for each action on click
-  const handleOptionClick = (action: any) => {
-    alert(`You clicked ${action}`); // Replace with your custom actions
-    setIsOpen(false); // Close dropdown after selecting
-  };
-
-  // Close the dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    // Add event listener to detect clicks outside
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [dropdownRef]);
-
-  return (
-    <div className={`${dropdown} `} ref={dropdownRef}>
-      <span className={dropdown_btn}  >
-        حفظ
-        <button onClick={toggleDropdown} type="button" >
-          <ArrowDown />
-        </button>
-      </span>
-      {isOpen && (
-        <div className={dropdown_content}>
-          <button onClick={() => handleOptionClick('Option 1')} type="button">Option 1</button>
-          <button onClick={() => handleOptionClick('Option 2')} type="button">Option 2</button>
-          <button onClick={() => handleOptionClick('Option 3')} type="button">Option 3</button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-
 
 // /**
-//  * calc on select make it update dynamic --> handleCalcTax
+//  
 //  * update UI
 //  * Update save dropdown 
 //  */

@@ -1,0 +1,68 @@
+.group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .adminFormLabel {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .required::after {
+    content: '*';
+    color: red;
+    margin-left: 0.25rem;
+  }
+  
+  .inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .staticLabel {
+    background-color: #f0f0f0;
+    padding: 0.5rem;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-right: 1px solid #ccc;
+  }
+  
+  .inputField {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    font-size: 1rem;
+  }
+  
+  .withStaticLabel {
+    width: 50%;
+  }
+  
+  .textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }

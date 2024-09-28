@@ -20,6 +20,7 @@ import {
   AdminStudentsPage,
   AdminTeachersPage,
   AddStudentToFamilyForm,
+  StudentsList,
   CreateInvoiceForm,
 } from "@/pages/admin";
 import {
@@ -170,6 +171,10 @@ const router = createBrowserRouter([
       {
         path: 'add-family-student',
         element: <AddStudentToFamilyForm />,
+      },
+      {
+        path: 'students-list',
+        element: <StudentsList />,
       },
       {
         path: 'create-invoice',

@@ -22,6 +22,8 @@ import CountriesDropdown from "./forms/countriesDropdown/CountriesDropdown";
 import MultiChoices from "./forms/multiChoices/MultiChoices";
 import ColorField from "./forms/inputField/ColorField";
 import AddNewSubjectModal from "./add-new-subject-model/AddNewSubjectModal";
+import Table from "./table/Table";
+import SearchSection from "./forms/search-section/SearchSection";
 
 export {
   Header,
@@ -48,4 +50,6 @@ export {
   MultiChoices,
   ColorField,
   AddNewSubjectModal,
+  Table,
+  SearchSection,
 };

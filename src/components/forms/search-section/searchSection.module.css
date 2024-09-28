@@ -1,0 +1,26 @@
+.searchSection {
+  background-color: #f1f1f166;
+  border-radius: 10px;
+  padding: 1.6rem 1rem;
+}
+
+.searchBox {
+  position: relative;
+  padding: 1rem 2.4rem;
+  border-radius: 8px;
+  display: block;
+  background-color: #fff;
+}
+
+.searchBox::before {
+  content: url("../../../assets/search.svg");
+  position: absolute;
+  top: 50%;
+  transform: translateY(-30%);
+}
+
+.searchInput {
+  background-color: transparent;
+  width: 100%;
+  text-indent: 2rem;
+}

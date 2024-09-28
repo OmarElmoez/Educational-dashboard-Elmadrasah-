@@ -8,6 +8,7 @@ import AddTeacherForm from "./forms/AddTeacherForm";
 import AddParentForm from "./forms/AddParentForm";
 import AddStudentForm from "./forms/AddStudentForm";
 import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
+import StudentsList from "./lists/StudentsList";
 import CreateInvoiceForm from "./forms/CreateInvoiceForm";
 
 export {
@@ -21,5 +22,6 @@ export {
   AddParentForm,
   AddStudentForm,
   AddStudentToFamilyForm,
+  StudentsList,
   CreateInvoiceForm,
 };

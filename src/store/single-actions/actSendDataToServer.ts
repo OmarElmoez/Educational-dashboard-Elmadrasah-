@@ -20,10 +20,8 @@ const actSendDataToServer = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
 
     if (hasFiles) {
-      // Create a new FormData object with validated data
       const validatedFormData = new FormData();
 
-      // Add validated regular data to FormData
       Object.entries(formData).forEach(([key, value]) => {
         if (
           typeof value === "object" &&

@@ -9,11 +9,11 @@ import {
   PH_teacherIcon,
   ReportsIcon,
   TeacherIcon,
-  Invoice,
   InvoiceIcon
 } from "@/assets/nav-icons";
 
 import AddIcon from "@/assets/add.svg?react";
+import StudentIcon from '@/assets/student.svg?react';
 
 const SIDEBAR_DATA = {
   Student: [
@@ -86,6 +86,11 @@ const SIDEBAR_DATA = {
       title: "إضافة طالب",
       path: "add-student",
       icon: <AddIcon />,
+    },
+    {
+      title: 'عرض الطلاب',
+      path: 'students-list',
+      icon: <StudentIcon />,
     },
     {
       title: "انشاء فاتورة" ,

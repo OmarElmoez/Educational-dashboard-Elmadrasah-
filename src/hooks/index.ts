@@ -1,4 +1,4 @@
 import useResponsive from "./useResponsive";
 import useFirebaseMessaging from "./useFirebaseMessaging";
-
-export { useResponsive, useFirebaseMessaging }
+import useDebounce from "./useDebounce";
+export { useResponsive, useFirebaseMessaging, useDebounce };

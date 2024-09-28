@@ -1,12 +1,9 @@
-import { TStudent, TSubject } from "@/types/shared";
+import { TResponseOption } from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-type TSubjectsResponse = TSubject[];
-type TStudentsResponse = TStudent[];
-
-export type TResponse = TSubjectsResponse | TStudentsResponse;
+export type TResponse = TResponseOption[];
 
 type TProps = {
   token: string | undefined;
@@ -22,7 +19,6 @@ const actGetChoices = createAsyncThunk(
       const endPoint = url;
       const config = {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Token ${token}`,
         },
       };
