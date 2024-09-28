@@ -21,6 +21,8 @@ import PH_teacherIcon from './ph-teacher.svg?react';
 
 import SignoutIcon from "./signout.svg?react";
 import PH_signoutIcon from './ph-signout.svg?react';
+import Invoice from './invoice.svg?react';
+import InvoiceIcon from './invoice_3.svg?react';
 
 export {
   BoyIcon,
@@ -38,5 +40,7 @@ export {
   TeacherIcon,
   PH_teacherIcon,
   SignoutIcon,
-  PH_signoutIcon
+  PH_signoutIcon,
+  Invoice,
+  InvoiceIcon
 }

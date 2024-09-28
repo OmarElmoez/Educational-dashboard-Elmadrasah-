@@ -89,6 +89,32 @@ const SERVICE_OPTIONS = [
 
 const ServicesOptionsForSchema = generateValesForSchema(SERVICE_OPTIONS);
 
+
+const ADD_SERVICE_OPTIONS = [
+  { label: "أضف رصيد", value: "charges" },
+  { label: "أضف باقة", value: "packages" },
+  { label: "الدروس حسب التاريخ", value: "lessons" },
+];
+
+const AddServiceOptionsForSchema = generateValesForSchema(ADD_SERVICE_OPTIONS);
+
+const TAX_TREATMENT_OPTIONS = [
+  { label: 'غير شامل الضريبة', value: 'Tax Exclusive' },
+  { label: "شامل الضريبة", value: "Tax Inclusive" },
+  { label: 'معفى من الضرائب', value: 'Tax Exempt' },
+];
+// const AddTaxTreatmentOptionsForSchema = generateValesForSchema(TAX_TREATMENT_OPTIONS);
+
+// : Missed, Attended, Scheduled and All
+
+const REPORT_OPTIONS = [
+  { label: ' الكل', value: 'All' },
+  { label: 'مجدولة', value: 'Scheduled' },
+  { label: " حضور", value: "Attended" },
+  { label: 'متغيب', value: 'Missed' },
+];
+
+
 export {
   EMPLOYEE_TYPES,
   EmployeeTypesForSchema,
@@ -104,4 +130,9 @@ export {
   ServicesOptionsForSchema,
   WORK_WAGE_TYPES,
   WorkWageTypesForSchema,
+  ADD_SERVICE_OPTIONS,
+  AddServiceOptionsForSchema,
+  TAX_TREATMENT_OPTIONS,
+  REPORT_OPTIONS
+  // AddTaxTreatmentOptionsForSchema,
 };

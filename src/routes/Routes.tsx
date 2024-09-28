@@ -21,6 +21,7 @@ import {
   AdminTeachersPage,
   AddStudentToFamilyForm,
   StudentsList,
+  CreateInvoiceForm,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -174,7 +175,11 @@ const router = createBrowserRouter([
       {
         path: 'students-list',
         element: <StudentsList />,
-      }
+      },
+      {
+        path: 'create-invoice',
+        element: <CreateInvoiceForm />,
+      },
     ],
   },
 

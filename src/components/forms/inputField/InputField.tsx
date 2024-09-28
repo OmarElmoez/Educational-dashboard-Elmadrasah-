@@ -1,4 +1,5 @@
 import { TInputField } from "@/types/InputField";
+import React from "react";
 import { FieldValues } from "react-hook-form";
 
 const InputField = <T extends FieldValues>({
@@ -11,7 +12,8 @@ const InputField = <T extends FieldValues>({
   textarea,
   disabled = false,
   isRequired = false,
-}: TInputField<T>) => {
+  onChange, // Add onChange as a prop
+}: TInputField<T> & { onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void }) => {
   return (
     <article className="group">
       <label
@@ -21,7 +23,13 @@ const InputField = <T extends FieldValues>({
         {label}
       </label>
       {textarea ? (
-        <textarea id="name" {...register(name)} placeholder={placeholder} />
+        <textarea
+          id={name}
+          {...register(name)}
+          placeholder={placeholder}
+          onChange={onChange} // Handle onChange 
+          disabled={disabled}
+        />
       ) : (
         <input
           type={type}
@@ -30,6 +38,7 @@ const InputField = <T extends FieldValues>({
           {...register(name)}
           placeholder={placeholder}
           disabled={disabled}
+          onChange={onChange} // Handle onChange 
         />
       )}
       <p className="error" style={{ position: "absolute", bottom: "0" }}>

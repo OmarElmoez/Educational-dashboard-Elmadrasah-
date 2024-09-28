@@ -2,6 +2,7 @@ import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
 import { TAddParentFormData } from "@/schemas/AddParentSchema";
 import { TAddStudentFormDataForServer } from "@/schemas/AddStudentSchema";
 import { TAddStudentToFamilyFormDataForServer } from "@/schemas/AddStudentToFamilySchema";
+import { TCreateInvoiceFormData } from "@/schemas/CreateInvoiceSchema";
 
 const END_POINTS = {
   subject_choices: {
@@ -55,6 +56,10 @@ const POST_END_POINTS = {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/family-student/",
     dataType: {} as TAddStudentToFamilyFormDataForServer,
   },
+  create_invoice: {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
+    dataType: {} as TCreateInvoiceFormData,
+  },
 };
 
 type TPurpose = keyof typeof POST_END_POINTS;
@@ -71,6 +76,8 @@ const DROPDOWN_END_POINTS = {
   curriculums: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum?paginate=false",
   locations: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
   families: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families?paginate=false",
+  customers: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/customers/?paginate=false",
+  services: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/service/?paginate=false",
 }
 
 type TOptionsFor = keyof typeof DROPDOWN_END_POINTS;

@@ -712,7 +712,6 @@ const AddEmployeeForm = () => {
               " حفظ"
             )}
           </button>
-          *{isSubmitting}*
           <button
             type="button"
             onClick={() => {
