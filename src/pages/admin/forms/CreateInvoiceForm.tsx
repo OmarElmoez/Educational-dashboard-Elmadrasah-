@@ -214,11 +214,11 @@ const CreateInvoiceForm = () => {
     let packagesAmount = 0;
     let chargesAmount = 0;
 
-    packagesFields?.forEach((item, index) => {
+    packagesFields?.forEach((_, index) => {
       packagesAmount += Number(watch(`packages.${index}.amount`)) || 0;
     });
 
-    chargesFields?.forEach((item, index) => {
+    chargesFields?.forEach((_, index) => {
       chargesAmount += Number(watch(`charges.${index}.amount`)) || 0;
     });
 
