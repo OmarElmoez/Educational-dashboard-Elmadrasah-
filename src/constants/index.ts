@@ -13,6 +13,10 @@ import {
   WageTypesForSchema,
   SERVICE_OPTIONS,
   ServicesOptionsForSchema,
+  ADD_SERVICE_OPTIONS,
+  AddServiceOptionsForSchema,
+  TAX_TREATMENT_OPTIONS,
+  REPORT_OPTIONS,
 } from "./dropdown-options";
 import {END_POINTS, POST_END_POINTS} from "./end-points";
 import { INITIAL_CALENDAR_COLOR } from "./initial-values";
@@ -39,4 +43,8 @@ export {
   POST_END_POINTS,
   SERVICE_OPTIONS,
   ServicesOptionsForSchema,
+  ADD_SERVICE_OPTIONS,
+  AddServiceOptionsForSchema,
+  TAX_TREATMENT_OPTIONS,
+  REPORT_OPTIONS,
 };

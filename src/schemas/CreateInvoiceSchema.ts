@@ -1,13 +1,4 @@
-import { matchIsValidTel } from "mui-tel-input";
 import { z } from "zod";
-
-// Define the time entry schema for each item in the field array
-const TimeEntrySchema = z.object({
-  day: z.string().optional(),
-  start_time: z.string().optional(),
-  end_time: z.string().optional(),
-  description: z.string().optional(),
-});
 
 export const CreateInvoiceSchema = z.object({
   customer: z.string().min(1, "برجاء اختيار العميل"),
@@ -16,17 +7,20 @@ export const CreateInvoiceSchema = z.object({
   date: z.string().min(1, "برجاء ادخال تاريخ الفاتورة"),
   due_date: z.string().min(1, "برجاء ادخال تاريخ الاستحقاق"),
   reference: z.string().nullable().optional(),
-  tax_treatment: z.enum(["Tax Exclusive", "Tax Inclusive"]).default("Tax Exclusive"),
+  
   status: z.enum(["Saved", "Approved", "Paid", "Void"]).default("Saved"),
   start_date: z.string().optional(),
   end_date: z.string().optional(),
-  terms_text: z.string().nullable().optional(),
+  
+  tax_treatment: z.enum(["Tax Exclusive", "Tax Inclusive", "Tax Exempt"]).default("Tax Exclusive"),
   subtotal: z.string().min(1, "برجاء ادخال الإجمالي الفرعي"),
   sales_tax_total: z.string().min(1, "برجاء ادخال إجمالي ضريبة المبيعات"),
-  total: z.string().min(1, "برجاء ادخال الإجمالي"),
-  
-  
-  send_email: z.string().optional(),
+  tax_count: z.string().nullable(),
+  total: z.string().nullable(),
+
+  terms_text: z.string().nullable().optional(),
+
+  send_email: z.boolean().optional(),
   add: z.string().optional(),
 
   charges: z.array(
@@ -42,40 +36,49 @@ export const CreateInvoiceSchema = z.object({
 
   packages: z.array(
     z.object({
-      student: z.number().min(1, "برجاء اختيار الطالب"),
-      service: z.number().min(1, "برجاء اختيار الخدمة"),
+      // student: z.string().min(1, "برجاء اختيار الطالب"),
+      service: z.string().min(1, "برجاء اختيار الخدمة"),
       description: z.string().min(1, "برجاء ادخال الوصف"),
       quantity: z.string().min(1, "برجاء ادخال الكمية"),
       unit_price: z.string().min(1, "برجاء ادخال سعر الوحدة"),
       discount_rate: z.string().min(1, "برجاء ادخال نسبة الخصم"),
       amount: z.string().min(1, "برجاء ادخال المبلغ"),
-      transaction_type: z.enum(["subscription", "one_time"]).default("subscription"),
+      // transaction_type: z.enum(["subscription", "one_time"]).default("subscription"),
     })
   ).optional(),
 
-  lessons: z.array(
+  // lessons: z.array(
+  //   z.object({
+  //     student: z.string().min(1, "برجاء اختيار الطالب"),
+  //     employee: z.string().min(1, "برجاء اختيار الموظف"),
+  //     service: z.string().min(1, "برجاء اختيار الخدمة"),
+  //     status: z.enum(["Scheduled", "Attended", "Missed", "Cancelled"]).default("Scheduled"),
+  //     custom_status: z.string().nullable().optional(),
+  //     description: z.string().min(1, "برجاء ادخال الوصف"),
+  //     invoice_unit_price: z.string().min(1, "برجاء ادخال سعر الوحدة"),
+  //     invoice_discount_rate: z.string().min(1, "برجاء ادخال نسبة الخصم"),
+  //     invoice_amount: z.string().min(1, "برجاء ادخال المبلغ"),
+  //   })
+  // ).optional(),
+
+  filtration: z.array(
     z.object({
-      student: z.number().min(1, "برجاء اختيار الطالب"),
-      employee: z.number().min(1, "برجاء اختيار الموظف"),
-      service: z.number().min(1, "برجاء اختيار الخدمة"),
-      status: z.enum(["Scheduled", "Attended", "Missed", "Cancelled"]).default("Scheduled"),
-      custom_status: z.string().nullable().optional(),
-      description: z.string().min(1, "برجاء ادخال الوصف"),
-      invoice_unit_price: z.string().min(1, "برجاء ادخال سعر الوحدة"),
-      invoice_discount_rate: z.string().min(1, "برجاء ادخال نسبة الخصم"),
-      invoice_amount: z.string().min(1, "برجاء ادخال المبلغ"),
+      start_date: z.string().nullable().optional(),
+      end_date: z.string().nullable().optional(),
+      report: z.enum(["All", "Scheduled", "Attended", "Missed"]).nullable().optional(),
+
     })
-  ).optional(),
-  
+  ).nullable().optional(),
+
 });
 
 export type TCreateInvoiceFormData = z.infer<typeof CreateInvoiceSchema>;
 
-type TKeysToOmit =
-  | "default_subject"
-  | "subject_choices"
-  | "is_active"
-  | "initial_students";
+// type TKeysToOmit =
+//   | "default_subject"
+//   | "subject_choices"
+//   | "is_active"
+//   | "initial_students";
 
 // export type TCreateInvoiceSchemaFormDataForServer = Omit<
 // TCreateInvoiceFormData,
@@ -93,7 +96,7 @@ type TKeysToOmit =
 {
     "customer": 1,
     "invoice_type": "invoice",
-    "formatted_number": "INV-0003",
+    "formatted_string": "INV-0003",
     "date": "2024-09-17",
     "due_date": "2024-09-30",
     "reference": "",
@@ -154,4 +157,17 @@ type TKeysToOmit =
     // invoice could be charges or packages or lessons 
 }
 
+TAX_TREATMENT_CHOICES = (
+    ('Tax Exclusive', 'Tax Exclusive'),
+    ('Tax Inclusive', 'Tax Inclusive'),
+    ('Tax Exempt', 'Tax Exempt'),
+)
+
+
+STATUS_CHOICES = (
+    ('Saved', 'Saved'),
+    ('Approved', 'Approved'),
+    ('Paid', 'Paid'),
+    ('Void', 'Void'),
+)
 */
