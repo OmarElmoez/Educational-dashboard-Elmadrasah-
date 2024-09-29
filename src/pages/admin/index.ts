@@ -3,13 +3,18 @@ import AdminHomePage from "./HomePage";
 import AdminTeachersPage from "./Teachers";
 import AdminReportsPage from "./Reports";
 import AdminStudentsPage from "./Students";
+// FORMS
 import AddEmployeeForm from "./forms/AddEmployeeForm";
 import AddTeacherForm from "./forms/AddTeacherForm";
 import AddParentForm from "./forms/AddParentForm";
 import AddStudentForm from "./forms/AddStudentForm";
 import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
-import StudentsList from "./lists/StudentsList";
 import CreateInvoiceForm from "./forms/CreateInvoiceForm";
+
+// LIST: 
+import StudentsList from "./lists/StudentsList";
+import InvoicesList from "./lists/InvoicesList";
+import InvoiceDetails from "./lists/InvoiceDetails";
 
 export {
   AdminClassesPage,
@@ -24,4 +29,6 @@ export {
   AddStudentToFamilyForm,
   StudentsList,
   CreateInvoiceForm,
+  InvoicesList,
+  InvoiceDetails,
 };

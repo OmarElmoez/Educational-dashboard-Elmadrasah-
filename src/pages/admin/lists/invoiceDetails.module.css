@@ -1,0 +1,107 @@
+ .containerStyle {
+   padding: 3rem;
+   direction: rtl as const;
+ }
+
+ .headerStyle {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 20px;
+ }
+
+ .linkTitle {
+   /* font-family: Expo Arabic; */
+   font-size: 20px;
+   font-weight: 500;
+   text-align: right;
+   color: #1C8A44;
+   margin: 3.2rem 0 3.2rem 0;
+
+ }
+
+ .RowContainer {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   font-size: 1.4rem;
+ }
+
+ .RowContainer>* {
+   width: 50%;
+ }
+
+ .RowContainer>p {
+   font-weight: 500;
+   color: #000;
+   margin-bottom: 2rem;
+ }
+
+ .metaStyle {
+   text-align: left;
+   color: #555;
+ }
+
+ .tableStyle {
+   width: 100%;
+   border-collapse: collapse;
+   margin-top: 20px;
+ }
+
+
+ .thStyle {
+   width: 16%;
+   background-color: #f1f1f1;
+   padding: 10px;
+   text-align: center as const;
+   border-bottom: 1px solid #ddd;
+   border-left: 1px solid;
+ }
+
+
+ .tdStyle {
+   width: 16%;
+   padding: 10px;
+   text-align: center as const;
+   border-bottom: 1px solid #ddd;
+ }
+
+
+ .amountStyle {
+   font-weight: bold;
+   font-size: 16px;
+   text-align: right as const;
+   margin: 10px 0;
+ }
+
+ .totalDetails {
+   margin-top: 4.8rem;
+ }
+
+ .buttonStyle {
+   /* width: Hug (137px)px;
+   height: Hug (33px)px; */
+   padding: 8px 10px 8px 10px;
+   gap: 20px;
+   border-radius: 10px;
+   border: 1px;
+   opacity: 0px;
+
+   border: 1px solid #EBEBEB
+ }
+
+ .payHistory {
+   margin-top: 6.6rem;
+   background-color: #f1f1f1;
+   padding: 4rem 2rem 4rem 2rem;
+
+ }
+
+
+ .inputStyle {
+   padding: 10px;
+   border-radius: 5px;
+   border: 1px solid #ddd;
+   margin-right: 10px;
+ }
