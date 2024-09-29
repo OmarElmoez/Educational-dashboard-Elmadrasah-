@@ -258,7 +258,18 @@ menu {
 @media (max-width: 991px) {
   .group {
     align-self: stretch;
+    min-width: fit-content;
   }
+}
+
+.group.addBtn {
+  align-self: center;
+  padding-bottom: 0;
+  top: -3px;
+}
+
+.group.addBtn button {
+  width: fit-content;
 }
 
 .inputField,
@@ -332,13 +343,18 @@ textarea::placeholder,
 }
 
 .required::after {
-  content: " *";
+  content: "*";
   color: red;
   font-weight: 400;
   font-size: 2.5rem;
   position: absolute;
   top: -10px;
+  margin-right: 0.5rem;
+}
 
+input#formatted_number::placeholder {
+  color: #000;
+  font-size: 1.6rem;
 }
 
 /* ******************** GLOBAL CLASSES  *********************** */

@@ -1,23 +1,36 @@
+import React, { useEffect, useState } from "react";
 import styles from "./table.module.css";
 import { TCustomer } from "@/types/table";
 
-const { table, hiddenInput, checkmark, checkmarkBox } = styles;
+const { table, hiddenInput, checkmark, checkmarkBox, checked } = styles;
 
 type TTableProps = {
   headData: { name: string; label: string }[];
   bodyData: TCustomer[];
+  checkAll: boolean;
 };
 
 const fieldsWithDifferentDirection = ["mobile_phone", "home_phone"];
 
-const Table = ({ headData, bodyData }: TTableProps) => {
+const Table = ({ headData, bodyData, checkAll }: TTableProps) => {
+
+
+  useEffect(() => {
+    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"], checked');
+    checkboxes.forEach((checkbox) => {
+      if (checkbox instanceof HTMLInputElement) {
+        console.log(checkbox.dataset.id);
+      }
+    });
+  }, [checkAll]);
+
   return (
     <table className={table}>
       <thead>
         <tr>
           <th className={checkmarkBox}>
             <span className={checkmark}>
-              <input type="checkbox" className={hiddenInput} />
+              <input type="checkbox" className={hiddenInput} onClick={() => setCheckAll(!checkAll)} />
             </span>
           </th>
           {headData.map((head) => (
@@ -30,7 +43,11 @@ const Table = ({ headData, bodyData }: TTableProps) => {
           <tr key={body.id}>
             <td className={checkmarkBox}>
               <span className={checkmark}>
-                <input type="checkbox" className={hiddenInput} />
+                <input
+                  type="checkbox"
+                  className={`${hiddenInput} ${checkAll ? checked : ""}`}
+                  data-id={body.id}
+                />
               </span>
             </td>
             {headData.map((head) => (

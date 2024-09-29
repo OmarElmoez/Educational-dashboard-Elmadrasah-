@@ -1,7 +1,7 @@
 import { TABLE_HEAD_DATA } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetStudents } from "@/store/table/TableSlice";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import styles from "./studentsList.module.css";
 import { SearchSection, Table } from "@/components";
@@ -14,11 +14,19 @@ const StudentsList = () => {
 
   const { students } = useAppSelector((state) => state.table);
 
+  const [checkAll, setCheckAll] = useState(false);
+
   const getNewtPage = useCallback(
-    ({ next, previous }: { next?: string | null, previous?: string | null }) => {
+    ({
+      next,
+      previous,
+    }: {
+      next?: string | null;
+      previous?: string | null;
+    }) => {
       if (next) {
         console.log("next", next);
-        
+
         dispatch(actGetStudents({ token: user?.token, next }));
         return;
       }
@@ -37,15 +45,27 @@ const StudentsList = () => {
     getNewtPage({});
   }, [getNewtPage]);
 
+  const clearCheckAll = () => {
+    setCheckAll(false);
+  };
+
   return (
     <section className={searchContainer}>
       <Table
         headData={TABLE_HEAD_DATA["students"]}
         bodyData={students.data}
+        checkAll={checkAll}
+        setCheckAll={setCheckAll}
       />
       <SearchSection token={user?.token} searchFor="students" />
       <section className={actions}>
-        <button onClick={() => getNewtPage({ previous: students.previous })} disabled={!students.previous}>
+        <button
+          onClick={() => {
+            clearCheckAll();
+            getNewtPage({ previous: students.previous });
+          }}
+          disabled={!students.previous}
+        >
           <svg
             width="20"
             height="20"
@@ -63,7 +83,13 @@ const StudentsList = () => {
           <span>الرجوع</span>
         </button>
 
-        <button onClick={() => getNewtPage({ next: students.next })} disabled={!students.next}>
+        <button
+          onClick={() => {
+            clearCheckAll();
+            getNewtPage({ next: students.next });
+          }}
+          disabled={!students.next}
+        >
           <span>التالي</span>
           <svg
             width="20"
