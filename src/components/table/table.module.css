@@ -47,13 +47,16 @@ td.checkmarkBox {
   margin-inline: auto;
 }
 
-.checkmark.checked {
+.checkmark:has(input[type='checkbox']:checked),
+.checkmark:has(input.checked) {
   background-color: var(--main-color);
   color: #fff;
-  border-color: var(--main-color)
+  border-color: var(--main-color);
+  z-index: 1;
 }
 
-.checkmark.checked::after {
+.checkmark:has(input[type='checkbox']:checked)::after,
+.checkmark:has(input.checked)::after {
   content: "";
   display: block;
   box-sizing: border-box;
@@ -64,4 +67,5 @@ td.checkmarkBox {
   border-width: 0 2px 2px 0;
   border-style: solid;
   transform: rotate(45deg);
+  z-index: -1;
 }

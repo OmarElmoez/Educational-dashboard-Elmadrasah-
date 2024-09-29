@@ -9,7 +9,7 @@ import AddParentForm from "./forms/AddParentForm";
 import AddStudentForm from "./forms/AddStudentForm";
 import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
 import StudentsList from "./lists/StudentsList";
-import CreateInvoiceForm from "./forms/CreateInvoiceForm";
+import CreateInvoiceForm from "./forms/create-invoice/CreateInvoiceForm";
 
 export {
   AdminClassesPage,

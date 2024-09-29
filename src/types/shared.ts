@@ -28,6 +28,20 @@ type TModalRef = {
 type TResponseOption = {
   id: number;
   name: string;
-}
+};
 
-export type { TLoading, TFirstDayOfWeek, TUserRole, TPath, TLessonStatus, TModalRef, TResponseOption }
+type TService = "charges" | "packages" | "lessons";
+
+type TTax_Treatment = "Tax Exclusive" | "Tax Inclusive" | "Tax Exempt";
+
+export type {
+  TLoading,
+  TFirstDayOfWeek,
+  TUserRole,
+  TPath,
+  TLessonStatus,
+  TModalRef,
+  TResponseOption,
+  TService,
+  TTax_Treatment
+};

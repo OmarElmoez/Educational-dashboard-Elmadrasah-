@@ -4,10 +4,11 @@ import React from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { setChosenState } from "@/store/location/LocationSlice";
 import styles from "./dropDown.module.css";
+import { TService, TTax_Treatment } from "@/types/shared";
 
 const { feedback } = styles;
 
-const Dropdown = <T extends FieldValues>({
+const Dropdown = <T extends FieldValues, U extends string>({
   name,
   options,
   chosen,
@@ -19,7 +20,8 @@ const Dropdown = <T extends FieldValues>({
   isWithPopup = false,
   disabled = false,
   children = null,
-}: TDropdownProps<T>) => {
+  handleChange,
+}: TDropdownProps<T, U>) => {
   const chosenValue = options.find((option) => option.value === chosen)?.value;
 
   const dispatch = useAppDispatch();
@@ -38,7 +40,7 @@ const Dropdown = <T extends FieldValues>({
 
   return (
     <article className="group">
-      <label className={`adminFormLabel ${isRequired && 'required' }`}>
+      <label className={`adminFormLabel ${isRequired && "required"}`}>
         {label}
       </label>
       <div className="select_wrapper">
@@ -47,8 +49,17 @@ const Dropdown = <T extends FieldValues>({
           defaultValue={chosenValue}
           onClick={handleChosenState}
           disabled={disabled || false}
-          className={`${disabled && 'disabled_btn'}`}
-
+          className={`${disabled && "disabled_btn"}`}
+          onChange={(e) => handleChange && handleChange(e.currentTarget.value as U)}
+          // onChange={(e) =>
+          //   setTreatmentType &&
+          //   setTreatmentType(
+          //     e.currentTarget.value as
+          //       | "Tax Exclusive"
+          //       | "Tax Inclusive"
+          //       | "Tax Exempt"
+          //   )
+          // }
         >
           <option value="">--اختر--</option>
           {options.map((option, index) => (
@@ -65,7 +76,7 @@ const Dropdown = <T extends FieldValues>({
             className="add-action-btn"
             onClick={() => subjectRef?.current?.open()}
           >
-            + إضافة جديد{" "}
+            + إضافة جديد
           </p>
         )}
         {children && children}
