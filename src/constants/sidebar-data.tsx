@@ -93,11 +93,21 @@ const SIDEBAR_DATA = {
       icon: <StudentIcon />,
     },
     {
-      title: "انشاء فاتورة" ,
+      title: 'عرض الفواتير',
+      path: 'invoices-list',
+      icon: <InvoiceIcon />,
+    },
+    {
+      title: 'تفاصيل الفاتورة',
+      path: 'invoice-details',
+      icon: <InvoiceIcon />,
+    },
+    {
+      title: "انشاء فاتورة",
       path: "create-invoice",
       icon: <InvoiceIcon />,
     },
- 
+
   ],
 
   Teacher: [
