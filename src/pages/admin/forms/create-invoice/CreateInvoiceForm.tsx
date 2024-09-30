@@ -36,6 +36,7 @@ import ArrowDown from "@/assets/arrow_down.svg?react";
 import axios from "axios";
 import actGetInvoiceNumber from "@/store/single-actions/actGetInvoiceNumber";
 import { TService, TTax_Treatment } from "@/types/shared";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 
 const {
   row,
@@ -206,6 +207,9 @@ const CreateInvoiceForm = () => {
       const token = user?.token;
 
       try {
+        if (!customer) {
+          return openFeedbackModal('failed', 'برجاء اختيار العميل اولا');
+        }
         const { data }: { data: filterRes[] } = await axios.get(
           "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/lesson_filter/",
           {
@@ -235,7 +239,7 @@ const CreateInvoiceForm = () => {
           );
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.log(error);
       }
     }
   };
