@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -19,22 +25,38 @@ import {
   // TCreateInvoiceSchemaFormDataForServer,
 } from "@/schemas/CreateInvoiceSchema";
 import { TOption } from "@/types/Dropdown";
-import { ADD_SERVICE_OPTIONS, REPORT_OPTIONS, TAX_TREATMENT_OPTIONS } from "@/constants";
+import {
+  ADD_SERVICE_OPTIONS,
+  REPORT_OPTIONS,
+  TAX_TREATMENT_OPTIONS,
+} from "@/constants";
 import CloseButton from "@/assets/close-button.svg?react";
 import styles from "./createInvoice.module.css";
 import ArrowDown from "@/assets/arrow_down.svg?react";
 import axios from "axios";
+import actGetInvoiceNumber from "@/store/single-actions/actGetInvoiceNumber";
+import { TService, TTax_Treatment } from "@/types/shared";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
 
-const { row, container, close_btn_container,
-  dropdown, dropdown_btn, dropdown_content,
+const {
+  row,
+  container,
+  close_btn_container,
+  dropdown,
+  dropdown_btn,
+  dropdown_content,
+  filter_btn
 } = styles;
-
 
 interface filterRes {
   service: string;
   description: string;
   quantity: string;
 }
+
+type TServiceHandler = {
+  [key in TService]: () => void;
+};
 
 // ------------------------------------------------------------------------
 
@@ -46,8 +68,12 @@ const CreateInvoiceForm = () => {
 
   const [customersList, setCustomersList] = useState<TOption[]>([]);
   const [servicesList, setServicesList] = useState<TOption[]>([]);
-  const [dataStatus, setDataStatus] = useState<"Saved" | "Approved" | "Paid" | "Void">("Saved");
+  const [dataStatus, setDataStatus] = useState<
+    "Saved" | "Approved" | "Paid" | "Void"
+  >("Saved");
 
+  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [serviceType, setServiceType] = useState<TService>();
 
   const {
     register,
@@ -63,7 +89,8 @@ const CreateInvoiceForm = () => {
     defaultValues: {
       tax_treatment: "Tax Exclusive",
       // ***** update it to get sales_tax_total dynamicaly from an API
-      sales_tax_total: "10",
+      sales_tax_total: "10%",
+      formatted_number: invoiceNumber,
       charges: [
         // {
         //   title: "",
@@ -89,18 +116,24 @@ const CreateInvoiceForm = () => {
         // end_date: "",
         // report: "All"
         // }
-      ]
-
+      ],
     },
   });
 
-
-  const { fields: chargesFields, append: appendCharge, remove: removeCharge } = useFieldArray({
+  const {
+    fields: chargesFields,
+    append: appendCharge,
+    remove: removeCharge,
+  } = useFieldArray({
     control,
     name: "charges",
   });
 
-  const { fields: packagesFields, append: appendpackages, remove: removepackages } = useFieldArray({
+  const {
+    fields: packagesFields,
+    append: appendpackages,
+    remove: removepackages,
+  } = useFieldArray({
     control,
     name: "packages",
   });
@@ -126,7 +159,7 @@ const CreateInvoiceForm = () => {
     removeCharge(index);
   };
 
-  const handleAddpackages = () => {
+  const handleAddPackages = () => {
     appendpackages({
       service: "",
       description: "",
@@ -146,14 +179,27 @@ const CreateInvoiceForm = () => {
       start_date: "",
       end_date: "",
       report: "All",
-
     });
   };
-  const watchSelectService = watch('add');
 
-  const watchFiltration = watch('filtration');
-  const watchCustomer = watch('customer');
+  const serviceHandlers: TServiceHandler = {
+    charges: handleAddCharge,
+    packages: handleAddPackages,
+    lessons: handleAddLessons,
+  };
 
+  // const watchSelectService = watch("add");
+
+  // console.log("watchSelectService", watchSelectService);
+
+  const watchFiltration = watch("filtration");
+  // const watchCustomer = watch("customer");
+  // console.log('watch customer', watchCustomer);
+
+  const [customer, setCustomer] = useState("");
+  
+
+  const [treatmentType, setTreatmentType] = useState<TTax_Treatment>(watch("tax_treatment"));
 
   const handleFilter = async () => {
     if (watchFiltration) {
@@ -161,13 +207,16 @@ const CreateInvoiceForm = () => {
       const token = user?.token;
 
       try {
+        if (!customer) {
+          return openFeedbackModal('failed', 'برجاء اختيار العميل اولا');
+        }
         const { data }: { data: filterRes[] } = await axios.get(
           "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/lesson_filter/",
           {
             params: {
               start_date,
               end_date,
-              customer_id: watchCustomer,
+              customer_id: customer,
               lesson_status: report,
             },
             headers: {
@@ -190,27 +239,36 @@ const CreateInvoiceForm = () => {
           );
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.log(error);
       }
     }
   };
 
   const handleAppend = () => {
+    const handler = serviceType && serviceHandlers[serviceType];
 
-    if (watchSelectService === "charges") {
-      handleAddCharge();
-    } else if (watchSelectService === "packages") {
-      handleAddpackages();
+    if (handler) {
+      handler();
+      return;
     }
-    else {
-      handleAddLessons();
-    }
+  };
 
+  const handleServiceType = (service: TService) => {
+    setServiceType(service);
+  };
+
+  const handleTaxTreatment = (treatment: TTax_Treatment) => {
+    setTreatmentType(treatment);
+  };
+
+  const handleCustomer = (id: string) => {
+    setCustomer(id)
   }
 
+  const watchFields = watch(["tax_treatment", "sales_tax_total"]);
 
   //  calculate packagesAmount and chargesAmount
-  const calculateAmounts = () => {
+  const calculateAmounts = useCallback(() => {
     let packagesAmount = 0;
     let chargesAmount = 0;
 
@@ -223,51 +281,48 @@ const CreateInvoiceForm = () => {
     });
 
     return { packagesAmount, chargesAmount };
-  };
+  }, [packagesFields, chargesFields, watch]);
 
   // TAX
-  const calculateTotal = (
-    taxTreatment: "Tax Exclusive" | "Tax Inclusive" | "Tax Exempt" | null,
-    subtotal: number,
-    salesTaxRate: number
-  ): { total: number; salesTax: number, subtotal: number } => {
-    let total = subtotal;
-    let salesTax = 0;
+  const calculateTotal = useCallback(
+    (
+      subtotal: number,
+      salesTaxRate: number
+    ): { total: number; salesTax: number; subtotal: number } => {
+      let total = subtotal;
+      let salesTax = 0;
 
+      // const [taxTreatment] = watchFields;
 
-    switch (taxTreatment) {
-      case "Tax Exclusive":
-        salesTax = (salesTaxRate / 100) * subtotal;
-        total = subtotal + salesTax;
-        subtotal;
-        break;
+      switch (treatmentType) {
+        case "Tax Exclusive":
+          salesTax = (salesTaxRate / 100) * subtotal;
+          total = subtotal + salesTax;
+          subtotal;
+          break;
 
-      case "Tax Inclusive":
+        case "Tax Inclusive":
+          salesTax = (salesTaxRate / 100) * subtotal;
+          subtotal = subtotal - salesTax;
+          total = subtotal + salesTax;
+          break;
 
-        salesTax = subtotal * (salesTaxRate / (100 + salesTaxRate));
-        // total = subtotal;
-        total = subtotal - (salesTaxRate / (100 + salesTaxRate));
-        subtotal = subtotal - salesTax;
-        console.log("Tax Inclusive", subtotal, total, salesTax);
-        break;
+        case "Tax Exempt":
+          salesTax = 0;
+          total = subtotal;
+          subtotal;
+          break;
 
-      case "Tax Exempt":
-        salesTax = 0;
-        total = subtotal;
-        subtotal;
-        break;
+        default:
+          throw new Error("Invalid tax treatment");
+      }
 
-      default:
-        throw new Error("Invalid tax treatment");
-    }
+      return { total, salesTax, subtotal };
+    },
+    [treatmentType]
+  );
 
-    return { total, salesTax, subtotal };
-  };
-
-  const watchFields = watch(["tax_treatment", "sales_tax_total"]);
-
-  const handleCalcTax = () => {
-
+  const handleCalcTax = useCallback(() => {
     const { packagesAmount, chargesAmount } = calculateAmounts();
 
     const sub_total = packagesAmount + chargesAmount;
@@ -278,25 +333,37 @@ const CreateInvoiceForm = () => {
 
     if (tax_treatment !== null && sales_tax_total !== "") {
       const { total, salesTax, subtotal } = calculateTotal(
-        tax_treatment || "Tax Exclusive",
         parseFloat(sub_total.toString()),
-        parseFloat(sales_tax_total )
+        parseFloat(sales_tax_total)
       );
 
       setValue("total", total.toFixed(2));
       setValue("tax_count", salesTax.toFixed(2));
       setValue("subtotal", subtotal.toFixed(2));
     }
-  };
+  }, [calculateAmounts, calculateTotal, setValue, watchFields]);
 
-  const handleChargeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+  useEffect(() => {
+    handleCalcTax();
+  }, [handleCalcTax, treatmentType]);
+
+  const handleChargeChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number
+  ) => {
     const { name, value } = e.target;
 
-    const unitPrice = name.includes("unit_price") ? parseFloat(value) : parseFloat(watch(`charges.${index}.unit_price`)) || 0;
-    const quantity = name.includes("quantity") ? parseFloat(value) : parseFloat(watch(`charges.${index}.quantity`)) || 0;
-    const discountRate = name.includes("discount_rate") ? parseFloat(value) : parseFloat(watch(`charges.${index}.discount_rate`)) || 0;
+    const unitPrice = name.includes("unit_price")
+      ? parseFloat(value)
+      : parseFloat(watch(`charges.${index}.unit_price`)) || 0;
+    const quantity = name.includes("quantity")
+      ? parseFloat(value)
+      : parseFloat(watch(`charges.${index}.quantity`)) || 0;
+    const discountRate = name.includes("discount_rate")
+      ? parseFloat(value)
+      : parseFloat(watch(`charges.${index}.discount_rate`)) || 0;
 
-    const amount = (unitPrice * quantity) * (1 - discountRate / 100);
+    const amount = unitPrice * quantity * (1 - discountRate / 100);
 
     if (!isNaN(amount)) {
       setValue(`charges.${index}.amount`, amount.toFixed(2));
@@ -306,14 +373,23 @@ const CreateInvoiceForm = () => {
     handleCalcTax();
   };
 
-  const handlePackagesChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+  const handlePackagesChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number
+  ) => {
     const { name, value } = e.target;
 
-    const unitPrice = name.includes("unit_price") ? parseFloat(value) : parseFloat(watch(`packages.${index}.unit_price`)) || 0;
-    const quantity = name.includes("quantity") ? parseFloat(value) : parseFloat(watch(`packages.${index}.quantity`)) || 0;
-    const discountRate = name.includes("discount_rate") ? parseFloat(value) : parseFloat(watch(`packages.${index}.discount_rate`)) || 0;
+    const unitPrice = name.includes("unit_price")
+      ? parseFloat(value)
+      : parseFloat(watch(`packages.${index}.unit_price`)) || 0;
+    const quantity = name.includes("quantity")
+      ? parseFloat(value)
+      : parseFloat(watch(`packages.${index}.quantity`)) || 0;
+    const discountRate = name.includes("discount_rate")
+      ? parseFloat(value)
+      : parseFloat(watch(`packages.${index}.discount_rate`)) || 0;
 
-    const amount = (unitPrice * quantity) * (1 - discountRate / 100);
+    const amount = unitPrice * quantity * (1 - discountRate / 100);
 
     if (!isNaN(amount)) {
       setValue(`packages.${index}.amount`, amount.toFixed(2));
@@ -322,7 +398,6 @@ const CreateInvoiceForm = () => {
     calculateAmounts();
     handleCalcTax();
   };
-
 
   useEffect(() => {
     dispatch(
@@ -340,17 +415,18 @@ const CreateInvoiceForm = () => {
         setServicesList(res.payload);
       }
     });
+
+    dispatch(actGetInvoiceNumber({ token: user?.token }))
+      .unwrap()
+      .then((res) => setInvoiceNumber(res));
   }, [dispatch, user?.token]);
 
-
-
   const onSubmit = (data: TCreateInvoiceFormData) => {
-
     console.log("data", data);
 
     data.status = dataStatus;
     if (chargesFields?.length === 0 && packagesFields?.length === 0) {
-     return openFeedbackModal("failed", "يجب عليك اختيار خدمة");
+      return openFeedbackModal("failed", "يجب عليك اختيار خدمة");
     }
 
     dispatch(
@@ -362,12 +438,13 @@ const CreateInvoiceForm = () => {
     )
       .unwrap()
       .then(() => openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!"))
-      .catch((error) =>  openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error));
+      .catch((error) =>
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)
+      );
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-
       <Heading text="انشاء فاتورة" />
 
       <Row>
@@ -378,6 +455,7 @@ const CreateInvoiceForm = () => {
           // placeholder="حدد العميل"
           isRequired
           options={customersList}
+          handleChange={handleCustomer}
           error={errors?.customer?.message as string}
         />
       </Row>
@@ -402,14 +480,18 @@ const CreateInvoiceForm = () => {
           error={errors?.due_date?.message as string}
         />
         {/* ****** create new InputField style ******** */}
+        {/* <section> */}
         <InputField
-          label=" رقم"
-          placeholder="INV- 0001"
-          isRequired
+          label="رقم الفاتورة"
+          placeholder={`INV- ${invoiceNumber}`}
+          disabled
+          value={invoiceNumber}
           register={register}
           name="formatted_number"
           error={errors?.formatted_number?.message as string}
         />
+        {/* <div>-INV</div> */}
+        {/* </section> */}
 
         <InputField
           label=" مرجع"
@@ -428,37 +510,43 @@ const CreateInvoiceForm = () => {
           options={TAX_TREATMENT_OPTIONS}
           name="tax_treatment"
           isRequired
-          // onChange={handleCalcTax}
+          handleChange={handleTaxTreatment}
           error={errors?.tax_treatment?.message as string}
         />
       </div>
 
-      <Row >
-        <div className={container}>
-          <Dropdown
-            label="اضافة باقة"
-            name="add"
-            register={register}
-            options={ADD_SERVICE_OPTIONS}
-            error={errors?.add?.message as string}
-          />
-          <button type="button" onClick={handleAppend} className="btn submit-btn" >اذهب</button>
-        </div>
+      <Row>
+        {/* <div className={container}> */}
+        <Dropdown
+          label="اضافة خدمة"
+          name="add"
+          register={register}
+          options={ADD_SERVICE_OPTIONS}
+          handleChange={handleServiceType}
+          error={errors?.add?.message as string}
+        />
 
-        <article className="group"></article>
+        {/* </div> */}
+
+        <article className="group addBtn">
+          <button
+            type="button"
+            onClick={handleAppend}
+            className="btn submit-btn"
+          >
+            اضافة
+          </button>
+        </article>
       </Row>
-
-
 
       {/* ********* START ROW ********************* */}
       {chargesFields.map((field, index) => (
-        <div key={field.id} style={{ alignItems: "center" }} className={row}>
+        <div key={field.id} className={row}>
           <InputField
             label="الخدمة"
             placeholder="الخدمة"
             name={`charges.${index}.title`}
             register={register}
-
             error={errors?.charges?.[index]?.title?.message as string}
           />
           <InputField
@@ -468,7 +556,6 @@ const CreateInvoiceForm = () => {
             register={register}
             error={errors?.charges?.[index]?.description?.message as string}
           />
-
 
           <InputField
             label="الكمية"
@@ -514,12 +601,11 @@ const CreateInvoiceForm = () => {
       ))}
 
       {/* ********* END ROW ********************* */}
-      <hr className="hr" />
-
+      {/* <hr className="hr" /> */}
 
       {/* ********* START ROW ********************* */}
       {packagesFields.map((field, index) => (
-        <Row key={field.id} >
+        <div key={field.id} className={row}>
           <Dropdown
             label="الخدمة"
             //  placeholder="الخدمة"
@@ -577,48 +663,45 @@ const CreateInvoiceForm = () => {
               <CloseButton />
             </button>
           </div>
-        </Row>
+        </div>
       ))}
       {/* ********* END ROW ********************* */}
 
-
       {/* ********* START ROW ********************* */}
       {filtrationFields.map((field, index) => (
-        <>
-          <Row key={field.id} >
-            <InputField
-              label=" تاريخ البدء"
-              type="date"
-              placeholder="02-05-2024"
-              isRequired
-              register={register}
-              name={`filtration.${index}.start_date`}
-              error={errors?.filtration?.[index]?.start_date?.message as string}
-            />
-            <InputField
-              label=" تاريخ النهاية"
-              type="date"
-              placeholder="02-05-2024"
-              isRequired
-              register={register}
-              name={`filtration.${index}.end_date`}
-              error={errors?.filtration?.[index]?.end_date?.message as string}
-            />
-            <Dropdown
-              label="التقرير"
-              options={REPORT_OPTIONS}
-              register={register}
-              name={`filtration.${index}.report`}
-              error={errors?.filtration?.[index]?.report?.message as string}
-            />
+        <div key={field.id} className={row}>
+          <InputField
+            label=" تاريخ البدء"
+            type="date"
+            placeholder="02-05-2024"
+            isRequired
+            register={register}
+            name={`filtration.${index}.start_date`}
+            error={errors?.filtration?.[index]?.start_date?.message as string}
+          />
+          <InputField
+            label=" تاريخ النهاية"
+            type="date"
+            placeholder="02-05-2024"
+            isRequired
+            register={register}
+            name={`filtration.${index}.end_date`}
+            error={errors?.filtration?.[index]?.end_date?.message as string}
+          />
+          <Dropdown
+            label="التقرير"
+            options={REPORT_OPTIONS}
+            register={register}
+            name={`filtration.${index}.report`}
+            error={errors?.filtration?.[index]?.report?.message as string}
+          />
 
-            <div className={close_btn_container}>
-              <button type="button" onClick={handleFilter}>
-                اذهب
-              </button>
-            </div>
-          </Row>
-        </>
+          <div className="group addBtn" style={{ maxWidth: 'fit-content' }}>
+            <button type="button" onClick={handleFilter} className="btn submit-btn">
+              عرض
+            </button>
+          </div>
+        </div>
       ))}
       {/* ********* END ROW ********************* */}
 
@@ -647,7 +730,7 @@ const CreateInvoiceForm = () => {
         />
         {/* for: count tax in numbers based on product price  */}
         <InputField
-          label=" الاجمالى "
+          label="قيمة الضريبة"
           placeholder=" 0.00"
           register={register}
           name="tax_count"
@@ -670,7 +753,7 @@ const CreateInvoiceForm = () => {
         />
         <article className="group"></article>
       </Row>
-      
+
       <Row>
         <SingleCheckbox
           register={register}
@@ -681,20 +764,17 @@ const CreateInvoiceForm = () => {
         />
       </Row>
 
+      <Heading text="تعليمات" />
       <Row>
-
         <InputField
-          label=" تعليمات "
-          placeholder=" 0.00"
+          label=""
           textarea
           register={register}
           name="terms_text"
           error={errors?.terms_text?.message as string}
         />
-
       </Row>
       <div className="submit-buttons-container">
-      
         <button type="submit" className="btn submit-btn">
           {isSubmitting ? (
             <CircleLoadingIndecator size={16} color="#fff" />
@@ -704,9 +784,8 @@ const CreateInvoiceForm = () => {
         </button>
 
         <button
-         
           onClick={() => {
-            setDataStatus("Approved")
+            setDataStatus("Approved");
           }}
           className="btn cancel-btn"
         >
@@ -728,13 +807,3 @@ const CreateInvoiceForm = () => {
 };
 
 export default CreateInvoiceForm;
-
-
-
-// /**
-//  
-//  * update UI
-//  * Update save dropdown 
-//  */
-
-

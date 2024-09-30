@@ -9,7 +9,7 @@ import AddTeacherForm from "./forms/AddTeacherForm";
 import AddParentForm from "./forms/AddParentForm";
 import AddStudentForm from "./forms/AddStudentForm";
 import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
-import CreateInvoiceForm from "./forms/CreateInvoiceForm";
+import CreateInvoiceForm from "./forms/create-invoice/CreateInvoiceForm";
 
 // LIST: 
 import StudentsList from "./lists/StudentsList";

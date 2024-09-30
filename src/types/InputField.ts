@@ -10,6 +10,7 @@ export type TInputField<T extends FieldValues> = {
   textarea?: boolean;
   isRequired?: boolean;
   disabled?: boolean;
+  value?: string;
 };
 
 export type TRadioField<T extends FieldValues> = {
