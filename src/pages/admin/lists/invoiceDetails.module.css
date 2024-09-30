@@ -1,6 +1,6 @@
  .containerStyle {
    padding: 3rem;
-   direction: rtl as const;
+   direction: rtl;
  }
 
  .headerStyle {
@@ -54,7 +54,7 @@
    width: 16%;
    background-color: #f1f1f1;
    padding: 10px;
-   text-align: center as const;
+   text-align: center;
    border-bottom: 1px solid #ddd;
    border-left: 1px solid;
  }
@@ -63,7 +63,7 @@
  .tdStyle {
    width: 16%;
    padding: 10px;
-   text-align: center as const;
+   text-align: center;
    border-bottom: 1px solid #ddd;
  }
 
@@ -71,7 +71,7 @@
  .amountStyle {
    font-weight: bold;
    font-size: 16px;
-   text-align: right as const;
+   text-align: right;
    margin: 10px 0;
  }
 

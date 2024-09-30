@@ -8,8 +8,6 @@ import { SearchSection, Table } from "@/components";
 const { searchContainer, actions } = styles;
 
 // ********************** upd data   *********************************
-
-
 const InvoicesList = () => {
   const dispatch = useAppDispatch();
 
