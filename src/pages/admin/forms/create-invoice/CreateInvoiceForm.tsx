@@ -92,6 +92,7 @@ const CreateInvoiceForm = () => {
       // ***** update it to get sales_tax_total dynamicaly from an API
       sales_tax_total: "10%",
       formatted_number: invoiceNumber,
+      payment_allocations: [],
       charges: [
         // {
         //   title: "",
@@ -161,7 +162,7 @@ const CreateInvoiceForm = () => {
       description: "",
       quantity: "",
       unit_price: "",
-      discount_rate: "",
+      discount_rate: '0',
       amount: "",
     });
   };
@@ -200,7 +201,7 @@ const CreateInvoiceForm = () => {
       description: "",
       quantity: "",
       unit_price: "",
-      discount_rate: "",
+      discount_rate: "0",
       amount: "",
     });
   };
@@ -390,13 +391,13 @@ const CreateInvoiceForm = () => {
 
     const unitPrice = name.includes("unit_price")
       ? parseFloat(value)
-      : parseFloat(watch(`charges.${index}.unit_price`)) || 0;
+      : parseFloat(watch(`charges.${index}.unit_price`) || "0");
     const quantity = name.includes("quantity")
       ? parseFloat(value)
-      : parseFloat(watch(`charges.${index}.quantity`)) || 0;
+      : parseFloat(watch(`charges.${index}.quantity`) || "0");
     const discountRate = name.includes("discount_rate")
       ? parseFloat(value)
-      : parseFloat(watch(`charges.${index}.discount_rate`)) || 0;
+      : parseFloat(watch(`charges.${index}.discount_rate`) || "0");
 
     const amount = unitPrice * quantity * (1 - discountRate / 100);
 
@@ -407,7 +408,6 @@ const CreateInvoiceForm = () => {
     calculateAmounts();
     handleCalcTax();
   };
-
   const handlePackagesChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
@@ -422,7 +422,7 @@ const CreateInvoiceForm = () => {
       : parseFloat(watch(`packages.${index}.quantity`)) || 0;
     const discountRate = name.includes("discount_rate")
       ? parseFloat(value)
-      : parseFloat(watch(`packages.${index}.discount_rate`)) || 0;
+      : parseFloat((watch(`packages.${index}.discount_rate`)) || '0');
 
     const amount = unitPrice * quantity * (1 - discountRate / 100);
 
@@ -458,6 +458,9 @@ const CreateInvoiceForm = () => {
 
   const onSubmit = (data: TCreateInvoiceFormData) => {
     console.log("data", data);
+
+    data.formatted_number = invoiceNumber;
+    data.sales_tax_total = parseFloat(data.sales_tax_total).toString();
 
     data.status = dataStatus;
     if (chargesFields?.length === 0 && packagesFields?.length === 0) {
@@ -821,7 +824,7 @@ const CreateInvoiceForm = () => {
         {/* for: tax pres% */}
         <InputField
           label=" ضريبة المبيعات"
-          placeholder=" 0.00"
+          placeholder="0.00"
           register={register}
           disabled
           name="sales_tax_total"
