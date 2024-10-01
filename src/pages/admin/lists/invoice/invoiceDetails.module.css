@@ -95,9 +95,16 @@
    margin-top: 6.6rem;
    background-color: #f1f1f1;
    padding: 4rem 2rem 4rem 2rem;
+   border-radius: 10px;
+   display: block;
 
  }
 
+ .historyTitle{
+  font-weight: 500;
+  font-size: 2rem;
+  display: block;
+ }
 
  .inputStyle {
    padding: 10px;

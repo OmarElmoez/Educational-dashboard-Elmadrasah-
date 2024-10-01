@@ -14,7 +14,7 @@ import CreateInvoiceForm from "./forms/create-invoice/CreateInvoiceForm";
 // LIST: 
 import StudentsList from "./lists/StudentsList";
 import InvoicesList from "./lists/InvoicesList";
-import InvoiceDetails from "./lists/InvoiceDetails";
+import InvoiceDetails from "./lists/invoice/InvoiceDetails";
 
 export {
   AdminClassesPage,

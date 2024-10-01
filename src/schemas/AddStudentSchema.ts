@@ -7,6 +7,7 @@ export const AddStudentSchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
   full_name: z.string().min(1, "برجاء ادخال الاسم الكامل"),
+ 
   email: z
     .string()
     .min(1, "برجاء ادخال البريد الإلكتروني")
