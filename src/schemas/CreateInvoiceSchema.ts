@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { optional, z } from "zod";
 
 export const CreateInvoiceSchema = z.object({
   customer: z.string().min(1, "برجاء اختيار العميل"),
   invoice_type: z.enum(["invoice", "credit_note"]).default("invoice"),
-  formatted_number: z.string().min(1, "برجاء ادخال الرقم المنسق للفاتورة"),
+  formatted_number: z.string().optional(),
   date: z.string().min(1, "برجاء ادخال تاريخ الفاتورة"),
   due_date: z.string().min(1, "برجاء ادخال تاريخ الاستحقاق"),
   reference: z.string().nullable().optional(),
@@ -11,6 +11,8 @@ export const CreateInvoiceSchema = z.object({
   status: z.enum(["Saved", "Approved", "Paid", "Void"]).default("Saved"),
   start_date: z.string().optional(),
   end_date: z.string().optional(),
+
+  payment_allocations: z.array(z.string()).optional(),
   
   tax_treatment: z.enum(["Tax Exclusive", "Tax Inclusive", "Tax Exempt"]).default("Tax Exclusive"),
   subtotal: z.string().optional(),
@@ -29,7 +31,7 @@ export const CreateInvoiceSchema = z.object({
       description: z.string().min(1, "برجاء ادخال الوصف"),
       quantity: z.string().min(1, "برجاء ادخال الكمية"),
       unit_price: z.string().min(1, "برجاء ادخال سعر الوحدة"),
-      discount_rate: z.string().min(1, "برجاء ادخال نسبة الخصم"),
+      discount_rate: z.string().optional(),
       amount: z.string().min(1, "برجاء ادخال المبلغ"),
     })
   ).optional(),
@@ -41,7 +43,7 @@ export const CreateInvoiceSchema = z.object({
       description: z.string().min(1, "برجاء ادخال الوصف"),
       quantity: z.string().min(1, "برجاء ادخال الكمية"),
       unit_price: z.string().min(1, "برجاء ادخال سعر الوحدة"),
-      discount_rate: z.string().min(1, "برجاء ادخال نسبة الخصم"),
+      discount_rate: z.string().optional(),
       amount: z.string().min(1, "برجاء ادخال المبلغ"),
       // transaction_type: z.enum(["subscription", "one_time"]).default("subscription"),
     })
