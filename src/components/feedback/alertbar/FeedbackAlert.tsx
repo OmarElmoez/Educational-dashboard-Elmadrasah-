@@ -37,6 +37,8 @@ const FeedbackAlert = forwardRef(
         dialog.current?.showModal();
 
         setTimeout(() => {
+          console.log("innnn", timeout);
+          
           dialog.current?.close();
         }, timeout);
       },

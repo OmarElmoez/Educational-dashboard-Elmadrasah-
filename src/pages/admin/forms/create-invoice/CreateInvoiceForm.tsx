@@ -52,6 +52,7 @@ interface filterRes {
   service: string;
   description: string;
   quantity: string;
+  unit_price: string | number;
 }
 
 type TServiceHandler = {
@@ -111,6 +112,7 @@ const CreateInvoiceForm = () => {
         // amount: 0,
         // },
       ],
+      lessons: [],
       filtration: [
         // {
         // start_date: "",
@@ -139,6 +141,15 @@ const CreateInvoiceForm = () => {
     name: "packages",
   });
 
+  const {
+    fields: lessonsFields,
+    append: appendLessons,
+    remove: removeLessons,
+  } = useFieldArray({
+    control,
+    name: "lessons",
+  });
+
   const { fields: filtrationFields, append: appendfiltration } = useFieldArray({
     control,
     name: "filtration",
@@ -158,6 +169,30 @@ const CreateInvoiceForm = () => {
 
   const handleRemoveCharge = (index: number) => {
     removeCharge(index);
+  };
+
+  /**
+   *     {
+        "service": "New test service 1.0",
+        "description": "Mohamed Hassan with amr alaa physics - Scheduled - 2024-09-11 - 15:00:00 - 16:00:00",
+        "quantity": 1,
+        "unit_price": 120.0
+    }
+   */
+  const handleAddLessonsList = () => {
+    console.log("add charge");
+    appendLessons({
+      student: "",
+      description: "",
+      service: "",
+      invoice_unit_price: "",
+      invoice_discount_rate: "",
+      invoice_amount: "",
+    });
+  };
+
+  const handleRemoveLessonsList = (index: number) => {
+    removeLessons(index);
   };
 
   const handleAddPackages = () => {
@@ -226,16 +261,16 @@ const CreateInvoiceForm = () => {
             },
           }
         );
-
+       
         if (data?.length) {
           data.forEach((item) =>
-            appendCharge({
-              title: item?.service || "",
+            appendLessons({
+              student: customer || "",
               description: item?.description || "",
-              quantity: item?.quantity || "",
-              unit_price: "",
-              discount_rate: "0",
-              amount: "",
+              service: item?.service || "",
+              invoice_unit_price: item?.unit_price.toString() || "",
+              invoice_discount_rate: "",
+              invoice_amount: "",
             })
           );
         }
@@ -604,7 +639,7 @@ const CreateInvoiceForm = () => {
       ))}
 
       {/* ********* END ROW ********************* */}
-      {/* <hr className="hr" /> */}
+
 
       {/* ********* START ROW ********************* */}
       {packagesFields.map((field, index) => (
@@ -708,6 +743,70 @@ const CreateInvoiceForm = () => {
       ))}
       {/* ********* END ROW ********************* */}
 
+
+      {/* ********* START ROW ********************* */}
+      {/* ********* WHAT SHOULD BE HERE ? ********************* */}
+      {lessonsFields.map((field, index) => (
+        <div key={field.id} className={row}>
+          <InputField
+            label="الخدمة"
+            placeholder="الخدمة"
+            name={`lessons.${index}.service`}
+            register={register}
+            error={errors?.lessons?.[index]?.service?.message as string}
+          />
+          <InputField
+            label="وصف "
+            placeholder="وصف"
+            name={`lessons.${index}.description`}
+            register={register}
+            error={errors?.lessons?.[index]?.description?.message as string}
+          />
+
+          {/* <InputField
+            label="الكمية"
+            placeholder="الكمية"
+            onChange={(e) => handleChargeChange(e, index)}
+            name={`lessons.${index}.quantity`}
+            register={register}
+            error={errors?.lessons?.[index]?.quantity?.message as string}
+          /> */}
+
+          <InputField
+            label="سعر الوحدة"
+            placeholder="سعر الوحدة"
+            onChange={(e) => handleChargeChange(e, index)}
+            name={`lessons.${index}.invoice_unit_price`}
+            register={register}
+            error={errors?.lessons?.[index]?.invoice_unit_price?.message as string}
+          />
+
+          <InputField
+            label="خصم% "
+            placeholder="خصم% "
+            onChange={(e) => handleChargeChange(e, index)}
+            name={`lessons.${index}.invoice_discount_rate`}
+            register={register}
+            error={errors?.lessons?.[index]?.invoice_discount_rate?.message as string}
+          />
+
+          <InputField
+            label="المبلغ"
+            placeholder="المبلغ"
+            name={`lessons.${index}.invoice_amount`}
+            register={register}
+            disabled
+            error={errors?.lessons?.[index]?.invoice_amount?.message as string}
+          />
+          <div className={close_btn_container}>
+            <button type="button" onClick={() => handleRemoveCharge(index)}>
+              <CloseButton />
+            </button>
+          </div>
+        </div>
+      ))}
+
+      {/* ********* END ROW ********************* */}
       <hr className="hr" />
 
       <Row>

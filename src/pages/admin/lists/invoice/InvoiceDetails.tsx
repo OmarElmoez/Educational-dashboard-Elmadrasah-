@@ -1,17 +1,28 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React from "react";
+import { useParams } from "react-router-dom";
 import styles from "./invoiceDetails.module.css";
+import InvoiceِApproveForm from "./InvoiceِApproveForm";
 
-const { containerStyle, headerStyle, buttonStyle, linkTitle, RowContainer, 
-  thStyle, tdStyle, totalDetails, amountStyle, payHistory,historyTitle, inputStyle } = styles;
+const {
+  containerStyle,
+  headerStyle,
+  buttonStyle,
+  linkTitle,
+  RowContainer,
+  thStyle,
+  tdStyle,
+  totalDetails,
+  amountStyle,
+  payHistory,
+  historyTitle,
+  inputStyle,
+} = styles;
 
 const InvoiceDetails: React.FC = () => {
-
   const { invoiceID } = useParams();
 
-
   const data = {
-    date: "5/5/2025"
+    date: "5/5/2025",
   };
 
   return (
@@ -19,23 +30,36 @@ const InvoiceDetails: React.FC = () => {
       {/* Header */}
       <header className={headerStyle}>
         <div>
-          <div className="user-name" style={{ fontWeight: 'bold', fontSize: '18px' }}> INV- {invoiceID} **** status </div>
+          <div
+            className="user-name"
+            style={{ fontWeight: "bold", fontSize: "18px" }}
+          >
+            {" "}
+            INV- {invoiceID} **** status{" "}
+          </div>
         </div>
         <div>
-          <button >اخر ارسال {data?.date}</button>
-          <button style={{ marginLeft: '10px' }} className={buttonStyle} >خيارات الفاتورة</button>
+          <button>اخر ارسال {data?.date}</button>
+          <button style={{ marginLeft: "10px" }} className={buttonStyle}>
+            خيارات الفاتورة
+          </button>
           <button className={buttonStyle}>PDF</button>
         </div>
       </header>
 
-      <h3 style={{ marginTop: '30px', fontSize: '20px', marginBottom: '3.2rem' }} className={linkTitle}>elmadrasah.com</h3>
+      <h3
+        style={{ marginTop: "30px", fontSize: "20px", marginBottom: "3.2rem" }}
+        className={linkTitle}
+      >
+        elmadrasah.com
+      </h3>
       <section className={RowContainer}>
         {/* Customer Details */}
         <div className={RowContainer}>
           <p>الاسم: </p>
           <p>Mohamed Ahmed </p>
           <p>العنوان:</p>
-          <p>Giza  </p>
+          <p>Giza </p>
           <p>المدينة: </p>
           <p>Cairo: </p>
           <p>الدولة: </p>
@@ -57,11 +81,13 @@ const InvoiceDetails: React.FC = () => {
 
       {/* Invoice Table */}
       <section>
-        <table style={{
-          width: '100%',
-          borderCollapse: 'collapse',
-          marginTop: '20px',
-        }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginTop: "20px",
+          }}
+        >
           <thead>
             <tr>
               <th className={thStyle}>الخدمة</th>
@@ -75,7 +101,9 @@ const InvoiceDetails: React.FC = () => {
           <tbody>
             <tr>
               <td className={tdStyle}>Flex 25 session</td>
-              <td className={tdStyle}>Flex 25 session Flex 25 session Flex 25 session</td>
+              <td className={tdStyle}>
+                Flex 25 session Flex 25 session Flex 25 session
+              </td>
               <td className={tdStyle}>25</td>
               <td className={tdStyle}>112.88</td>
               <td className={tdStyle}>5%</td>
@@ -83,7 +111,9 @@ const InvoiceDetails: React.FC = () => {
             </tr>
             <tr>
               <td className={tdStyle}>Flex 25 session</td>
-              <td className={tdStyle}>Flex 25 session Flex 25 session Flex 25 session</td>
+              <td className={tdStyle}>
+                Flex 25 session Flex 25 session Flex 25 session
+              </td>
               <td className={tdStyle}>25</td>
               <td className={tdStyle}>112.88</td>
               <td className={tdStyle}>5%</td>
@@ -95,27 +125,43 @@ const InvoiceDetails: React.FC = () => {
 
       {/* Payment Details */}
       <section className={`${RowContainer} ${totalDetails}`}>
-        <p >المجموع الفرعي:</p>
-        <p> 1,200 درهم</p>
-        <p className={amountStyle}>ضريبة المبيعات:  </p>
-        <p> 80.80 درهم</p>
-        <p className={amountStyle}>المجموع المستحق: 1,280 درهم</p>
-        <p>1,280 درهم</p>
+        <div className={RowContainer}>
+          <p>المجموع الفرعي:</p>
+          <p> 1,200 درهم</p>
+          <p className={amountStyle}>ضريبة المبيعات: </p>
+          <p> 80.80 درهم</p>
+          <p className={amountStyle}> المجموع:  </p>
+          <p> 80.80 درهم</p>
+          <p className={amountStyle}>المجموع المستحق: 1,280 درهم</p>
+          <p>1,280 درهم</p>
+        </div>
+        <div className={RowContainer}>
+          <p></p>
+          <p> </p>
+        </div>
       </section>
 
       {/* Footer: Payment Log */}
-      <footer className={payHistory} >
-        <div className="payment-log" style={{ display: 'flex', alignItems: 'center' }}>
-          <p className={historyTitle}>سجل الدفع</p>
+      {/* <footer className={payHistory}>
+        <div
+          className="payment-log"
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          <p className={historyTitle}> سجل الدفع</p>
           <button className={buttonStyle}>خطط الدفع</button>
-          <div className="payment-methods" style={{ marginLeft: 'auto', display: 'flex' }}>
+          <div
+            className="payment-methods"
+            style={{ marginLeft: "auto", display: "flex" }}
+          >
             <select className={inputStyle}>
               <option>وصف</option>
             </select>
             <input type="date" value="2024-09-20" className={inputStyle} />
           </div>
         </div>
-      </footer>
+      </footer> */}
+
+      <InvoiceِApproveForm />
     </div>
   );
 };

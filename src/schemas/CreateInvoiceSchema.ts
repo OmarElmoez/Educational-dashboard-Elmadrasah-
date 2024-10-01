@@ -49,19 +49,19 @@ export const CreateInvoiceSchema = z.object({
     })
   ).optional(),
 
-  // lessons: z.array(
-  //   z.object({
-  //     student: z.string().min(1, "برجاء اختيار الطالب"),
-  //     employee: z.string().min(1, "برجاء اختيار الموظف"),
-  //     service: z.string().min(1, "برجاء اختيار الخدمة"),
-  //     status: z.enum(["Scheduled", "Attended", "Missed", "Cancelled"]).default("Scheduled"),
-  //     custom_status: z.string().nullable().optional(),
-  //     description: z.string().min(1, "برجاء ادخال الوصف"),
-  //     invoice_unit_price: z.string().min(1, "برجاء ادخال سعر الوحدة"),
-  //     invoice_discount_rate: z.string().min(1, "برجاء ادخال نسبة الخصم"),
-  //     invoice_amount: z.string().min(1, "برجاء ادخال المبلغ"),
-  //   })
-  // ).optional(),
+  lessons: z.array(
+    z.object({
+      student: z.string().min(1, "برجاء اختيار الطالب"),
+      employee: z.string().min(1, "برجاء اختيار الموظف").optional(),
+      service: z.string().min(1, "برجاء اختيار الخدمة"),
+      status: z.enum(["Scheduled", "Attended", "Missed", "Cancelled"]).default("Scheduled").optional(),
+      custom_status: z.string().nullable().optional(),
+      description: z.string().min(1, "برجاء ادخال الوصف"),
+      invoice_unit_price: z.string().min(1, "برجاء ادخال سعر الوحدة"),
+      invoice_discount_rate: z.string().min(1, "برجاء ادخال نسبة الخصم"),
+      invoice_amount: z.string().min(1, "برجاء ادخال المبلغ"),
+    })
+  ).optional(),
 
   filtration: z.array(
     z.object({

@@ -30,7 +30,7 @@ export const FeedbackProvider = ({
     status: "succeeded",
     title: "",
     desc: "",
-    timeout: 0,
+    timeout: 3000,
   });
 
   const openFeedbackModal = (
