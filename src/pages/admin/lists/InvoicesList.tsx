@@ -1,52 +1,133 @@
-import { TABLE_HEAD_DATA } from "@/constants";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetStudents } from "@/store/table/TableSlice";
-import { useCallback, useEffect } from "react";
+import {
+  actGetInvoices,
+  decrementPage,
+  incrementPage,
+} from "@/store/table/TableSlice";
 
+import { TABLE_HEAD_DATA } from "@/constants";
 import styles from "./studentsList.module.css";
-import { SearchSection, Table } from "@/components";
-const { searchContainer, actions } = styles;
+import istyles from "./invoice/invoiceDetails.module.css";
+import MainTable from "@/components/table/MainTable";
+import MainTableRow from "@/components/table/MainTableRow";
+import FilterForm from "./invoice/FilterForm";
+import { TStatus } from "@/types/Dropdown";
 
-// ********************** upd data   *********************************
+// -----------------------------------------------------------------------------------------
+const { actions } = styles;
+const { filterFormEnd } = istyles;
+// -----------------------------------------------------------------------------------------
 const InvoicesList = () => {
   const dispatch = useAppDispatch();
-
   const { user } = useAppSelector((state) => state.auth);
+  const { invoices } = useAppSelector((state) => state.table);
+  const navigate = useNavigate();
 
-  const { students } = useAppSelector((state) => state.table);
+  const [checkAll, setCheckAll] = useState(false);
+  const [checkRows, setCheckRows] = useState<number[]>([]);
 
+  const [searchTerm, setSearchTerm] = useState<{
+    startDate: string;
+    endDate: string;
+    status: TStatus;
+  } | null>(null);
+
+  const handleFilterSubmit = (filters: {
+    startDate: string;
+    endDate: string;
+    status: TStatus;
+  }| null) => {
+    setSearchTerm(filters);
+
+    console.log("fil", filters);
+    
+  };
+  
   const getNewtPage = useCallback(
-    ({ next, previous }: { next?: string | null, previous?: string | null }) => {
+    ({
+      next,
+      previous,
+    }: {
+      next?: string | null;
+      previous?: string | null;
+    }) => {
+      console.log("fil2222", searchTerm);
+      let page = invoices?.page;
+      dispatch(actGetInvoices({ token: user?.token, page, searchTerm }));
+
       if (next) {
-        console.log("next", next);
-        
-        dispatch(actGetStudents({ token: user?.token, next }));
-        return;
+        dispatch(incrementPage());
+      } else if (previous && invoices.page > 0) {
+        dispatch(decrementPage());
       }
-
-      if (previous) {
-        dispatch(actGetStudents({ token: user?.token, previous }));
-        return;
-      }
-
-      dispatch(actGetStudents({ token: user?.token }));
     },
-    [dispatch, user?.token]
+    [dispatch, user?.token, invoices.page, searchTerm]
   );
 
   useEffect(() => {
     getNewtPage({});
   }, [getNewtPage]);
 
+  const handleChecked = (id: number) => {
+    const isSelected = checkRows.includes(id);
+    if (isSelected) {
+      setCheckRows((prev) => prev.filter((row) => row !== id));
+    } else {
+      setCheckRows((prev) => [...prev, id]);
+    }
+  };
+
+  const handleCheckAll = () => {
+    if (invoices.data.length === checkRows.length) {
+      setCheckRows([]);
+    } else {
+      const list = invoices.data.map((row) => row.id);
+      setCheckRows(list);
+    }
+  };
+
+  const handlView = (id: number) => {
+    navigate(`/admin/invoice-details/${id}`);
+  };
+
+  const handlEdit = (id: number) => {
+    navigate(`/admin/edit-invoice/${id}`);
+  };
+
   return (
-    <section className={searchContainer}>
-      <Table
-        headData={TABLE_HEAD_DATA["students"]}
-        bodyData={students.data}
-      />
-      <SearchSection token={user?.token} searchFor="students" />
+    <section>
+      <div className={filterFormEnd}>
+        <FilterForm onSubmit={handleFilterSubmit} />
+      </div>
+      <MainTable
+        headData={TABLE_HEAD_DATA["invoices"]}
+        onCheckAll={handleCheckAll}
+        checkAll={checkAll}
+        setCheckAll={setCheckAll}
+      >
+        {invoices.data &&
+          invoices.data.map((invoice) => (
+            <MainTableRow
+              key={invoice.id}
+              rowData={invoice}
+              headData={TABLE_HEAD_DATA["invoices"]}
+              checkRows={checkRows}
+              handleChecked={handleChecked}
+              onViewRow={() => handlView(invoice.id)}
+              onEditRow={() => handlEdit(invoice.id)}
+            />
+          ))}
+      </MainTable>
+
       <section className={actions}>
-        <button onClick={() => getNewtPage({ previous: students.previous })} disabled={!students.previous}>
+        <button
+          onClick={() => {
+            getNewtPage({ previous: invoices.previous });
+          }}
+          disabled={!invoices.previous}
+        >
           <svg
             width="20"
             height="20"
@@ -63,8 +144,13 @@ const InvoicesList = () => {
           </svg>
           <span>الرجوع</span>
         </button>
-
-        <button onClick={() => getNewtPage({ next: students.next })} disabled={!students.next}>
+        {invoices.page}
+        <button
+          onClick={() => {
+            getNewtPage({ next: invoices.next });
+          }}
+          disabled={!invoices.next}
+        >
           <span>التالي</span>
           <svg
             width="20"

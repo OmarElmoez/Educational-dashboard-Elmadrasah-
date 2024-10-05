@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
-import { TModalRef, TService, TTax_Treatment } from "./shared";
+import { TModalRef,  } from "./shared";
 
 type TOption = {
   value: string;
@@ -18,8 +18,10 @@ type TDropdownProps<T extends FieldValues, U> = {
   subjectRef?: React.RefObject<TModalRef>;
   isWithPopup?: boolean;
   children?: ReactNode | null;
-  disabled?: boolean;  
-  handleChange?: (service: U) => void
-}
+  disabled?: boolean;
+  handleChange?: (service: U) => void;
+};
 
-export type { TOption, TDropdownProps };
+type TStatus = "" | "Saved" | "Approved" | "Paid" | "Void";
+
+export type { TOption, TDropdownProps, TStatus };

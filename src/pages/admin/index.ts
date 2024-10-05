@@ -10,6 +10,7 @@ import AddParentForm from "./forms/AddParentForm";
 import AddStudentForm from "./forms/AddStudentForm";
 import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
 import CreateInvoiceForm from "./forms/create-invoice/CreateInvoiceForm";
+import EditInvoiceForm from "./forms/create-invoice/EditInvoiceForm";
 
 // LIST: 
 import StudentsList from "./lists/StudentsList";
@@ -29,6 +30,7 @@ export {
   AddStudentToFamilyForm,
   StudentsList,
   CreateInvoiceForm,
+  EditInvoiceForm,
   InvoicesList,
   InvoiceDetails,
 };

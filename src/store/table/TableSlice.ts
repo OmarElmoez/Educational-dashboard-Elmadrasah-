@@ -1,13 +1,20 @@
 import { TLoading } from "@/types/shared";
-import { TCustomer } from "@/types/table";
+import { TCustomer, TInvoice } from "@/types/table";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetStudents from "./act/actGetStudents";
+import actGetInvoices from "./act/actGetInvoices";
 import { isString } from "@/types/gurads";
 import actSearchForTableData from "./act/actSearchForTableData";
 
 type TTableState = {
   students: {
     data: TCustomer[];
+    next: string | null;
+    previous: string | null;
+  };
+  invoices: {
+    data: TInvoice[];
+    page: number;
     next: string | null;
     previous: string | null;
   };
@@ -21,6 +28,12 @@ const initialState: TTableState = {
     next: null,
     previous: null,
   },
+  invoices: {
+    data: [],
+    page: 1,
+    next: null,
+    previous: null,
+  },
   // Employees: [],
   // Parents: [],
   loading: "idle",
@@ -30,7 +43,19 @@ const initialState: TTableState = {
 const TableSlice = createSlice({
   name: "table",
   initialState,
-  reducers: {},
+  reducers: {
+    // Add actions for changing pages
+    incrementPage(state) {
+      if (state.invoices.next) {
+        state.invoices.page += 1;
+      }
+    },
+    decrementPage(state) {
+      if (state.invoices.previous && state.invoices.page > 0) {
+        state.invoices.page -= 1;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(actGetStudents.pending, (state) => {
@@ -40,6 +65,7 @@ const TableSlice = createSlice({
 
       .addCase(actGetStudents.fulfilled, (state, action) => {
         state.loading = "succeeded";
+        
         state.students.data = action.payload.results;
         state.students.next = action.payload.next;
         state.students.previous = action.payload.previous;
@@ -52,29 +78,50 @@ const TableSlice = createSlice({
         }
       });
 
+    builder
+      .addCase(actSearchForTableData.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
+
+      .addCase(actSearchForTableData.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+
+        state.students.data = action.payload.results;
+        state.students.next = action.payload.next;
+        state.students.previous = action.payload.previous;
+      })
+
+      .addCase(actSearchForTableData.rejected, (state, action) => {
+        state.loading = "failed";
+        if (isString(action.payload)) {
+          state.error = action.payload;
+        }
+      });
 
     builder
-    .addCase(actSearchForTableData.pending, (state) => {
-      state.loading = "pending";
-      state.error = null;
-    })
+      .addCase(actGetInvoices.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
 
-    .addCase(actSearchForTableData.fulfilled, (state, action) => {
-      state.loading = "succeeded";
-      state.students.data = action.payload.results;
-      state.students.next = action.payload.next;
-      state.students.previous = action.payload.previous;
-    })
+      .addCase(actGetInvoices.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.invoices.data = action.payload.results;
+        state.invoices.next = action.payload.next;
+        state.invoices.previous = action.payload.previous;
+      })
 
-    .addCase(actSearchForTableData.rejected, (state, action) => {
-      state.loading = "failed";
-      if (isString(action.payload)) {
-        state.error = action.payload;
-      }
-    });
+      .addCase(actGetInvoices.rejected, (state, action) => {
+        state.loading = "failed";
+        if (isString(action.payload)) {
+          state.error = action.payload;
+        }
+      });
   },
 });
 
-export { actGetStudents };
+export { actGetStudents, actGetInvoices };
+export const { incrementPage, decrementPage } = TableSlice.actions;
 
 export default TableSlice.reducer;

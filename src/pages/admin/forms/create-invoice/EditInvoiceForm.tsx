@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -17,6 +17,8 @@ import { InputField } from "@/components";
 import {
   CreateInvoiceSchema,
   TCreateInvoiceFormData,
+  TCreateInvoiceFormDataForGet,
+  TCreateInvoiceFormDataForServer,
   // TCreateInvoiceSchemaFormDataForServer,
 } from "@/schemas/CreateInvoiceSchema";
 import { TOption } from "@/types/Dropdown";
@@ -51,12 +53,12 @@ interface vatRes {
 type TServiceHandler = {
   [key in TService]: () => void;
 };
-
 // ------------------------------------------------------------------------
 
-const CreateInvoiceForm = () => {
+const EditInvoiceForm = () => {
   const dispatch = useAppDispatch();
 
+  const { id } = useParams();
   const { user } = useAppSelector((state) => state.auth);
   const { openFeedbackModal } = useFeedback();
   const navigate = useNavigate();
@@ -78,7 +80,7 @@ const CreateInvoiceForm = () => {
     setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<TCreateInvoiceFormData>({
+  } = useForm<TCreateInvoiceFormDataForServer>({
     mode: "onBlur",
     resolver: zodResolver(CreateInvoiceSchema),
     defaultValues: {
@@ -90,6 +92,7 @@ const CreateInvoiceForm = () => {
       lessons: [],
       filtration: [],
     },
+
   });
 
   const {
@@ -172,6 +175,31 @@ const CreateInvoiceForm = () => {
     packages: handleAddPackages,
     lessons: handleAddLessons,
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<TCreateInvoiceFormDataForGet>(
+          `https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/${id}/`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${user?.token}`,
+            },
+          }
+        );
+
+        // Now you can set the form values with the actual data
+        // setFormValues(response.data);
+
+        reset(response.data);
+      } catch (error) {
+        console.error("Error fetching invoice data:", error);
+      }
+    };
+
+    fetchData();
+  }, [user?.token, id, reset]);
 
   const watchFiltration = watch("filtration");
 
@@ -428,14 +456,16 @@ const CreateInvoiceForm = () => {
 
     const serverData = {
       ...data,
-      id:null
-    }
-    
+      id: null,
+    };
+
     dispatch(
       actSendDataToServer({
         token: user?.token,
         formData: serverData,
-        purpose: "create_invoice",
+        purpose: "edit_invoice",
+        isEdit: true,
+        id: id,
       })
     )
       .unwrap()
@@ -452,7 +482,7 @@ const CreateInvoiceForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="انشاء فاتورة" />
+      <Heading text="تعديل فاتورة" />
 
       <Row>
         <Dropdown
@@ -866,7 +896,8 @@ const CreateInvoiceForm = () => {
         <button
           type="button"
           onClick={() => {
-            reset();
+            // reset();
+            console.log("err", errors);
           }}
           className="btn cancel-btn"
         >
@@ -877,4 +908,4 @@ const CreateInvoiceForm = () => {
   );
 };
 
-export default CreateInvoiceForm;
+export default EditInvoiceForm;

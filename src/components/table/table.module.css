@@ -19,6 +19,7 @@
 
 .table td {
   color: #000;
+
 }
 
 .hiddenInput {
@@ -68,4 +69,14 @@ td.checkmarkBox {
   border-style: solid;
   transform: rotate(45deg);
   z-index: -1;
+}
+
+.tdRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tdRow button {
+  margin: 0 7px;
 }

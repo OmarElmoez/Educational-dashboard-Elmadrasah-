@@ -100,10 +100,10 @@
 
  }
 
- .historyTitle{
-  font-weight: 500;
-  font-size: 2rem;
-  display: block;
+ .historyTitle {
+   font-weight: 500;
+   font-size: 2rem;
+   display: block;
  }
 
  .inputStyle {
@@ -111,4 +111,114 @@
    border-radius: 5px;
    border: 1px solid #ddd;
    margin-right: 10px;
+ }
+
+ .flex_row {
+   display: flex;
+   align-items: center;
+
+ }
+
+ .flex_row p {
+   margin: 0 1rem;
+ }
+
+ .row {
+   display: flex;
+   align-items: start;
+ }
+
+
+ .row .delete_btn {
+   color: #E11D48;
+   background-color: transparent;
+   margin-left: .4rem;
+   padding: .3rem;
+ }
+
+ .blue_text {
+   font-size: 1.4rem;
+   font-weight: 500;
+   color: #519ECE;
+ }
+
+ .caption {
+   font-size: 1.2rem;
+   font-weight: 300;
+   color: #A0A1A7;
+ }
+
+ .column {
+   display: flex;
+   flex-direction: column;
+   align-items: start;
+ }
+
+
+
+
+ /* ********* invoice list ********* */
+
+ .filterFormEnd {
+   display: flex;
+   justify-content: end;
+ }
+
+ .inputBox {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: 1px solid #EBEBEB;
+   border-radius: 10px;
+   gap: 10px;
+   padding: .5rem;
+
+ }
+
+ .inputBox input {
+   color: #6F6F6F;
+   cursor: pointer;
+
+
+   border: none;
+   box-sizing: border-box;
+   outline: 0;
+   padding: .75rem;
+   position: relative;
+   width: 100%;
+
+ }
+ input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+ .formContainer {
+   display: flex;
+   justify-content: center;
+   gap: 1rem;
+ }
+
+ .submitBtn {
+  background-color: #1C8A44;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 0 .5rem;
+}
+
+.resetButton {
+  color: #1C8A44;
+  border: 1px solid #1C8A44;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 0 .5rem;
  }

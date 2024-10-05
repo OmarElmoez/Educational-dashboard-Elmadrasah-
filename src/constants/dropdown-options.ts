@@ -89,6 +89,56 @@ const SERVICE_OPTIONS = [
 
 const ServicesOptionsForSchema = generateValesForSchema(SERVICE_OPTIONS);
 
+const   PAYMENT_OPTIONS = [
+  {
+    label: "Cash",
+    value: "cash",
+  },
+  {
+    label: "Check",
+    value: "check",
+  },
+  {
+    label: "Credit Card",
+    value: "credit_card",
+  },
+  {
+    label: "Debit Card",
+    value: "debit_card",
+  },
+  {
+    label: "Bank Transfer",
+    value: "bank_transfer",
+  },
+  {
+    label: "e-Transfer ",
+    value: "e-transfer",
+  },
+  {
+    label: "Paypal ",
+    value: "paypal",
+  },
+  {
+    label: "Venmo ",
+    value: "venmo",
+  },
+  {
+    label: "Square ",
+    value: "square",
+  },
+  {
+    label: "Zelle ",
+    value: "zelle",
+  },
+ 
+  {
+    label: "Other",
+    value: "other",
+  },
+];
+
+const paymentOptionsForSchema = generateValesForSchema(PAYMENT_OPTIONS);
+
 
 const ADD_SERVICE_OPTIONS = [
   { label: "أضف رصيد", value: "charges" },
@@ -115,6 +165,7 @@ const REPORT_OPTIONS = [
 ];
 
 
+
 export {
   EMPLOYEE_TYPES,
   EmployeeTypesForSchema,
@@ -133,6 +184,8 @@ export {
   ADD_SERVICE_OPTIONS,
   AddServiceOptionsForSchema,
   TAX_TREATMENT_OPTIONS,
-  REPORT_OPTIONS
+  REPORT_OPTIONS,
+  PAYMENT_OPTIONS,
+  paymentOptionsForSchema,
   // AddTaxTreatmentOptionsForSchema,
 };
