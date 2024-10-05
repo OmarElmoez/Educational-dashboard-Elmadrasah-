@@ -4,3 +4,6 @@
 4- Pass onChange function for dropdown component. to handle different cases. (don't pass state).
 5- Create axiosInstance
 6- Don't use any in Typescript. (  const feedbackAlertRef = useRef<any>(null); )
+7- reponse type in  actSendDataToServer keep it or remove it?
+8- remove MUI (set-password)
+9- create form component

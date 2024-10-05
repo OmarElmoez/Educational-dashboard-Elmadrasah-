@@ -99,12 +99,18 @@ const SIDEBAR_DATA = {
     },
     {
       title: 'تفاصيل الفاتورة',
-      path: 'invoice-details',
+      path: 'invoice-details/:id',
       icon: <InvoiceIcon />,
     },
     {
       title: "انشاء فاتورة",
       path: "create-invoice",
+      icon: <InvoiceIcon />,
+    },
+    // ***** delete this path
+    {
+      title: "تعديل فاتورة",
+      path: "create-invoice/1",
       icon: <InvoiceIcon />,
     },
 

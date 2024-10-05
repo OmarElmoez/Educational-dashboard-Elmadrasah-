@@ -3,10 +3,12 @@ import React, { createContext, useRef, useState } from "react";
 
 type FeedbackContextType = {
   openFeedbackModal: (
-    status: "succeeded" | "failed" | "warning",
+    status: "succeeded" | "failed" | "warning" | "confirm",
     title: string,
     desc?: string,
-    timeout?: number
+    timeout?: number,
+    onConfirm?: () => void,
+    onCancel?: () => void
   ) => void;
 };
 
@@ -22,10 +24,12 @@ export const FeedbackProvider = ({
   const feedbackAlertRef = useRef<any>(null);
 
   const [feedbackData, setFeedbackData] = useState<{
-    status: "succeeded" | "failed" | "warning";
+    status: "succeeded" | "failed" | "warning" | "confirm";
     title: string;
     desc: string;
     timeout?: number;
+    onConfirm?: () => void;
+    onCancel?: () => void;
   }>({
     status: "succeeded",
     title: "",
@@ -34,11 +38,21 @@ export const FeedbackProvider = ({
   });
 
   const openFeedbackModal = (
-    status: "succeeded" | "failed" | "warning",
+    status: "succeeded" | "failed" | "warning" | "confirm",
     title: string,
-    desc?: string
+    desc?: string,
+    timeout?: number,
+    onConfirm?: () => void,
+    onCancel?: () => void
   ) => {
-    setFeedbackData({ status, title, desc: desc || "" });
+    setFeedbackData({
+      status,
+      title,
+      desc: desc || "",
+      timeout: timeout || 3000,
+      onConfirm,
+      onCancel,
+    });
     feedbackAlertRef.current?.open();
   };
 
@@ -52,6 +66,8 @@ export const FeedbackProvider = ({
         desc={feedbackData.desc}
         timeout={feedbackData.timeout}
         ref={feedbackAlertRef}
+        onConfirm={feedbackData.onConfirm}
+        onCancel={feedbackData.onCancel}
       />
     </FeedbackContext.Provider>
   );

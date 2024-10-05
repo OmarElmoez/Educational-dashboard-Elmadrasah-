@@ -1,14 +1,15 @@
-import SuccessFeedback from "@/assets/successFeedback.svg?react";
-import FailedFeedback from "@/assets/failedFeedback.svg?react";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { createPortal } from "react-dom";
+import SuccessFeedback from "@/assets/successFeedback.svg?react";
+import FailedFeedback from "@/assets/failedFeedback.svg?react";
+import WarningFeedback from "@/assets/warningFeedback.svg?react";
 
 import styles from "../review-status/reviewFeedback.module.css";
 
-const { reviewModal } = styles;
+const { reviewModal, btn_container, caption } = styles;
 
 type TContentForStatus = {
-  [key in "succeeded" | "failed" | "warning"]: {
+  [key in "succeeded" | "failed" | "warning" | "confirm"]: {
     icon: React.ReactNode;
     title: string;
     desc?: string;
@@ -22,11 +23,15 @@ const FeedbackAlert = forwardRef(
       title,
       desc,
       timeout = 3000,
+      onConfirm,
+      onCancel,
     }: {
-      status: "succeeded" | "failed" | "warning";
+      status: "succeeded" | "failed" | "warning" | "confirm";
       title: string;
       desc?: string;
       timeout?: number;
+      onConfirm?: () => void;
+      onCancel?: () => void;
     },
     ref
   ) => {
@@ -37,8 +42,6 @@ const FeedbackAlert = forwardRef(
         dialog.current?.showModal();
 
         setTimeout(() => {
-          console.log("innnn", timeout);
-          
           dialog.current?.close();
         }, timeout);
       },
@@ -59,23 +62,58 @@ const FeedbackAlert = forwardRef(
         desc: desc,
       },
       warning: {
-        icon: <FailedFeedback />,
+        icon: <WarningFeedback />,
+        title: title,
+        desc: desc,
+      },
+      confirm: {
+        icon: <WarningFeedback />,
         title: title,
         desc: desc,
       },
     };
 
-   
-    return createPortal(
-      <dialog ref={dialog} className={`modal ${reviewModal}`}>
-        {contentForStatus[status].icon}
-        <h3>{contentForStatus[status].title}</h3>
-        {contentForStatus[status].desc && (
-          <p className="error">{contentForStatus[status].desc}</p>
-        )}
-      </dialog>,
-      document.getElementById("modal")! 
-    );
+    const handleConfirm = () => {
+      onConfirm?.();
+      dialog.current?.close();
+    };
+
+    const handleCancel = () => {
+      onCancel?.();
+      dialog.current?.close();
+    };
+
+    if (status === "confirm") {
+      return createPortal(
+        <dialog ref={dialog} className={`modal ${reviewModal}`}>
+          {contentForStatus[status].icon}
+          <h3>{contentForStatus[status].title}</h3>
+          {contentForStatus[status].desc && (
+            <p className={caption}>{contentForStatus[status].desc}</p>
+          )}
+          <div className={btn_container}>
+            <button onClick={handleConfirm} className="btn error-btn">
+              Confirm
+            </button>
+            <button onClick={handleCancel} className="btn confirm-btn">
+              Cancel
+            </button>
+          </div>
+        </dialog>,
+        document.getElementById("modal")!
+      );
+    } else {
+      return createPortal(
+        <dialog ref={dialog} className={`modal ${reviewModal}`}>
+          {contentForStatus[status].icon}
+          <h3>{contentForStatus[status].title}</h3>
+          {contentForStatus[status].desc && (
+            <p className="error">{contentForStatus[status].desc}</p>
+          )}
+        </dialog>,
+        document.getElementById("modal")!
+      );
+    }
   }
 );
 

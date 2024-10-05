@@ -61,6 +61,7 @@ menu {
   --secondary-color: #171717;
   --gray-color: #6f6f6f;
   --orange-color: #ffb72b;
+  --error-color: #EC221F;
 }
 
 .container {
@@ -386,9 +387,27 @@ input#formatted_number::placeholder {
   border: 1px solid var(--main-color);
 }
 
+.error-btn {
+  background-color: var(--error-color);
+  color:  #fff;
+  border: none;
+}
+
+.confirm-btn {
+  background-color: #F5F5F7;
+  color: var(--main-color);
+  border: none;
+  
+}
+
 .helper-text {
   font-size: 1rem;
   color: #cdcdcd;
+}
+
+.link-text {
+  color: #0174BE;
+  text-decoration: underline;
 }
 
 .add-action-btn {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,79 +11,104 @@ import {
 } from "@/components";
 import { InputField } from "@/components";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetDropdownOptions } from "@/store/single-actions";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 import { useFeedback } from "@/store/context";
-import { TOption } from "@/types/Dropdown";
-import { STATUS_OPTIONS } from "@/constants/dropdown-options";
+import { PAYMENT_OPTIONS } from "@/constants/dropdown-options";
 
 const invoiceHistorySchema = z.object({
-  amount: z.string().min(1, "برجاء ادخال الكمية "),
+  amount: z.number().optional(),
   date: z.string().nullable().optional(),
   description: z.string().nullable().optional(),
   payment: z.string().min(1, "برجاء اختيار  طريقة الدفع"),
   send: z.boolean().optional(),
 });
-export type TInvoiceHistoryFormData = z.infer<typeof invoiceHistorySchema>;
+type TInvoiceHistoryFormData = z.infer<typeof invoiceHistorySchema>;
 
+type TKeysToOmit =  "customer_id" | "invoice_id";
+
+export type TInvoiceHistoryFormDataForServer = Omit<
+  TInvoiceHistoryFormData,
+  TKeysToOmit
+> & {
+  customer_id: number;
+  invoice_id: number;
+};
 // -------------------------------------------------------------------------
 
-const InvoiceِApproveForm = () => {
+const InvoiceِApproveForm = ({
+  customer_id,
+  invoice_id,
+  amount,
+  date,
+}: {
+  customer_id: number;
+  invoice_id: number;
+  amount: number;
+  date: string;
+}) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
   const { openFeedbackModal } = useFeedback();
 
-  const [locationOptions, setLocationOptions] = useState<TOption[]>([]);
-
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TInvoiceHistoryFormData>({
     mode: "onBlur",
     resolver: zodResolver(invoiceHistorySchema),
+    defaultValues: {
+      amount: amount,
+      date: date,
+    },
   });
 
   const onSubmit = (data: TInvoiceHistoryFormData) => {
-    // dispatch(
-    //   actSendDataToServer({
-    //     token: user?.token,
-    //     purpose: "add_individual_student",
-    //     formData: data,
-    //   })
-    // )
-    //   .unwrap()
-    //   .then(() => {
-    //     openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
-    //   })
-    //   .catch((error) => {
-    //     openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
-    //   });
+    console.log("data: ", data);
+    console.log(customer_id, invoice_id, amount, date);
+
+    const serverData: TInvoiceHistoryFormDataForServer = {
+      ...data,
+      customer_id: customer_id,
+      invoice_id: invoice_id,
+    };
+
+    console.log("serverData", serverData);
+
+    dispatch(
+      actSendDataToServer({
+        token: user?.token,
+        purpose: "create_payment",
+        formData: serverData,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        openFeedbackModal("succeeded", "تم اضافة  الفاتورة بنجاح!");
+      })
+      .catch((error) => {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
+      });
   };
 
   useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "locations" })
-    )
-      .unwrap()
-      .then((data) => {
-        setLocationOptions(data);
-      });
-  }, [dispatch, user?.token]);
+    setValue("amount", amount);
+  }, [amount, setValue]);
 
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="إضافة طالب جديد مستقل" />
-      <Heading text="معلومات الاتصال" />
+      <Heading text="سجل الدفع" />
 
-      <Row>
+      <Row style={{ flexWrap: "wrap" }}>
         <InputField
           label=" المبلغ"
           isRequired
           placeholder=" المبلغ"
           register={register}
           name="amount"
+          disabled
           error={errors.amount?.message as string}
         />
         <InputField
@@ -92,6 +117,7 @@ const InvoiceِApproveForm = () => {
           placeholder=" يوم / شهر / سنه"
           register={register}
           name="date"
+          disabled
           error={errors.date?.message as string}
         />
         <InputField
@@ -106,16 +132,18 @@ const InvoiceِApproveForm = () => {
           label="طريقة الدفع"
           name="payment"
           register={register}
-          options={STATUS_OPTIONS}
+          options={PAYMENT_OPTIONS}
           error={errors.payment?.message as string}
         />
-
-        <SingleCheckbox
-          register={register}
-          name="send"
-          label=" ارسال الايصال ؟  "
-          error={errors?.send?.message as string}
-        />
+        <div>
+          <SingleCheckbox
+            register={register}
+            name="send"
+            label=" ارسال الايصال ؟  "
+            error={errors?.send?.message as string}
+            className=""
+          />
+        </div>
       </Row>
 
       <div className="submit-buttons-container">

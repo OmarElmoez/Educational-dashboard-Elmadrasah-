@@ -17,6 +17,8 @@ import {
   AddServiceOptionsForSchema,
   TAX_TREATMENT_OPTIONS,
   REPORT_OPTIONS,
+  PAYMENT_OPTIONS,
+  paymentOptionsForSchema,
 } from "./dropdown-options";
 import { END_POINTS, POST_END_POINTS } from "./end-points";
 import { INITIAL_CALENDAR_COLOR } from "./initial-values";
@@ -48,4 +50,6 @@ export {
   AddServiceOptionsForSchema,
   TAX_TREATMENT_OPTIONS,
   REPORT_OPTIONS,
+  PAYMENT_OPTIONS,
+  paymentOptionsForSchema,
 };

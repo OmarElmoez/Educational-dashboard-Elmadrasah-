@@ -1,8 +1,9 @@
+import { TInvoiceHistoryFormDataForServer } from "@/pages/admin/lists/invoice/InvoiceِApproveForm";
 import { TAddEmployeeFormDataForServer } from "@/schemas/AddEmployeeSchema";
 import { TAddParentFormData } from "@/schemas/AddParentSchema";
 import { TAddStudentFormDataForServer } from "@/schemas/AddStudentSchema";
 import { TAddStudentToFamilyFormDataForServer } from "@/schemas/AddStudentToFamilySchema";
-import { TCreateInvoiceFormData } from "@/schemas/CreateInvoiceSchema";
+import { TCreateInvoiceFormDataForServer } from "@/schemas/CreateInvoiceSchema";
 
 const END_POINTS = {
   subject_choices: {
@@ -56,9 +57,18 @@ const POST_END_POINTS = {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/family-student/",
     dataType: {} as TAddStudentToFamilyFormDataForServer,
   },
+  
+  create_payment: {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/payments/",
+    dataType: {} as TInvoiceHistoryFormDataForServer,
+  },
   create_invoice: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
-    dataType: {} as TCreateInvoiceFormData,
+    dataType: {} as TCreateInvoiceFormDataForServer,
+  },
+  edit_invoice: {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
+    dataType: {} as TCreateInvoiceFormDataForServer,
   },
 };
 

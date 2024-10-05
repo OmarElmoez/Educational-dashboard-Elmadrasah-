@@ -12,11 +12,13 @@ type TProps = {
   hasFiles?: boolean;
   purpose: TPurpose;
   formData: TPostEndPoints[TPurpose]["dataType"] | FormData;
+  isEdit?:boolean;
+  id?:number | string;
 };
 
 const actSendDataToServer = createAsyncThunk(
   "single-actions/actSendDataToServer",
-  async ({ token, hasFiles = false, purpose, formData }: TProps, thunkAPI) => {
+  async ({ token, hasFiles = false, purpose, formData, isEdit, id }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     if (hasFiles) {
@@ -39,7 +41,7 @@ const actSendDataToServer = createAsyncThunk(
       });
       formData = validatedFormData;
     }
-    
+
     try {
       const url = POST_END_POINTS[purpose].url;
       const config = {
@@ -49,17 +51,21 @@ const actSendDataToServer = createAsyncThunk(
         },
       };
 
-      const response = await axios.post<TProps["formData"]>(
-        url,
-        formData,
-        config
-      );
+      let response; 
+
+      if (isEdit) {
+         response = await axios.patch(url+ id, formData, config);
+        
+      }else {
+         response = await axios.post(url, formData, config);
+
+      }
       console.log("response", response);
-      
+
       return response.data;
     } catch (error: any) {
       console.log("error", error?.response?.data?.detail);
-      return rejectWithValue(axiosErrorHandler( error));
+      return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );

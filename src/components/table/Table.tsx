@@ -8,11 +8,12 @@ type TTableProps = {
   headData: { name: string; label: string }[];
   bodyData: TCustomer[];
   checkAll: boolean;
+  setCheckAll: (param: boolean) => void;
 };
 
 const fieldsWithDifferentDirection = ["mobile_phone", "home_phone"];
 
-const Table = ({ headData, bodyData, checkAll }: TTableProps) => {
+const Table = ({ headData, bodyData, checkAll, setCheckAll }: TTableProps) => {
 
 
   useEffect(() => {

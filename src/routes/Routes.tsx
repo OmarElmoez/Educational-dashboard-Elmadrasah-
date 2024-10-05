@@ -24,6 +24,7 @@ import {
   CreateInvoiceForm,
   InvoicesList,
   InvoiceDetails,
+  EditInvoiceForm,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -179,6 +180,10 @@ const router = createBrowserRouter([
         element: <CreateInvoiceForm />,
       },
       {
+        path: 'edit-invoice/:id',
+        element: <EditInvoiceForm />,
+      },
+      {
         path: 'students-list',
         element: <StudentsList />,
       },
@@ -187,7 +192,7 @@ const router = createBrowserRouter([
         element: <InvoicesList />,
       },
       {
-        path: 'invoice-details',
+        path: 'invoice-details/:id',
         element: <InvoiceDetails />,
       },
 
