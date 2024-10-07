@@ -3,7 +3,7 @@ import { z } from "zod";
 export const CreateInvoiceSchema = z.object({
   customer: z.union([
     z.string().min(1, "برجاء اختيار العميل"),
-    z.number().min(1, "برجاء اختيار العميل")
+    z.number().min(1, "برجاء اختيار العميل"),
   ]),
   invoice_type: z.enum(["invoice", "credit_note"]).default("invoice"),
   formatted_number: z.string().optional(),
@@ -49,7 +49,7 @@ export const CreateInvoiceSchema = z.object({
         // student: z.string().min(1, "برجاء اختيار الطالب"),
         service: z.union([
           z.string().min(1, "برجاء اختيار الخدمة"),
-          z.number().min(1, "برجاء اختيار الخدمة")
+          z.number().min(1, "برجاء اختيار الخدمة"),
         ]),
         description: z.string().min(1, "برجاء ادخال الوصف"),
         quantity: z.string().min(1, "برجاء ادخال الكمية"),
@@ -105,11 +105,31 @@ export type TCreateInvoiceFormDataForServer = Omit<
 > & {
   id: number | null | string;
 };
-type TKeysToOmitGet = "id" | "customer";
+
+type TKeysToOmitGet = "id"  | "customer"
+ 
 export type TCreateInvoiceFormDataForGet = Omit<
   TCreateInvoiceFormData,
   TKeysToOmitGet
 > & {
   id: number | null | string;
   customer: number;
+  
 };
+
+// type TKeysToOmitCurrent =
+//    "id"
+//   | "customer"
+//   | "total"
+//   | "sales_tax_total"
+//   | "subtotal";
+// export type TCreateInvoiceFormDataForCurrent = Omit<
+//   TCreateInvoiceFormData,
+//   TKeysToOmitCurrent
+// > & {
+//   id: number | null | string;
+//   customer: number;
+//   total: number;
+//   sales_tax_total: number;
+//   subtotal: number;
+// };

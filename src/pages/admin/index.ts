@@ -11,6 +11,8 @@ import AddStudentForm from "./forms/AddStudentForm";
 import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
 import CreateInvoiceForm from "./forms/create-invoice/CreateInvoiceForm";
 import EditInvoiceForm from "./forms/create-invoice/EditInvoiceForm";
+import CopyInvoiceForm from "./forms/create-invoice/CopyInvoiceForm";
+import CopyInvoicesForm from "./forms/create-invoice/CopyInvoicesForm";
 
 // LIST: 
 import StudentsList from "./lists/StudentsList";
@@ -33,4 +35,6 @@ export {
   EditInvoiceForm,
   InvoicesList,
   InvoiceDetails,
+  CopyInvoiceForm,
+  CopyInvoicesForm,
 };

@@ -41,8 +41,7 @@ import {
   NotificationForm,
 } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
-import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
-import { actGetDropdownOptions } from "@/store/single-actions";
+import { actGetDropdownOptions, actSendDataToServer } from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 
 const AddEmployeeForm = () => {

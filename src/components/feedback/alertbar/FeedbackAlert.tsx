@@ -23,6 +23,7 @@ const FeedbackAlert = forwardRef(
       title,
       desc,
       timeout = 3000,
+      onComplete,
       onConfirm,
       onCancel,
     }: {
@@ -30,6 +31,7 @@ const FeedbackAlert = forwardRef(
       title: string;
       desc?: string;
       timeout?: number;
+      onComplete?: () => void | null;
       onConfirm?: () => void;
       onCancel?: () => void;
     },
@@ -43,6 +45,7 @@ const FeedbackAlert = forwardRef(
 
         setTimeout(() => {
           dialog.current?.close();
+          handleComplete();
         }, timeout);
       },
       close() {
@@ -76,8 +79,15 @@ const FeedbackAlert = forwardRef(
     const handleConfirm = () => {
       onConfirm?.();
       dialog.current?.close();
+      
     };
 
+    const handleComplete = () => {
+      onComplete?.();
+      dialog.current?.close();
+      
+    };
+    
     const handleCancel = () => {
       onCancel?.();
       dialog.current?.close();
@@ -87,7 +97,7 @@ const FeedbackAlert = forwardRef(
       return createPortal(
         <dialog ref={dialog} className={`modal ${reviewModal}`}>
           {contentForStatus[status].icon}
-          <h3>{contentForStatus[status].title}</h3>
+          <h3>{contentForStatus[status].title} </h3>
           {contentForStatus[status].desc && (
             <p className={caption}>{contentForStatus[status].desc}</p>
           )}

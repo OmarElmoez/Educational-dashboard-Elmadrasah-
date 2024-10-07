@@ -7,6 +7,7 @@ type FeedbackContextType = {
     title: string,
     desc?: string,
     timeout?: number,
+    onComplete?: () => void,
     onConfirm?: () => void,
     onCancel?: () => void
   ) => void;
@@ -28,6 +29,7 @@ export const FeedbackProvider = ({
     title: string;
     desc: string;
     timeout?: number;
+    onComplete?: () => void ;
     onConfirm?: () => void;
     onCancel?: () => void;
   }>({
@@ -42,6 +44,7 @@ export const FeedbackProvider = ({
     title: string,
     desc?: string,
     timeout?: number,
+    onComplete?: () => void ,
     onConfirm?: () => void,
     onCancel?: () => void
   ) => {
@@ -50,6 +53,7 @@ export const FeedbackProvider = ({
       title,
       desc: desc || "",
       timeout: timeout || 3000,
+      onComplete,
       onConfirm,
       onCancel,
     });
@@ -66,6 +70,7 @@ export const FeedbackProvider = ({
         desc={feedbackData.desc}
         timeout={feedbackData.timeout}
         ref={feedbackAlertRef}
+        onComplete={feedbackData.onComplete}
         onConfirm={feedbackData.onConfirm}
         onCancel={feedbackData.onCancel}
       />

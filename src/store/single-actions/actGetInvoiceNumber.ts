@@ -1,27 +1,27 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
-const actGetInvoiceNumber = createAsyncThunk(
-  "single-actions/actGetInvoiceNumber",
-  async ({ token }: { token: string | undefined }, thunkAPI) => {
+const actGetData = createAsyncThunk(
+  "single-actions/actGetData",
+  async (
+    { endpoint, params = null }: { endpoint: string; params?: {} | null },
+    thunkAPI
+  ) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
-      const url =
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoice/last";
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      };
-
-      const response = await axios.get(url, config);
-      return response.data.invoice_number;
+      const url = endpoint;
+      let response;
+      if (params) {
+        response = await axiosInstance.get(url, { params });
+      }
+      response = await axiosInstance.get(url);
+      return response.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );
 
-export default actGetInvoiceNumber;
+export default actGetData;

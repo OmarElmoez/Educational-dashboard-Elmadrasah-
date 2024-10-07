@@ -70,6 +70,10 @@ const POST_END_POINTS = {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
     dataType: {} as TCreateInvoiceFormDataForServer,
   },
+  edit_invoice_status: {
+    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
+    dataType: {} as any,
+  },
 };
 
 type TPurpose = keyof typeof POST_END_POINTS;

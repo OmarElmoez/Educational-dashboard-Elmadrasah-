@@ -13,7 +13,7 @@ import { InputField } from "@/components";
 import { NotificationForm } from "@/components/mini-forms";
 import { useFeedback } from "@/store/context";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import {actSendDataToServer} from "@/store/single-actions";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
 import { STATUS_OPTIONS } from "@/constants/dropdown-options";

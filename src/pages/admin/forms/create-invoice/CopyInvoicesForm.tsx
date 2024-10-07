@@ -1,9 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetDropdownOptions, actGetData,  actSendDataToServer} from "@/store/single-actions";
+import {
+  actGetDropdownOptions,
+  actSendDataToServer,
+  actGetData,
+} from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import {
   CircleLoadingIndecator,
@@ -16,6 +20,7 @@ import { InputField } from "@/components";
 import {
   CreateInvoiceSchema,
   TCreateInvoiceFormData,
+  TCreateInvoiceFormDataForServer,
   // TCreateInvoiceSchemaFormDataForServer,
 } from "@/schemas/CreateInvoiceSchema";
 import { TOption } from "@/types/Dropdown";
@@ -48,12 +53,12 @@ interface vatRes {
 type TServiceHandler = {
   [key in TService]: () => void;
 };
-
 // ------------------------------------------------------------------------
 
-const CreateInvoiceForm = () => {
+const CopyInvoicesForm = () => {
   const dispatch = useAppDispatch();
 
+  const { id } = useParams();
   const { user } = useAppSelector((state) => state.auth);
   const { openFeedbackModal } = useFeedback();
   const navigate = useNavigate();
@@ -75,7 +80,7 @@ const CreateInvoiceForm = () => {
     setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<TCreateInvoiceFormData>({
+  } = useForm<TCreateInvoiceFormDataForServer>({
     mode: "onBlur",
     resolver: zodResolver(CreateInvoiceSchema),
     defaultValues: {
@@ -122,7 +127,6 @@ const CreateInvoiceForm = () => {
   });
 
   const handleAddCharge = () => {
-    console.log("add charge");
     appendCharge({
       title: "",
       description: "",
@@ -170,6 +174,17 @@ const CreateInvoiceForm = () => {
     lessons: handleAddLessons,
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
+        .unwrap()
+        .then((res) => reset(res))
+        .catch((err) => console.error(err));
+    };
+
+    fetchData();
+  }, [dispatch, id, reset]);
+
   const watchFiltration = watch("filtration");
 
   const [customer, setCustomer] = useState("");
@@ -187,28 +202,32 @@ const CreateInvoiceForm = () => {
           return openFeedbackModal("failed", "برجاء اختيار العميل اولا");
         }
 
-        dispatch(actGetData({ endpoint: "customer/lesson_filter/", params: {
-          start_date,
-          end_date,
-          customer_id: customer,
-          lesson_status: report,
-        }  }))
-        .unwrap()
-        .then((res: filterRes[]) =>{
-          if (res?.length) {
-            res.forEach((item) =>
-              appendLessons({
-                student: customer || "",
-                description: item?.description || "",
-                service: item?.service || "",
-                invoice_unit_price: item?.unit_price.toString() || "",
-                invoice_discount_rate: "",
-                invoice_amount: "",
-              })
-            );
-          }
-        });
-       
+        dispatch(
+          actGetData({
+            endpoint: "customer/lesson_filter/",
+            params: {
+              start_date,
+              end_date,
+              customer_id: customer,
+              lesson_status: report,
+            },
+          })
+        )
+          .unwrap()
+          .then((res: filterRes[]) => {
+            if (res?.length) {
+              res.forEach((item) =>
+                appendLessons({
+                  student: customer || "",
+                  description: item?.description || "",
+                  service: item?.service || "",
+                  invoice_unit_price: item?.unit_price.toString() || "",
+                  invoice_discount_rate: "",
+                  invoice_amount: "",
+                })
+              );
+            }
+          });
       } catch (error) {
         console.log(error);
       }
@@ -237,10 +256,9 @@ const CreateInvoiceForm = () => {
   };
 
   const handleGetVatValue = async () => {
-    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false"  }))
-    .unwrap()
-    .then((res: vatRes[]) =>  setValue("tax_count", `${res[0].vat_rate}%`));
-
+    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false" }))
+      .unwrap()
+      .then((res: vatRes[]) => setValue("tax_count", `${res[0].vat_rate}%`));
   };
 
   const watchFields = watch(["tax_treatment", "tax_count"]);
@@ -412,9 +430,9 @@ const CreateInvoiceForm = () => {
 
     const serverData = {
       ...data,
-      id:null
-    }
-    
+      id: null,
+    };
+
     dispatch(
       actSendDataToServer({
         token: user?.token,
@@ -436,7 +454,7 @@ const CreateInvoiceForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="انشاء فاتورة" />
+      <Heading text="تعديل فاتورة" />
 
       <Row>
         <Dropdown
@@ -861,4 +879,4 @@ const CreateInvoiceForm = () => {
   );
 };
 
-export default CreateInvoiceForm;
+export default CopyInvoicesForm;
