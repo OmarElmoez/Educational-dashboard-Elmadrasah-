@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import istyles from "./invoiceDetails.module.css";
 import { TStatus } from "@/types/Dropdown";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, } from "@/store/hooks";
 import { resetPage } from "@/store/table/TableSlice";
 
 // -------------------------------------------------------------------

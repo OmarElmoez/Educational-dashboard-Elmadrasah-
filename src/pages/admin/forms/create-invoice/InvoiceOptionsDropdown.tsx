@@ -82,7 +82,7 @@ const InvoiceOptionsDropdown: React.FC = () => {
       label: "نسخ",
       onClick: () => {
         console.log("Copy clicked");
-        navigate(`/admin/copy-invoice/${id}`);
+        navigate(`/admin/copy-invoices/${id}`);
       },
     },
     {

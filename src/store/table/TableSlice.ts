@@ -74,6 +74,20 @@ const TableSlice = createSlice({
     resetPage(state) {
         state.invoices.page = 1;
     },
+    
+    incrementBalancePage(state) {
+      if (state.balance.next) {
+        state.balance.page += 1;
+      }
+    },
+    decrementBalancePage(state) {
+      if (state.balance.previous && state.balance.page > 0) {
+        state.balance.page -= 1;
+      }
+    },
+    resetBalancePage(state) {
+        state.balance.page = 1;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -162,7 +176,7 @@ const TableSlice = createSlice({
 });
 
 export { actGetStudents, actGetInvoices, getBalanceData };
-export const { incrementPage, decrementPage, resetPage } = TableSlice.actions;
+export const { incrementPage, decrementPage, resetPage, incrementBalancePage, decrementBalancePage, resetBalancePage } = TableSlice.actions;
 
 export default TableSlice.reducer;
 

@@ -5,6 +5,8 @@
   flex: 1
 }
 
+
+/* SHOULD BE GLOBAL STYLE REUSED IN EVERY TABLE */
 .actions {
   display: flex;
   align-items: center;

@@ -39,8 +39,6 @@ const InvoicesList = () => {
     status: TStatus;
   }| null) => {
     setSearchTerm(filters);
-
-    console.log("fil", filters);
     
   };
   
@@ -52,8 +50,7 @@ const InvoicesList = () => {
       next?: string | null;
       previous?: string | null;
     }) => {
-      console.log("fil2222", searchTerm);
-      let page = invoices?.page;
+       let page = invoices?.page;
       dispatch(actGetInvoices({ token: user?.token, page, searchTerm }));
 
       if (next) {
