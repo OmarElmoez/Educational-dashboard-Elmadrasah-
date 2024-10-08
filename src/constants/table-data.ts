@@ -20,19 +20,33 @@ const TABLE_HEAD_DATA = {
     { name: "total", label: " المجموع  " },
     { name: "amount_due", label: "توازن" },
   ],
-  // ***** update again
-  payments: [
-    { name: "id", label: "الكود" },
-    { name: "first_name", label: "الرقم " },
-    { name: "date", label: " تاريخ" },
-    { name: "email", label: " تاريخ الاستحقاق" },
-    { name: "mobile_phone", label: " اخر ارسال" },
-    { name: "customer_name", label: " عميل " },
-    { name: "type", label: "النوع" },
-    { name: "home_phone", label: " المجموع  " },
-    { name: "student_type", label: "توازن" },
-    { name: "action", label: "أكشن" },
+  balance: [
+    { name: "customer_first_name", label: "الاسم الاول" },
+    { name: "customer_last_name", label: "الاسم الاخير " },
+    { name: "service_name", label: " نوع الخدمة" },
+    { name: "purchased", label: "تم الشراء" },
+    { name: "scheduled", label: "مجدولة " },
+    { name: "unscheduled", label: " غير مجدولة " },
+    { name: "over_scheduled", label: "مجدول أكثر من اللازم" },
+    { name: "used", label: "مستخدمة" },
+    { name: "unused", label: "غير مستخدمة" },
+    { name: "over_used", label: " مستخدم أكثر من اللازم" },
   ],
+  // ***** update again
+  // payments: [
+  //   { name: "id", label: "الكود" },
+  //   { name: "first_name", label: "الرقم " },
+  //   { name: "date", label: " تاريخ" },
+  //   { name: "email", label: " تاريخ الاستحقاق" },
+  //   { name: "mobile_phone", label: " اخر ارسال" },
+  //   { name: "customer_name", label: " عميل " },
+  //   { name: "type", label: "النوع" },
+  //   { name: "home_phone", label: " المجموع  " },
+  //   { name: "student_type", label: "توازن" },
+  //   { name: "action", label: "أكشن" },
+  // ],
+
+
   parents: [
     "الكود",
     "الاسم",

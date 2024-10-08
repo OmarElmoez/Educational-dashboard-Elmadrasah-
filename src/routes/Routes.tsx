@@ -23,9 +23,10 @@ import {
   StudentsList,
   CreateInvoiceForm,
   InvoicesList,
+  PackageBalanceList,
   InvoiceDetails,
   EditInvoiceForm,
-  CopyInvoiceForm,
+  // CopyInvoiceForm,
   CopyInvoicesForm,
 } from "@/pages/admin";
 import {
@@ -185,10 +186,10 @@ const router = createBrowserRouter([
         path: 'edit-invoice/:id',
         element: <EditInvoiceForm />,
       },
-      {
-        path: 'copy-invoice/:id',
-        element: <CopyInvoiceForm />,
-      },
+      // {
+      //   path: 'copy-invoice/:id',
+      //   element: <CopyInvoiceForm />,
+      // },
       {
         path: 'copy-invoices/:id',
         element: <CopyInvoicesForm />,
@@ -205,7 +206,10 @@ const router = createBrowserRouter([
         path: 'invoice-details/:id',
         element: <InvoiceDetails />,
       },
-
+      {
+        path: 'balance-list',
+        element: <PackageBalanceList />,
+      },
     ],
   },
 

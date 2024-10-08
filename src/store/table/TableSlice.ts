@@ -1,11 +1,15 @@
 import { TLoading } from "@/types/shared";
-import { TCustomer, TInvoice } from "@/types/table";
+import { TBalance, TBalanceResponse, TCustomer, TInvoice } from "@/types/table";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetStudents from "./act/actGetStudents";
 import actGetInvoices from "./act/actGetInvoices";
 import { isString } from "@/types/gurads";
 import actSearchForTableData from "./act/actSearchForTableData";
+import actGetTableData from "./act/actGetTableData";
+// ----------------------------------------------------------
+const getBalanceData = actGetTableData<TBalanceResponse>();
 
+// ----------------------------------------------------------
 type TTableState = {
   students: {
     data: TCustomer[];
@@ -14,6 +18,12 @@ type TTableState = {
   };
   invoices: {
     data: TInvoice[];
+    page: number;
+    next: string | null;
+    previous: string | null;
+  };
+  balance: {
+    data: TBalance[];
     page: number;
     next: string | null;
     previous: string | null;
@@ -29,6 +39,12 @@ const initialState: TTableState = {
     previous: null,
   },
   invoices: {
+    data: [],
+    page: 1,
+    next: null,
+    previous: null,
+  },
+  balance: {
     data: [],
     page: 1,
     next: null,
@@ -54,6 +70,9 @@ const TableSlice = createSlice({
       if (state.invoices.previous && state.invoices.page > 0) {
         state.invoices.page -= 1;
       }
+    },
+    resetPage(state) {
+        state.invoices.page = 1;
     },
   },
   extraReducers: (builder) => {
@@ -118,10 +137,48 @@ const TableSlice = createSlice({
           state.error = action.payload;
         }
       });
+  //  ************************************************
+   
+      builder
+      .addCase(getBalanceData.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
+
+      .addCase(getBalanceData.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.balance.data = action.payload.results;
+        state.balance.next = action.payload.next;
+        state.balance.previous = action.payload.previous;
+      })
+
+      .addCase(getBalanceData.rejected, (state, action) => {
+        state.loading = "failed";
+        if (isString(action.payload)) {
+          state.error = action.payload;
+        }
+      });
   },
 });
 
-export { actGetStudents, actGetInvoices };
-export const { incrementPage, decrementPage } = TableSlice.actions;
+export { actGetStudents, actGetInvoices, getBalanceData };
+export const { incrementPage, decrementPage, resetPage } = TableSlice.actions;
 
 export default TableSlice.reducer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -258,7 +258,7 @@ const CopyInvoicesForm = () => {
   const handleGetVatValue = async () => {
     dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false" }))
       .unwrap()
-      .then((res: vatRes[]) => setValue("tax_count", `${res[0].vat_rate}%`));
+      .then((res: vatRes[]) => setValue("tax_count", `${res[0].vat_rate}`));
   };
 
   const watchFields = watch(["tax_treatment", "tax_count"]);
@@ -287,6 +287,7 @@ const CopyInvoicesForm = () => {
     ): { total: number; salesTax: number; subtotal: number } => {
       let total = subtotal;
       let salesTax = 0;
+console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
 
       // const [taxTreatment] = watchFields;
 
@@ -328,6 +329,8 @@ const CopyInvoicesForm = () => {
     const [tax_treatment, tax_count] = watchFields;
 
     if (tax_treatment !== null && tax_count !== "") {
+      console.log("vvvvvvv",  parseFloat(sub_total.toString()),
+      parseFloat(tax_count))
       const { total, salesTax, subtotal } = calculateTotal(
         parseFloat(sub_total.toString()),
         parseFloat(tax_count)
@@ -454,7 +457,7 @@ const CopyInvoicesForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="تعديل فاتورة" />
+      <Heading text="تعديل فاتورة     *******************" />
 
       <Row>
         <Dropdown
@@ -796,7 +799,7 @@ const CopyInvoicesForm = () => {
           error={errors?.subtotal?.message as string}
         />
         <InputField
-          label=" ضريبة المبيعات"
+          label=" ضريبة المبيعات% "
           placeholder="0.00"
           register={register}
           disabled

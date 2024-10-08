@@ -18,7 +18,6 @@ type TTableResponse = {
   results: TCustomer[];
 };
 
-
 type TPayment = {
   id: number;
   unallocated_amount: number;
@@ -41,42 +40,9 @@ type TPaymentResponse = {
   results: TPayment[];
 };
 
-
 type TInvoice = {
   id: number;
   amount_due: number;
-  // charges: {
-  //   title: string;
-  //   description: string;
-  //   quantity: number;
-  //   unit_price: number;
-  //   discount_rate: number;
-  //   amount: number;
-  // }[];
-  // packages: {
-  //   description: string;
-  //   quantity: number;
-  //   unit_price: number;
-  //   discount_rate: number;
-  //   amount: number;
-  //   transaction_type: string;
-  //   timestamps: {
-  //     created_at: string;
-  //     updated_at: string;
-  //   };
-  // }[];
-  // lessons: {
-  //   status: string;
-  //   custom_status: string;
-  //   description: string;
-  //   invoice_unit_price: number;
-  //   invoice_discount_rate: number;
-  //   invoice_amount: number;
-  //   timestamps: {
-  //     created_at: string;
-  //     updated_at: string;
-  //   };
-  // }[];
   customer_name: string;
   tw_id: string | null;
   invoice_type: string;
@@ -107,4 +73,32 @@ type TInvoiceResponse = {
   previous: string | null;
   results: TInvoice[];
 };
-export type { TCustomer, TTableResponse, TInvoice, TInvoiceResponse, TPayment, TPaymentResponse };
+
+type TBalance = {
+  customer_first_name: string;
+  customer_last_name: string;
+  service_name: string;
+  purchased: number;
+  scheduled: number;
+  unscheduled: number;
+  over_scheduled: number;
+  used: number;
+  unused: number;
+  over_used: number;
+};
+type TBalanceResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: TBalance[];
+};
+export type {
+  TCustomer,
+  TTableResponse,
+  TInvoice,
+  TInvoiceResponse,
+  TPayment,
+  TPaymentResponse,
+  TBalance,
+  TBalanceResponse
+};
