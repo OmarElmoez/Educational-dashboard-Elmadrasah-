@@ -1,5 +1,4 @@
 import { FilterFormData } from "@/pages/admin/lists/balance/FilterForm";
-import { TStatus } from "@/types/Dropdown";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";

@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link,  } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   decrementBalancePage,
-  decrementPage,
-  getBalanceData,
+   getBalanceData,
   incrementBalancePage,
-  incrementPage,
-} from "@/store/table/TableSlice";
+ } from "@/store/table/TableSlice";
 
 import { TABLE_HEAD_DATA } from "@/constants";
 import MainTable from "@/components/table/MainTable";
@@ -31,19 +29,7 @@ const LIST_OPTIONS = [
   { id: 3, link: "", title: "الأرصدة الفردية", icon: <List /> },
   { id: 4, link: "", title: "تحويل المستقلين", icon: <List /> },
 ];
-// -----------------------------------------------------------------------------------------
-// {
-//   "customer_first_name": "Aya",
-//   "customer_last_name": "Essam",
-//   "service_name": "New test service",
-//   "purchased": 2.5,
-//   "scheduled": 0,
-//   "unscheduled": 2.5,
-//   "over_scheduled": 0.0,
-//   "used": 0.0,
-//   "unused": 2.5,
-//   "over_used": 0.0
-// },
+
 // -----------------------------------------------------------------------------------------
 const { actions } = styles;
 const {
@@ -65,7 +51,6 @@ const {
 const PackageBalanceList = () => {
   const dispatch = useAppDispatch();
   const { balance } = useAppSelector((state) => state.table);
-  const navigate = useNavigate();
 
   const filterFormRef = useRef<TModalRef>(null);
 
