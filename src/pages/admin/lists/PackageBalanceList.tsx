@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  actGetInvoices,
   decrementPage,
+  getBalanceData,
   incrementPage,
 } from "@/store/table/TableSlice";
 
@@ -16,16 +16,27 @@ import FilterForm from "./invoice/FilterForm";
 import { TStatus } from "@/types/Dropdown";
 
 // -----------------------------------------------------------------------------------------
+// {
+//   "customer_first_name": "Aya",
+//   "customer_last_name": "Essam",
+//   "service_name": "New test service",
+//   "purchased": 2.5,
+//   "scheduled": 0,
+//   "unscheduled": 2.5,
+//   "over_scheduled": 0.0,
+//   "used": 0.0,
+//   "unused": 2.5,
+//   "over_used": 0.0
+// },
+// -----------------------------------------------------------------------------------------
 const { actions } = styles;
 const { filterFormEnd } = istyles;
 // -----------------------------------------------------------------------------------------
-const InvoicesList = () => {
+const PackageBalanceList = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
-  const { invoices } = useAppSelector((state) => state.table);
+  const { balance } = useAppSelector((state) => state.table);
   const navigate = useNavigate();
 
-  const [checkRows, setCheckRows] = useState<number[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<{
     startDate: string;
@@ -53,39 +64,26 @@ const InvoicesList = () => {
       previous?: string | null;
     }) => {
       console.log("fil2222", searchTerm);
-      let page = invoices?.page;
-      dispatch(actGetInvoices({ token: user?.token, page, searchTerm }));
-
+      let page = balance?.page;
+      dispatch(getBalanceData({
+        url: '/customer/balance/',
+        page: page,
+       
+      }));
       if (next) {
         dispatch(incrementPage());
-      } else if (previous && invoices.page > 0) {
+      } else if (previous && balance.page > 0) {
         dispatch(decrementPage());
       }
     },
-    [dispatch, user?.token, invoices.page, searchTerm]
+    [dispatch,  balance.page, searchTerm]
   );
 
   useEffect(() => {
     getNewtPage({});
   }, [getNewtPage]);
 
-  const handleChecked = (id: number) => {
-    const isSelected = checkRows.includes(id);
-    if (isSelected) {
-      setCheckRows((prev) => prev.filter((row) => row !== id));
-    } else {
-      setCheckRows((prev) => [...prev, id]);
-    }
-  };
 
-  const handleCheckAll = () => {
-    if (invoices.data.length === checkRows.length) {
-      setCheckRows([]);
-    } else {
-      const list = invoices.data.map((row) => row.id);
-      setCheckRows(list);
-    }
-  };
 
   const handlView = (id: number) => {
     navigate(`/admin/invoice-details/${id}`);
@@ -101,19 +99,17 @@ const InvoicesList = () => {
         <FilterForm onSubmit={handleFilterSubmit} />
       </div>
       <MainTable
-        headData={TABLE_HEAD_DATA["invoices"]}
-        onCheckAll={handleCheckAll}
+        headData={TABLE_HEAD_DATA["balance"]}
+        isCheckbox={false}
       >
-        {invoices.data &&
-          invoices.data.map((invoice) => (
+        {balance.data &&
+          balance.data.map((pack) => (
             <MainTableRow
-              key={invoice.id}
-              rowData={invoice}
-              headData={TABLE_HEAD_DATA["invoices"]}
-              checkRows={checkRows}
-              handleChecked={handleChecked}
-              onViewRow={() => handlView(invoice.id)}
-              onEditRow={() => handlEdit(invoice.id)}
+              key={pack.customer_first_name}
+              rowData={pack}
+              headData={TABLE_HEAD_DATA["balance"]}
+              onViewRow={() => handlView(1)}
+              onEditRow={() => handlEdit(1)}
             />
           ))}
       </MainTable>
@@ -121,9 +117,9 @@ const InvoicesList = () => {
       <section className={actions}>
         <button
           onClick={() => {
-            getNewtPage({ previous: invoices.previous });
+            getNewtPage({ previous: balance.previous });
           }}
-          disabled={!invoices.previous}
+          disabled={!balance.previous}
         >
           <svg
             width="20"
@@ -141,12 +137,12 @@ const InvoicesList = () => {
           </svg>
           <span>الرجوع</span>
         </button>
-        {invoices.page}
+        {balance.page}
         <button
           onClick={() => {
-            getNewtPage({ next: invoices.next });
+            getNewtPage({ next: balance.next });
           }}
-          disabled={!invoices.next}
+          disabled={!balance.next}
         >
           <span>التالي</span>
           <svg
@@ -169,4 +165,4 @@ const InvoicesList = () => {
   );
 };
 
-export default InvoicesList;
+export default PackageBalanceList;

@@ -1,48 +1,48 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useAppDispatch,  } from "@/store/hooks";
+// import { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import { useAppDispatch,  } from "@/store/hooks";
 
-import { Heading } from "@/components";
-import {
-  TCreateInvoiceFormDataForGet,
-  // TCreateInvoiceSchemaFormDataForServer,
-} from "@/schemas/CreateInvoiceSchema";
+// import { Heading } from "@/components";
+// import {
+//   TCreateInvoiceFormDataForGet,
+//   // TCreateInvoiceSchemaFormDataForServer,
+// } from "@/schemas/CreateInvoiceSchema";
 
-import InvoiceForm from "./InvoiceForm";
-import { actGetData } from "@/store/single-actions";
+// import InvoiceForm from "./InvoiceForm";
+// import { actGetData } from "@/store/single-actions";
 
-// ------------------------------------------------------------------------
+// // ------------------------------------------------------------------------
 
-const CopyInvoiceForm = () => {
-  const dispatch = useAppDispatch();
+// const CopyInvoiceForm = () => {
+//   const dispatch = useAppDispatch();
 
-  const { id } = useParams();
-  const [currentInvoice, setCurrentInvoice] =
-    useState<TCreateInvoiceFormDataForGet | null>(null);
+//   const { id } = useParams();
+//   const [currentInvoice, setCurrentInvoice] =
+//     useState<TCreateInvoiceFormDataForGet | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
+//   useEffect(() => {
+//     const fetchData = async () => {
       
-        dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
-        .unwrap()
-        .then((res) => {          
-          setCurrentInvoice(res)})
-        .catch((err) => console.error(err)); 
+//         dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
+//         .unwrap()
+//         .then((res) => {          
+//           setCurrentInvoice(res)})
+//         .catch((err) => console.error(err)); 
    
-      }
+//       }
 
-    fetchData();
+//     fetchData();
 
 
-  }, [dispatch, id]);
+//   }, [dispatch, id]);
 
-  return (
-    <section>
-      <Heading text="انشاء فاتورة" />
+//   return (
+//     <section>
+//       <Heading text="انشاء فاتورة" />
 
-      <InvoiceForm isCopy  currentInvoice={currentInvoice} id={id} />
-    </section>
-  );
-};
+//       <InvoiceForm isCopy  currentInvoice={currentInvoice} id={id} />
+//     </section>
+//   );
+// };
 
-export default CopyInvoiceForm;
+// export default CopyInvoiceForm;

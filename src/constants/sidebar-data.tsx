@@ -98,8 +98,8 @@ const SIDEBAR_DATA = {
       icon: <InvoiceIcon />,
     },
     {
-      title: 'تفاصيل الفاتورة',
-      path: 'invoice-details/:id',
+      title: 'أرصدة الاشتراكات ',
+      path: 'balance-list',
       icon: <InvoiceIcon />,
     },
     {
@@ -107,12 +107,7 @@ const SIDEBAR_DATA = {
       path: "create-invoice",
       icon: <InvoiceIcon />,
     },
-    // ***** delete this path
-    {
-      title: "تعديل فاتورة",
-      path: "create-invoice/1",
-      icon: <InvoiceIcon />,
-    },
+ 
 
   ],
 

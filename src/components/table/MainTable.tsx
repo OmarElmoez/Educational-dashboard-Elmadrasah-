@@ -5,20 +5,19 @@ const { table, hiddenInput, checkmark, checkmarkBox,  } = styles;
 
 type TTableProps = {
   headData: { name: string; label: string }[];
-  onCheckAll: () => void;
-    children: React.ReactNode ;
-  checkAll: boolean;
-  setCheckAll: (param: boolean) => void;
+  onCheckAll?: () => void;
+  children: React.ReactNode ;
+  isCheckbox?:boolean;
 };
 
 
-const MainTable = ({ headData, onCheckAll, children,  }: TTableProps) => {
+const MainTable = ({ headData, onCheckAll, children, isCheckbox= true }: TTableProps) => {
 
   return (
     <table className={table}>
       <thead>
         <tr>
-          <th className={checkmarkBox}>
+          {(isCheckbox && onCheckAll )&& <th className={checkmarkBox}>
             <span className={checkmark}>
               <input 
               type="checkbox" 
@@ -28,7 +27,7 @@ const MainTable = ({ headData, onCheckAll, children,  }: TTableProps) => {
               }}
                />
             </span>
-          </th>
+          </th>}
           {headData.map((head) => (
             <th key={head.name}>{head.label}</th>
           ))}
