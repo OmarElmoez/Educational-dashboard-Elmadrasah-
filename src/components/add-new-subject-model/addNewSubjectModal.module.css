@@ -25,3 +25,13 @@
   align-items: center;
   gap: 2rem;
 }
+
+
+.headerModal{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 1.1rem;
+  border-bottom: 1px dashed #E4E4E4;
+}

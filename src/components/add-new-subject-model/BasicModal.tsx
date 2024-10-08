@@ -1,40 +1,50 @@
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { createPortal } from "react-dom";
 import { TModalRef } from "@/types/shared";
-import CloseButton from "@/assets/close-button.svg?react";
+import CloseButton from "@/assets/close-modal-icon.svg?react";
 
 import styles from "./addNewSubjectModal.module.css";
 
-const { modal } = styles;
+const { modal, headerModal } = styles;
 
-const BasicModal = forwardRef<TModalRef, { children: React.ReactNode }>(
-  ({ children }, ref) => {
-    const dialogRef = useRef<HTMLDialogElement>(null);
+const BasicModal = forwardRef<
+  TModalRef,
+  { children: React.ReactNode; header?:  React.ReactNode; }
+>(({ children, header = null }, ref) => {
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-    useImperativeHandle(ref, () => ({
-      open() {
-        dialogRef.current?.showModal();
-      },
-      close() {
-        dialogRef.current?.close();
-      },
-    }));
-
-    const onCloseHandler = () => {
+  useImperativeHandle(ref, () => ({
+    open() {
+      dialogRef.current?.showModal();
+    },
+    close() {
       dialogRef.current?.close();
-    };
+    },
+  }));
 
-    return createPortal(
-      <dialog ref={dialogRef} className={`${modal}`}>
+  const onCloseHandler = () => {
+    dialogRef.current?.close();
+  };
+
+  return createPortal(
+    <dialog ref={dialogRef} className={`${modal}`}>
+      {header ? (
+        <div className={headerModal}>
+          {header}
+          <button type="button" onClick={onCloseHandler}>
+            <CloseButton />
+          </button>
+        </div>
+      ) : (
         <button type="button" onClick={onCloseHandler}>
           <CloseButton />
         </button>
-        {children}
-      </dialog>,
-      document.getElementById("modal")!
-    );
-  }
-);
+      )}
+      {children}
+    </dialog>,
+    document.getElementById("modal")!
+  );
+});
 
 BasicModal.displayName = "BasicModal";
 

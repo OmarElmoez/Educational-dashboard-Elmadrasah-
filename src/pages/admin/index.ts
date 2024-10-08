@@ -17,7 +17,7 @@ import CopyInvoicesForm from "./forms/create-invoice/CopyInvoicesForm";
 // LIST: 
 import StudentsList from "./lists/StudentsList";
 import InvoicesList from "./lists/InvoicesList";
-import PackageBalanceList from "./lists/PackageBalanceList";
+import PackageBalanceList from "./lists/balance/PackageBalanceList";
 import InvoiceDetails from "./lists/invoice/InvoiceDetails";
 
 export {

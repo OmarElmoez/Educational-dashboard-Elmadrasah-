@@ -9,10 +9,7 @@ type TTableProps = {
   children: React.ReactNode ;
   isCheckbox?:boolean;
 };
-
-
 const MainTable = ({ headData, onCheckAll, children, isCheckbox= true }: TTableProps) => {
-
   return (
     <table className={table}>
       <thead>
