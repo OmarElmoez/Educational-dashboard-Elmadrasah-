@@ -1,0 +1,40 @@
+.select_box {
+  padding: 1.2rem 1.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #c7c7c7;
+  font-size: 1.6rem;
+  color: var(--secondary-color);
+}
+
+.popup_box {
+  border-radius: 1rem;
+  border: 1px solid #c7c7c7;
+  padding: 1rem;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  z-index: 3;
+  max-height: 520px;
+}
+
+.search_box {
+  width: 100%;
+}
+
+.options_box {
+  margin-top: 1rem;
+  display: grid;
+  /* gap: 1rem; */
+}
+
+.options_box span {
+  padding: 0.5rem 1rem;
+}
+
+.options_box span:hover {
+  background-color: #2064d4;
+  color: #fff;
+  border-radius: 0.5rem;
+}
