@@ -3,11 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetDropdownOptions, actGetData,  actSendDataToServer} from "@/store/single-actions";
+import {
+  actGetDropdownOptions,
+  actGetData,
+  actSendDataToServer,
+} from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import {
   CircleLoadingIndecator,
   Dropdown,
+  DropdownWithSearch,
   Heading,
   Row,
   SingleCheckbox,
@@ -187,28 +192,32 @@ const CreateInvoiceForm = () => {
           return openFeedbackModal("failed", "برجاء اختيار العميل اولا");
         }
 
-        dispatch(actGetData({ endpoint: "customer/lesson_filter/", params: {
-          start_date,
-          end_date,
-          customer_id: customer,
-          lesson_status: report,
-        }  }))
-        .unwrap()
-        .then((res: filterRes[]) =>{
-          if (res?.length) {
-            res.forEach((item) =>
-              appendLessons({
-                student: customer || "",
-                description: item?.description || "",
-                service: item?.service || "",
-                invoice_unit_price: item?.unit_price.toString() || "",
-                invoice_discount_rate: "",
-                invoice_amount: "",
-              })
-            );
-          }
-        });
-       
+        dispatch(
+          actGetData({
+            endpoint: "customer/lesson_filter/",
+            params: {
+              start_date,
+              end_date,
+              customer_id: customer,
+              lesson_status: report,
+            },
+          })
+        )
+          .unwrap()
+          .then((res: filterRes[]) => {
+            if (res?.length) {
+              res.forEach((item) =>
+                appendLessons({
+                  student: customer || "",
+                  description: item?.description || "",
+                  service: item?.service || "",
+                  invoice_unit_price: item?.unit_price.toString() || "",
+                  invoice_discount_rate: "",
+                  invoice_amount: "",
+                })
+              );
+            }
+          });
       } catch (error) {
         console.log(error);
       }
@@ -234,13 +243,13 @@ const CreateInvoiceForm = () => {
 
   const handleCustomer = (id: string) => {
     setCustomer(id);
+    console.log("from dropdown with search:", id);
   };
 
   const handleGetVatValue = async () => {
-    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false"  }))
-    .unwrap()
-    .then((res: vatRes[]) =>  setValue("tax_count", `${res[0].vat_rate}%`));
-
+    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false" }))
+      .unwrap()
+      .then((res: vatRes[]) => setValue("tax_count", `${res[0].vat_rate}%`));
   };
 
   const watchFields = watch(["tax_treatment", "tax_count"]);
@@ -380,6 +389,8 @@ const CreateInvoiceForm = () => {
     dispatch(
       actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
     ).then((res) => {
+      console.log("customers:", res);
+
       if (Array.isArray(res?.payload)) {
         setCustomersList(res.payload);
       }
@@ -404,6 +415,7 @@ const CreateInvoiceForm = () => {
   const onSubmit = (data: TCreateInvoiceFormData) => {
     data.formatted_number = invoiceNumber;
     data.tax_count = parseFloat(data.tax_count).toString();
+    data.customer = customer;
 
     data.status = dataStatus;
     if (chargesFields?.length === 0 && packagesFields?.length === 0) {
@@ -412,9 +424,11 @@ const CreateInvoiceForm = () => {
 
     const serverData = {
       ...data,
-      id:null
-    }
-    
+      id: null,
+    };
+
+    console.log('from on Submit:', data);
+
     dispatch(
       actSendDataToServer({
         token: user?.token,
@@ -425,9 +439,8 @@ const CreateInvoiceForm = () => {
       .unwrap()
       .then((res) => {
         console.log("res:", res);
-
-        openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!");
-          navigate(`/admin/invoice-details/${res?.id}`);
+        openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000);
+        navigate(`/admin/invoice-details/${res?.id}`);
       })
       .catch((error) =>
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)
@@ -439,7 +452,11 @@ const CreateInvoiceForm = () => {
       <Heading text="انشاء فاتورة" />
 
       <Row>
-        <Dropdown
+        <DropdownWithSearch
+          options={customersList}
+          handleChange={handleCustomer}
+        />
+        {/* <Dropdown
           label="العميل"
           name="customer"
           register={register}
@@ -448,7 +465,7 @@ const CreateInvoiceForm = () => {
           options={customersList}
           handleChange={handleCustomer}
           error={errors?.customer?.message as string}
-        />
+        /> */}
       </Row>
 
       <div className={row}>

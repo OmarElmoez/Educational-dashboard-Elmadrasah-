@@ -4,7 +4,6 @@ import React from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { setChosenState } from "@/store/location/LocationSlice";
 import styles from "./dropDown.module.css";
-import { TService, TTax_Treatment } from "@/types/shared";
 
 const { feedback } = styles;
 
@@ -61,7 +60,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
           //   )
           // }
         >
-          <option value="">--اختر--</option>
+          <option value="">--اختر--</option>          
           {options.map((option, index) => (
             <option key={`${option.value}-${index}`} value={option.value}>
               {option.label}
