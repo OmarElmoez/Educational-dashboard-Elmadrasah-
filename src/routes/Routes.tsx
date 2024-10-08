@@ -191,7 +191,7 @@ const router = createBrowserRouter([
       //   element: <CopyInvoiceForm />,
       // },
       {
-        path: 'copy-invoices/:id',
+        path: 'copy-invoice/:id',
         element: <CopyInvoicesForm />,
       },
       {

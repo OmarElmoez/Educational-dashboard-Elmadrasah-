@@ -380,8 +380,10 @@ const CreateInvoiceForm = () => {
     dispatch(
       actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
     ).then((res) => {
+      console.log('customers:', res);
+      
       if (Array.isArray(res?.payload)) {
-        setCustomersList(res.payload);
+        setCustomersList(res.payload.slice(0, 10));
       }
     });
 
