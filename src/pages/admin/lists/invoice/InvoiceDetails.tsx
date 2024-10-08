@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
-import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { useFeedback } from "@/store/context";
 import InvoiceِApproveForm from "./InvoiceِApproveForm";
 import styles from "./invoiceDetails.module.css";
+import InvoiceOptionsDropdown from "../../forms/create-invoice/InvoiceOptionsDropdown";
+import { actGetData } from "@/store/single-actions";
 
 // -------------------------------------------------------------------------------
 
@@ -132,7 +133,7 @@ interface Details {
 // -------------------------------------------------------------------------------
 
 const InvoiceDetails: React.FC = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const { id } = useParams();
   const { openFeedbackModal } = useFeedback();
@@ -200,28 +201,25 @@ const InvoiceDetails: React.FC = () => {
   };
 
   const getInvoiceDetailsById = async () => {
-    const token = user?.token;
 
     try {
-      const { data }: { data: Details } = await axios.get(
-        `https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/${id}/`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
+      dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
+      .unwrap()
+      .then((data) => {          
+        if (data) {
+          setDetails(data);
+          setFinalAmount(data?.amount_due);
+          setAllocationsPay(data?.payment_allocations);
         }
-      );
+            
+      })
+      .catch((err) => console.error(err));
 
-      if (data) {
-        setDetails(data);
-        setFinalAmount(data?.amount_due);
-        setAllocationsPay(data?.payment_allocations);
-      }
     } catch (error) {
       console.log(error);
     }
   };
+ 
 
   const confirmRemovePaymentAllocation = (
     id: string | number,
@@ -231,7 +229,8 @@ const InvoiceDetails: React.FC = () => {
       "confirm",
       "تأكيد الحذف",
       "هل انت متأكد أنك تريد التراجع عن هذه العملية؟",
-      10000,
+      100000,
+      undefined,
       () => {
         calcRemovePaymentAllocation(id, amount);
       }
@@ -270,9 +269,11 @@ const InvoiceDetails: React.FC = () => {
           <div className={flex_row}>
             <p>اخر ارسال {details?.sent_at}</p>
 
-            <button style={{ marginLeft: "10px" }} className={buttonStyle}>
+            {/* <button style={{ marginLeft: "10px" }} className={buttonStyle}>
               خيارات الفاتورة
-            </button>
+            </button> */}
+
+            <InvoiceOptionsDropdown />
             <button className={buttonStyle} onClick={handleDownload}>
               PDF
             </button>

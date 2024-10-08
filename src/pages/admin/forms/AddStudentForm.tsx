@@ -15,8 +15,7 @@ import { InputField } from "@/components";
 import { NotificationForm } from "@/components/mini-forms";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import { actGetDropdownOptions } from "@/store/single-actions";
-import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import { actGetDropdownOptions, actSendDataToServer } from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import {
   AddStudentSchema,

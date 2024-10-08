@@ -25,6 +25,8 @@ import {
   InvoicesList,
   InvoiceDetails,
   EditInvoiceForm,
+  CopyInvoiceForm,
+  CopyInvoicesForm,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -182,6 +184,14 @@ const router = createBrowserRouter([
       {
         path: 'edit-invoice/:id',
         element: <EditInvoiceForm />,
+      },
+      {
+        path: 'copy-invoice/:id',
+        element: <CopyInvoiceForm />,
+      },
+      {
+        path: 'copy-invoices/:id',
+        element: <CopyInvoicesForm />,
       },
       {
         path: 'students-list',

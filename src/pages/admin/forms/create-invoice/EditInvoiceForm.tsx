@@ -3,8 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetDropdownOptions } from "@/store/single-actions";
-import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
+import { actGetDropdownOptions, actSendDataToServer, actGetData } from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import {
   CircleLoadingIndecator,
@@ -17,7 +16,6 @@ import { InputField } from "@/components";
 import {
   CreateInvoiceSchema,
   TCreateInvoiceFormData,
-  TCreateInvoiceFormDataForGet,
   TCreateInvoiceFormDataForServer,
   // TCreateInvoiceSchemaFormDataForServer,
 } from "@/schemas/CreateInvoiceSchema";
@@ -29,8 +27,6 @@ import {
 } from "@/constants";
 import CloseButton from "@/assets/close-button.svg?react";
 import styles from "./createInvoice.module.css";
-import axios from "axios";
-import actGetInvoiceNumber from "@/store/single-actions/actGetInvoiceNumber";
 import { TService, TTax_Treatment } from "@/types/shared";
 
 const { row, close_btn_container } = styles;
@@ -178,29 +174,18 @@ const EditInvoiceForm = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.get<TCreateInvoiceFormDataForGet>(
-          `https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/${id}/`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${user?.token}`,
-            },
-          }
-        );
-
-        // Now you can set the form values with the actual data
-        // setFormValues(response.data);
-
-        reset(response.data);
-      } catch (error) {
-        console.error("Error fetching invoice data:", error);
-      }
-    };
+      
+        dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
+        .unwrap()
+        .then((res) => reset(res))
+        .catch((err) => console.error(err)); 
+    }
 
     fetchData();
-  }, [user?.token, id, reset]);
 
+
+  }, [dispatch, id, reset]);
+  
   const watchFiltration = watch("filtration");
 
   const [customer, setCustomer] = useState("");
@@ -212,40 +197,34 @@ const EditInvoiceForm = () => {
   const handleFilter = async () => {
     if (watchFiltration) {
       const { start_date, end_date, report } = watchFiltration[0];
-      const token = user?.token;
 
       try {
         if (!customer) {
           return openFeedbackModal("failed", "برجاء اختيار العميل اولا");
         }
-        const { data }: { data: filterRes[] } = await axios.get(
-          "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/lesson_filter/",
-          {
-            params: {
-              start_date,
-              end_date,
-              customer_id: customer,
-              lesson_status: report,
-            },
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${token}`,
-            },
-          }
-        );
 
-        if (data?.length) {
-          data.forEach((item) =>
-            appendLessons({
-              student: customer || "",
-              description: item?.description || "",
-              service: item?.service || "",
-              invoice_unit_price: item?.unit_price.toString() || "",
-              invoice_discount_rate: "",
-              invoice_amount: "",
-            })
-          );
-        }
+        dispatch(actGetData({ endpoint: "customer/lesson_filter/", params: {
+          start_date,
+          end_date,
+          customer_id: customer,
+          lesson_status: report,
+        }  }))
+        .unwrap()
+        .then((res: filterRes[]) =>{
+          if (res?.length) {
+            res.forEach((item) =>
+              appendLessons({
+                student: customer || "",
+                description: item?.description || "",
+                service: item?.service || "",
+                invoice_unit_price: item?.unit_price.toString() || "",
+                invoice_discount_rate: "",
+                invoice_amount: "",
+              })
+            );
+          }
+        });
+       
       } catch (error) {
         console.log(error);
       }
@@ -272,19 +251,13 @@ const EditInvoiceForm = () => {
   const handleCustomer = (id: string) => {
     setCustomer(id);
   };
-
+  
+  
   const handleGetVatValue = async () => {
-    const { data }: { data: vatRes[] } = await axios.get(
-      "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/vat/?code=AE&paginate=false",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${user?.token}`,
-        },
-      }
-    );
+    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false"  }))
+    .unwrap()
+    .then((res: vatRes[]) =>  setValue("tax_count", `${res[0].vat_rate}%`));
 
-    setValue("tax_count", `${data[0].vat_rate}%`);
   };
 
   const watchFields = watch(["tax_treatment", "tax_count"]);
@@ -339,6 +312,7 @@ const EditInvoiceForm = () => {
           throw new Error("Invalid tax treatment");
       }
 
+      
       return { total, salesTax, subtotal };
     },
     [treatmentType]
@@ -437,9 +411,9 @@ const EditInvoiceForm = () => {
       }
     });
 
-    dispatch(actGetInvoiceNumber({ token: user?.token }))
+    dispatch(actGetData({ endpoint: "customer/invoice/last" }))
       .unwrap()
-      .then((res) => setInvoiceNumber(res));
+      .then((res) => setInvoiceNumber(res.invoice_number));
 
     handleGetVatValue();
     // eslint-disable-next-line
@@ -447,6 +421,8 @@ const EditInvoiceForm = () => {
 
   const onSubmit = (data: TCreateInvoiceFormData) => {
     data.formatted_number = invoiceNumber;
+    console.log("data.formatted_number", data.formatted_number);
+    
     data.tax_count = parseFloat(data.tax_count).toString();
 
     data.status = dataStatus;
@@ -896,8 +872,7 @@ const EditInvoiceForm = () => {
         <button
           type="button"
           onClick={() => {
-            // reset();
-            console.log("err", errors);
+            reset();
           }}
           className="btn cancel-btn"
         >
