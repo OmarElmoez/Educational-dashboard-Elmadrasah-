@@ -457,7 +457,7 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="تعديل فاتورة     *******************" />
+      <Heading text="تعديل فاتورة" />
 
       <Row>
         <Dropdown

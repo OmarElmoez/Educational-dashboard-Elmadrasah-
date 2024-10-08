@@ -4,7 +4,6 @@ import React from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { setChosenState } from "@/store/location/LocationSlice";
 import styles from "./dropDown.module.css";
-import { TService, TTax_Treatment } from "@/types/shared";
 
 const { feedback } = styles;
 
