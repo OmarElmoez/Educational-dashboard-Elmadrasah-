@@ -427,7 +427,7 @@ const CreateInvoiceForm = () => {
         console.log("res:", res);
 
         openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!");
-        navigate(`/admin/invoice-details/${res?.id}`);
+          navigate(`/admin/invoice-details/${res?.id}`);
       })
       .catch((error) =>
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)

@@ -16,7 +16,7 @@ import { useFeedback } from "@/store/context";
 import { PAYMENT_OPTIONS } from "@/constants/dropdown-options";
 
 const invoiceHistorySchema = z.object({
-  amount: z.number().optional(),
+  amount: z.string().min(1, "برجاء ادخال المبلغ"),
   date: z.string().nullable().optional(),
   description: z.string().nullable().optional(),
   payment: z.string().min(1, "برجاء اختيار  طريقة الدفع"),
@@ -24,7 +24,7 @@ const invoiceHistorySchema = z.object({
 });
 type TInvoiceHistoryFormData = z.infer<typeof invoiceHistorySchema>;
 
-type TKeysToOmit =  "customer_id" | "invoice_id";
+type TKeysToOmit = "customer_id" | "invoice_id";
 
 export type TInvoiceHistoryFormDataForServer = Omit<
   TInvoiceHistoryFormData,
@@ -43,7 +43,7 @@ const InvoiceِApproveForm = ({
 }: {
   customer_id: number;
   invoice_id: number;
-  amount: number;
+  amount: string;
   date: string;
 }) => {
   const dispatch = useAppDispatch();
@@ -87,6 +87,7 @@ const InvoiceِApproveForm = ({
       .unwrap()
       .then(() => {
         openFeedbackModal("succeeded", "تم اضافة  الفاتورة بنجاح!");
+        // dispatch action to get the updated data
       })
       .catch((error) => {
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
@@ -108,7 +109,7 @@ const InvoiceِApproveForm = ({
           placeholder=" المبلغ"
           register={register}
           name="amount"
-          disabled
+          disabled={amount === "0"}
           error={errors.amount?.message as string}
         />
         <InputField
@@ -123,7 +124,6 @@ const InvoiceِApproveForm = ({
         <InputField
           label="وصف "
           isRequired
-          placeholder="الأسم الأخير"
           register={register}
           name="description"
           error={errors.description?.message as string}
@@ -147,7 +147,11 @@ const InvoiceِApproveForm = ({
       </Row>
 
       <div className="submit-buttons-container">
-        <button type="submit" className="btn submit-btn">
+        <button
+          type="submit"
+          className={`btn submit-btn ${amount === "0" ? "disabled" : ""}`}
+          disabled={isSubmitting || amount === "0"}
+        >
           {isSubmitting ? (
             <CircleLoadingIndecator size={16} color="#fff" />
           ) : (

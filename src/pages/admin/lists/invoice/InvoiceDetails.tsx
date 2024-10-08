@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { act, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useAppDispatch } from "@/store/hooks";
+import InvoiceOptionsDropdown from "../../forms/create-invoice/InvoiceOptionsDropdown";
+import { actGetData } from "@/store/single-actions";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useFeedback } from "@/store/context";
 import InvoiceِApproveForm from "./InvoiceِApproveForm";
 import styles from "./invoiceDetails.module.css";
-import InvoiceOptionsDropdown from "../../forms/create-invoice/InvoiceOptionsDropdown";
-import { actGetData } from "@/store/single-actions";
+import actRemovePaymentAllocation from "@/store/single-actions/actRemovePaymentAllocation";
 
 // -------------------------------------------------------------------------------
 
@@ -133,6 +134,7 @@ interface Details {
 // -------------------------------------------------------------------------------
 
 const InvoiceDetails: React.FC = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const { id } = useParams();
@@ -150,12 +152,11 @@ const InvoiceDetails: React.FC = () => {
     const element = componentRef.current;
 
     if (element) {
-
       const scale = 2;
       const canvas = await html2canvas(element, {
         scale,
-        useCORS: true, 
-        logging: true, 
+        useCORS: true,
+        logging: true,
       });
 
       const data = canvas.toDataURL("image/png");
@@ -214,7 +215,6 @@ const InvoiceDetails: React.FC = () => {
             
       })
       .catch((err) => console.error(err));
-
     } catch (error) {
       console.log(error);
     }
@@ -232,7 +232,30 @@ const InvoiceDetails: React.FC = () => {
       100000,
       undefined,
       () => {
-        calcRemovePaymentAllocation(id, amount);
+        dispatch(actRemovePaymentAllocation({ id, token: user?.token }))
+          .unwrap()
+          .then((res) => {
+            if (res) {
+              openFeedbackModal(
+                "succeeded",
+                "تم الحذف بنجاح",
+                "تم حذف المدفوعات بنجاح",
+                5000,
+                () => {
+                  calcRemovePaymentAllocation(id, amount);
+                  getInvoiceDetailsById();
+                }
+              );
+            } else {
+              openFeedbackModal(
+                "failed",
+                "حدث خطأ",
+                "حدث خطأ أثناء حذف المدفوعات",
+                10000,
+                () => {}
+              );
+            }
+          });
       }
     );
   };
@@ -256,7 +279,6 @@ const InvoiceDetails: React.FC = () => {
   return (
     <div>
       <div className={containerStyle} ref={componentRef}>
-
         <header className={headerStyle}>
           <div>
             <div
@@ -384,7 +406,7 @@ const InvoiceDetails: React.FC = () => {
             <p> {details?.total}</p>
           </div>
         </section>
-        <hr className="hr" />
+        {/* <hr className="hr" /> */}
 
         {allocationsPay &&
           allocationsPay?.map((payment) => (
@@ -438,7 +460,7 @@ const InvoiceDetails: React.FC = () => {
           <InvoiceِApproveForm
             customer_id={details?.customer}
             invoice_id={details?.id}
-            amount={finalAmount}
+            amount={finalAmount.toString()}
             date={details?.due_date}
           />
         )}

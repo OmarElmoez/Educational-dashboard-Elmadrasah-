@@ -7,3 +7,4 @@
 7- reponse type in  actSendDataToServer keep it or remove it?
 8- remove MUI (set-password)
 9- create form component
+7- Make sure that every action should recieve a token.
