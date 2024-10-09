@@ -2,10 +2,6 @@ import { z } from "zod";
 
 export const CreateInvoiceSchema = z.object({
   customer: z.string().optional(),
-  // z.union([
-  //   z.string().min(1, "برجاء اختيار العميل"),
-  //   z.number().min(1, "برجاء اختيار العميل"),
-  // ]),
   invoice_type: z.enum(["invoice", "credit_note"]).default("invoice"),
   formatted_number: z.string().optional(),
   date: z.string().min(1, "برجاء ادخال تاريخ الفاتورة"),
@@ -115,7 +111,6 @@ export type TCreateInvoiceFormDataForGet = Omit<
 > & {
   id: number | null | string;
   customer: number;
-  
 };
 
 // type TKeysToOmitCurrent =
