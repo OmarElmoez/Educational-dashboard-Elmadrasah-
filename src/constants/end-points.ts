@@ -91,6 +91,7 @@ const DROPDOWN_END_POINTS = {
   locations: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
   families: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families?paginate=false",
   customers: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/customers/?paginate=false",
+  customersSearch: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/customers/?paginate=false&first_name=",
   services: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/service/?paginate=false",
 }
 

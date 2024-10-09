@@ -17,10 +17,13 @@
   background-color: #fff;
   z-index: 3;
   max-height: 520px;
+  overflow-y: auto;
 }
 
 .search_box {
   width: 100%;
+  position: sticky;
+  top: 0;
 }
 
 .options_box {

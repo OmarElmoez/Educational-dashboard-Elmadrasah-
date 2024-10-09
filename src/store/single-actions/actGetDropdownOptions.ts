@@ -9,15 +9,19 @@ type TResponse = TResponseOption[];
 type TActGetDropdownOptionsProps = {
   token: string | undefined;
   optionsFor: TOptionsFor;
+  searchQuery?: string;
 };
 
 const actGetDropdownOptions = createAsyncThunk(
   "getDropdownOptions",
-  async ({ token, optionsFor }: TActGetDropdownOptionsProps, thunkAPI) => {
+  async ({ token, optionsFor, searchQuery }: TActGetDropdownOptionsProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
-      const url = DROPDOWN_END_POINTS[optionsFor];
+      let url = DROPDOWN_END_POINTS[optionsFor];
+      if (searchQuery) {
+        url = `${DROPDOWN_END_POINTS[optionsFor]}${searchQuery}`;
+      }
       const config = {
         headers: {
           Authorization: `Token ${token}`,

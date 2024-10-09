@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./dropdownWithSearch.module.css";
 import { TOption } from "@/types/Dropdown";
+import { useDebounce } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { actGetDropdownOptions } from "@/store/single-actions";
 
 const { select_box, popup_box, search_box, options_box } = styles;
 
@@ -13,6 +16,11 @@ const DropdownWithSearch = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<TOption | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setsearchResults] = useState<TOption[]>([]);
+  const debouncedQuery = useDebounce(searchQuery);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
 
   const handleOptionClick = (option: TOption) => {
     setSelectedOption(option);
@@ -20,8 +28,22 @@ const DropdownWithSearch = ({
     handleChange(option.value);
   };
 
+  useEffect(() => {
+    dispatch(
+      actGetDropdownOptions({
+        token: user?.token,
+        optionsFor: "customersSearch",
+        searchQuery: debouncedQuery,
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        setsearchResults(res);
+      });
+  }, [debouncedQuery, dispatch, user?.token]);
+
   return (
-    <article className="group" style={{ paddingBottom: "1rem" }}>
+    <article className="group">
       <label className={`adminFormLabel`}>اختر العميل</label>
       <section
         className={`select_wrapper ${select_box}`}
@@ -35,20 +57,21 @@ const DropdownWithSearch = ({
           <input
             type="search"
             className={`inputField ${search_box}`}
-            name=""
-            id=""
+            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery}
             placeholder="ابحث عن العميل"
           />
           <div className={options_box}>
-            {options.map((option, index) => (
-              <span
-                key={`${option.value}-${index}`}
-                data-value={option.value}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option.label}
-              </span>
-            ))}
+            {(searchResults.length > 0 ? searchResults : options).map(
+              (result, index) => (
+                <span
+                  key={`${result.value}-${index}`}
+                  onClick={() => handleOptionClick(result)}
+                >
+                  {result.label}
+                </span>
+              )
+            )}
           </div>
         </section>
       )}

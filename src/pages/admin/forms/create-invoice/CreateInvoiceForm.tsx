@@ -243,7 +243,6 @@ const CreateInvoiceForm = () => {
 
   const handleCustomer = (id: string) => {
     setCustomer(id);
-    console.log("from dropdown with search:", id);
   };
 
   const handleGetVatValue = async () => {
@@ -389,7 +388,6 @@ const CreateInvoiceForm = () => {
     dispatch(
       actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
     ).then((res) => {
-      console.log("customers:", res);
 
       if (Array.isArray(res?.payload)) {
         setCustomersList(res.payload);
@@ -420,6 +418,10 @@ const CreateInvoiceForm = () => {
     data.status = dataStatus;
     if (chargesFields?.length === 0 && packagesFields?.length === 0) {
       return openFeedbackModal("failed", "يجب عليك اختيار خدمة");
+    }
+
+    if (!customer) {
+      return openFeedbackModal("failed", "برجاء اختيار العميل اولا");
     }
 
     const serverData = {
