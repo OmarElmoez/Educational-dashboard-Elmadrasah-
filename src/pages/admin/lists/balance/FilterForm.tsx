@@ -27,7 +27,7 @@ const filterSchema = z.object({
   end_date: z.string().optional(),
 //  ************
   usageStatus: z.string().optional(),
-  remainingBalance: z.number().optional(),
+  remainingBalance: z.string().optional(),
 });
 
 export type FilterFormData = z.infer<typeof filterSchema>;
@@ -120,8 +120,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
       <div className={formGroup}>
         <label className={form_label}>الرصيد المتبقي</label>
         <input
-          type="number"
-          {...register("remainingBalance", { valueAsNumber: true })}
+          {...register("remainingBalance")}
         />
       </div>
 
@@ -144,6 +143,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
         <button type="submit" className="btn submit-btn">
           تأكيد
         </button>
+        
         <button type="button" onClick={handleReset} className="btn cancel-btn">
           محو التصفية
         </button>

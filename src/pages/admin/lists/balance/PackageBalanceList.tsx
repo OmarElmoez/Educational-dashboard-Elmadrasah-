@@ -68,6 +68,9 @@ const PackageBalanceList = () => {
       next?: string | null;
       previous?: string | null;
     }) => {
+      if(filterFormRef.current?.open) {
+        filterFormRef?.current?.close();
+      }
 
       let page = balance?.page;
       dispatch(
