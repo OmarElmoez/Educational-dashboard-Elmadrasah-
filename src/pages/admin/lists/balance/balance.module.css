@@ -1,15 +1,18 @@
 .balance_container {
   display: grid;
   grid-template-columns: 1fr 282px;
-  gap: 1rem;
+  gap: 4rem;
   flex: 1;
-  margin-top: 28px;
 }
 
-.balance_left ul {
+.balance_left {
   padding-right: 2.4rem;
- background-color:  #F1F1F166;
+  padding-top: 28px;
+  background-color: #F1F1F166;
+  height: 100%;
+  border-radius: 1rem;
 }
+
 
 .link_item {
   display: flex;
@@ -24,6 +27,11 @@
 
   margin: 0 1rem;
   color: #919191;
+
+}
+
+.balance_right {
+  margin-top: 28px;
 
 }
 
