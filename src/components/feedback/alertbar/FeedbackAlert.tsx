@@ -48,6 +48,7 @@ const FeedbackAlert = forwardRef(
           handleComplete();
         }, timeout);
       },
+      
       close() {
         dialog.current?.close();
       },
