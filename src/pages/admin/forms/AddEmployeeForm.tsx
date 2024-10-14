@@ -17,6 +17,7 @@ import {
   EMPLOYEE_TYPES,
   INITIAL_CALENDAR_COLOR,
   TIMEZONES_OPTIONS,
+  RADIO_FIELDS_FOR_CALENDAR,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
@@ -688,6 +689,7 @@ const AddEmployeeForm = () => {
           errors={errors}
           setValue={setValue}
           disabled={!isTeacher && employType === "Staff"}
+          fields={RADIO_FIELDS_FOR_CALENDAR}
         />
 
         <NotificationForm

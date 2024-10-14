@@ -12,6 +12,11 @@ export interface TCalendarSettingsFormProps<T extends FieldValues> {
   setValue: (name: Path<T>, value: string) => void;
   errors: FieldErrors<T>;
   disabled?: boolean;
+  fields: {
+    label: string;
+    name: string;
+    options: { label: string; value: string }[];
+  }[]
 }
 
 const CalendarSettingsForm = <T extends FieldValues>({
@@ -19,11 +24,12 @@ const CalendarSettingsForm = <T extends FieldValues>({
   setValue,
   errors,
   disabled = false,
+  fields
 }: TCalendarSettingsFormProps<T>) => {
   return (
     <>
       <Row style={{ justifyContent: "space-between" }}>
-        {RADIO_FIELDS_FOR_CALENDAR.map((field) => (
+        {fields.map((field) => (
           <RadioField
             key={field.name}
             name={field.name as Path<T>}

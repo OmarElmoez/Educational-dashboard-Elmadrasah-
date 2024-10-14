@@ -4,6 +4,7 @@ import { TPath } from "@/types/shared";
 import { SidebarContextProvider, FeedbackProvider } from "@/store/context/";
 import { useEffect } from "react";
 const MainLayout = ({ sideBarData }: { sideBarData: TPath[] }) => {
+  
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       // Service worker is supported
