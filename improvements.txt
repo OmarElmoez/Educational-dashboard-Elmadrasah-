@@ -8,3 +8,7 @@
 8- remove MUI (set-password)
 9- create form component
 7- Make sure that every action should recieve a token.
+
+8- 
+ - store just the token in the local storage.
+ - 
