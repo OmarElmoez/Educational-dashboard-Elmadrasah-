@@ -17,12 +17,6 @@ import {
   SingleCheckbox,
 } from "@/components";
 import { InputField } from "@/components";
-import {
-  CreateInvoiceSchema,
-  TCreateInvoiceFormData,
-  TCreateInvoiceFormDataForServer,
-  // TCreateInvoiceSchemaFormDataForServer,
-} from "@/schemas/CreateInvoiceSchema";
 import { TOption } from "@/types/Dropdown";
 import {
   ADD_SERVICE_OPTIONS,
@@ -32,6 +26,7 @@ import {
 import CloseButton from "@/assets/close-button.svg?react";
 import styles from "./createInvoice.module.css";
 import { TService, TTax_Treatment } from "@/types/shared";
+import { CopyInvoiceSchema, TCopyInvoiceFormData } from "@/schemas/CopyInvoiceSchema";
 
 const { row, close_btn_container } = styles;
 
@@ -80,9 +75,9 @@ const CopyInvoicesForm = () => {
     setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<TCreateInvoiceFormDataForServer>({
+  } = useForm<TCopyInvoiceFormData>({
     mode: "onBlur",
-    resolver: zodResolver(CreateInvoiceSchema),
+    resolver: zodResolver(CopyInvoiceSchema),
     defaultValues: {
       tax_treatment: "Tax Exclusive",
       formatted_number: invoiceNumber,
@@ -423,7 +418,7 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
     // eslint-disable-next-line
   }, [dispatch, user?.token]);
 
-  const onSubmit = (data: TCreateInvoiceFormData) => {
+  const onSubmit = (data: TCopyInvoiceFormData) => {
     data.formatted_number = invoiceNumber;
     data.tax_count = parseFloat(data.tax_count).toString();
 
@@ -458,7 +453,7 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="إنشاء فاتورة" />
+      <Heading text="نسخ فاتورة" />
 
       <Row>
         <Dropdown
