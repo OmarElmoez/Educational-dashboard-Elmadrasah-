@@ -328,9 +328,10 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
 
     const [tax_treatment, tax_count] = watchFields;
 
-    if (tax_treatment !== null && tax_count !== "") {
+    if (tax_treatment !== null && tax_count !== "" && tax_count !== undefined) {
       console.log("vvvvvvv",  parseFloat(sub_total.toString()),
-      parseFloat(tax_count))
+      parseFloat(tax_count));
+
       const { total, salesTax, subtotal } = calculateTotal(
         parseFloat(sub_total.toString()),
         parseFloat(tax_count)
@@ -457,7 +458,7 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="تعديل فاتورة" />
+      <Heading text="إنشاء فاتورة" />
 
       <Row>
         <Dropdown
