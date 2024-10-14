@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const CreateInvoiceSchema = z.object({
-  customer: z.string().optional(),
+export const EditInvoiceSchema = z.object({
+  customer: z.number().optional(),
   invoice_type: z.enum(["invoice", "credit_note"]).default("invoice"),
   formatted_number: z.string().optional(),
   date: z.string().min(1, "برجاء ادخال تاريخ الفاتورة"),
@@ -92,41 +92,24 @@ export const CreateInvoiceSchema = z.object({
     .optional(),
 });
 
-export type TCreateInvoiceFormData = z.infer<typeof CreateInvoiceSchema>;
+export type TEditInvoiceFormData = z.infer<typeof EditInvoiceSchema>;
 
 type TKeysToOmit = "id" | "customer";
 
-export type TCreateInvoiceFormDataForServer = Omit<
-  TCreateInvoiceFormData,
+export type TEditInvoiceFormDataForServer = Omit<
+  TEditInvoiceFormData,
   TKeysToOmit
 > & {
   id: number | null | string;
-  customer: string;
+  customer?: string;
 };
 
 type TKeysToOmitGet = "id"  | "customer"
  
-export type TCreateInvoiceFormDataForGet = Omit<
-  TCreateInvoiceFormData,
+export type TEditInvoiceFormDataForGet = Omit<
+  TEditInvoiceFormData,
   TKeysToOmitGet
 > & {
   id: number | null | string;
   customer: number;
 };
-
-// type TKeysToOmitCurrent =
-//    "id"
-//   | "customer"
-//   | "total"
-//   | "sales_tax_total"
-//   | "subtotal";
-// export type TCreateInvoiceFormDataForCurrent = Omit<
-//   TCreateInvoiceFormData,
-//   TKeysToOmitCurrent
-// > & {
-//   id: number | null | string;
-//   customer: number;
-//   total: number;
-//   sales_tax_total: number;
-//   subtotal: number;
-// };

@@ -3,7 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetDropdownOptions, actSendDataToServer, actGetData } from "@/store/single-actions";
+import {
+  actGetDropdownOptions,
+  actSendDataToServer,
+  actGetData,
+} from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import {
   CircleLoadingIndecator,
@@ -13,12 +17,6 @@ import {
   SingleCheckbox,
 } from "@/components";
 import { InputField } from "@/components";
-import {
-  CreateInvoiceSchema,
-  TCreateInvoiceFormData,
-  TCreateInvoiceFormDataForServer,
-  // TCreateInvoiceSchemaFormDataForServer,
-} from "@/schemas/CreateInvoiceSchema";
 import { TOption } from "@/types/Dropdown";
 import {
   ADD_SERVICE_OPTIONS,
@@ -28,6 +26,7 @@ import {
 import CloseButton from "@/assets/close-button.svg?react";
 import styles from "./createInvoice.module.css";
 import { TService, TTax_Treatment } from "@/types/shared";
+import { EditInvoiceSchema, TEditInvoiceFormData, TEditInvoiceFormDataForServer } from "@/schemas/EditInvoiceSchema";
 
 const { row, close_btn_container } = styles;
 
@@ -76,9 +75,9 @@ const EditInvoiceForm = () => {
     setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<TCreateInvoiceFormDataForServer>({
+  } = useForm<TEditInvoiceFormData>({
     mode: "onBlur",
-    resolver: zodResolver(CreateInvoiceSchema),
+    resolver: zodResolver(EditInvoiceSchema),
     defaultValues: {
       tax_treatment: "Tax Exclusive",
       formatted_number: invoiceNumber,
@@ -88,7 +87,6 @@ const EditInvoiceForm = () => {
       lessons: [],
       filtration: [],
     },
-
   });
 
   const {
@@ -174,18 +172,19 @@ const EditInvoiceForm = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      
-        dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
+      dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
         .unwrap()
-        .then((res) => reset(res))
-        .catch((err) => console.error(err)); 
-    }
+        .then((res) => {
+          console.log('from get data', res);
+          res.customer.toString();
+          reset(res)
+        })
+        .catch((err) => console.error(err));
+    };
 
     fetchData();
-
-
   }, [dispatch, id, reset]);
-  
+
   const watchFiltration = watch("filtration");
 
   const [customer, setCustomer] = useState("");
@@ -203,28 +202,32 @@ const EditInvoiceForm = () => {
           return openFeedbackModal("failed", "برجاء اختيار العميل اولا");
         }
 
-        dispatch(actGetData({ endpoint: "customer/lesson_filter/", params: {
-          start_date,
-          end_date,
-          customer_id: customer,
-          lesson_status: report,
-        }  }))
-        .unwrap()
-        .then((res: filterRes[]) =>{
-          if (res?.length) {
-            res.forEach((item) =>
-              appendLessons({
-                student: customer || "",
-                description: item?.description || "",
-                service: item?.service || "",
-                invoice_unit_price: item?.unit_price.toString() || "",
-                invoice_discount_rate: "",
-                invoice_amount: "",
-              })
-            );
-          }
-        });
-       
+        dispatch(
+          actGetData({
+            endpoint: "customer/lesson_filter/",
+            params: {
+              start_date,
+              end_date,
+              customer_id: customer,
+              lesson_status: report,
+            },
+          })
+        )
+          .unwrap()
+          .then((res: filterRes[]) => {
+            if (res?.length) {
+              res.forEach((item) =>
+                appendLessons({
+                  student: customer || "",
+                  description: item?.description || "",
+                  service: item?.service || "",
+                  invoice_unit_price: item?.unit_price.toString() || "",
+                  invoice_discount_rate: "",
+                  invoice_amount: "",
+                })
+              );
+            }
+          });
       } catch (error) {
         console.log(error);
       }
@@ -251,13 +254,13 @@ const EditInvoiceForm = () => {
   const handleCustomer = (id: string) => {
     setCustomer(id);
   };
-  
-  
-  const handleGetVatValue = async () => {
-    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false"  }))
-    .unwrap()
-    .then((res: vatRes[]) =>  setValue("tax_count", `${res[0].vat_rate}%`));
 
+  const handleGetVatValue = async () => {
+    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false" }))
+      .unwrap()
+      .then((res: vatRes[]) => {
+        setValue("tax_count", `${res[0].vat_rate}`)
+      });
   };
 
   const watchFields = watch(["tax_treatment", "tax_count"]);
@@ -287,6 +290,9 @@ const EditInvoiceForm = () => {
       let total = subtotal;
       let salesTax = 0;
 
+      console.log('salesTaxRate from total', salesTaxRate);
+      
+
       // const [taxTreatment] = watchFields;
 
       switch (treatmentType) {
@@ -312,7 +318,6 @@ const EditInvoiceForm = () => {
           throw new Error("Invalid tax treatment");
       }
 
-      
       return { total, salesTax, subtotal };
     },
     [treatmentType]
@@ -325,9 +330,10 @@ const EditInvoiceForm = () => {
 
     setValue("subtotal", sub_total.toFixed(2));
 
-    const [tax_treatment, tax_count] = watchFields;
+    const [tax_treatment, tax_count] = watchFields;    
 
-    if (tax_treatment !== null && tax_count !== "") {
+    if (tax_treatment !== null && tax_count !== "" && tax_count !== undefined) {
+      
       const { total, salesTax, subtotal } = calculateTotal(
         parseFloat(sub_total.toString()),
         parseFloat(tax_count)
@@ -338,7 +344,6 @@ const EditInvoiceForm = () => {
       setValue("subtotal", subtotal.toFixed(2));
     }
   }, [calculateAmounts, calculateTotal, setValue, watchFields]);
-
   useEffect(() => {
     handleCalcTax();
   }, [handleCalcTax, treatmentType]);
@@ -419,10 +424,10 @@ const EditInvoiceForm = () => {
     // eslint-disable-next-line
   }, [dispatch, user?.token]);
 
-  const onSubmit = (data: TCreateInvoiceFormData) => {
+  const onSubmit = (data: TEditInvoiceFormData) => {
     data.formatted_number = invoiceNumber;
     console.log("data.formatted_number", data.formatted_number);
-    
+
     data.tax_count = parseFloat(data.tax_count).toString();
 
     data.status = dataStatus;
@@ -430,11 +435,13 @@ const EditInvoiceForm = () => {
       return openFeedbackModal("failed", "يجب عليك اختيار خدمة");
     }
 
-    const serverData = {
+    const serverData: TEditInvoiceFormDataForServer = {
       ...data,
       id: null,
+      customer: data.customer?.toString(),
     };
 
+    console.log("serverData:", serverData);
     dispatch(
       actSendDataToServer({
         token: user?.token,
@@ -872,7 +879,8 @@ const EditInvoiceForm = () => {
         <button
           type="button"
           onClick={() => {
-            reset();
+            console.log(errors);
+            
           }}
           className="btn cancel-btn"
         >
