@@ -29,7 +29,7 @@ export const FeedbackProvider = ({
     title: string;
     desc: string;
     timeout?: number;
-    onComplete?: () => void ;
+    onComplete?: () => void;
     onConfirm?: () => void;
     onCancel?: () => void;
   }>({
@@ -44,7 +44,7 @@ export const FeedbackProvider = ({
     title: string,
     desc?: string,
     timeout?: number,
-    onComplete?: () => void ,
+    onComplete?: () => void,
     onConfirm?: () => void,
     onCancel?: () => void
   ) => {
