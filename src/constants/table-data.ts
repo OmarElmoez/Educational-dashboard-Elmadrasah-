@@ -69,7 +69,9 @@ const TABLE_HEAD_DATA = {
 
 const TABLE_SEARCH_END_POINTS = {
   students:
-    "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/students/?first_name=",
+    "customer/students/?first_name=",
+  balances:
+    "customer/balance/?name=",
 };
 
 export { TABLE_HEAD_DATA, TABLE_SEARCH_END_POINTS };

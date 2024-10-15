@@ -8,11 +8,11 @@ import { TABLE_SEARCH_END_POINTS } from "@/constants";
 const { searchSection, searchInput, searchBox } = styles;
 
 const SearchSection = ({
-  token,
   searchFor,
+  classNames,
 }: {
-  token?: string;
   searchFor: keyof typeof TABLE_SEARCH_END_POINTS;
+  classNames?: string;
 }) => {
   const [searchVal, setSearchVal] = useState("");
   const debouncedSearchTerm = useDebounce(searchVal);
@@ -22,16 +22,15 @@ const SearchSection = ({
   useEffect(() => {
     dispatch(
       actSearchForTableData({
-        token,
         searchFor,
         searchTerm: debouncedSearchTerm,
       })
     );
-  }, [debouncedSearchTerm, dispatch, searchFor, token]);
+  }, [debouncedSearchTerm, dispatch, searchFor]);
 
   return (
-    <section className={searchSection}>
-      <label className={searchBox}>
+    <section className={ classNames ? classNames : searchSection}>
+      { (!classNames) ? <label className={searchBox}>
         <input
           type="search"
           placeholder="بحث"
@@ -39,7 +38,15 @@ const SearchSection = ({
           onChange={(e) => setSearchVal(e.target.value)}
           value={searchVal}
         />
-      </label>
+      </label> 
+      :
+       <input
+          type="search"
+          placeholder="بحث"
+          className={searchInput}
+          onChange={(e) => setSearchVal(e.target.value)}
+          value={searchVal}
+        />}
     </section>
   );
 };

@@ -57,7 +57,7 @@ const StudentsList = () => {
         checkAll={checkAll}
         setCheckAll={setCheckAll}
       />
-      <SearchSection token={user?.token} searchFor="students" />
+      <SearchSection searchFor="students" />
       <section className={actions}>
         <button
           onClick={() => {

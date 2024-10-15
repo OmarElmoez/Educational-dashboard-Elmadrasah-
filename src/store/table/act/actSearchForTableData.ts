@@ -1,19 +1,18 @@
  import { TABLE_SEARCH_END_POINTS } from "@/constants";
 import { TTableResponse } from "@/types/table";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 type TSearchProps = {
   searchTerm: string;
   searchFor: keyof typeof TABLE_SEARCH_END_POINTS;
-  token: string | undefined;
 };
 
 const actSearchForTableData = createAsyncThunk(
   "table/search",
   async (
-    { searchTerm, searchFor, token }: TSearchProps,
+    { searchTerm, searchFor }: TSearchProps,
     thunkAPI
   ) => {
     const { rejectWithValue } = thunkAPI;
@@ -24,12 +23,7 @@ const actSearchForTableData = createAsyncThunk(
           searchFor as keyof typeof TABLE_SEARCH_END_POINTS
         ] + searchTerm;
 
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      };
-      const response = await axios.get<TTableResponse>(url, config);
+      const response = await axiosInstance.get<TTableResponse>(url);
       return response.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));

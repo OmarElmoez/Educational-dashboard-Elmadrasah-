@@ -21,6 +21,7 @@ import SearchIcon from "@/assets/search.svg?react";
 import Archive from "@/assets/archive.svg?react";
 import Download from "@/assets/download.svg?react";
 import List from "@/assets/list.svg?react";
+import { SearchSection } from "@/components";
 
 // -----------------------------------------------------------------------------------------
 const LIST_OPTIONS = [
@@ -68,6 +69,9 @@ const PackageBalanceList = () => {
       next?: string | null;
       previous?: string | null;
     }) => {
+      if(filterFormRef.current?.open) {
+        filterFormRef?.current?.close();
+      }
 
       let page = balance?.page;
       dispatch(
@@ -109,12 +113,16 @@ const PackageBalanceList = () => {
             <h3>أرصدة الاشتراكات ( {balance?.data?.length})</h3>
 
             <div className={header_filter}>
+              <SearchSection searchFor="balances" classNames={search_bar} />
+              {/* 
               <div className={search_bar}>
-                <input type="text" placeholder="بحث" className={inputbox} />
+
+                 <input type="text" placeholder="بحث" className={inputbox} /> 
                 <div className={icon}>
                   <SearchIcon />
-                </div>
+                </div> 
               </div>
+                */}
 
               <button
                 className={filter_button}
