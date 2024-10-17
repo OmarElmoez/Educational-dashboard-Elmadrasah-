@@ -10,9 +10,13 @@ const { select_box, popup_box, search_box, options_box } = styles;
 const DropdownWithSearch = ({
   options,
   handleChange,
+  label,
+  placeholder = "اختر",
 }: {
   options: TOption[];
   handleChange: (id: string) => void;
+  label: string;
+  placeholder?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<TOption | null>(null);
@@ -44,13 +48,21 @@ const DropdownWithSearch = ({
 
   return (
     <article className="group">
-      <label className={`adminFormLabel`}>اختر العميل</label>
+      <label className={`adminFormLabel`}>{label}</label>
       <section
         className={`select_wrapper ${select_box}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         {/* here will be the selected option */}
-        <span>{selectedOption ? selectedOption.label : "اختر"}</span>
+        {selectedOption ? (
+          <span>{selectedOption.label}</span>
+        ) : (
+          <span
+            className="dropdown-placeholder"
+          >
+            {placeholder}
+          </span>
+        )}
       </section>
       {isOpen && (
         <section className={popup_box}>

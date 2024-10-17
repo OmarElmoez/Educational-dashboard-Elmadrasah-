@@ -8,14 +8,14 @@
   font-family: 'Expo Arabic', sans-serif;
 }
 
-.modal h2 {
+.modal__title {
   font-size: 1.8rem;
   font-weight: 500;
   padding-bottom: 1.8rem;
   border-bottom: 1px solid #D2DAC9;
 }
 
-.modal form {
+.modal__form {
   margin-top: 1.6rem;
 }
 

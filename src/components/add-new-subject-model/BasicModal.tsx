@@ -9,7 +9,7 @@ const { modal, headerModal } = styles;
 
 const BasicModal = forwardRef<
   TModalRef,
-  { children: React.ReactNode; header?:  React.ReactNode; }
+  { children: React.ReactNode; header?: React.ReactNode }
 >(({ children, header = null }, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -27,8 +27,16 @@ const BasicModal = forwardRef<
   };
 
   return createPortal(
-    <dialog ref={dialogRef} className={`${modal}`}>
-      {header ? (
+    <dialog ref={dialogRef} className={modal}>
+      {header && (
+        <div className={headerModal}>
+          {header}
+          <button type="button" onClick={onCloseHandler}>
+            <CloseButton />
+          </button>
+        </div>
+      )}
+      {/* {header ? (
         <div className={headerModal}>
           {header}
           <button type="button" onClick={onCloseHandler}>
@@ -39,7 +47,7 @@ const BasicModal = forwardRef<
         <button type="button" onClick={onCloseHandler}>
           <CloseButton />
         </button>
-      )}
+      )} */}
       {children}
     </dialog>,
     document.getElementById("modal")!

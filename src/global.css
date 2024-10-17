@@ -100,6 +100,7 @@ menu {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow-x: auto;
 }
 
 .content {
@@ -358,6 +359,12 @@ input#formatted_number::placeholder {
   font-size: 1.6rem;
 }
 
+.dropdown-placeholder {
+  color: #CDCDCD;
+  font-size: 1rem;
+  font-weight: 500
+}
+
 /* ******************** GLOBAL CLASSES  *********************** */
 /* ******************** BUTTONS  *********************** */
 .submit-buttons-container {
@@ -414,6 +421,7 @@ input#formatted_number::placeholder {
   color: var(--main-color);
   font-size: 1.2rem;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 
@@ -486,4 +494,15 @@ input#formatted_number::placeholder {
   background-color: #fafafa !important;
   /* background-color: #D8DADC !important; */
   cursor: not-allowed !important;
+}
+
+.modal__title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding-bottom: 1.8rem;
+  border-bottom: 1px solid #D2DAC9;
+}
+
+.modal__form {
+  margin-top: 1.6rem;
 }

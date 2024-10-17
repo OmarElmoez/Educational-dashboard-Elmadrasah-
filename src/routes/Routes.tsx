@@ -28,6 +28,7 @@ import {
   EditInvoiceForm,
   // CopyInvoiceForm,
   CopyInvoicesForm,
+  ScheduleLesson,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -210,6 +211,10 @@ const router = createBrowserRouter([
         path: 'balance-list',
         element: <PackageBalanceList />,
       },
+      {
+        path: 'schedule-lesson',
+        element: <ScheduleLesson />,
+      }
     ],
   },
 

@@ -107,7 +107,12 @@ const SIDEBAR_DATA = {
       path: "create-invoice",
       icon: <InvoiceIcon />,
     },
- 
+    {
+      title: 'جدولة درس',
+      path: 'schedule-lesson',
+      icon: <CalendarIcon />,
+      phone_icon: <PH_calendarIcon />,
+    }
 
   ],
 

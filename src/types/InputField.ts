@@ -1,3 +1,4 @@
+import React from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 export type TInputField<T extends FieldValues> = {
@@ -11,6 +12,7 @@ export type TInputField<T extends FieldValues> = {
   isRequired?: boolean;
   disabled?: boolean;
   value?: string;
+  style?: React.CSSProperties;
 };
 
 export type TRadioField<T extends FieldValues> = {
