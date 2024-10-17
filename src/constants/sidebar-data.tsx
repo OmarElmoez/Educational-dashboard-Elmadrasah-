@@ -112,7 +112,7 @@ const SIDEBAR_DATA = {
       path: 'schedule-lesson',
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
-    }
+    },
     {
       title: "الطلاب الغير مجدولين",
       path: "unscheduled-list",
@@ -123,8 +123,6 @@ const SIDEBAR_DATA = {
       path: "unscheduled-family-list",
       icon: <InvoiceIcon />,
     },
- 
-
   ],
 
   Teacher: [
