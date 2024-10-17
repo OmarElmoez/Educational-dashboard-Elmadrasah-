@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import istyles from "./invoiceDetails.module.css";
+import istyles from "../filterForm.module.css";
 import { TStatus } from "@/types/Dropdown";
 import { useAppDispatch, } from "@/store/hooks";
 import { resetPage } from "@/store/table/TableSlice";
-
 // -------------------------------------------------------------------
 const { inputBox, formContainer, submitBtn,resetButton } = istyles;
 

@@ -157,12 +157,6 @@
 
 
 
- /* ********* invoice list ********* */
-
- .filterFormEnd {
-   display: flex;
-   justify-content: end;
- }
 
  .inputBox {
    display: flex;

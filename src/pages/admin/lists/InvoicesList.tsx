@@ -8,16 +8,14 @@ import {
 } from "@/store/table/TableSlice";
 
 import { TABLE_HEAD_DATA } from "@/constants";
-import styles from "./studentsList.module.css";
-import istyles from "./invoice/invoiceDetails.module.css";
+import styles from "./lists.module.css";
 import MainTable from "@/components/table/MainTable";
 import MainTableRow from "@/components/table/MainTableRow";
 import FilterForm from "./invoice/FilterForm";
 import { TStatus } from "@/types/Dropdown";
 
 // -----------------------------------------------------------------------------------------
-const { actions } = styles;
-const { filterFormEnd } = istyles;
+const { actions, filterFormEnd } = styles;
 // -----------------------------------------------------------------------------------------
 const InvoicesList = () => {
   const dispatch = useAppDispatch();

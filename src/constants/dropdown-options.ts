@@ -13,6 +13,10 @@ const STATUS_OPTIONS = [
   { label: "نشط", value: "true" },
   { label: "غير نشط", value: "false" },
 ];
+const PACKAGE_STATUS_OPTIONS = [
+  { label: "مستخدم", value: "used" },
+  { label: "غير مستخدم", value: "unused" },
+];
 
 const StatusOptionsForSchema = generateValesForSchema(STATUS_OPTIONS);
 
@@ -187,5 +191,6 @@ export {
   REPORT_OPTIONS,
   PAYMENT_OPTIONS,
   paymentOptionsForSchema,
+  PACKAGE_STATUS_OPTIONS,
   // AddTaxTreatmentOptionsForSchema,
 };

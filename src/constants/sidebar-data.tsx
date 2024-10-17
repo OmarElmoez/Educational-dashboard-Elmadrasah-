@@ -107,6 +107,16 @@ const SIDEBAR_DATA = {
       path: "create-invoice",
       icon: <InvoiceIcon />,
     },
+    {
+      title: "الطلاب الغير مجدولين",
+      path: "unscheduled-list",
+      icon: <InvoiceIcon />,
+    },
+    {
+      title: "العائلات الغير مجدولين",
+      path: "unscheduled-family-list",
+      icon: <InvoiceIcon />,
+    },
  
 
   ],

@@ -10,9 +10,16 @@ const { select_box, popup_box, search_box, options_box } = styles;
 const DropdownWithSearch = ({
   options,
   handleChange,
+  handleGetOption,
+  setSelectedCustomer,
+  selectedCustomer,
 }: {
   options: TOption[];
-  handleChange: (id: string) => void;
+  handleChange?: (id: string) => void;
+  // to get option as needed option.label not id
+  handleGetOption?: (option: TOption | null) => void;
+  setSelectedCustomer?: (param: TOption) => void;
+  selectedCustomer?: TOption | null;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<TOption | null>(null);
@@ -25,7 +32,17 @@ const DropdownWithSearch = ({
   const handleOptionClick = (option: TOption) => {
     setSelectedOption(option);
     setIsOpen(false);
-    handleChange(option.value);
+
+    if(setSelectedCustomer) {
+      setSelectedCustomer(option);
+    }
+
+    if (handleChange) {
+      handleChange(option.value);
+    }
+    if (handleGetOption) {
+      handleGetOption(option);
+    }
   };
 
   useEffect(() => {
@@ -50,7 +67,9 @@ const DropdownWithSearch = ({
         onClick={() => setIsOpen(!isOpen)}
       >
         {/* here will be the selected option */}
-        <span>{selectedOption ? selectedOption.label : "اختر"}</span>
+        <span>
+          {selectedOption && selectedCustomer ? selectedOption.label : "اختر"}
+        </span>
       </section>
       {isOpen && (
         <section className={popup_box}>

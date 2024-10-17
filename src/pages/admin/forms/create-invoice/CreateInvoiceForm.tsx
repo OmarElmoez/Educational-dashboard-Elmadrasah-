@@ -388,7 +388,6 @@ const CreateInvoiceForm = () => {
     dispatch(
       actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
     ).then((res) => {
-
       if (Array.isArray(res?.payload)) {
         setCustomersList(res.payload);
       }
@@ -429,7 +428,7 @@ const CreateInvoiceForm = () => {
       id: null,
     };
 
-    console.log('from on Submit:', data);
+    console.log("from on Submit:", data);
 
     dispatch(
       actSendDataToServer({

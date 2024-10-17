@@ -20,14 +20,17 @@ import {
   AdminStudentsPage,
   AdminTeachersPage,
   AddStudentToFamilyForm,
-  StudentsList,
   CreateInvoiceForm,
+  EditInvoiceForm,
+  CopyInvoicesForm,
+  // CopyInvoiceForm,
+  InvoiceDetails,
+  StudentsList,
   InvoicesList,
   PackageBalanceList,
-  InvoiceDetails,
-  EditInvoiceForm,
-  // CopyInvoiceForm,
-  CopyInvoicesForm,
+  UnscheduledList,
+  UnscheduledFamilyList,
+
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -209,6 +212,14 @@ const router = createBrowserRouter([
       {
         path: 'balance-list',
         element: <PackageBalanceList />,
+      },
+      {
+        path: 'unscheduled-list',
+        element: <UnscheduledList />,
+      },
+      {
+        path: 'unscheduled-family-list',
+        element: <UnscheduledFamilyList />,
       },
     ],
   },
