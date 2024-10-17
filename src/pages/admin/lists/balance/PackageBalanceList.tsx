@@ -101,7 +101,7 @@ const PackageBalanceList = () => {
         header={
           <div className={modal_header_container}>
             <FilterIconSmall />
-            <p className={modal_header_title}>التصفية </p>
+            <p className={modal_header_title}>التصفية</p>
           </div>
         }
       >

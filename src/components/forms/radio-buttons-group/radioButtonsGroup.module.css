@@ -1,0 +1,45 @@
+.radioOptions {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+
+.customRadioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+}
+
+.customRadioInput {
+  display: none;
+}
+
+.radioLabel {
+  font-weight: 300;
+  font-size: 1.4rem;
+}
+
+.customRadio {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #b5b7c0;
+  background-color: #f5f5f5;
+}
+
+.customRadioInput:checked + .customRadio {
+  background-color: rgba(28, 138, 68, 1);
+}
+
+.customRadioInput:checked + .customRadio::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ffff;
+}

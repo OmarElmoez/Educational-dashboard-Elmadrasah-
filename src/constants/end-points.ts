@@ -28,7 +28,17 @@ const END_POINTS = {
   },
   initial_location: {
     url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
-    placeholder: "  رابط دخول الحصة",
+    placeholder: "رابط دخول الحصة",
+  },
+  // Temp data
+  days: {
+    url: "",
+    placeholder: "الأيام",
+  },
+ 
+  teachers_choices: {
+    url: "",
+    placeholder: "المعلمين",
   },
  
 

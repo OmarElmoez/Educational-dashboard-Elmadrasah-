@@ -12,7 +12,7 @@ import {
   actPostNewSubject,
 } from "@/store/form-subjects/FormSubjectsSlice";
 import { actGetDropdownOptions } from "@/store/single-actions";
-const { modal, modal_actions } = styles;
+const { modal, modal_actions, modal__title, modal__form } = styles;
 
 const AddNewSubjectModal = forwardRef((_, ref) => {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -55,8 +55,8 @@ const AddNewSubjectModal = forwardRef((_, ref) => {
 
   return createPortal(
     <dialog ref={dialog} className={modal}>
-      <h2>إضافة موضوع جديد</h2>
-      <form method="POST" onSubmit={handleSubmit(onSubmit)}>
+      <h2 className={modal__title}>إضافة موضوع جديد</h2>
+      <form method="POST" onSubmit={handleSubmit(onSubmit)} className={modal__form}>
         <Row>
           <InputField
             label="اسم المادة بالعربية"

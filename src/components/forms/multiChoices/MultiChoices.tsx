@@ -42,12 +42,14 @@ const MultiChoices = <T extends FieldValues>({
   error,
   isRequired,
   disabled = false,
+  fields,
 }: {
   register: UseFormRegister<T>;
   name: Path<T>;
   error: string;
   isRequired?: boolean;
   disabled?: boolean;
+  fields?: TResponse;
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
@@ -135,7 +137,10 @@ const MultiChoices = <T extends FieldValues>({
         className={preview}
         style={{ position: "relative", paddingLeft: "2rem" }}
       >
-        {data.find((dataItem) => dataItem.id === choice)?.name}
+        {
+          (fields ? fields : data).find((dataItem) => dataItem.id === choice)
+            ?.name
+        }
         <button
           type="button"
           className={close_btn}
@@ -164,12 +169,19 @@ const MultiChoices = <T extends FieldValues>({
         htmlFor={name}
         className={`adminFormLabel ${isRequired && "required"}`}
       >
-        يرجي اختيار {END_POINTS[name as keyof typeof END_POINTS].placeholder}
+        {/* يرجي اختيار {END_POINTS[name as keyof typeof END_POINTS].placeholder} */}
+        {fields
+          ? `${END_POINTS[name as keyof typeof END_POINTS].placeholder}`
+          : ` يرجي اختيار ${
+              END_POINTS[name as keyof typeof END_POINTS].placeholder
+            }`}
       </label>
       <section
-        className={`select_wrapper inputField ${select_box_flex} ${disabled && 'disabled_btn'}`}
+        className={`select_wrapper inputField ${select_box_flex} ${
+          disabled && "disabled_btn"
+        }`}
         onClick={() => {
-          if(!disabled){
+          if (!disabled) {
             setIsWrapperClicked(!isWrapperClicked);
           }
         }}
@@ -181,7 +193,7 @@ const MultiChoices = <T extends FieldValues>({
       {isWrapperClicked && (
         <section className={options}>
           <LoadingIndicator progress={loadingProgress} />
-          {data.map((item) => (
+          {(fields ? fields : data).map((item) => (
             <label key={item.id} className={checkboxItem}>
               <span
                 className={`${checkmark}  ${

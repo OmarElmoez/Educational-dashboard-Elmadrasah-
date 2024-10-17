@@ -25,6 +25,9 @@ import AddNewSubjectModal from "./add-new-subject-model/AddNewSubjectModal";
 import Table from "./table/Table";
 import SearchSection from "./forms/search-section/SearchSection";
 import DropdownWithSearch from "./forms/drop-down-with-search/DropdownWithSearch";
+import RadioButtonsGroup from "./forms/radio-buttons-group/RadioButtonsGroup";
+import CheckBoxesGroup from "./forms/check-boxes-group/CheckBoxesGroup";
+import BasicModal from "./add-new-subject-model/BasicModal";
 
 export {
   Header,
@@ -54,4 +57,7 @@ export {
   Table,
   SearchSection,
   DropdownWithSearch,
+  RadioButtonsGroup,
+  CheckBoxesGroup,
+  BasicModal,
 };
