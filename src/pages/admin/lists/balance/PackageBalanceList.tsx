@@ -1,27 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Link,  } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  decrementBalancePage,
-   getBalanceData,
-  incrementBalancePage,
- } from "@/store/table/TableSlice";
-
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { TABLE_HEAD_DATA } from "@/constants";
 import MainTable from "@/components/table/MainTable";
 import FilterForm, { FilterFormData } from "./FilterForm";
 import BasicModal from "@/components/add-new-subject-model/BasicModal";
 import BalanceTableRow from "@/components/table/BalanceTableRow";
-import styles from "../studentsList.module.css";
-import balancestyles from "./balance.module.css";
+import styles from "../lists.module.css";
+import balancestyles from "../lists.module.css";
 import { TModalRef } from "@/types/shared";
 import FilterIcon from "@/assets/filter_icon.svg?react";
 import FilterIconSmall from "@/assets/filter_icon_small.svg?react";
-import SearchIcon from "@/assets/search.svg?react";
+// import SearchIcon from "@/assets/search.svg?react";
 import Archive from "@/assets/archive.svg?react";
 import Download from "@/assets/download.svg?react";
 import List from "@/assets/list.svg?react";
-import { SearchSection } from "@/components";
+import { Row, SearchSection } from "@/components";
+import { getPackageBalanceList } from "@/services/packageBalance";
+import { TBalance } from "@/types/table";
 
 // -----------------------------------------------------------------------------------------
 const LIST_OPTIONS = [
@@ -38,61 +33,59 @@ const {
   balance_left,
   balance_right,
   balance_right_header,
-  header_filter,
+  // header_filter,
   modal_header_container,
   modal_header_title,
   search_bar,
   filter_button,
-  inputbox,
-  icon,
+  // inputbox,
+  // icon,
   link_item,
   divider,
 } = balancestyles;
 // -----------------------------------------------------------------------------------------
 const PackageBalanceList = () => {
-  const dispatch = useAppDispatch();
-  const { balance } = useAppSelector((state) => state.table);
-
   const filterFormRef = useRef<TModalRef>(null);
 
+  // table data states:
+  const [tableData, setTableData] = useState<TBalance[] | null>(null);
+  const [allDataCount, setAllDataCount] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<FilterFormData | null>(null);
+
+  // handle change pages:
+  const handleNextPage = () => {
+    const pageNum = currentPage + 1;
+    const totalPages = Math.ceil(allDataCount / 10);
+    if (pageNum <= totalPages)
+      getPackageBalanceList(pageNum, searchTerm).then((res) =>
+        setTableData(res.results)
+      );
+    setCurrentPage(pageNum);
+  };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      getPackageBalanceList(currentPage - 1, searchTerm).then((res) =>
+        setTableData(res.results)
+      );
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const handleFilterSubmit = (filters: FilterFormData | null) => {
     setSearchTerm(filters);
+    filterFormRef.current?.close();
+    console.log("filters", filters);
+    
   };
 
-  const getNewtPage = useCallback(
-    ({
-      next,
-      previous,
-    }: {
-      next?: string | null;
-      previous?: string | null;
-    }) => {
-      if(filterFormRef.current?.open) {
-        filterFormRef?.current?.close();
-      }
-
-      let page = balance?.page;
-      dispatch(
-        getBalanceData({
-          url: "/customer/balance/",
-          page: page,
-          searchTerm 
-        })
-      );
-      if (next) {
-        dispatch(incrementBalancePage());
-      } else if (previous && balance.page > 0) {
-        dispatch(decrementBalancePage());
-      }
-    },
-    [dispatch, balance.page, searchTerm]
-  );
-
   useEffect(() => {
-    getNewtPage({});
-  }, [getNewtPage]);
+    // get All Data
+    getPackageBalanceList(currentPage, searchTerm).then((res) => {
+      setTableData(res.results);
+      setAllDataCount(res.count);
+    });
+  }, [currentPage, searchTerm]);
 
   return (
     <>
@@ -110,9 +103,9 @@ const PackageBalanceList = () => {
       <section className={balance_container}>
         <div className={balance_right}>
           <div className={balance_right_header}>
-            <h3>أرصدة الاشتراكات ( {balance?.data?.length})</h3>
+            <h3>أرصدة الاشتراكات ( {allDataCount})</h3>
 
-            <div className={header_filter}>
+            <Row style={{gap: '1.6rem'}}>
               <SearchSection searchFor="balances" classNames={search_bar} />
               {/* 
               <div className={search_bar}>
@@ -130,16 +123,16 @@ const PackageBalanceList = () => {
               >
                 <FilterIcon />
               </button>
-            </div>
+            </Row>
           </div>
           <hr className={divider} />
 
           <MainTable headData={TABLE_HEAD_DATA["balance"]} isCheckbox={false}>
-            {balance.data &&
-              balance.data.map((pack, i) => (
+            {tableData &&
+              tableData?.map((row, i) => (
                 <BalanceTableRow
                   key={i}
-                  rowData={pack}
+                  rowData={row}
                   headData={TABLE_HEAD_DATA["balance"]}
                 />
               ))}
@@ -148,9 +141,9 @@ const PackageBalanceList = () => {
           <section className={actions}>
             <button
               onClick={() => {
-                getNewtPage({ previous: balance.previous });
+                handlePreviousPage();
               }}
-              disabled={!balance.previous}
+              disabled={currentPage <= 1}
             >
               <svg
                 width="20"
@@ -168,12 +161,12 @@ const PackageBalanceList = () => {
               </svg>
               <span>الرجوع</span>
             </button>
-            {balance.page}
+            {currentPage}
             <button
               onClick={() => {
-                getNewtPage({ next: balance.next });
+                handleNextPage();
               }}
-              disabled={!balance.next}
+              disabled={currentPage + 1 > Math.ceil(allDataCount / 10)}
             >
               <span>التالي</span>
               <svg
@@ -200,9 +193,7 @@ const PackageBalanceList = () => {
               <li key={item.id}>
                 <Link to={item.link} className={link_item}>
                   {item.icon}
-                 <p>  
-                   {item.title}
-                  </p>
+                  <p>{item.title}</p>
                 </Link>
               </li>
             ))}

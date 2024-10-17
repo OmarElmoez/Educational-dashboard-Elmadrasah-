@@ -1,13 +1,25 @@
-// FilterForm.tsx
+/**
+ * Renders a filter form for the balance page in the admin section.
+ *
+ * The filter form allows the user to filter the balance data by various criteria such as name, phone, email, status, package status, and date range.
+ *
+ * The form uses the `react-hook-form` library for form management and the `zod` library for form validation.
+ *
+ * @param {FilterFormProps} props - The props for the FilterForm component.
+ * @param {(filters: FilterFormData | null) => void} props.onSubmit - A callback function that is called when the form is submitted with the filtered data.
+ * @returns {JSX.Element} - The rendered FilterForm component.
+ */
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import styles from "./balance.module.css";
-import React from "react";
-import { EMPLOYEE_TYPES, STATUS_OPTIONS } from "@/constants";
-import { Dropdown } from "@/components";
-import { resetBalancePage } from "@/store/table/TableSlice";
-import { useAppDispatch } from "@/store/hooks";
+import styles from "../filterForm.module.css";
+import React, { useEffect, useState } from "react";
+import { PACKAGE_STATUS_OPTIONS, STATUS_OPTIONS } from "@/constants";
+import { Dropdown, DropdownWithSearch } from "@/components";
+import { TOption } from "@/types/Dropdown";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { actGetDropdownOptions } from "@/store/single-actions";
 // -------------------------------------------------------------------
 
 const {
@@ -22,14 +34,14 @@ const {
 } = styles;
 
 const filterSchema = z.object({
-  name: z.string().optional(),
-  is_active: z.string().optional(),
-  start_date: z.string().optional(),
-  end_date: z.string().optional(),
-  //  ************
-  usageStatus: z.string().optional(),
-  remainingBalance: z.string().optional(),
-  phone: z.string().optional(),
+  name: z.string().nullable().optional(),
+  is_active: z.string().nullable().optional(),
+  start_date: z.string().nullable().optional(),
+  end_date: z.string().nullable().optional(),
+  package_status: z.string().nullable().optional(),
+  remaining_credit: z.string().nullable().optional(),
+  phone: z.string().nullable().optional(),
+  email: z.union([z.string().email(), z.string().nullable()]).optional(),
 });
 
 export type FilterFormData = z.infer<typeof filterSchema>;
@@ -44,56 +56,74 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FilterFormData>({
     resolver: zodResolver(filterSchema),
     defaultValues: {
-      name: "",
-      start_date: "",
-      end_date: "",
-      is_active: "",
-      usageStatus: "",
-      remainingBalance: "",
-      phone: "",
+      name: null,
+      start_date: null,
+      end_date: null,
+      is_active: null,
+      email: null,
+      package_status: null,
+      remaining_credit: null,
+      phone: null,
     },
   });
 
-  const dispatch = useAppDispatch();
-
   const handleSubmitForm = (data: FilterFormData) => {
-    dispatch(resetBalancePage());
-console.log("data:", data);
-
     onSubmit(data);
+    reset();
+    setSelectedCustomer(null);
   };
 
   const handleReset = () => {
-    dispatch(resetBalancePage());
+    console.log("errors:", errors);
     reset();
+    setSelectedCustomer(null);
+  };
+
+  const [customersList, setCustomersList] = useState<TOption[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<TOption | null>(
+    null
+  );
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(
+      actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
+    ).then((res) => {
+      if (Array.isArray(res?.payload)) {
+        setCustomersList(res.payload);
+      }
+    });
+  }, [dispatch, user?.token]);
+
+  const handleGetOption = (option: TOption | null) => {
+    setValue("name", option?.label);
   };
 
   return (
     <form className={filterForm} onSubmit={handleSubmit(handleSubmitForm)}>
       <div className={formGroup}>
-        <label className={form_label}>الاسم</label>
-        <Dropdown
-          label=""
-          name="name"
-          register={register}
-          options={STATUS_OPTIONS}
-          error={errors.name?.message as string}
+        <DropdownWithSearch
+          options={customersList}
+          handleGetOption={handleGetOption}
+          selectedCustomer={selectedCustomer}
+          setSelectedCustomer={setSelectedCustomer}
         />
-        {/* <input type="text" {...register("name")} placeholder="أحمد محمد" /> */}
       </div>
 
       <div className={formGroup}>
-        <label className={form_label}  >رقم الموبايل </label>
+        <label className={form_label}>رقم الموبايل </label>
         <input {...register("phone")} placeholder="+9716434234232" />
       </div>
 
       <div className={formGroup}>
-        <label className={form_label}>الهاتف المحمول  </label>
-        <input {...register("phone")} />
+        <label className={form_label}> البريد الالكترونى </label>
+        <input {...register("email")} />
       </div>
 
       <div className={formGroup}>
@@ -106,11 +136,6 @@ console.log("data:", data);
           options={STATUS_OPTIONS}
           error={errors.is_active?.message as string}
         />
-        {/* <select {...register("is_active")}>
-          <option value="">اختر الحالة</option>
-          <option value="active">نشط</option>
-          <option value="inactive">غير نشط</option>
-        </select> */}
       </div>
 
       <div className={formGroup}>
@@ -118,22 +143,16 @@ console.log("data:", data);
 
         <Dropdown
           label=""
-          name="usageStatus"
+          name="package_status"
           register={register}
-          options={EMPLOYEE_TYPES}
-          error={errors.usageStatus?.message as string}
+          options={PACKAGE_STATUS_OPTIONS}
+          error={errors.package_status?.message as string}
         />
-
-        {/* <select {...register("usageStatus")}>
-          <option value="">اختر حالة الباقة</option>
-          <option value="used">مستخدمة</option>
-          <option value="unused">غير مستخدمة</option>
-        </select> */}
       </div>
 
       <div className={formGroup}>
         <label className={form_label}>الرصيد المتبقي</label>
-        <input {...register("remainingBalance")} />
+        <input {...register("remaining_credit")} />
       </div>
 
       <div className={dateGroup}>

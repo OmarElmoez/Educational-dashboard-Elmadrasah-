@@ -1,5 +1,5 @@
 import { TLoading } from "@/types/shared";
-import { TBalance, TBalanceResponse, TCustomer, TInvoice } from "@/types/table";
+import { TBalanceResponse, TCustomer, TInvoice } from "@/types/table";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetStudents from "./act/actGetStudents";
 import actGetInvoices from "./act/actGetInvoices";
@@ -7,7 +7,7 @@ import { isString } from "@/types/gurads";
 import actSearchForTableData from "./act/actSearchForTableData";
 import actGetTableData from "./act/actGetTableData";
 // ----------------------------------------------------------
-const getBalanceData = actGetTableData<TBalanceResponse>();
+// const getBalanceData = actGetTableData<TBalanceResponse>();
 
 // ----------------------------------------------------------
 type TTableState = {
@@ -22,12 +22,12 @@ type TTableState = {
     next: string | null;
     previous: string | null;
   };
-  balance: {
-    data: TBalance[];
-    page: number;
-    next: string | null;
-    previous: string | null;
-  };
+  // balance: {
+  //   data: TBalance[];
+  //   page: number;
+  //   next: string | null;
+  //   previous: string | null;
+  // };
   loading: TLoading;
   error: string | null;
 };
@@ -44,12 +44,12 @@ const initialState: TTableState = {
     next: null,
     previous: null,
   },
-  balance: {
-    data: [],
-    page: 1,
-    next: null,
-    previous: null,
-  },
+  // balance: {
+  //   data: [],
+  //   page: 1,
+  //   next: null,
+  //   previous: null,
+  // },
   // Employees: [],
   // Parents: [],
   loading: "idle",
@@ -72,22 +72,22 @@ const TableSlice = createSlice({
       }
     },
     resetPage(state) {
-        state.invoices.page = 1;
+      state.invoices.page = 1;
     },
-    
-    incrementBalancePage(state) {
-      if (state.balance.next) {
-        state.balance.page += 1;
-      }
-    },
-    decrementBalancePage(state) {
-      if (state.balance.previous && state.balance.page > 0) {
-        state.balance.page -= 1;
-      }
-    },
-    resetBalancePage(state) {
-        state.balance.page = 1;
-    },
+
+    // incrementBalancePage(state) {
+    //   if (state.balance.next) {
+    //     state.balance.page += 1;
+    //   }
+    // },
+    // decrementBalancePage(state) {
+    //   if (state.balance.previous && state.balance.page > 0) {
+    //     state.balance.page -= 1;
+    //   }
+    // },
+    // resetBalancePage(state) {
+    //     state.balance.page = 1;
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -98,7 +98,7 @@ const TableSlice = createSlice({
 
       .addCase(actGetStudents.fulfilled, (state, action) => {
         state.loading = "succeeded";
-        
+
         state.students.data = action.payload.results;
         state.students.next = action.payload.next;
         state.students.previous = action.payload.previous;
@@ -151,48 +151,38 @@ const TableSlice = createSlice({
           state.error = action.payload;
         }
       });
-  //  ************************************************
-   
-      builder
-      .addCase(getBalanceData.pending, (state) => {
-        state.loading = "pending";
-        state.error = null;
-      })
+    //  ************************************************
 
-      .addCase(getBalanceData.fulfilled, (state, action) => {
-        state.loading = "succeeded";
-        state.balance.data = action.payload.results;
-        state.balance.next = action.payload.next;
-        state.balance.previous = action.payload.previous;
-      })
+    // builder
+    // .addCase(getBalanceData.pending, (state) => {
+    //   state.loading = "pending";
+    //   state.error = null;
+    // })
 
-      .addCase(getBalanceData.rejected, (state, action) => {
-        state.loading = "failed";
-        if (isString(action.payload)) {
-          state.error = action.payload;
-        }
-      });
+    // .addCase(getBalanceData.fulfilled, (state, action) => {
+    //   state.loading = "succeeded";
+    //   state.balance.data = action.payload.results;
+    //   state.balance.next = action.payload.next;
+    //   state.balance.previous = action.payload.previous;
+    // })
+
+    // .addCase(getBalanceData.rejected, (state, action) => {
+    //   state.loading = "failed";
+    //   if (isString(action.payload)) {
+    //     state.error = action.payload;
+    //   }
+    // });
   },
 });
 
-export { actGetStudents, actGetInvoices, getBalanceData };
-export const { incrementPage, decrementPage, resetPage, incrementBalancePage, decrementBalancePage, resetBalancePage } = TableSlice.actions;
+export { actGetStudents, actGetInvoices, 
+  // getBalanceData
+ };
+export const {
+  incrementPage,
+  decrementPage,
+  resetPage,
+  // incrementBalancePage, decrementBalancePage, resetBalancePage
+} = TableSlice.actions;
 
 export default TableSlice.reducer;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

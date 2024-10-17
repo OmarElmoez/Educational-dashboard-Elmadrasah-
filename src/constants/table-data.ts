@@ -32,19 +32,31 @@ const TABLE_HEAD_DATA = {
     { name: "unused", label: "غير مستخدمة" },
     { name: "over_used", label: " مستخدم أكثر من اللازم" },
   ],
-  // ***** update again
-  // payments: [
-  //   { name: "id", label: "الكود" },
-  //   { name: "first_name", label: "الرقم " },
-  //   { name: "date", label: " تاريخ" },
-  //   { name: "email", label: " تاريخ الاستحقاق" },
-  //   { name: "mobile_phone", label: " اخر ارسال" },
-  //   { name: "customer_name", label: " عميل " },
-  //   { name: "type", label: "النوع" },
-  //   { name: "home_phone", label: " المجموع  " },
-  //   { name: "student_type", label: "توازن" },
-  //   { name: "action", label: "أكشن" },
-  // ],
+
+
+  // ********* this is not the real names to the endpoint update it 
+  unscheduled: [
+    { name: "customer_first_name", label: "الاسم الاول" },
+    { name: "customer_last_name", label: "الاسم الاخير " },
+    { name: "date", label: "تاريخ الاشتراك" },
+    { name: "service_name", label: "تاريخ الاشتراك" },
+    { name: "purchased", label: "الباقة" },
+    { name: "class", label: "الصف " },
+    { name: "", label: "" },
+
+  ],
+  unscheduledFamily: [
+    { name: "customer_first_name", label: "الاسم الاول" },
+    { name: "customer_last_name", label: "الاسم الاخير " },
+    { name: "date", label: "تاريخ الاشتراك" },
+    { name: "service_name", label: "تاريخ الاشتراك" },
+    { name: "purchased", label: "الباقة" },
+    { name: "class", label: "الصف " },
+    { name: "", label: "" },
+    { name: "", label: "" },
+
+  ],
+ 
 
 
   parents: [

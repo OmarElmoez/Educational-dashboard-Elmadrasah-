@@ -113,6 +113,17 @@ const SIDEBAR_DATA = {
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
     }
+    {
+      title: "الطلاب الغير مجدولين",
+      path: "unscheduled-list",
+      icon: <InvoiceIcon />,
+    },
+    {
+      title: "العائلات الغير مجدولين",
+      path: "unscheduled-family-list",
+      icon: <InvoiceIcon />,
+    },
+ 
 
   ],
 

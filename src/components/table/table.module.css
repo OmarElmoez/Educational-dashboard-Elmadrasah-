@@ -19,6 +19,8 @@
 
 .table td {
   color: #000;
+  white-space: nowrap;
+
 }
 
 .hiddenInput {
@@ -78,4 +80,56 @@ td.checkmarkBox {
 
 .tdRow button {
   margin: 0 7px;
+}
+
+
+.active_row_container {
+  border-style: solid;
+  border-width: 0 1px 0 1px;
+  border-color: #1C8A44;
+  border-radius: 10px;
+}
+
+tr.ctive_row_container:nth-last-of-type(1) {
+  border-style: solid;
+  border-width: 5px;
+  border-color: #1C8A44;
+  border-radius: 10px;
+}
+
+.active_row {
+  /* border:none; */
+  border-style: solid;
+  border-width: 1px 1px 0 1px;
+  border-color: #1C8A44;
+  background: #7AB7904D;
+  border-radius: 10px;
+
+}
+
+.active_divider {
+  border-style: solid;
+  border-width: 1px 1px 0 1px;
+  border-color: #1C8A44;
+  border-radius: 10px;
+}
+
+.td_hint {
+  color: #A6A6A6;
+  font-size: 11px;
+  margin: 0;
+  padding: 0;
+}
+
+.table_btn {
+
+  padding: 14.5px;
+  gap: 10px;
+  border-radius: 10px;
+  background-color: #FFB72B;
+  color: #fff;
+  white-space: nowrap;
+  font-size: 9px;
+  font-weight: 500;
+
 }

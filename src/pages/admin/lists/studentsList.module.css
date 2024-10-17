@@ -30,3 +30,8 @@
   cursor: not-allowed;
 }
 
+ /* ********* invoice list ********* */
+.filterFormEnd {
+  display: flex;
+  justify-content: end;
+}
