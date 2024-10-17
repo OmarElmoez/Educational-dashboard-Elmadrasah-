@@ -456,17 +456,8 @@ const CreateInvoiceForm = () => {
         <DropdownWithSearch
           options={customersList}
           handleChange={handleCustomer}
+          label="اختر العميل"
         />
-        {/* <Dropdown
-          label="العميل"
-          name="customer"
-          register={register}
-          // placeholder="حدد العميل"
-          isRequired
-          options={customersList}
-          handleChange={handleCustomer}
-          error={errors?.customer?.message as string}
-        /> */}
       </Row>
 
       <div className={row}>

@@ -2,6 +2,7 @@ import { TRadioField } from "@/types/InputField";
 import { FieldValues } from "react-hook-form";
 import "./input.css";
 import Heading from "@/components/heading/Heading";
+import RadioButtonsGroup from "../radio-buttons-group/RadioButtonsGroup";
 
 const RadioField = <T extends FieldValues>({
   register,
@@ -14,7 +15,7 @@ const RadioField = <T extends FieldValues>({
   return (
     <article className="group">
       <Heading text={label} />
-      <div className="radioOptions">
+      {/* <div className="radioOptions">
         {options.map((option) => (
           <label key={option.value} className="customRadioLabel">
             <input
@@ -28,7 +29,13 @@ const RadioField = <T extends FieldValues>({
             <span className="radioLabel">{option.label}</span>
           </label>
         ))}
-      </div>
+      </div> */}
+      <RadioButtonsGroup
+        name={name}
+        options={options}
+        register={register}
+        disabled={disabled}
+      />
       {error && <p className="error">{error}</p>}
     </article>
   );

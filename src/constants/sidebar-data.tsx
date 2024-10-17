@@ -108,6 +108,12 @@ const SIDEBAR_DATA = {
       icon: <InvoiceIcon />,
     },
     {
+      title: 'جدولة درس',
+      path: 'schedule-lesson',
+      icon: <CalendarIcon />,
+      phone_icon: <PH_calendarIcon />,
+    }
+    {
       title: "الطلاب الغير مجدولين",
       path: "unscheduled-list",
       icon: <InvoiceIcon />,

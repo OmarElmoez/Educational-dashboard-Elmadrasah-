@@ -168,6 +168,13 @@ const REPORT_OPTIONS = [
   { label: 'متغيب', value: 'Missed' },
 ];
 
+const FOLLOW_UP_OPTIONS = [
+  { label: '5 حصص', value: '5_classes' },
+  { label: 'أسبوع', value: 'week' },
+  { label: "10 أيام", value: "10_days" },
+  { label: '10 حصص', value: '10_classes' },
+];
+
 
 
 export {
@@ -191,6 +198,7 @@ export {
   REPORT_OPTIONS,
   PAYMENT_OPTIONS,
   paymentOptionsForSchema,
+  FOLLOW_UP_OPTIONS,
   PACKAGE_STATUS_OPTIONS,
   // AddTaxTreatmentOptionsForSchema,
 };

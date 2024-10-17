@@ -13,6 +13,7 @@ import CreateInvoiceForm from "./forms/create-invoice/CreateInvoiceForm";
 import EditInvoiceForm from "./forms/create-invoice/EditInvoiceForm";
 // import CopyInvoiceForm from "./forms/create-invoice/CopyInvoiceForm";
 import CopyInvoicesForm from "./forms/create-invoice/CopyInvoicesForm";
+import ScheduleLesson from "./forms/scheduling/ScheduleLesson";
 
 // LIST: 
 import StudentsList from "./lists/StudentsList";
@@ -37,11 +38,13 @@ export {
   CreateInvoiceForm,
   EditInvoiceForm,
   // CopyInvoiceForm,
-  InvoiceDetails,
-  CopyInvoicesForm,
   StudentsList,
   InvoicesList,
   PackageBalanceList,
+  InvoiceDetails,
+  // CopyInvoiceForm,
+  CopyInvoicesForm,
+  ScheduleLesson,
   UnscheduledList,
   UnscheduledFamilyList,
 

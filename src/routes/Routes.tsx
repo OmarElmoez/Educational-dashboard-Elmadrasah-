@@ -21,16 +21,18 @@ import {
   AdminTeachersPage,
   AddStudentToFamilyForm,
   CreateInvoiceForm,
-  EditInvoiceForm,
-  CopyInvoicesForm,
   // CopyInvoiceForm,
-  InvoiceDetails,
   StudentsList,
   InvoicesList,
   PackageBalanceList,
   UnscheduledList,
   UnscheduledFamilyList,
 
+  InvoiceDetails,
+  EditInvoiceForm,
+  // CopyInvoiceForm,
+  CopyInvoicesForm,
+  ScheduleLesson,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -221,6 +223,10 @@ const router = createBrowserRouter([
         path: 'unscheduled-family-list',
         element: <UnscheduledFamilyList />,
       },
+      {
+        path: 'schedule-lesson',
+        element: <ScheduleLesson />,
+      }
     ],
   },
 

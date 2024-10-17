@@ -42,7 +42,10 @@ import {
   NotificationForm,
 } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
-import { actGetDropdownOptions, actSendDataToServer } from "@/store/single-actions";
+import {
+  actGetDropdownOptions,
+  actSendDataToServer,
+} from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 
 const AddEmployeeForm = () => {
@@ -692,18 +695,7 @@ const AddEmployeeForm = () => {
           fields={RADIO_FIELDS_FOR_CALENDAR}
         />
 
-        <NotificationForm
-          register={register}
-          sms_lesson_reminders="sms_lesson_reminders"
-          email_lesson_reminders="email_lesson_reminders"
-          whatsapp_reminders="whatsapp_reminders"
-          app_reminders="app_reminders"
-          web_reminders="web_reminders"
-          // send_welcome_email="send_welcome_email"
-          user_account="user_account"
-          errors={errors}
-          disabled={!isTeacher && employType === "Staff"}
-        />
+        <NotificationForm register={register} />
 
         <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
