@@ -104,6 +104,8 @@ const ScheduleLesson = () => {
 
   const scheduleRef = useRef<TModalRef>(null);
 
+  console.log(customer);
+
   return (
     <>
       <BasicModal ref={scheduleRef}>
