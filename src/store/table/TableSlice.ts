@@ -1,11 +1,10 @@
 import { TLoading } from "@/types/shared";
-import { TBalanceResponse, TCustomer, TInvoice } from "@/types/table";
+import { TCustomer, TInvoice } from "@/types/table";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetStudents from "./act/actGetStudents";
 import actGetInvoices from "./act/actGetInvoices";
 import { isString } from "@/types/gurads";
 import actSearchForTableData from "./act/actSearchForTableData";
-import actGetTableData from "./act/actGetTableData";
 // ----------------------------------------------------------
 // const getBalanceData = actGetTableData<TBalanceResponse>();
 
