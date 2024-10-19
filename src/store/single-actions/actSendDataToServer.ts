@@ -26,7 +26,7 @@ const actSendDataToServer = createAsyncThunk(
 
       Object.entries(formData).forEach(([key, value]) => {
         if (
-          typeof value === "object" &&
+          Array.isArray(value) &&
           value !== null &&
           !(value[0] instanceof File)
         ) {
