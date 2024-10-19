@@ -109,6 +109,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
     <form className={filterForm} onSubmit={handleSubmit(handleSubmitForm)}>
       <div className={formGroup}>
         <DropdownWithSearch
+          label="الاسم"
           options={customersList}
           handleGetOption={handleGetOption}
           selectedCustomer={selectedCustomer}
