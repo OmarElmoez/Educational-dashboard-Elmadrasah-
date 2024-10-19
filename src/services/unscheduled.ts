@@ -1,5 +1,4 @@
 import { TUnscheduled } from "@/types/ListsTypes";
-import axiosInstance from "@/utils/axiosInstance";
 
 type TUnscheduledResponse = {
   count: number;

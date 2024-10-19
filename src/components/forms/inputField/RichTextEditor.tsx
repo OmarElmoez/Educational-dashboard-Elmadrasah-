@@ -8,7 +8,6 @@ const RichTextEditor = <T extends FieldValues>({ register, name }: { register: U
     const [penMode, setPenMode] = useState(false);
   
     const editorRef = useRef<HTMLDivElement>(null);
-    const signatureCanvasRef = useRef<any>(null);
   
     // Handle rich text editor changes
     const handleEditorInput = (e: React.FormEvent<HTMLDivElement>) => {
@@ -26,18 +25,7 @@ const RichTextEditor = <T extends FieldValues>({ register, name }: { register: U
       const files = Array.from(e.target.files || []) as File[];
       setAttachments([...attachments, ...files]);
     };
-  
-    // Handle saving pen drawings
-    const handleSaveDrawing = () => {
-      const drawingDataUrl = signatureCanvasRef.current.toDataURL();
-      setEditorContent((prev) => prev + `<img src="${drawingDataUrl}" alt="drawing"/>`);
-      signatureCanvasRef.current.clear();
-    };
-  
-    // Clear pen drawing canvas
-    const handleClearDrawing = () => {
-      signatureCanvasRef.current.clear();
-    };
+
   
     return (
       <div>
