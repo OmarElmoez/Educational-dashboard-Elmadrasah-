@@ -62,7 +62,6 @@ const AddParentForm = () => {
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         purpose: "add_family",
         formData: data,
       })

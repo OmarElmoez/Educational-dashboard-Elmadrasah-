@@ -1,28 +1,23 @@
 import { TResponseOption } from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export type TResponse = TResponseOption[];
 
 type TProps = {
-  token: string | undefined;
   url: string;
 };
 
 const actGetChoices = createAsyncThunk(
   "actGetSubjects",
-  async ({ token, url }: TProps, thunkAPI) => {
+  async ({ url }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
       const endPoint = url;
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      };
-      const response = await axios.get<TResponse>(endPoint, config);
+
+      const response = await axiosInstance.get<TResponse>(endPoint);
       return response.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));

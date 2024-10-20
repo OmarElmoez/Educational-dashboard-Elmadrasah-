@@ -25,14 +25,11 @@ type TUnscheduledResponse = {
  * @returns A promise that resolves to the response data, which includes the count, next and previous page URLs, and the list of unscheduled items.
  */
 
-export const getUnscheduledList = async (
-  page: number,
-  searchTerm: any
-): Promise<TUnscheduledResponse> => {
+export const getUnscheduledList = async () => {
   // const response = await axiosInstance.get<TUnscheduledResponse>('/users',
   //   { params: {
-  //     page: page,
-  //     searchTerm: searchTerm,
+  //     page,
+  //     searchTerm,
   // }});
 
   // return response.data;

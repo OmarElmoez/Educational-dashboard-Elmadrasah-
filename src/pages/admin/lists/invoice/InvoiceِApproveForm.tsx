@@ -79,7 +79,6 @@ const InvoiceِApproveForm = ({
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         purpose: "create_payment",
         formData: serverData,
       })

@@ -27,18 +27,18 @@ const StudentsList = () => {
       if (next) {
         console.log("next", next);
 
-        dispatch(actGetStudents({ token: user?.token, next }));
+        dispatch(actGetStudents({ next }));
         return;
       }
 
       if (previous) {
-        dispatch(actGetStudents({ token: user?.token, previous }));
+        dispatch(actGetStudents({ previous }));
         return;
       }
 
-      dispatch(actGetStudents({ token: user?.token }));
+      dispatch(actGetStudents({}));
     },
-    [dispatch, user?.token]
+    [dispatch]
   );
 
   useEffect(() => {

@@ -95,7 +95,6 @@ const AddStudentForm = () => {
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         purpose: "add_individual_student",
         formData: serverData,
       })
@@ -117,7 +116,7 @@ const AddStudentForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "locations" })
+      actGetDropdownOptions({ optionsFor: "locations" })
     )
       .unwrap()
       .then((data) => {
@@ -133,7 +132,7 @@ const AddStudentForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "curriculums" })
+      actGetDropdownOptions({ optionsFor: "curriculums" })
     )
       .unwrap()
       .then((res) => {

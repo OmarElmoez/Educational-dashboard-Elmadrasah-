@@ -232,7 +232,7 @@ const InvoiceDetails: React.FC = () => {
       100000,
       undefined,
       () => {
-        dispatch(actRemovePaymentAllocation({ id, token: user?.token }))
+        dispatch(actRemovePaymentAllocation({ id }))
           .unwrap()
           .then((res) => {
             if (res) {

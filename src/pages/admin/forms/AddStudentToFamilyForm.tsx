@@ -94,7 +94,6 @@ const AddStudentToFamilyForm = () => {
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         purpose: "add_family_student",
         formData: serverData,
       })
@@ -116,19 +115,19 @@ const AddStudentToFamilyForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "locations" })
+      actGetDropdownOptions({ optionsFor: "locations" })
     )
       .unwrap()
       .then((data) => setLocationOptions(data));
 
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "curriculums" })
+      actGetDropdownOptions({ optionsFor: "curriculums" })
     )
       .unwrap()
       .then((data) => setCurriculumOptions(data));
 
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "families" })
+      actGetDropdownOptions({ optionsFor: "families" })
     )
       .unwrap()
       .then((data) => setFamiliesList(data));

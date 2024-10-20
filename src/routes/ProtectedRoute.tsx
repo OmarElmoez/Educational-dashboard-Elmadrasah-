@@ -11,9 +11,9 @@ const ProtectedRoute = ({
   children: React.ReactNode;
 }) => {
 
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
 
-  if (allowedTypes.includes(user?.user_type)) {
+  if (allowedTypes.includes(credintials?.role)) {
     return children;
   } else {
     return <Navigate to="/" replace />;

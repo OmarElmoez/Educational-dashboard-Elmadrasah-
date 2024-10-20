@@ -56,7 +56,6 @@ const InvoiceOptionsDropdown: React.FC = () => {
       () => {
         dispatch(
           actSendDataToServer({
-            token: user?.token,
             formData: { status: "Void" },
             purpose: "edit_invoice_status",
             isEdit: true,

@@ -17,7 +17,7 @@ export const getPackageBalanceList = async (
 ): Promise<TBalanceResponse> => {
   console.log("searchTerm", searchTerm);
 
-  const response = await axiosInstance.get<TBalanceResponse>("customer/balance/", {
+  const response = await axiosInstance.get<TBalanceResponse>("/customer/balance/", {
     params: {
       page,
       ...searchTerm,

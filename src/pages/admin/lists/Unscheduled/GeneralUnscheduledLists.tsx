@@ -57,7 +57,7 @@ const GeneralUnscheduledLists = () => {
 
   useEffect(() => {
     // get All Data length
-    getUnscheduledList(1, null).then((res) => {
+    getUnscheduledList().then((res) => {
       setStudentsCount(res.count);
     });
 
