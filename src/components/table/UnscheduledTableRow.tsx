@@ -18,14 +18,8 @@ const UnscheduledTableRow = ({
   handleChecked,
 }: UnscheduledTableRowProps) => {
   // ********** edit names
-  const {
-    customer_first_name,
-    customer_last_name,
-    date,
-    service_name,
-    status,
-    classValue,
-  } = rowData;
+  const { name, subscription_date, service_name, scheduled_status, grade } =
+    rowData;
 
   return (
     <tr key={rowData.id}>
@@ -45,13 +39,12 @@ const UnscheduledTableRow = ({
         </td>
       )}
 
-      <td> {customer_first_name} </td>
-      <td> {customer_last_name} </td>
-      <td>{format(new Date(date), "yyyy-MM-dd")}</td>
+      <td> {name} </td>
+      <td> {name} </td>
+      <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
 
       <td> {service_name} </td>
-      <td> {classValue} </td>
-      <td> {status} </td>
+      <td> {grade} </td>
 
       <td className={tdRow}>
         <Link
@@ -59,7 +52,7 @@ const UnscheduledTableRow = ({
           aria-label="Action button"
           className={table_btn}
         >
-          اعتماد المواعيد
+          {scheduled_status}
         </Link>
       </td>
     </tr>

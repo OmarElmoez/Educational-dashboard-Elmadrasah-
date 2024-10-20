@@ -107,7 +107,7 @@ const UnscheduledFamilyList = () => {
                 rowData={row}
                 checkRows={checkRows}
                 handleChecked={handleChecked}
-                childrenRows={row?.children}
+                childrenRows={row?.students}
               />
             ))}
         </MainTable>

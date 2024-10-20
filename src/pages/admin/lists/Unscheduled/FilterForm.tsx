@@ -22,9 +22,9 @@ const {
 const filterSchema = z.object({
   name: z.string().optional(),
   type: z.string().optional(),
-  service_type: z.string().optional(),
-  status: z.string().optional(),
-  date: z.string().optional(),
+  purchased: z.string().optional(),
+  scheduled_status: z.string().optional(),
+  subscription_date: z.string().optional(),
 });
 
 export type FilterFormData = z.infer<typeof filterSchema>;
@@ -45,9 +45,9 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
     defaultValues: {
       name: "",
       type: "",
-      service_type: "",
-      status: "",
-      date: "",
+      purchased: "",
+      scheduled_status: "",
+      subscription_date: "",
     },
   });
 
@@ -90,10 +90,10 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
         <label className={form_label}>نوع الباقة </label>
         <Dropdown
           label=""
-          name="service_type"
+          name="purchased"
           register={register}
           options={STATUS_OPTIONS}
-          error={errors.service_type?.message as string}
+          error={errors.purchased?.message as string}
         />
       </div>
 
@@ -105,7 +105,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
               <input
                 className={form_label_p}
                 id="date"
-                {...register("date")}
+                {...register("subscription_date")}
                 type="text"
                 onFocus={(e) => (e.target.type = "date")}
                 onBlur={(e) => (e.target.type = "text")}

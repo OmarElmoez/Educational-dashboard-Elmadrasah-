@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TUnscheduled } from "@/types/ListsTypes";
+import { TUnscheduledFamily } from "@/types/ListsTypes";
 import tstyles from "./table.module.css";
 import { format } from "date-fns";
 import UpIcon from "@/assets/up_arrow_icon.svg?react";
@@ -20,10 +20,10 @@ const {
 } = tstyles;
 
 type UnscheduledFamilyTableRowProps = {
-  rowData: TUnscheduled;
+  rowData: TUnscheduledFamily;
   checkRows: number[] | null;
   handleChecked?: (id: number) => void;
-  childrenRows?: TUnscheduled[];
+  childrenRows: TUnscheduledFamily[] | null;
 };
 
 const UnscheduledFamilyTableRow = ({
@@ -34,14 +34,8 @@ const UnscheduledFamilyTableRow = ({
 }: UnscheduledFamilyTableRowProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const {
-    customer_first_name,
-    customer_last_name,
-    date,
-    service_name,
-    status,
-    classValue,
-  } = rowData;
+  const { name, subscription_date, service_name, scheduled_status, grade } =
+    rowData;
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -66,12 +60,12 @@ const UnscheduledFamilyTableRow = ({
           </td>
         )}
 
-        <td>{customer_first_name}</td>
-        <td>{customer_last_name}</td>
-        <td>{format(new Date(date), "yyyy-MM-dd")}</td>
+        <td>{name}</td>
+        <td>{name}</td>
+        <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
         <td>{service_name}</td>
-        <td>{classValue}</td>
-        <td>{status}</td>
+        <td>{grade}</td>
+        <td>{scheduled_status}</td>
         <td className={tdRow}>
           <Link
             to="/admin/schedule-lesson"
@@ -109,14 +103,14 @@ const UnscheduledFamilyTableRow = ({
         childrenRows.map((child) => (
           <tr key={child.id} className={isExpanded ? active_row_container : ""}>
             <td></td>
-            <td>{child.customer_first_name}</td>
-            <td>{child.customer_last_name}</td>
+            <td>{child.name}</td>
+            <td>{child.name}</td>
             <td style={{ whiteSpace: "nowrap" }}>
-              {format(new Date(child.date), "yyyy-MM-dd")}
+              {format(new Date(child.subscription_date), "yyyy-MM-dd")}
             </td>
             <td>{child.service_name}</td>
-            <td>{child.classValue}</td>
-            <td>{child.status}</td>
+            <td>{child.grade}</td>
+            <td>{child.scheduled_status}</td>
             <td>
               <Link
                 to="/admin/schedule-lesson"
