@@ -395,7 +395,7 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
+      actGetDropdownOptions({ optionsFor: "customers" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setCustomersList(res.payload);
@@ -403,7 +403,7 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
     });
 
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "services" })
+      actGetDropdownOptions({ optionsFor: "services" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setServicesList(res.payload);
@@ -434,7 +434,6 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         formData: serverData,
         purpose: "create_invoice",
       })

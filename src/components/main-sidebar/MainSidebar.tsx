@@ -33,7 +33,7 @@ const MainSidebar = ({ data }: TSidebarProps) => {
   const { isPhone } = useResponsive();
 
   const { user } = useAppSelector((state) => state.profile);
-  const { user: authUser } = useAppSelector((state) => state.auth);
+  // const { user: authUser, credintials } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -42,12 +42,13 @@ const MainSidebar = ({ data }: TSidebarProps) => {
   const { fcmToken } = useFirebaseMessaging();
 
   const signoutHandler = () => {
-    dispatch(logout());
     dispatch(removeProfile());
     if (fcmToken) {
-      dispatch(
-        actFCMLogout({ user_token: authUser?.token, FCM_token: fcmToken })
-      );
+      dispatch(actFCMLogout({ FCM_token: fcmToken }))
+        .unwrap()
+        .then(() => {
+          dispatch(logout());
+        });
     }
   };
 

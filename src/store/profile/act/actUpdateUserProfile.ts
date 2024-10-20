@@ -1,29 +1,24 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { TProfile } from "@/schemas/ProfileSchema";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 
 const actUpdateUserProfile = createAsyncThunk(
   "profile/actUpdateUserProfile",
   async (
-    { formData, token }: { formData: TProfile, token: string | undefined },
+    { formData}: { formData: TProfile},
     thunkAPI
   ) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
-      const url =
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/user/profile/";
+      const url = "/user/profile/";
 
-      const config = {
+      await axiosInstance.patch(url, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Token ${token}` 
-        }
-      };
-
-      await axios.patch(url, formData, config);
-
+          "Content-Type": "multipart/form-data",
+        },
+      });
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

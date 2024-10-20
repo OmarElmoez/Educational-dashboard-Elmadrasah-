@@ -1,23 +1,18 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { TNotificationResponse } from "@/schemas";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 
 const actGetNotifications = createAsyncThunk(
   "notifications/actGetNotifications",
-  async ({ token }: { token: string | undefined }, thunkAPI) => {
+  async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
       const url =
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/notify/notification/";
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      };
+        "/notify/notification/";
 
-      const response = await axios.get<TNotificationResponse>(url, config);
+      const response = await axiosInstance.get<TNotificationResponse>(url);
 
       return response.data
     } catch (error) {

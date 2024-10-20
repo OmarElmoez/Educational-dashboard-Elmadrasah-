@@ -16,7 +16,7 @@ const NotificationsPage = () => {
   const navigate = useNavigate();
 
   const markNotificationAsRead = (id: number) => {
-    dispatch(actMarkAsRead({ token: user?.token, notification_id: id }))
+    dispatch(actMarkAsRead({ notification_id: id }))
     navigate(`/${user?.user_type?.toLowerCase()}`);
   };
 

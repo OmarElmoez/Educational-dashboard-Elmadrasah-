@@ -154,7 +154,6 @@ const AddEmployeeForm = () => {
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         formData: serverData,
         hasFiles: true,
         purpose: "add_employee",
@@ -176,7 +175,7 @@ const AddEmployeeForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "subjects" })
+      actGetDropdownOptions({ optionsFor: "subjects" })
     );
   }, [dispatch, user?.token]);
 

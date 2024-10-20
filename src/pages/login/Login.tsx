@@ -50,18 +50,17 @@ const Login = () => {
             navigate("/set-phoneNumber");
             return;
           }
-          dispatch(actGetUserProfile(data.user.token));
-          dispatch(actGetReviewQuestions(data.user.token));
+          dispatch(actGetUserProfile());
+          dispatch(actGetReviewQuestions());
           dispatch(
             actGetLessonsByRange({
-              token: data.user.token,
               start_date: format(startDate, "dd-MM-yyyy"),
               end_date: format(endDate, "dd-MM-yyyy"),
             })
           );
           if (fcmToken) {
             dispatch(
-              actFCMLogin({ user_token: data.user.token, FCM_token: fcmToken })
+              actFCMLogin({ FCM_token: fcmToken })
             );
           }
           navigate(`/${data.user?.user_type?.toLowerCase()}`, {

@@ -4,6 +4,7 @@ import { TOption } from "@/types/Dropdown";
 import { useDebounce } from "@/hooks";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetDropdownOptions } from "@/store/single-actions";
+import { useLocation } from "react-router-dom";
 
 const { select_box, popup_box, search_box, options_box } = styles;
 
@@ -31,13 +32,18 @@ const DropdownWithSearch = ({
   const [searchResults, setsearchResults] = useState<TOption[]>([]);
   const debouncedQuery = useDebounce(searchQuery);
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
+
+
+  const location = useLocation();
+  const isBalanceRoute = location.pathname === "/admin/balance-list";
+  
 
   const handleOptionClick = (option: TOption) => {
     setSelectedOption(option);
     setIsOpen(false);
 
-    if(setSelectedCustomer) {
+    if (setSelectedCustomer) {
       setSelectedCustomer(option);
     }
 
@@ -52,7 +58,6 @@ const DropdownWithSearch = ({
   useEffect(() => {
     dispatch(
       actGetDropdownOptions({
-        token: user?.token,
         optionsFor: "customersSearch",
         searchQuery: debouncedQuery,
       })
@@ -61,7 +66,7 @@ const DropdownWithSearch = ({
       .then((res) => {
         setsearchResults(res);
       });
-  }, [debouncedQuery, dispatch, user?.token]);
+  }, [debouncedQuery, dispatch, credintials?.token]);
 
   return (
     <article className="group">
@@ -71,16 +76,12 @@ const DropdownWithSearch = ({
         onClick={() => setIsOpen(!isOpen)}
       >
         {/* here will be the selected option */}
-        {selectedOption && selectedCustomer ? (
-          <span>{selectedOption.label}</span>
+
+        {(isBalanceRoute ? (selectedCustomer) : selectedOption) ? (
+          <span>{selectedOption?.label}</span>
         ) : (
-          <span
-            className="dropdown-placeholder"
-          >
-            {placeholder}
-          </span>
+          <span className="dropdown-placeholder">{placeholder}</span>
         )}
-        
       </section>
       {isOpen && (
         <section className={popup_box}>

@@ -3,17 +3,17 @@ import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-type TProps<T> = {
+type TProps = {
   url: string;
   page: number | null;
   searchTerm?: FilterFormData | null;
 };
 
 
-const actGetTableData = <T>() =>
+const actGetTableData = () =>
   createAsyncThunk(
     "table/actGetTableData",
-    async ({ url, page, searchTerm = null }: TProps<T>, thunkAPI) => {
+    async ({ url, page, searchTerm = null }: TProps, thunkAPI) => {
       const { rejectWithValue } = thunkAPI;
 
       try {
@@ -38,7 +38,7 @@ const actGetTableData = <T>() =>
           url += `?page=${page}`;
         }
 
-        const response = await axiosInstance.get<T>(url);
+        const response = await axiosInstance.get(url);
 
         return response.data;
       } catch (error) {

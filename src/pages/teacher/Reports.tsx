@@ -27,8 +27,6 @@ const {
 const TeacherReportsPage = () => {
   const { statistics } = useAppSelector((state) => state.profile);
 
-  const { user } = useAppSelector((state) => state.auth);
-
   const { status_lessons, next, loading } = useAppSelector(
     (state) => state.lessons
   );
@@ -102,7 +100,6 @@ const TeacherReportsPage = () => {
       setCurrentStatus(lesson_status);
       dispatch(
         actGetLessonsByStatus({
-          token: user?.token,
           status: lesson_status,
           next,
         })
@@ -115,7 +112,7 @@ const TeacherReportsPage = () => {
           });
         });
     },
-    [dispatch, user?.token]
+    [dispatch]
   );
 
   useEffect(() => {

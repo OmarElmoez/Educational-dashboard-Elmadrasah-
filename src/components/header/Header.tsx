@@ -31,14 +31,12 @@ const Header = () => {
 
   const { user } = useAppSelector((state) => state.profile);
 
-  const { user: authUser } = useAppSelector((state) => state.auth);
-
   const { loading } = useAppSelector((state) => state.notifications);
 
   const navigate = useNavigate();
 
   const getNotificationsHandler = () => {
-    dispatch(actGetNotifications({ token: authUser?.token }))
+    dispatch(actGetNotifications())
       .unwrap()
       .then(() => {
         navigate("notifications");

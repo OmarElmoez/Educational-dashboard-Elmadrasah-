@@ -10,8 +10,6 @@ const { searchContainer, actions } = styles;
 const StudentsList = () => {
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.auth);
-
   const { students } = useAppSelector((state) => state.table);
 
   const [checkAll, setCheckAll] = useState(false);
@@ -27,18 +25,18 @@ const StudentsList = () => {
       if (next) {
         console.log("next", next);
 
-        dispatch(actGetStudents({ token: user?.token, next }));
+        dispatch(actGetStudents({ next }));
         return;
       }
 
       if (previous) {
-        dispatch(actGetStudents({ token: user?.token, previous }));
+        dispatch(actGetStudents({ previous }));
         return;
       }
 
-      dispatch(actGetStudents({ token: user?.token }));
+      dispatch(actGetStudents({}));
     },
-    [dispatch, user?.token]
+    [dispatch]
   );
 
   useEffect(() => {

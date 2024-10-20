@@ -30,9 +30,11 @@ const Calendar = () => {
   const dispatch = useAppDispatch();
 
   const { calendar_lessons } = useAppSelector((state) => state.lessons);
+  console.log("from calendar", calendar_lessons);
+  
   // console.log('from calendar',lessons);
 
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
 
   const { calendarRef, setCurrentDate, setClickedEvent, setCurrentEvents } =
     useContext(SidebarContext);
@@ -94,7 +96,7 @@ const Calendar = () => {
         timeZone: event.time_zone,
       }));
 
-      if (!user?.token) return;
+      if (!credintials?.token) return;
 
       // Check if we already have events for this date range
       const hasEventsInRange = events.some(
@@ -106,7 +108,6 @@ const Calendar = () => {
         try {
           await dispatch(
             actGetLessonsByRange({
-              token: user?.token,
               start_date: startStr,
               end_date: endStr,
             })
@@ -127,7 +128,7 @@ const Calendar = () => {
     },
     // if you add calendar_lessons in dependencies array, it will get into an infinite loop
     // eslint-disable-next-line
-    [dispatch, user?.token, setCurrentEvents]
+    [dispatch, credintials?.token, setCurrentEvents]
   );
 
   return (

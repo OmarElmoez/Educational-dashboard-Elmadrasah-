@@ -13,7 +13,7 @@ import { InputField } from "@/components";
 import { NotificationForm } from "@/components/mini-forms";
 import { useFeedback } from "@/store/context";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import {actSendDataToServer} from "@/store/single-actions";
+import { actSendDataToServer } from "@/store/single-actions";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { EMPLOYEE_TITLES, TIMEZONES_OPTIONS } from "@/constants";
 import { STATUS_OPTIONS } from "@/constants/dropdown-options";
@@ -27,10 +27,8 @@ const AddParentForm = () => {
 
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
- 
-    const { openFeedbackModal } = useFeedback();
 
-  const { user } = useAppSelector((state) => state.auth);
+  const { openFeedbackModal } = useFeedback()
 
   const {
     register,
@@ -62,7 +60,6 @@ const AddParentForm = () => {
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         purpose: "add_family",
         formData: data,
       })
@@ -264,17 +261,7 @@ const AddParentForm = () => {
 
       <hr className="hr" />
 
-      <NotificationForm
-        register={register}
-        sms_lesson_reminders="sms_lesson_reminders"
-        email_lesson_reminders="email_lesson_reminders"
-        whatsapp_reminders="whatsapp_reminders"
-        app_reminders="app_reminders"
-        web_reminders="web_reminders"
-        // send_welcome_email="send_welcome_email"
-        user_account="user_account"
-        errors={errors}
-      />
+      <NotificationForm register={register} />
 
       <hr className="hr" />
 

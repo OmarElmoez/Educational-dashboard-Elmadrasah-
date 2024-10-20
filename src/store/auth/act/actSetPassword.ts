@@ -1,8 +1,8 @@
 import { TFormValuesWithEmail } from "@/pages/login/SetPassword";
 import { TUserRole } from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 type TSetPassword = {
   message: string;
@@ -21,8 +21,8 @@ const actSetPassword = createAsyncThunk(
   async (formData: TFormValuesWithEmail, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const response = await axios.post<TSetPassword>(
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/user/set-password/",
+      const response = await axiosInstance.post<TSetPassword>(
+        "/user/set-password/",
         formData
       );
       return response.data;

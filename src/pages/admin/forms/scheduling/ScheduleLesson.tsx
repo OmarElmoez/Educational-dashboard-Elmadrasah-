@@ -50,7 +50,7 @@ const ScheduleLesson = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
+      actGetDropdownOptions({ optionsFor: "customers" })
     )
       .unwrap()
       .then((res) => {
@@ -103,6 +103,8 @@ const ScheduleLesson = () => {
   const selectedTeachersType = watch("teachers_choice_type");
 
   const scheduleRef = useRef<TModalRef>(null);
+
+  console.log(customer);
 
   return (
     <>

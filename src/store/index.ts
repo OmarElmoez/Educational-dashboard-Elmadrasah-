@@ -46,7 +46,7 @@ const profilePersistConfig = {
 const authPersistConfig = {
   key: 'auth',
   storage,
-  whitelist: ["user"],
+  whitelist: ["credintials"],
 }
 
 const locationPersistConfig = {

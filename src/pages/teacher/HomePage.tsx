@@ -33,7 +33,7 @@ const TeacherHomePage = () => {
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
-    dispatch(actGetLessonsByDay({ token: user?.token, from_date: today }));
+    dispatch(actGetLessonsByDay({ from_date: today }));
   }, [dispatch, user?.token, today]);
 
   const dialogRef = useRef<TModalRef>(null);
@@ -102,7 +102,6 @@ const TeacherHomePage = () => {
                 onClick={() => {
                   dispatch(
                     actJoinLesson({
-                      token: user?.token,
                       attendance_link: lesson.attendance_link,
                     })
                   );

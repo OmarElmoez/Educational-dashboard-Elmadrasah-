@@ -1,30 +1,24 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 const actMarkAsRead = createAsyncThunk(
   "notifications/markAsRead",
   async (
     {
-      token,
       notification_id,
-    }: { token: string | undefined; notification_id: number },
+    }: { notification_id: number },
     thunkAPI
   ) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const url =
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/notify/notification/";
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
+      const url = "/notify/notification/";
+
+      await axiosInstance.get(url, {
         params: {
           notification_id,
         },
-      };
-
-      await axios.get(url, config);
+      });
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

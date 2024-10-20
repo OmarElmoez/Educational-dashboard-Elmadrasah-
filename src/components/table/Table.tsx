@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./table.module.css";
 import { TCustomer } from "@/types/table";
 

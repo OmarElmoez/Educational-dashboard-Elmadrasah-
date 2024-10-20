@@ -17,12 +17,17 @@ type TAuthState = {
   loading: TLoading;
   error: string | null;
   modified_email?: string;
+  credintials?: {
+    token: string;
+    role: TUserRole;
+  }
 };
 
 const initialState: TAuthState = {
   user: null,
   loading: "idle",
   error: null,
+  credintials: undefined,
 };
 
 const authSlice = createSlice({
@@ -33,6 +38,7 @@ const authSlice = createSlice({
       state.user = null;
       state.error = null;
       state.loading = "idle";
+      state.credintials = undefined;
     },
   },
   extraReducers: (builder) => {
@@ -45,6 +51,10 @@ const authSlice = createSlice({
       state.loading = "succeeded";
       state.user = action.payload.user;
       state.modified_email = action.payload.modified_email;
+      state.credintials = {
+        token: action.payload.user.token ?? "",
+        role: action.payload.user.user_type,
+      };
     });
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = "failed";
@@ -68,6 +78,10 @@ const authSlice = createSlice({
         phone: action.payload.phone,
         user_type: action.payload.user_type,
       };
+      state.credintials = {
+        token: action.payload.token,
+        role: action.payload.user_type,
+      };
     });
     builder.addCase(actGoogleLogin.rejected, (state, action) => {
       state.loading = "failed";
@@ -84,6 +98,10 @@ const authSlice = createSlice({
     builder.addCase(actSetPassword.fulfilled, (state, action) => {
       state.loading = "succeeded";
       state.user = action.payload.user;
+      state.credintials = {
+        token: action.payload.user.token ?? "",
+        role: action.payload.user.user_type,
+      };
     });
     builder.addCase(actSetPassword.rejected, (state, action) => {
       state.loading = "failed";

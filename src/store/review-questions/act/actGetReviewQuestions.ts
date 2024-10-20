@@ -1,23 +1,17 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { TReviewQuestionsResponse } from "@/schemas";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 
 const actGetReviewQuestions = createAsyncThunk(
   "review-questions/actGetReviewQuestions",
-  async (token: string | undefined, thunkAPI) => {
+  async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
-
     try {
-      const url = "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/review_question/";
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      }
+      const url = "/dashboard/review_question/";
 
-      const response = await axios.get<TReviewQuestionsResponse>(url, config);
+      const response = await axiosInstance.get<TReviewQuestionsResponse>(url);
 
       return response.data
 

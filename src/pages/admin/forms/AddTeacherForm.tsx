@@ -14,6 +14,7 @@ import {
   TIMEZONES_OPTIONS,
   DAYS_OPTIONS,
   END_POINTS,
+  RADIO_FIELDS_FOR_CALENDAR,
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
@@ -113,7 +114,6 @@ const AddTeacherForm = () => {
   useEffect(() => {
     dispatch(
       actGetChoices({
-        token: user?.token,
         url: END_POINTS["subject_choices"].url,
       })
     )
@@ -577,21 +577,14 @@ const AddTeacherForm = () => {
       <hr className="hr" />
 
       <CalendarSettingsForm
-        register={register}
-        errors={errors}
-        setValue={setValue}
-      />
+          register={register}
+          errors={errors}
+          setValue={setValue}
+          fields={RADIO_FIELDS_FOR_CALENDAR}
+        />
 
       <NotificationForm
         register={register}
-        sms_lesson_reminders="sms_lesson_reminders"
-        email_lesson_reminders="email_lesson_reminders"
-        whatsapp_reminders="whatsapp_reminders"
-        app_reminders="app_reminders"
-        web_reminders="web_reminders"
-        // send_welcome_email="send_welcome_email"
-        user_account="user_account"
-        errors={errors}
       />
       <hr className="hr" />
 

@@ -7,27 +7,27 @@ import { TCreateInvoiceFormDataForServer } from "@/schemas/CreateInvoiceSchema";
 
 const END_POINTS = {
   subject_choices: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
+    url: `/employee/subject/?ordering=-id`,
     placeholder: "المواد",
   },
   initial_students: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/student/",
+    url: `/employee/student/`,
     placeholder: "الطلاب",
   },
   initial_services: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/service/?paginate=false",
+    url: `/dashboard/service/?paginate=false`,
     placeholder: "الخدمات الإفتراضية",
   },
   initial_teachers: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/default-teachers?paginate=false",
+    url: `/customer/default-teachers?paginate=false`,
     placeholder: "المعلمون ",
   },
   student_curriculum: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum?paginate=false",
+    url: `/customer/curriculum?paginate=false`,
     placeholder: " منهج الطالب  ",
   },
   initial_location: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
+    url: `/dashboard/location/?paginate=false`,
     placeholder: "رابط دخول الحصة",
   },
   // Temp data
@@ -44,7 +44,7 @@ const END_POINTS = {
 
   // *********** test ***
   family: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families?paginate=false",
+    url: `/customer/families?paginate=false`,
     placeholder: "  العائلة",
   },
  
@@ -52,36 +52,36 @@ const END_POINTS = {
 
 const POST_END_POINTS = {
   add_employee: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/modify/",
+    url: `/employee/modify/`,
     dataType: {} as TAddEmployeeFormDataForServer,
   },
   add_family: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/family/",
+    url: `/customer/family/`,
     dataType: {} as TAddParentFormData,
   },
   add_individual_student: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/individual/",
+    url: `/customer/individual/`,
     dataType: {} as TAddStudentFormDataForServer,
   },
   add_family_student: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/family-student/",
+    url: `/customer/family-student/`,
     dataType: {} as TAddStudentToFamilyFormDataForServer,
   },
   
   create_payment: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/payments/",
+    url: `/customer/payments/`,
     dataType: {} as TInvoiceHistoryFormDataForServer,
   },
   create_invoice: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
+    url: `/customer/invoices/`,
     dataType: {} as TCreateInvoiceFormDataForServer,
   },
   edit_invoice: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
+    url: `/customer/invoices/`,
     dataType: {} as TCreateInvoiceFormDataForServer,
   },
   edit_invoice_status: {
-    url: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/invoices/",
+    url: `/customer/invoices/`,
     dataType: {} as any,
   },
 };
@@ -96,13 +96,13 @@ export { END_POINTS, POST_END_POINTS };
 
 
 const DROPDOWN_END_POINTS = {
-  subjects: "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/?ordering=-id",
-  curriculums: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/curriculum?paginate=false",
-  locations: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/location/?paginate=false",
-  families: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/families?paginate=false",
-  customers: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/customers/?paginate=false",
-  customersSearch: "https://elmadrasah-development-ff14bf466889.herokuapp.com/customer/customers/?paginate=false&first_name=",
-  services: "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/service/?paginate=false",
+  subjects: `/employee/subject/?ordering=-id`,
+  curriculums: `/customer/curriculum?paginate=false`,
+  locations: `/dashboard/location/?paginate=false`,
+  families: `/customer/families?paginate=false`,
+  customers: `/customer/customers/?paginate=false`,
+  customersSearch: `/customer/customers/?paginate=false&first_name=`,
+  services: `/dashboard/service/?paginate=false`,
 }
 
 type TOptionsFor = keyof typeof DROPDOWN_END_POINTS;

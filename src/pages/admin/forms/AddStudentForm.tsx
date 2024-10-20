@@ -95,7 +95,6 @@ const AddStudentForm = () => {
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         purpose: "add_individual_student",
         formData: serverData,
       })
@@ -117,7 +116,7 @@ const AddStudentForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "locations" })
+      actGetDropdownOptions({ optionsFor: "locations" })
     )
       .unwrap()
       .then((data) => {
@@ -133,7 +132,7 @@ const AddStudentForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "curriculums" })
+      actGetDropdownOptions({ optionsFor: "curriculums" })
     )
       .unwrap()
       .then((res) => {
@@ -433,14 +432,6 @@ const AddStudentForm = () => {
 
       <NotificationForm
         register={register}
-        sms_lesson_reminders="sms_lesson_reminders"
-        email_lesson_reminders="email_lesson_reminders"
-        whatsapp_reminders="whatsapp_reminders"
-        app_reminders="app_reminders"
-        web_reminders="web_reminders"
-        // send_welcome_email="send_welcome_email"
-        user_account="user_account"
-        errors={errors}
       />
 
       <hr className="hr" />

@@ -5,7 +5,6 @@ import {
   FieldErrors,
 } from "react-hook-form";
 import { RadioField, Row, ColorField } from "@/components";
-import { RADIO_FIELDS_FOR_CALENDAR } from "@/constants";
 
 export interface TCalendarSettingsFormProps<T extends FieldValues> {
   register: UseFormRegister<T>;
