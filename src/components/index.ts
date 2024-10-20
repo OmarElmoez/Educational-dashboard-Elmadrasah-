@@ -24,6 +24,7 @@ import ColorField from "./forms/inputField/ColorField";
 import AddNewSubjectModal from "./add-new-subject-model/AddNewSubjectModal";
 import Table from "./table/Table";
 import SearchSection from "./forms/search-section/SearchSection";
+import DebounceSearchBox from "./forms/search-section/DebounceSearchBox";
 import DropdownWithSearch from "./forms/drop-down-with-search/DropdownWithSearch";
 import RadioButtonsGroup from "./forms/radio-buttons-group/RadioButtonsGroup";
 import CheckBoxesGroup from "./forms/check-boxes-group/CheckBoxesGroup";
@@ -56,6 +57,7 @@ export {
   AddNewSubjectModal,
   Table,
   SearchSection,
+  DebounceSearchBox,
   DropdownWithSearch,
   RadioButtonsGroup,
   CheckBoxesGroup,

@@ -114,6 +114,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
           handleGetOption={handleGetOption}
           selectedCustomer={selectedCustomer}
           setSelectedCustomer={setSelectedCustomer}
+           label="اختر الطالب"
         />
       </div>
 

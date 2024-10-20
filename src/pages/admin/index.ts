@@ -20,6 +20,7 @@ import StudentsList from "./lists/StudentsList";
 import InvoicesList from "./lists/InvoicesList";
 import PackageBalanceList from "./lists/balance/PackageBalanceList";
 import InvoiceDetails from "./lists/invoice/InvoiceDetails";
+import GeneralUnscheduledLists from "./lists/Unscheduled/GeneralUnscheduledLists";
 import UnscheduledList from "./lists/Unscheduled/UnscheduledList";
 import UnscheduledFamilyList from "./lists/Unscheduled/UnscheduledFamilyList";
 
@@ -45,6 +46,7 @@ export {
   // CopyInvoiceForm,
   CopyInvoicesForm,
   ScheduleLesson,
+  GeneralUnscheduledLists,
   UnscheduledList,
   UnscheduledFamilyList,
 

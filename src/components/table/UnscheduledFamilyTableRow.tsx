@@ -4,6 +4,7 @@ import tstyles from "./table.module.css";
 import { format } from "date-fns";
 import UpIcon from "@/assets/up_arrow_icon.svg?react";
 import DownIcon from "@/assets/down_arrow_icon.svg?react";
+import { Link } from "react-router-dom";
 
 const {
   hiddenInput,
@@ -22,16 +23,16 @@ type UnscheduledFamilyTableRowProps = {
   rowData: TUnscheduled;
   checkRows: number[] | null;
   handleChecked?: (id: number) => void;
-  childrenRows?: TUnscheduled[]; // Add this prop for child rows
+  childrenRows?: TUnscheduled[];
 };
 
 const UnscheduledFamilyTableRow = ({
   rowData,
   checkRows = null,
   handleChecked,
-  childrenRows, // Receive children data
+  childrenRows,
 }: UnscheduledFamilyTableRowProps) => {
-  const [isExpanded, setIsExpanded] = useState(false); // State to toggle child rows
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const {
     customer_first_name,
@@ -42,11 +43,6 @@ const UnscheduledFamilyTableRow = ({
     classValue,
   } = rowData;
 
-  const handleUpdateStatus = () => {
-    console.log("from handleUpdateStatus: ", status);
-  };
-
-  // Handle expanding/collapsing child rows
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
@@ -77,9 +73,14 @@ const UnscheduledFamilyTableRow = ({
         <td>{classValue}</td>
         <td>{status}</td>
         <td className={tdRow}>
-          <button onClick={handleUpdateStatus} aria-label="Action button"  style={{backgroundColor: "#C92516"}} className={table_btn}>
-          اعتماد المواعيد
-          </button>
+          <Link
+            to="/admin/schedule-lesson"
+            aria-label="Action button"
+            style={{ backgroundColor: "#C92516" }}
+            className={table_btn}
+          >
+            اعتماد المواعيد
+          </Link>
         </td>
         <td onClick={toggleExpand} style={{ cursor: "pointer" }}>
           {isExpanded ? <UpIcon /> : <DownIcon />}
@@ -89,12 +90,11 @@ const UnscheduledFamilyTableRow = ({
       {/* Render child rows if expanded */}
 
       {isExpanded && childrenRows && (
-        <tr  className={isExpanded ? active_row_container : ""}>
+        <tr className={isExpanded ? active_row_container : ""}>
           <td></td>
           <td
-          className={td_hint}
+            className={td_hint}
             style={{
-              color: "#A6A6A6",
               fontSize: "11px",
               margin: 0,
               padding: 0,
@@ -107,10 +107,7 @@ const UnscheduledFamilyTableRow = ({
       {isExpanded &&
         childrenRows &&
         childrenRows.map((child) => (
-          <tr
-            key={child.id}
-            className={isExpanded ? active_row_container : ""}
-          >
+          <tr key={child.id} className={isExpanded ? active_row_container : ""}>
             <td></td>
             <td>{child.customer_first_name}</td>
             <td>{child.customer_last_name}</td>
@@ -121,10 +118,14 @@ const UnscheduledFamilyTableRow = ({
             <td>{child.classValue}</td>
             <td>{child.status}</td>
             <td>
-              {/* Add any additional actions or display for child rows here */}
-              <button onClick={() => console.log("Child action")}>
-                Action
-              </button>
+              <Link
+                to="/admin/schedule-lesson"
+                aria-label="Action button"
+                style={{ backgroundColor: "#C92516" }}
+                className={table_btn}
+              >
+                اعتماد المواعيد
+              </Link>
             </td>
           </tr>
         ))}
