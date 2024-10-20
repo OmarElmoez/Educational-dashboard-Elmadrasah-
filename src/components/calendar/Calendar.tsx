@@ -30,6 +30,8 @@ const Calendar = () => {
   const dispatch = useAppDispatch();
 
   const { calendar_lessons } = useAppSelector((state) => state.lessons);
+  console.log("from calendar", calendar_lessons);
+  
   // console.log('from calendar',lessons);
 
   const { user } = useAppSelector((state) => state.auth);
