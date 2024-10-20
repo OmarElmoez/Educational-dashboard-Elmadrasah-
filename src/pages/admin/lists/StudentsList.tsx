@@ -10,8 +10,6 @@ const { searchContainer, actions } = styles;
 const StudentsList = () => {
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.auth);
-
   const { students } = useAppSelector((state) => state.table);
 
   const [checkAll, setCheckAll] = useState(false);

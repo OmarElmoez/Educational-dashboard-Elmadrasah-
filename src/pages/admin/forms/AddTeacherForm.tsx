@@ -114,7 +114,6 @@ const AddTeacherForm = () => {
   useEffect(() => {
     dispatch(
       actGetChoices({
-        token: user?.token,
         url: END_POINTS["subject_choices"].url,
       })
     )

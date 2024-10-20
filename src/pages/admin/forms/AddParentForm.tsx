@@ -28,9 +28,7 @@ const AddParentForm = () => {
   const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
 
-  const { openFeedbackModal } = useFeedback();
-
-  const { user } = useAppSelector((state) => state.auth);
+  const { openFeedbackModal } = useFeedback()
 
   const {
     register,

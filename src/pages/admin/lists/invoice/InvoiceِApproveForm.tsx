@@ -10,7 +10,7 @@ import {
   SingleCheckbox,
 } from "@/components";
 import { InputField } from "@/components";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 import { useFeedback } from "@/store/context";
 import { PAYMENT_OPTIONS } from "@/constants/dropdown-options";
@@ -47,7 +47,6 @@ const InvoiceِApproveForm = ({
   date: string;
 }) => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
 
   const { openFeedbackModal } = useFeedback();
 
