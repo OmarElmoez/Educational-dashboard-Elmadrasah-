@@ -115,14 +115,14 @@ const SIDEBAR_DATA = {
     },
     {
       title: "الطلاب الغير مجدولين",
-      path: "unscheduled-list",
+      path: "all-unscheduled-list",
       icon: <InvoiceIcon />,
     },
-    {
-      title: "العائلات الغير مجدولين",
-      path: "unscheduled-family-list",
-      icon: <InvoiceIcon />,
-    },
+    // {
+    //   title: "العائلات الغير مجدولين",
+    //   path: "unscheduled-family-list",
+    //   icon: <InvoiceIcon />,
+    // },
   ],
 
   Teacher: [

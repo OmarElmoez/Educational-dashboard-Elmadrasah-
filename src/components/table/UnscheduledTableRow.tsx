@@ -1,8 +1,10 @@
 import { TUnscheduled } from "@/types/ListsTypes";
 import tstyles from "./table.module.css";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
-const { hiddenInput, checkmark, checkmarkBox, checked, tdRow } = tstyles;
+const { hiddenInput, checkmark, checkmarkBox, checked, tdRow, table_btn } =
+  tstyles;
 
 type UnscheduledTableRowProps = {
   rowData: TUnscheduled;
@@ -15,7 +17,6 @@ const UnscheduledTableRow = ({
   checkRows = null,
   handleChecked,
 }: UnscheduledTableRowProps) => {
-
   // ********** edit names
   const {
     customer_first_name,
@@ -25,12 +26,6 @@ const UnscheduledTableRow = ({
     status,
     classValue,
   } = rowData;
-
-
-  const handleUpdateStatus = () => {
-    console.log("from handleUpdateStatus: ", status)
-  };
-
 
   return (
     <tr key={rowData.id}>
@@ -59,12 +54,13 @@ const UnscheduledTableRow = ({
       <td> {status} </td>
 
       <td className={tdRow}>
-        <button
-          onClick={handleUpdateStatus}
+        <Link
+          to="/admin/schedule-lesson"
           aria-label="Action button"
+          className={table_btn}
         >
-          Click me
-        </button>
+          اعتماد المواعيد
+        </Link>
       </td>
     </tr>
   );

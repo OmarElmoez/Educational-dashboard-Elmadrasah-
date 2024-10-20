@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import istyles from "../filterForm.module.css";
+import istyles from "./invoiceDetails.module.css";
 import { TStatus } from "@/types/Dropdown";
 import { useAppDispatch, } from "@/store/hooks";
 import { resetPage } from "@/store/table/TableSlice";

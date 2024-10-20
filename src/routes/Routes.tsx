@@ -33,6 +33,7 @@ import {
   // CopyInvoiceForm,
   CopyInvoicesForm,
   ScheduleLesson,
+  GeneralUnscheduledLists,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -216,13 +217,17 @@ const router = createBrowserRouter([
         element: <PackageBalanceList />,
       },
       {
-        path: 'unscheduled-list',
-        element: <UnscheduledList />,
+        path: 'all-unscheduled-list',
+        element: <GeneralUnscheduledLists />,
       },
-      {
-        path: 'unscheduled-family-list',
-        element: <UnscheduledFamilyList />,
-      },
+      // {
+      //   path: 'unscheduled-list',
+      //   element: <UnscheduledList />,
+      // },
+      // {
+      //   path: 'unscheduled-family-list',
+      //   element: <UnscheduledFamilyList />,
+      // },
       {
         path: 'schedule-lesson',
         element: <ScheduleLesson />,

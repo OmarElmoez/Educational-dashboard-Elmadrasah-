@@ -14,7 +14,7 @@ import FilterIconSmall from "@/assets/filter_icon_small.svg?react";
 import Archive from "@/assets/archive.svg?react";
 import Download from "@/assets/download.svg?react";
 import List from "@/assets/list.svg?react";
-import { Row, SearchSection } from "@/components";
+import { Row, DebounceSearchBox } from "@/components";
 import { getPackageBalanceList } from "@/services/packageBalance";
 import { TBalance } from "@/types/table";
 
@@ -79,6 +79,14 @@ const PackageBalanceList = () => {
     
   };
 
+  // Debounce Function
+  const handleSearch = (debouncedSearchTerm: string | null) => {
+    getPackageBalanceList(1, {name: debouncedSearchTerm, email: debouncedSearchTerm}).then((res) => {
+      setTableData(res.results);
+      setAllDataCount(res.count);
+    });
+  }
+
   useEffect(() => {
     // get All Data
     getPackageBalanceList(currentPage, searchTerm).then((res) => {
@@ -106,7 +114,7 @@ const PackageBalanceList = () => {
             <h3>أرصدة الاشتراكات ( {allDataCount})</h3>
 
             <Row style={{gap: '1.6rem'}}>
-              <SearchSection searchFor="balances" classNames={search_bar} />
+              <DebounceSearchBox classNames={search_bar} handleSearch={handleSearch} />
               {/* 
               <div className={search_bar}>
 

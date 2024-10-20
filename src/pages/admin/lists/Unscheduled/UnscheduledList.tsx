@@ -1,47 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-
 import { TABLE_HEAD_DATA } from "@/constants";
 import MainTable from "@/components/table/MainTable";
 import FilterForm, { FilterFormData } from "./FilterForm";
 import BasicModal from "@/components/add-new-subject-model/BasicModal";
 import styles from "../lists.module.css";
 import { TModalRef } from "@/types/shared";
-import FilterIcon from "@/assets/filter_icon.svg?react";
 import FilterIconSmall from "@/assets/filter_icon_small.svg?react";
-import AddStudentIcon from "@/assets/add_user_icon.svg?react";
-import FamilyIcon from "@/assets/family_icon.svg?react";
-import Download from "@/assets/download.svg?react";
-import UploadIcon from "@/assets/upload_icon.svg?react";
-import { SearchSection } from "@/components";
 import { getUnscheduledList } from "@/services/unscheduled";
 import { TUnscheduled } from "@/types/ListsTypes";
 import { UnscheduledTableRow } from "@/components/table";
 
 // -----------------------------------------------------------------------------------------
-const LIST_OPTIONS = [
-  { id: 1, link: "", title: "إضافة عائلة جديدة", icon: <FamilyIcon /> },
-  { id: 2, link: "", title: "تنزيل الطلاب", icon: <UploadIcon /> },
-  { id: 3, link: "", title: "استيراد الطلاب", icon: <Download /> },
-  { id: 4, link: "", title: "إضافة طالب جديد", icon: <AddStudentIcon /> },
-];
-
-// -----------------------------------------------------------------------------------------
 const {
   actions,
-  balance_container,
-  balance_left,
-  balance_right,
-  balance_right_header,
-  header_filter,
   modal_header_container,
   modal_header_title,
-  search_bar,
-  filter_button,
-  link_item,
-  divider,
 } = styles;
-
 // -----------------------------------------------------------------------------------------
 const UnscheduledList = () => {
   const filterFormRef = useRef<TModalRef>(null);
@@ -116,42 +90,8 @@ const UnscheduledList = () => {
       >
         <FilterForm onSubmit={handleFilterSubmit} />
       </BasicModal>
-      <section className={balance_container}>
-        <div className={balance_right}>
-          <div className={balance_right_header}>
-            <div>
-              <h3> الطلاب الغير مجدولين ({allDataCount})</h3>
 
-              <Link to="/admin/unscheduled-family-list" className="table_btn">
-                Family
-              </Link>
-              <Link to="/admin/unscheduled-list" className="table_btn">
-                Std
-              </Link>
-            </div>
-
-            <div className={header_filter}>
-              <SearchSection searchFor="balances" classNames={search_bar} />
-              {/* 
-              <div className={search_bar}>
-
-                 <input type="text" placeholder="بحث" className={inputbox} /> 
-                <div className={icon}>
-                  <SearchIcon />
-                </div> 
-              </div>
-                */}
-
-              <button
-                className={filter_button}
-                onClick={() => filterFormRef?.current?.open()}
-              >
-                <FilterIcon />
-              </button>
-            </div>
-          </div>
-          <hr className={divider} />
-
+      <section>
           <MainTable
             headData={TABLE_HEAD_DATA["unscheduled"]}
             onCheckAll={handleCheckAll}
@@ -214,20 +154,7 @@ const UnscheduledList = () => {
               </svg>
             </button>
           </section>
-        </div>
-
-        <div className={balance_left}>
-          <ul>
-            {LIST_OPTIONS.map((item) => (
-              <li key={item.id}>
-                <Link to={item.link} className={link_item}>
-                  {item.icon}
-                  <p>{item.title}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      
       </section>
     </>
   );

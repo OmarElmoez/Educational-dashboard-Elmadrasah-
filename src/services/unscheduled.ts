@@ -38,7 +38,6 @@ export const getUnscheduledList = async (
 
   // return response.data;
 
-  console.log("****",page, searchTerm)
   // Dummy data for testing
   const dummyData: TUnscheduledResponse = {
     count: 25,
