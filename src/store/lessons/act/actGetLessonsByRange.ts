@@ -10,7 +10,7 @@ type TGetLessonsByRangeParams = {
 };
 
 type TGetLessonsByRangeResponse = {
-  results: TLesson[];
+  result: TLesson[];
 };
 
 const actGetLessonsByRange = createAsyncThunk(
@@ -35,7 +35,7 @@ const actGetLessonsByRange = createAsyncThunk(
       };
 
       const response = await axios.get<TGetLessonsByRangeResponse>(url, config);
-      return response.data.results;
+      return response.data.result;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }
