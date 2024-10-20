@@ -32,14 +32,14 @@ const UnscheduledList = () => {
     const pageNum = currentPage + 1;
     const totalPages = Math.ceil(allDataCount / 10);
     if (pageNum <= totalPages)
-      getUnscheduledList(pageNum, searchTerm).then((res) =>
+      getUnscheduledList().then((res) =>
         setTableData(res.results)
       );
     setCurrentPage(pageNum);
   };
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      getUnscheduledList(currentPage - 1, searchTerm).then((res) =>
+      getUnscheduledList().then((res) =>
         setTableData(res.results)
       );
       setCurrentPage(currentPage - 1);
@@ -71,7 +71,7 @@ const UnscheduledList = () => {
 
   useEffect(() => {
     // get All Data
-    getUnscheduledList(currentPage, searchTerm).then((res) => {
+    getUnscheduledList().then((res) => {
       setTableData(res.results);
       setAllDataCount(res.count);
     });

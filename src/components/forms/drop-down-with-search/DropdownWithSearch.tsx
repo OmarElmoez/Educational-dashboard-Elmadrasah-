@@ -32,7 +32,8 @@ const DropdownWithSearch = ({
   const [searchResults, setsearchResults] = useState<TOption[]>([]);
   const debouncedQuery = useDebounce(searchQuery);
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
+
 
   const location = useLocation();
   const isBalanceRoute = location.pathname === "/admin/balance-list";
@@ -57,7 +58,6 @@ const DropdownWithSearch = ({
   useEffect(() => {
     dispatch(
       actGetDropdownOptions({
-        token: user?.token,
         optionsFor: "customersSearch",
         searchQuery: debouncedQuery,
       })
@@ -66,7 +66,7 @@ const DropdownWithSearch = ({
       .then((res) => {
         setsearchResults(res);
       });
-  }, [debouncedQuery, dispatch, user?.token]);
+  }, [debouncedQuery, dispatch, credintials?.token]);
 
   return (
     <article className="group">

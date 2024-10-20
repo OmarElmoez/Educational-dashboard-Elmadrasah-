@@ -64,7 +64,6 @@ const MultiChoices = <T extends FieldValues>({
   useEffect(() => {
     dispatch(
       actGetChoices({
-        token: user?.token,
         // url: END_POINTS[name as keyof typeof END_POINTS].url,
         url: END_POINTS[name as keyof typeof END_POINTS].url,
       })

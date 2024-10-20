@@ -401,7 +401,7 @@ const EditInvoiceForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
+      actGetDropdownOptions({ optionsFor: "customers" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setCustomersList(res.payload);
@@ -409,7 +409,7 @@ const EditInvoiceForm = () => {
     });
 
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "services" })
+      actGetDropdownOptions({ optionsFor: "services" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setServicesList(res.payload);
@@ -444,7 +444,6 @@ const EditInvoiceForm = () => {
     console.log("serverData:", serverData);
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         formData: serverData,
         purpose: "edit_invoice",
         isEdit: true,

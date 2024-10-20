@@ -50,7 +50,7 @@ const ScheduleLesson = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
+      actGetDropdownOptions({ optionsFor: "customers" })
     )
       .unwrap()
       .then((res) => {

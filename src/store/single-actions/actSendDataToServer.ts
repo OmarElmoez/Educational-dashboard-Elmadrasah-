@@ -4,11 +4,10 @@ import {
   TPurpose,
 } from "@/constants/end-points";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 type TProps = {
-  token: string | undefined;
   hasFiles?: boolean;
   purpose: TPurpose;
   formData: TPostEndPoints[TPurpose]["dataType"] | FormData;
@@ -18,7 +17,7 @@ type TProps = {
 
 const actSendDataToServer = createAsyncThunk(
   "single-actions/actSendDataToServer",
-  async ({ token, hasFiles = false, purpose, formData, isEdit, id }: TProps, thunkAPI) => {
+  async ({  hasFiles = false, purpose, formData, isEdit, id }: TProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     if (hasFiles) {
@@ -44,27 +43,26 @@ const actSendDataToServer = createAsyncThunk(
 
     try {
       const url = POST_END_POINTS[purpose].url;
-      const config = {
-        headers: {
-          "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
-          Authorization: `Token ${token}`,
-        },
-      };
 
       let response; 
 
       if (isEdit) {
-         response = await axios.patch(url+ id, formData, config);
+         response = await axiosInstance.patch(url+ id, formData, {
+          headers: {
+            "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
+          },
+         });
         
       }else {
-         response = await axios.post(url, formData, config);
-
+         response = await axiosInstance.post(url, formData, {
+          headers: {
+            "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
+          },
+         });
       }
-      console.log("response", response);
 
       return response.data;
     } catch (error: any) {
-      console.log("error", error?.response?.data?.detail);
       return rejectWithValue(axiosErrorHandler(error));
     }
   }

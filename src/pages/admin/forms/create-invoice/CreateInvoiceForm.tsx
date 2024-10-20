@@ -386,7 +386,7 @@ const CreateInvoiceForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
+      actGetDropdownOptions({ optionsFor: "customers" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setCustomersList(res.payload);
@@ -394,7 +394,7 @@ const CreateInvoiceForm = () => {
     });
 
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "services" })
+      actGetDropdownOptions({ optionsFor: "services" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setServicesList(res.payload);
@@ -432,7 +432,6 @@ const CreateInvoiceForm = () => {
 
     dispatch(
       actSendDataToServer({
-        token: user?.token,
         formData: serverData,
         purpose: "create_invoice",
       })

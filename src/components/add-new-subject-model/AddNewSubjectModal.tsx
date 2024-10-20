@@ -18,7 +18,7 @@ const AddNewSubjectModal = forwardRef((_, ref) => {
   const dialog = useRef<HTMLDialogElement>(null);
 
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  // const { credintials } = useAppSelector((state) => state.auth);
   const { loading } = useAppSelector((state) => state.formSubjects);
 
   const {
@@ -39,12 +39,12 @@ const AddNewSubjectModal = forwardRef((_, ref) => {
   });
 
   const onSubmit = (data: TAddSubjectFormData) => {
-    dispatch(actPostNewSubject({ data, token: user?.token }))
+    dispatch(actPostNewSubject({ data }))
       .unwrap()
       .then(() => {
         reset();
         dialog.current?.close();
-        dispatch(actGetDropdownOptions({ token: user?.token, optionsFor: "subjects" }));
+        dispatch(actGetDropdownOptions({ optionsFor: "subjects" }));
       });
   };
 

@@ -1,23 +1,17 @@
 import { TResponseOption } from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 const actGetFormSubjects = createAsyncThunk(
   "formSubjects/actGetFormSubjects",
-  async ({ token }: { token: string | undefined }, thunkAPI) => {
+  async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
-      const url =
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/employee/subject/";
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      };
+      const url = "/employee/subject/";
 
-      const response = await axios.get<TResponseOption[]>(url, config);
+      const response = await axiosInstance.get<TResponseOption[]>(url);
       const formattedChoices = response.data.map((subject) => {
         return {
           label: subject.name,
@@ -26,7 +20,6 @@ const actGetFormSubjects = createAsyncThunk(
       });
 
       return formattedChoices;
-
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

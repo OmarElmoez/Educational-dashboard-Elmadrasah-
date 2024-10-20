@@ -93,7 +93,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ token: user?.token, optionsFor: "customers" })
+      actGetDropdownOptions({ optionsFor: "customers" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setCustomersList(res.payload);
@@ -114,7 +114,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
           handleGetOption={handleGetOption}
           selectedCustomer={selectedCustomer}
           setSelectedCustomer={setSelectedCustomer}
-           label="اختر الطالب"
+          placeholder="اختر الطالب"
         />
       </div>
 

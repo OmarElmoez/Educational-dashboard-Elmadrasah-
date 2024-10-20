@@ -25,9 +25,6 @@ import {
   StudentsList,
   InvoicesList,
   PackageBalanceList,
-  UnscheduledList,
-  UnscheduledFamilyList,
-
   InvoiceDetails,
   EditInvoiceForm,
   // CopyInvoiceForm,
@@ -220,14 +217,6 @@ const router = createBrowserRouter([
         path: 'all-unscheduled-list',
         element: <GeneralUnscheduledLists />,
       },
-      // {
-      //   path: 'unscheduled-list',
-      //   element: <UnscheduledList />,
-      // },
-      // {
-      //   path: 'unscheduled-family-list',
-      //   element: <UnscheduledFamilyList />,
-      // },
       {
         path: 'schedule-lesson',
         element: <ScheduleLesson />,

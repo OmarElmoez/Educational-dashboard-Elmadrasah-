@@ -10,7 +10,6 @@ const { form, row, content } = styles;
 
 const Profile = () => {
   const { user, loading } = useAppSelector((state) => state.profile);
-  const { user: authUser } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -28,10 +27,10 @@ const Profile = () => {
   });
 
   const onSubmit: SubmitHandler<TProfile> = (data) => {
-    dispatch(actUpdateUserProfile({ formData: data, token: authUser?.token }))
+    dispatch(actUpdateUserProfile({ formData: data }))
       .unwrap()
       .then(() => {
-        dispatch(actGetUserProfile(authUser?.token));
+        dispatch(actGetUserProfile());
       });
   };
 

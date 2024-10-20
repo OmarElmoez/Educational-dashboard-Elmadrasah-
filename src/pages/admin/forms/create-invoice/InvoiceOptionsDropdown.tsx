@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 import { useFeedback } from "@/store/context";
 import { actDeleteData } from "@/store/single-actions";
@@ -21,7 +21,6 @@ const InvoiceOptionsDropdown: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
 
   const handleDelee = () => {
     console.log("Delete clicked");
@@ -56,7 +55,6 @@ const InvoiceOptionsDropdown: React.FC = () => {
       () => {
         dispatch(
           actSendDataToServer({
-            token: user?.token,
             formData: { status: "Void" },
             purpose: "edit_invoice_status",
             isEdit: true,

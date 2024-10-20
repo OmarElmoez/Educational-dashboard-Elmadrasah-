@@ -1,8 +1,9 @@
 import axios from "axios";
 import store from "@/store";
+import axiosErrorHandler from "./axiosErrorHandler";
 
 const axiosInstance = axios.create({
-  baseURL: "https://elmadrasah-development-ff14bf466889.herokuapp.com/",
+  baseURL: "https://elmadrasah-development-ff14bf466889.herokuapp.com",
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,7 +12,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const state = store.getState();
-    const token = state.auth.user?.token;
+    const token = state.auth.credintials?.token;
     // const auth = localStorage.getItem("persist:auth");
 
     // const parsedAuth = auth && auth.length > 0 ? JSON.parse(auth) : null;
@@ -27,18 +28,15 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Token ${token}`;
     }
-    
+
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => axiosErrorHandler(error)
 );
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) =>
-    Promise.reject(
-      (error.response && error.response.data) || "Something went wrong"
-    )
+  (error) => axiosErrorHandler(error)
 );
 
 export default axiosInstance;

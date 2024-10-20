@@ -1,10 +1,9 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { TLesson } from "@/schemas/LessonSchema";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 
 type TGetLessonsByStatusParams = {
-  token: string | undefined;
   status: string | undefined;
   next?: string | null;
 };
@@ -18,25 +17,21 @@ type TGetLessonsByStatusResponse = {
 
 const actGetLessonsByStatus = createAsyncThunk(
   "lessons/actGetLessonsByStatus",
-  async ({ token, status, next }: TGetLessonsByStatusParams, thunkAPI) => {
+  async ({ status, next }: TGetLessonsByStatusParams, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
       let url =
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/lesson/";
+        "/dashboard/lesson/";
       if (next) {
         url = next;
       }
-      const config = {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
+
+      const response = await axiosInstance.get<TGetLessonsByStatusResponse>(url, {
         params: {
           status,
         },
-      };
-
-      const response = await axios.get<TGetLessonsByStatusResponse>(url, config);
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
