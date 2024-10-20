@@ -5,7 +5,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import InvoiceOptionsDropdown from "../../forms/create-invoice/InvoiceOptionsDropdown";
 import { actGetData } from "@/store/single-actions";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { useFeedback } from "@/store/context";
 import InvoiceِApproveForm from "./InvoiceِApproveForm";
 import styles from "./invoiceDetails.module.css";
@@ -134,7 +134,6 @@ interface Details {
 // -------------------------------------------------------------------------------
 
 const InvoiceDetails: React.FC = () => {
-  const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const { id } = useParams();
