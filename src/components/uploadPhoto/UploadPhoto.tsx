@@ -5,23 +5,22 @@ import { ChangeEvent, useRef, useState } from "react";
 // import { updateUserImg } from "@/store/profile/ProfileSlice";
 // import { useAppDispatch } from "@/store/hooks";
 import { FieldValues, UseFormRegister, Path } from "react-hook-form";
+import { useAppSelector } from "@/store/hooks";
 
 const { container, uploadBox, hiddenInput, previewBox } = styles;
 const UploadPhoto = <T extends FieldValues>({
-  img,
   register,
   name,
   setValue,
 }: {
-  img: string | undefined;
   register: UseFormRegister<T>;
-  name: Path<T>,
-  setValue: (name: Path<T>, value: File) => void
+  name: Path<T>;
+  setValue: (name: Path<T>, value: File) => void;
 }) => {
-  const [preview, setPreview] = useState<string | undefined>(img);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { img_url } = useAppSelector((state) => state.profile);
 
-  // const dispatch = useAppDispatch();
+  const [preview, setPreview] = useState<string | undefined>(img_url);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -47,7 +46,11 @@ const UploadPhoto = <T extends FieldValues>({
       />
       <div className={uploadBox}>
         <div className={previewBox}>
-          {preview ? <img src={preview as string} alt="Preview" /> : <UserPhoto />}
+          {preview ? (
+            <img src={preview as string} alt="Preview" />
+          ) : (
+            <UserPhoto />
+          )}
         </div>
         <button onClick={handleButtonClick} type="button">
           <PressedIcon />
