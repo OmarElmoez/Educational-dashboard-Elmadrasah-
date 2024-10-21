@@ -14,7 +14,6 @@ const { form, row, content } = styles;
 
 const Profile = () => {
   const { loading } = useAppSelector((state) => state.profile);
-  
 
   const dispatch = useAppDispatch();
 
@@ -42,22 +41,18 @@ const Profile = () => {
           phone: data.user.phone,
           birth_date: data.user.birth_date,
           gender: data.user.gender,
-        })
-      })
+        });
+      });
   }, [dispatch, reset]);
 
   useEffect(() => {
-    getUserData()
+    getUserData();
   }, [getUserData]);
 
   return (
     <section className={content}>
       <form action="post" className={form} onSubmit={handleSubmit(onSubmit)}>
-        <UploadPhoto
-          register={register}
-          name="image"
-          setValue={setValue}
-        />
+        <UploadPhoto register={register} name="image" setValue={setValue} />
         <section className={row}>
           <div className="group">
             <label htmlFor="firstName">الاسم الأول</label>
@@ -66,7 +61,7 @@ const Profile = () => {
               className="inputField"
               id="firstName"
               {...register("first_name")}
-            />
+            />{" "}
           </div>
 
           <div className="group">

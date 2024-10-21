@@ -34,24 +34,20 @@ const TABLE_HEAD_DATA = {
   ],
 
 
-  // ********* this is not the real names to the endpoint update it 
-  unscheduled: [
-    { name: "customer_first_name", label: "الاسم الاول" },
-    { name: "customer_last_name", label: "الاسم الاخير " },
-    { name: "date", label: "تاريخ الاشتراك" },
+   unscheduled: [
+    { name: "name", label: "الاسم الاول" },
+    { name: "name", label: "الاسم الاخير " },
+    { name: "subscription_date", label: "تاريخ الاشتراك" },
     { name: "service_name", label: "تاريخ الاشتراك" },
-    { name: "purchased", label: "الباقة" },
-    { name: "class", label: "الصف " },
+    { name: "grade  ", label: "الصف " },
     { name: "", label: "" },
 
   ],
   unscheduledFamily: [
-    { name: "customer_first_name", label: "الاسم الاول" },
-    { name: "customer_last_name", label: "الاسم الاخير " },
-    { name: "date", label: "تاريخ الاشتراك" },
-    { name: "service_name", label: "تاريخ الاشتراك" },
-    { name: "purchased", label: "الباقة" },
-    { name: "class", label: "الصف " },
+    { name: "name", label: "اسم العائلة" },
+    { name: "subscription_date", label: "تاريخ الاشتراك" },
+    { name: "service_name", label: "نوع الباقة" },
+    { name: "grade", label: "الصف " },
     { name: "", label: "" },
     { name: "", label: "" },
 

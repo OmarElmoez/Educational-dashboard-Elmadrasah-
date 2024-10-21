@@ -77,11 +77,13 @@
 }
 
 .tab_button{
+  white-space: nowrap;
   text-decoration: underline 3px transparent;
   text-underline-offset: .9rem;
-
+  
 }
 .active_tab_button{
+  white-space: nowrap;
   text-decoration: underline 3px #1C8A44;
   text-underline-offset: .9rem;
 

@@ -37,16 +37,12 @@ const {
   filter_button,
   link_item,
   divider,
-
 } = styles;
 
-const TABS = [
-  { id: "family", title: "طلاب عائلات", component: UnscheduledFamilyList },
-  { id: "independent", title: "طلاب مستقلين", component: UnscheduledList },
-];
 // -----------------------------------------------------------------------------------------
 const GeneralUnscheduledLists = () => {
-  const filterFormRef = useRef<TModalRef>(null);
+  const filterStudentFormRef = useRef<TModalRef>(null);
+  const filterFamilyFormRef = useRef<TModalRef>(null);
 
   // table data states:
   const [allDataCount, setAllDataCount] = useState<number>(0);
@@ -55,9 +51,24 @@ const GeneralUnscheduledLists = () => {
 
   const [activeTab, setActiveTab] = useState<string>("family");
 
+  const TABS = [
+    {
+      id: "family",
+      title: "طلاب عائلات",
+      component: UnscheduledFamilyList,
+      formRef: filterFamilyFormRef,
+    },
+    {
+      id: "independent",
+      title: "طلاب مستقلين",
+      component: UnscheduledList,
+      formRef: filterStudentFormRef,
+    },
+  ];
+
   useEffect(() => {
     // get All Data length
-    getUnscheduledList().then((res) => {
+    getUnscheduledList(1, null).then((res) => {
       setStudentsCount(res.count);
     });
 
@@ -74,44 +85,49 @@ const GeneralUnscheduledLists = () => {
     <>
       <section className={balance_container}>
         <div className={balance_right}>
-              <h3 className={balance_right_header_title}> الطلاب الغير مجدولين ({allDataCount})</h3>
-          <div className={balance_right_header} style={{alignItems: 'end'}}>
-              {/* TABS BAR */}
-              <Row style={{marginBottom: '.4rem'}}>
-                {TABS.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={
-                      activeTab === tab.id ? active_tab_button : tab_button
-                    }
-                  >
-                    {tab.title} (
-                    {tab.id === "family" ? familiesCount : studentsCount})
-                  </button>
-                ))}
-              </Row>
-           
+          <h3 className={balance_right_header_title}>
+            {" "}
+            الطلاب الغير مجدولين ({allDataCount})
+          </h3>
+          <div className={balance_right_header} style={{ alignItems: "end" }}>
+            {/* TABS BAR */}
+            <Row style={{ marginBottom: ".4rem" }}>
+              {TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={
+                    activeTab === tab.id ? active_tab_button : tab_button
+                  }
+                >
+                  {tab.title} (
+                  {tab.id === "family" ? familiesCount : studentsCount})
+                </button>
+              ))}
+            </Row>
 
             <div className={header_filter}>
               <SearchSection searchFor="balances" classNames={search_bar} />
 
               <button
                 className={filter_button}
-                onClick={() => filterFormRef?.current?.open()}
+                onClick={() => filterFamilyFormRef?.current?.open()}
               >
                 <FilterIcon />
               </button>
             </div>
+
+            
           </div>
-          <hr className={divider} style={{marginTop: 0}}/>
+
+          <hr className={divider} style={{ marginTop: 0 }} />
 
           <div className="main_page_container">
             {TABS.map(
               (tab) =>
                 tab.id === activeTab && (
                   <div key={tab.id}>
-                    <tab.component />
+                    <tab.component formRef={tab.formRef} />
                   </div>
                 )
             )}

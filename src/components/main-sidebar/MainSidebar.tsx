@@ -41,14 +41,12 @@ const MainSidebar = ({ data }: TSidebarProps) => {
 
   const { fcmToken } = useFirebaseMessaging();
 
-  const signoutHandler = () => {
+  const signoutHandler = () => {    
     dispatch(removeProfile());
+    dispatch(logout());
     if (fcmToken) {
       dispatch(actFCMLogout({ FCM_token: fcmToken }))
-        .unwrap()
-        .then(() => {
-          dispatch(logout());
-        });
+       
     }
   };
 

@@ -29,7 +29,7 @@ const Header = () => {
 
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.profile);
+  const { img_url, user } = useAppSelector((state) => state.profile);
 
   const { loading } = useAppSelector((state) => state.notifications);
 
@@ -65,8 +65,8 @@ const Header = () => {
             )}
             {!isPhone && (
               <div className={userPhoto}>
-                {user?.image ? (
-                  <img src={user?.image} alt="Avatar" />
+                {img_url ? (
+                  <img src={img_url} alt="Avatar" />
                 ) : (
                   <UserPhoto />
                 )}

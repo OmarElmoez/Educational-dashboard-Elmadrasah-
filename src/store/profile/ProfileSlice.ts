@@ -44,6 +44,7 @@ const profileSlice = createSlice({
       state.user = action.payload.user
       state.statistics = action.payload.statistics
       state.img_url = action.payload.user.image
+
     }),
 
     builder.addCase(actGetUserProfile.rejected, (state, action) => {

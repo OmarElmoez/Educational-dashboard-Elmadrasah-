@@ -1,22 +1,25 @@
-// ********* this is not the real names to the endpoint update it
 export type TUnscheduled = {
   id: number;
-  customer_first_name: string;
-  customer_last_name: string;
-  date: string;
+  name: string;
+  type: string;
+  subscription_date: string;
   service_name: string;
-  status: string;
-  classValue: string;
+  scheduled_status: string;
+  grade: string;
+  purchased: number;
+  unscheduled: number;
+  students:null;
 };
 
-// ********* this is not the real names to the endpoint update it
 export type TUnscheduledFamily = {
   id: number;
-  customer_first_name: string;
-  customer_last_name: string;
-  date: string;
+  name: string;
+  type: string;
+  subscription_date: string;
   service_name: string;
-  status: string;
-  classValue: string;
-  children?: TUnscheduled[];
+  scheduled_status: string;
+  grade: string;
+  purchased: number;
+  unscheduled: number;
+  students: TUnscheduled[] | null;
 };

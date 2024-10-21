@@ -18,7 +18,6 @@ const UploadPhoto = <T extends FieldValues>({
   setValue: (name: Path<T>, value: File) => void;
 }) => {
   const { img_url } = useAppSelector((state) => state.profile);
-
   const [preview, setPreview] = useState<string | undefined>(img_url);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
