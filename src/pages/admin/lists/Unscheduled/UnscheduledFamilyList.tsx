@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import  { useEffect, useState,  RefObject } from "react";
 import { TABLE_HEAD_DATA } from "@/constants";
 import MainTable from "@/components/table/MainTable";
 import FilterForm, { FilterFormData } from "./FilterForm";
@@ -11,17 +11,15 @@ import { UnscheduledFamilyTableRow } from "@/components/table";
 import { getUnscheduledFamilyList } from "@/services/unscheduled";
 import styles from "../lists.module.css";
 
-
 // -----------------------------------------------------------------------------------------
-const {
-  actions,
-  modal_header_container,
-  modal_header_title,
+const { actions, modal_header_container, modal_header_title } = styles;
 
-} = styles;
+type UnscheduledFamilyListProps = {
+  formRef: RefObject<TModalRef>;
+};
 // -----------------------------------------------------------------------------------------
-const UnscheduledFamilyList = () => {
-  const filterFormRef = useRef<TModalRef>(null);
+const UnscheduledFamilyList = ({ formRef }: UnscheduledFamilyListProps) => {
+  // const filterFormRef = useRef<TModalRef>(null);
 
   // table data states:
   const [tableData, setTableData] = useState<TUnscheduledFamily[] | null>(null);
@@ -84,7 +82,8 @@ const UnscheduledFamilyList = () => {
   return (
     <>
       <BasicModal
-        ref={filterFormRef}
+        key="2"
+        ref={formRef}
         header={
           <div className={modal_header_container}>
             <FilterIconSmall />

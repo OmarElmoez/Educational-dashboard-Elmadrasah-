@@ -65,7 +65,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
   return (
     <form className={filterForm} onSubmit={handleSubmit(handleSubmitForm)}>
       <div className={formGroup}>
-        <label className={form_label}>اسم الطالب</label>
+        <label className={form_label}>اسم العائلة</label>
         <Dropdown
           label=""
           name="name"

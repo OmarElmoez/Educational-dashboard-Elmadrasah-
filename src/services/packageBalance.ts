@@ -1,5 +1,6 @@
 import axiosInstance from "@/utils/axiosInstance";
 import { TBalanceResponse } from "@/types/table";
+import { FilterFormData } from "@/pages/admin/lists/balance/FilterForm";
 
 
 
@@ -13,7 +14,7 @@ import { TBalanceResponse } from "@/types/table";
 
 export const getPackageBalanceList = async (
   page: number,
-  searchTerm: any
+  searchTerm: FilterFormData | null
 ): Promise<TBalanceResponse> => {
   console.log("searchTerm", searchTerm);
 

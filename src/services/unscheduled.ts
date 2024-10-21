@@ -1,3 +1,4 @@
+import { FilterFormData } from "@/pages/admin/lists/Unscheduled/FilterForm";
 import { TUnscheduled } from "@/types/ListsTypes";
 import axiosInstance from "@/utils/axiosInstance";
 
@@ -32,14 +33,14 @@ type TUnscheduledResponse = {
 
 export const getUnscheduledList = async (
   page: number,
-  searchTerm: any
+  searchTerm: FilterFormData | null
 ): Promise<TUnscheduledResponse> => {
   const response = await axiosInstance.get<TUnscheduledResponse>(
     "/event/unscheduled-students/?type=individual",
     {
       params: {
         page: page,
-        searchTerm: searchTerm,
+        ...searchTerm,
       },
     }
   );
@@ -49,13 +50,13 @@ export const getUnscheduledList = async (
 
 export const getUnscheduledFamilyList = async (
   page: number,
-  searchTerm: any
+  searchTerm: FilterFormData | null
 ): Promise<TUnscheduledResponse> => {
-  const response = await axiosInstance.get<TUnscheduledResponse>("/event/unscheduled-students/?type=individual",
+  const response = await axiosInstance.get<TUnscheduledResponse>("/event/unscheduled-students/?type=family",
     {
       params: {
         page: page,
-        searchTerm: searchTerm,
+        ...searchTerm,
       },
     }
   );
