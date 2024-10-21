@@ -9,6 +9,10 @@ const EMPLOYEE_TYPES = [
 
 const EmployeeTypesForSchema = generateValesForSchema(EMPLOYEE_TYPES);
 
+const SCHEDULED_STATUS_OPTIONS = [
+  { label: "فى انتظار الجدولة", value: "unscheduled" },
+  { label: " تمت الجدولة", value: "scheduled" },
+];
 const STATUS_OPTIONS = [
   { label: "نشط", value: "true" },
   { label: "غير نشط", value: "false" },
@@ -200,5 +204,7 @@ export {
   paymentOptionsForSchema,
   FOLLOW_UP_OPTIONS,
   PACKAGE_STATUS_OPTIONS,
+  SCHEDULED_STATUS_OPTIONS,
+
   // AddTaxTreatmentOptionsForSchema,
 };

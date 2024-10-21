@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import { PACKAGE_STATUS_OPTIONS, STATUS_OPTIONS } from "@/constants";
 import { Dropdown, DropdownWithSearch } from "@/components";
 import { TOption } from "@/types/Dropdown";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { actGetDropdownOptions } from "@/store/single-actions";
 // -------------------------------------------------------------------
 
@@ -85,11 +85,8 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
   };
 
   const [customersList, setCustomersList] = useState<TOption[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<TOption | null>(
-    null
-  );
+  const [selectedCustomer, setSelectedCustomer] = useState<TOption | null>(null);
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(
@@ -99,7 +96,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
         setCustomersList(res.payload);
       }
     });
-  }, [dispatch, user?.token]);
+  }, [dispatch]);
 
   const handleGetOption = (option: TOption | null) => {
     setValue("name", option?.label);
