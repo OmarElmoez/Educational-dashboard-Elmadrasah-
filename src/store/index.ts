@@ -40,7 +40,7 @@ const lessonsPersistConfig = {
 const profilePersistConfig = {
   key: 'profile',
   storage,
-  whitelist: ["user", "statistics"],
+  whitelist: ["img_url", "statistics"],
 }
 
 const authPersistConfig = {

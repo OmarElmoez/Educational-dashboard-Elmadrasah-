@@ -8,7 +8,8 @@ type TProfileState = {
   loading: TLoading,
   statistics: TUserStatistics,
   error: string | null,
-  user: TUser | null
+  user: TUser | null,
+  img_url: string
 }
 
 const initialState: TProfileState = {
@@ -21,6 +22,7 @@ const initialState: TProfileState = {
   },
   loading: "idle",
   error: null,
+  img_url: ""
 }
 
 const profileSlice = createSlice({
@@ -41,6 +43,7 @@ const profileSlice = createSlice({
       state.loading = "succeeded"
       state.user = action.payload.user
       state.statistics = action.payload.statistics
+      state.img_url = action.payload.user.image
     }),
 
     builder.addCase(actGetUserProfile.rejected, (state, action) => {
