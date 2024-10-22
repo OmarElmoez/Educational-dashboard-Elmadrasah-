@@ -6,7 +6,7 @@ import FilterForm, { FilterFormData } from "./FilterForm";
 import BasicModal from "@/components/add-new-subject-model/BasicModal";
 import BalanceTableRow from "@/components/table/BalanceTableRow";
 import styles from "../lists.module.css";
-import balancestyles from "../lists.module.css";
+import filterStyles from "../filterForm.module.css";
 import { TModalRef } from "@/types/shared";
 import FilterIcon from "@/assets/filter_icon.svg?react";
 import FilterIconSmall from "@/assets/filter_icon_small.svg?react";
@@ -27,22 +27,21 @@ const LIST_OPTIONS = [
 ];
 
 // -----------------------------------------------------------------------------------------
-const { actions } = styles;
 const {
+  actions,
   balance_container,
   balance_left,
   balance_right,
   balance_right_header,
-  // header_filter,
-  modal_header_container,
-  modal_header_title,
   search_bar,
   filter_button,
-  // inputbox,
-  // icon,
   link_item,
   divider,
-} = balancestyles;
+} = styles;
+const {
+  modal_header_container,
+  modal_header_title,
+} = filterStyles;
 // -----------------------------------------------------------------------------------------
 const PackageBalanceList = () => {
   const filterFormRef = useRef<TModalRef>(null);

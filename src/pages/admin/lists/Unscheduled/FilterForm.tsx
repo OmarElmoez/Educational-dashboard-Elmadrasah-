@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import styles from "../filterForm.module.css";
-import React from "react";
-import { STATUS_OPTIONS } from "@/constants";
-import { Dropdown } from "@/components";
+import React, { useEffect, useState } from "react";
+import { SCHEDULED_STATUS_OPTIONS } from "@/constants";
+import { Dropdown, DropdownWithSearch } from "@/components";
+import { useAppDispatch } from "@/store/hooks";
+import { TOption } from "@/types/Dropdown";
+import { actGetDropdownOptions } from "@/store/single-actions";
 
 // -------------------------------------------------------------------
 
@@ -20,11 +23,11 @@ const {
 } = styles;
 
 const filterSchema = z.object({
-  name: z.string().optional(),
-  type: z.string().optional(),
-  purchased: z.string().optional(),
-  scheduled_status: z.string().optional(),
-  subscription_date: z.string().optional(),
+  name: z.string().nullable().optional(),
+  // type: z.string().nullable().optional(),
+  service_name: z.string().nullable().optional(),
+  scheduled_status: z.string().nullable().optional(),
+  subscription_date: z.string().nullable().optional(),
 });
 
 export type FilterFormData = z.infer<typeof filterSchema>;
@@ -39,21 +42,20 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FilterFormData>({
     resolver: zodResolver(filterSchema),
     defaultValues: {
       name: "",
-      type: "",
-      purchased: "",
+      // type: "",
+      service_name: "",
       scheduled_status: "",
       subscription_date: "",
     },
   });
 
   const handleSubmitForm = (data: FilterFormData) => {
-    console.log("data:", data);
-
     onSubmit(data);
   };
 
@@ -61,39 +63,78 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
     reset();
   };
 
+  const [servicesList, setServicesList] = useState<TOption[]>([]);
+
+
+  // customer dropdown
+  const [customersList, setCustomersList] = useState<TOption[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<TOption | null>(null);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(
+      actGetDropdownOptions({ optionsFor: "customers" })
+    ).then((res) => {
+      if (Array.isArray(res?.payload)) {
+        setCustomersList(res.payload);
+      }
+    });
+
+    dispatch(
+      actGetDropdownOptions({ optionsFor: "services" })
+    ).then((res) => {
+      if (Array.isArray(res?.payload)) {
+        setServicesList(res.payload);
+      }
+    });
+  }, [dispatch]);
+  const handleGetOption = (option: TOption | null) => {
+    setValue("name", option?.label);
+  };
 
   return (
     <form className={filterForm} onSubmit={handleSubmit(handleSubmitForm)}>
       <div className={formGroup}>
-        <label className={form_label}>اسم العائلة</label>
-        <Dropdown
+        <label className={form_label}>اسم العميل</label>
+        <DropdownWithSearch
           label=""
-          name="name"
-          register={register}
-          options={STATUS_OPTIONS}
-          error={errors.name?.message as string}
+          options={customersList}
+          handleGetOption={handleGetOption}
+          selectedCustomer={selectedCustomer}
+          setSelectedCustomer={setSelectedCustomer}
+          placeholder="اختر العميل"
         />
       </div>
 
       <div className={formGroup}>
-        <label className={form_label}>نوع الطالب </label>
+        <label className={form_label}> نوع الباقة </label>
         <Dropdown
           label=""
-          name="type"
+          name="service_name"
           register={register}
-          options={STATUS_OPTIONS}
-          error={errors.type?.message as string}
+          options={servicesList}
+          error={errors.service_name?.message as string}
         />
       </div>
 
-      <div className={formGroup}>
+      {/* <div className={formGroup}>
         <label className={form_label}>نوع الباقة </label>
         <Dropdown
           label=""
-          name="purchased"
+          name="service_name"
           register={register}
-          options={STATUS_OPTIONS}
-          error={errors.purchased?.message as string}
+          options={SCHEDULED_STATUS_OPTIONS}
+          error={errors.service_name?.message as string}
+        />
+      </div> */}
+      <div className={formGroup}>
+        <label className={form_label}> حالة الجدولة </label>
+        <Dropdown
+          label=""
+          name="scheduled_status"
+          register={register}
+          options={SCHEDULED_STATUS_OPTIONS}
+          error={errors.scheduled_status?.message as string}
         />
       </div>
 

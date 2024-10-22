@@ -104,7 +104,6 @@ const DROPDOWN_END_POINTS = {
   customersSearch: `/customer/customers/?paginate=false&first_name=`,
   services: `/dashboard/service/?paginate=false`,
 }
-
 type TOptionsFor = keyof typeof DROPDOWN_END_POINTS;
 
 export type { TOptionsFor };

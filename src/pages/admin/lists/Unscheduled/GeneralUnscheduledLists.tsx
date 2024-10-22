@@ -7,7 +7,7 @@ import AddStudentIcon from "@/assets/add_user_icon.svg?react";
 import FamilyIcon from "@/assets/family_icon.svg?react";
 import Download from "@/assets/download.svg?react";
 import UploadIcon from "@/assets/upload_icon.svg?react";
-import { Row, SearchSection } from "@/components";
+import { DebounceSearchBox, Row } from "@/components";
 import {
   getUnscheduledFamilyList,
   getUnscheduledList,
@@ -39,6 +39,7 @@ const {
   divider,
 } = styles;
 
+
 // -----------------------------------------------------------------------------------------
 const GeneralUnscheduledLists = () => {
   const filterStudentFormRef = useRef<TModalRef>(null);
@@ -48,6 +49,7 @@ const GeneralUnscheduledLists = () => {
   const [allDataCount, setAllDataCount] = useState<number>(0);
   const [studentsCount, setStudentsCount] = useState<number>(0);
   const [familiesCount, setFamiliesCount] = useState<number>(0);
+  const [debounceSearchTerm, setDebounceSearchTerm] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState<string>("family");
 
@@ -65,6 +67,21 @@ const GeneralUnscheduledLists = () => {
       formRef: filterStudentFormRef,
     },
   ];
+
+  // Debounce Function
+  const handleSearch = (debouncedSearchTerm: string | null) => {
+    console.log("debouncedSearchTerm", debouncedSearchTerm);
+    
+    setDebounceSearchTerm(debouncedSearchTerm);
+      // get All Data length
+    // getUnscheduledList(1, null).then((res) => {
+    //   setStudentsCount(res.count);
+    // });
+
+    // getUnscheduledFamilyList(1, null).then((res) => {
+    //   setFamiliesCount(res.count);
+    // });
+  }
 
   useEffect(() => {
     // get All Data length
@@ -86,7 +103,6 @@ const GeneralUnscheduledLists = () => {
       <section className={balance_container}>
         <div className={balance_right}>
           <h3 className={balance_right_header_title}>
-            {" "}
             الطلاب الغير مجدولين ({allDataCount})
           </h3>
           <div className={balance_right_header} style={{ alignItems: "end" }}>
@@ -107,17 +123,25 @@ const GeneralUnscheduledLists = () => {
             </Row>
 
             <div className={header_filter}>
-              <SearchSection searchFor="balances" classNames={search_bar} />
+              <DebounceSearchBox classNames={search_bar} handleSearch={handleSearch} />
 
               <button
                 className={filter_button}
-                onClick={() => filterFamilyFormRef?.current?.open()}
+                onClick={() => {
+                  if(activeTab === 'family') {
+                    filterFamilyFormRef?.current?.open()
+                  } else {
+                    console.log("filterStudentFormRef");
+                    
+                    filterStudentFormRef?.current?.open()
+                  }
+                }}
               >
                 <FilterIcon />
               </button>
             </div>
 
-            
+
           </div>
 
           <hr className={divider} style={{ marginTop: 0 }} />
@@ -127,7 +151,7 @@ const GeneralUnscheduledLists = () => {
               (tab) =>
                 tab.id === activeTab && (
                   <div key={tab.id}>
-                    <tab.component formRef={tab.formRef} />
+                    <tab.component formRef={tab.formRef} debounceSearchTerm={debounceSearchTerm} />
                   </div>
                 )
             )}

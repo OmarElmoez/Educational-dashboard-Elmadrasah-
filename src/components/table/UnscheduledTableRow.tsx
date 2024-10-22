@@ -38,21 +38,21 @@ const UnscheduledTableRow = ({
           </span>
         </td>
       )}
-
       <td> {name} </td>
       <td> {name} </td>
       <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
-
       <td> {service_name} </td>
       <td> {grade} </td>
-
       <td className={tdRow}>
+        {/*  * link to form *  */}
         <Link
-          to="/admin/schedule-lesson"
+          to={`/admin/schedule-lesson/${rowData.id}`}
           aria-label="Action button"
           className={table_btn}
         >
-          {scheduled_status}
+          {scheduled_status === "unscheduled"
+            ? "في انتظار الجدولة"
+            : "تمت الجدولة"}{" "}
         </Link>
       </td>
     </tr>

@@ -34,7 +34,7 @@ const UnscheduledFamilyTableRow = ({
 }: UnscheduledFamilyTableRowProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const { name, subscription_date, service_name, scheduled_status, grade } =
+  const { name, subscription_date, service_name, scheduled_status, grade, unscheduled } =
     rowData;
 
   const toggleExpand = () => {
@@ -65,15 +65,19 @@ const UnscheduledFamilyTableRow = ({
         <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
         <td>{service_name}</td>
         <td>{grade}</td>
-        <td>{scheduled_status}</td>
+        <td>{unscheduled}</td>
+        {/* <td>{scheduled_status}</td> */}
         <td className={tdRow}>
+          {/*  * link to form *  */}
           <Link
-            to="/admin/schedule-lesson"
+            to={`/admin/schedule-lesson/${rowData.id}`}
             aria-label="Action button"
             style={{ backgroundColor: "#C92516" }}
             className={table_btn}
           >
-            اعتماد المواعيد
+            {scheduled_status === "unscheduled"
+              ? "في انتظار الجدولة"
+              : "تمت الجدولة"}
           </Link>
         </td>
         <td onClick={toggleExpand} style={{ cursor: "pointer" }}>
@@ -100,27 +104,27 @@ const UnscheduledFamilyTableRow = ({
       )}
       {isExpanded &&
         childrenRows &&
-        childrenRows.map((child) => (
-          <tr key={child.id} className={isExpanded ? active_row_container : ""}>
+        childrenRows?.map((child) => (
+          <tr key={child?.id} className={isExpanded ? active_row_container : ""}>
             <td></td>
-            <td>{child.name}</td>
-            <td>{child.name}</td>
+            <td>{child?.name}</td>
+            <td>{child?.name}</td>
             <td style={{ whiteSpace: "nowrap" }}>
-              {format(new Date(child.subscription_date), "yyyy-MM-dd")}
+              {format(new Date(child?.subscription_date), "yyyy-MM-dd")}
             </td>
-            <td>{child.service_name}</td>
-            <td>{child.grade}</td>
-            <td>{child.scheduled_status}</td>
-            <td>
+            <td>{child?.service_name}</td>
+            <td>{child?.grade}</td>
+            {/* <td>{child.scheduled_status}</td> */}
+            {/* <td>
               <Link
                 to="/admin/schedule-lesson"
                 aria-label="Action button"
                 style={{ backgroundColor: "#C92516" }}
                 className={table_btn}
               >
-                اعتماد المواعيد
+                {child?.scheduled_status}
               </Link>
-            </td>
+            </td> */}
           </tr>
         ))}
 

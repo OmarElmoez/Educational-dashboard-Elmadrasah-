@@ -40,14 +40,16 @@ const TABLE_HEAD_DATA = {
     { name: "subscription_date", label: "تاريخ الاشتراك" },
     { name: "service_name", label: "تاريخ الاشتراك" },
     { name: "grade  ", label: "الصف " },
+    { name: "unscheduled  ", label: "غير مجدولة " },
     { name: "", label: "" },
-
+    
   ],
   unscheduledFamily: [
     { name: "name", label: "اسم العائلة" },
     { name: "subscription_date", label: "تاريخ الاشتراك" },
     { name: "service_name", label: "نوع الباقة" },
     { name: "grade", label: "الصف " },
+    { name: "unscheduled  ", label: "غير مجدولة " },
     { name: "", label: "" },
     { name: "", label: "" },
 

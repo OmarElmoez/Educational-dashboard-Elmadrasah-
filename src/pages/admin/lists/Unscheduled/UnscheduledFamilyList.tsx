@@ -16,9 +16,10 @@ const { actions, modal_header_container, modal_header_title } = styles;
 
 type UnscheduledFamilyListProps = {
   formRef: RefObject<TModalRef>;
+  debounceSearchTerm: string| null;
 };
 // -----------------------------------------------------------------------------------------
-const UnscheduledFamilyList = ({ formRef }: UnscheduledFamilyListProps) => {
+const UnscheduledFamilyList = ({ formRef, debounceSearchTerm }: UnscheduledFamilyListProps) => {
   // const filterFormRef = useRef<TModalRef>(null);
 
   // table data states:
@@ -69,7 +70,16 @@ const UnscheduledFamilyList = ({ formRef }: UnscheduledFamilyListProps) => {
   const handleFilterSubmit = (filters: FilterFormData | null) => {
     setCurrentPage(1);
     setSearchTerm(filters);
+    formRef.current?.close();
   };
+
+  useEffect(() => {
+    // get All Data
+    getUnscheduledFamilyList(1, {name: debounceSearchTerm}).then((res) => {
+      setTableData(res.results);
+      setAllDataCount(res.count);
+    });
+  }, [currentPage, debounceSearchTerm]);
 
   useEffect(() => {
     // get All Data

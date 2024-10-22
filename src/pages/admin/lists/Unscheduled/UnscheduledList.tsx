@@ -15,9 +15,11 @@ const { actions, modal_header_container, modal_header_title } = styles;
 
 type UnscheduledListProps = {
   formRef:RefObject<TModalRef>;
+  debounceSearchTerm: string| null;
+
 };
 // -----------------------------------------------------------------------------------------
-const UnscheduledList = ({ formRef }: UnscheduledListProps) => {
+const UnscheduledList = ({ formRef, debounceSearchTerm }: UnscheduledListProps) => {
 
   // table data states:
   const [tableData, setTableData] = useState<TUnscheduled[] | null>(null);
@@ -65,8 +67,20 @@ const UnscheduledList = ({ formRef }: UnscheduledListProps) => {
   };
 
   const handleFilterSubmit = (filters: FilterFormData | null) => {
+    setCurrentPage(1);
     setSearchTerm(filters);
+    formRef.current?.close();
+
   };
+
+  useEffect(() => {
+    // get All Data
+    getUnscheduledList(1, {name: debounceSearchTerm}).then((res) => {
+      setTableData(res.results);
+      setAllDataCount(res.count);
+    });
+  }, [currentPage, debounceSearchTerm]);
+
 
   useEffect(() => {
     // get All Data
