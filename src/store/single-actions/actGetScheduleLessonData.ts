@@ -1,0 +1,24 @@
+import { TScheduleLessonResponse } from "@/schemas/ScheduleLessonSchema";
+import axiosErrorHandler from "@/utils/axiosErrorHandler";
+import axiosInstance from "@/utils/axiosInstance";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+const actGetScheduleLessonData = createAsyncThunk(
+  "single-actions/actGetScheduleLessonData",
+  async (id: string, thunkAPI) => {
+    // async (_, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+
+    try {
+      const response = await axiosInstance.get<TScheduleLessonResponse>(
+        "/event/customer-answers/?customer_id=" + id
+      );
+      // const response = await axiosInstance.get("/event/customer-answers/?customer_id=1");
+      return response.data.leadflow_data[0];
+    } catch (error) {
+      return rejectWithValue(axiosErrorHandler(error));
+    }
+  }
+);
+
+export default actGetScheduleLessonData;

@@ -33,7 +33,7 @@ const MainSidebar = ({ data }: TSidebarProps) => {
   const { isPhone } = useResponsive();
 
   const { user } = useAppSelector((state) => state.profile);
-  // const { user: authUser, credintials } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -45,8 +45,7 @@ const MainSidebar = ({ data }: TSidebarProps) => {
     dispatch(removeProfile());
     dispatch(logout());
     if (fcmToken) {
-      dispatch(actFCMLogout({ FCM_token: fcmToken }))
-       
+      dispatch(actFCMLogout({ token: credintials?.token, FCM_token: fcmToken }))
     }
   };
 

@@ -92,6 +92,9 @@ const DropdownWithSearch = ({
             value={searchQuery}
             placeholder="ابحث عن العميل"
           />
+          <div>
+
+          </div>
           <div className={options_box}>
             {(searchResults.length > 0 ? searchResults : options).map(
               (result, index) => (

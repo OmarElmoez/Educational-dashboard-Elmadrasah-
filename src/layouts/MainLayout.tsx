@@ -3,8 +3,22 @@ import { Header, MainSidebar } from "@/components";
 import { TPath } from "@/types/shared";
 import { SidebarContextProvider, FeedbackProvider } from "@/store/context/";
 import { useEffect } from "react";
+import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
+import {actGetUserProfile} from "@/store/profile/ProfileSlice.ts";
 const MainLayout = ({ sideBarData }: { sideBarData: TPath[] }) => {
+
+  const { user } = useAppSelector((state) => state.profile);
+
+  const dispatch = useAppDispatch();
   
+  useEffect(() => {
+
+  if (user === null) {
+    dispatch(actGetUserProfile())
+  }
+    
+  }, [dispatch, user]);
+
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       // Service worker is supported

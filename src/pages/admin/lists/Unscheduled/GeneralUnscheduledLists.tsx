@@ -70,7 +70,6 @@ const GeneralUnscheduledLists = () => {
 
   // Debounce Function
   const handleSearch = (debouncedSearchTerm: string | null) => {
-    console.log("debouncedSearchTerm", debouncedSearchTerm);
     
     setDebounceSearchTerm(debouncedSearchTerm);
       // get All Data length
@@ -131,8 +130,6 @@ const GeneralUnscheduledLists = () => {
                   if(activeTab === 'family') {
                     filterFamilyFormRef?.current?.open()
                   } else {
-                    console.log("filterStudentFormRef");
-                    
                     filterStudentFormRef?.current?.open()
                   }
                 }}

@@ -2,7 +2,6 @@ import {
   BasicModal,
   CheckBoxesGroup,
   Dropdown,
-  DropdownWithSearch,
   Heading,
   InputField,
   MultiChoices,
@@ -22,26 +21,47 @@ import CloseButton from "@/assets/close-button.svg?react";
 import RepeatIcon from "@/assets/repeat.svg?react";
 import { TModalRef } from "@/types/shared";
 import ScheduleForm from "./schedule-form/ScheduleForm";
+import actGetScheduleLessonData from "@/store/single-actions/actGetScheduleLessonData";
+import { useParams } from "react-router-dom";
+import { TLeadFlowData } from "@/schemas/ScheduleLessonSchema";
+import createOptionsFrom from "@/utils/createOptionsFrom";
+import removeDuplicates from "@/utils/removeDuplicates";
+import { useFeedback } from "@/store/context";
+
+const previewTeacherStyle = {
+  border: "1px dashed #7AB790",
+  borderRadius: "0.6rem",
+  fontSize: "1rem",
+  color: "#8A8A8A",
+  backgroundColor: "#F1F1F1",
+  padding: "0.6rem 1rem",
+};
 
 const ScheduleLesson = () => {
   const [customersList, setCustomersList] = useState<TOption[]>([]);
-  const [customer, setCustomer] = useState("");
-
+  console.log(customersList)
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
+
+  const [customerData, setCustomerData] = useState<TLeadFlowData>();
 
   const {
     register,
     formState: { errors },
     reset,
     watch,
+    handleSubmit,
     control,
   } = useForm({
-    // defaultValues: {
-    //   subjects: [{ gender: "", language: "", count: "", subject: "" }],
-    // },
+    defaultValues: {
+      subjects: [{ gender: "", language: "", count: "", subject: "" }],
+      credit: 10,
+    },
   });
+  const { id } = useParams();
+
+  const { openFeedbackModal } = useFeedback();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -49,14 +69,25 @@ const ScheduleLesson = () => {
   });
 
   useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({ optionsFor: "customers" })
-    )
+    dispatch(actGetDropdownOptions({ optionsFor: "customers" }))
       .unwrap()
       .then((res) => {
         setCustomersList(res);
       });
-  }, [dispatch, user?.token]);
+  }, [dispatch, credintials?.token]);
+
+  useEffect(() => {
+    // you should pass the id (get from useParams) to the action
+    if (id) {
+      dispatch(actGetScheduleLessonData(id))
+        .unwrap()
+        .then((res) => {
+          setCustomerData(res);
+          // setAvalibleClassesForScheduling(res.customer.credit);
+        });
+    }
+    // dispatch(actGetScheduleLessonData(id));
+  }, [dispatch, id]);
 
   // Temp fields for multiChoice component, real data will be used from the store.
   const DAYS = [
@@ -104,43 +135,76 @@ const ScheduleLesson = () => {
 
   const scheduleRef = useRef<TModalRef>(null);
 
-  console.log(customer);
+  // We use this method because the data came from the server is duplicated.
+  const studentsOptions = Array.from(
+    new Set(createOptionsFrom(customerData?.students))
+  );
+  const timeOptions = Array.from(
+    new Set(createOptionsFrom(customerData?.time))
+  );
+
+
+  const subjectsOptions = Array.from(
+    new Set(createOptionsFrom(customerData?.subjects))
+  );
+  const teachersOptions = removeDuplicates(customerData?.teachers);
+
+  const onSubmit = (data: any) => {
+    const scheduledClasses = data.subjects.reduce(
+      (total: number, subject: any) => {
+        return total + Number(subject.count);
+      },
+      0
+    );
+    
+    if (scheduledClasses > Number(data.credit)) {
+
+      openFeedbackModal("warning", `لا يمكن جدولة أكثر من ${data.credit} حصص`);
+      return;
+    }
+
+    console.log(data);
+  };
 
   return (
     <>
       <BasicModal ref={scheduleRef}>
         <h2 className="modal__title">ضبط إعادة التكرار</h2>
-        <ScheduleForm className="modal__form" onClose={() => scheduleRef.current?.close()} />
+        <ScheduleForm
+          className="modal__form"
+          onClose={() => scheduleRef.current?.close()}
+        />
       </BasicModal>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
-          <DropdownWithSearch
+          <Dropdown
             label="الطلاب"
-            placeholder="اختار الطالب"
-            options={customersList}
-            handleChange={(id: string) => {
-              setCustomer(id);
-            }}
+            name="students"
+            options={studentsOptions}
+            register={register}
+            error=""
           />
 
           <InputField
             label="رصيد الطالب"
-            placeholder="30 حصه"
+            placeholder="10"
             register={register}
-            name="balance"
+            name="credit"
+            disabled
             error=""
+            value="10"
           />
         </Row>
 
         <Heading text="مواقيت الإتاحة للطالب" style={{ marginTop: "2.8rem" }} />
 
         <Row>
-          <MultiChoices
-            error=""
-            name="days"
-            register={register}
-            fields={DAYS}
-          />
+          {customerData && <MultiChoices
+              error=""
+              name="days"
+              register={register}
+              fields={customerData?.days.length === 0 ? DAYS : customerData?.days}
+          />}
 
           <InputField
             label="الفترة"
@@ -148,13 +212,14 @@ const ScheduleLesson = () => {
             register={register}
             name="day_period"
             error=""
+            value={customerData?.shift.name}
           />
 
-          <InputField
+          <Dropdown
             label="التوقيت المناسب"
-            placeholder="12:00 ص : 5:00 م"
+            name="time_period"
+            options={timeOptions}
             register={register}
-            name="time_zone"
             error=""
           />
         </Row>
@@ -166,59 +231,61 @@ const ScheduleLesson = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error=""
+            // chosen={customerData?.timezone}
+            chosen="Cairo"
           />
         </Row>
 
         {fields.map((field, index) => (
-          <>
-            <Row key={field.id} style={{ alignItems: "center" }}>
-              <Dropdown
-                name={`subjects[${index}].gender`}
-                register={register}
-                label="النوع"
-                options={[
-                  { label: "معلم", value: "male" },
-                  { label: "معلمة", value: "female" },
-                ]}
-                error=""
-              />
+          <Row key={field.id} style={{ alignItems: "center" }}>
+            <Dropdown
+              name={`subjects[${index}].gender`}
+              register={register}
+              label="النوع"
+              options={[
+                { label: "معلم", value: "male" },
+                { label: "معلمة", value: "female" },
+              ]}
+              error=""
+            />
 
-              <Dropdown
-                name={`subjects[${index}].language`}
-                register={register}
-                label="اللغة"
-                options={[
-                  { label: "الإنجليزية", value: "en" },
-                  { label: "العربية", value: "ar" },
-                ]}
-                error=""
-              />
+            <Dropdown
+              name={`subjects[${index}].language`}
+              register={register}
+              label="اللغة"
+              options={[
+                { label: "الإنجليزية", value: "en" },
+                { label: "العربية", value: "ar" },
+              ]}
+              error=""
+            />
 
-              <InputField
-                label="المادة"
-                placeholder="علوم حاسب"
-                register={register}
-                name={`subjects[${index}].subject`}
-                error=""
-              />
+            <Dropdown
+              name={`subjects[${index}].subject`}
+              register={register}
+              label="المادة"
+              options={subjectsOptions}
+              error=""
+            />
 
-              <InputField
-                label="عدد الحصص"
-                placeholder="4"
-                register={register}
-                name={`subjects[${index}].count`}
-                error=""
-              />
-
-              <button
-                type="button"
-                style={{ marginTop: "1rem" }}
-                onClick={() => remove(index)}
-              >
-                <CloseButton />
-              </button>
-            </Row>
-          </>
+            <InputField
+              label="عدد الحصص"
+              placeholder="4"
+              register={register}
+              name={`subjects[${index}].count`}
+              error=""
+              type="number"
+            />
+            <button
+              type="button"
+              style={{ marginTop: "1rem" }}
+              onClick={() => {
+                remove(index);
+              }}
+            >
+              <CloseButton />
+            </button>
+          </Row>
         ))}
         <button
           style={{ display: "block", marginRight: "auto" }}
@@ -258,6 +325,29 @@ const ScheduleLesson = () => {
               error=""
               fields={TEACHERS}
             />
+          )}
+
+          {selectedTeachersType === "automatic" && (
+            <article className="group">
+              <section
+                className="inputField"
+                style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
+              >
+                {teachersOptions.map((teacher) =>
+                  teacher.subjects.map((subject: any) => {
+                    return (
+                      <span
+                        style={previewTeacherStyle}
+                        key={`${teacher.id}_${subject.id}`}
+                      >
+                        {teacher.first_name} {teacher.last_name} -{" "}
+                        {subject.name}
+                      </span>
+                    );
+                  })
+                )}
+              </section>
+            </article>
           )}
           <article className="group"></article>
         </Row>
@@ -302,7 +392,7 @@ const ScheduleLesson = () => {
             register={register}
             options={FOLLOW_UP_OPTIONS}
             name="follow_up_type"
-            error={errors.title?.message as string}
+            error={errors.follow_up_type?.message as string}
           />
 
           <article className="group"></article>
