@@ -48,6 +48,8 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actAuthLogin.fulfilled, (state, action) => {
+      console.log("action", action);
+      
       state.loading = "succeeded";
       state.user = action.payload.user;
       state.modified_email = action.payload.modified_email;
@@ -57,6 +59,7 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(actAuthLogin.rejected, (state, action) => {
+      console.log("action rejected", action);
       state.loading = "failed";
       if (isString(action.payload)) {
         state.error = action.payload;
