@@ -36,22 +36,22 @@ const TABLE_HEAD_DATA = {
 
    unscheduled: [
     { name: "name", label: "الاسم الاول" },
-    { name: "name", label: "الاسم الاخير " },
+    { name: "name_last", label: "الاسم الاخير " },
     { name: "subscription_date", label: "تاريخ الاشتراك" },
     { name: "service_name", label: "تاريخ الاشتراك" },
     { name: "grade  ", label: "الصف " },
     { name: "unscheduled  ", label: "غير مجدولة " },
-    { name: "", label: "" },
+    { name: "action", label: "" },
     
   ],
   unscheduledFamily: [
-    { name: "name", label: "اسم العائلة" },
-    { name: "subscription_date", label: "تاريخ الاشتراك" },
-    { name: "service_name", label: "نوع الباقة" },
-    { name: "grade", label: "الصف " },
-    { name: "unscheduled  ", label: "غير مجدولة " },
-    { name: "", label: "" },
-    { name: "", label: "" },
+    { name: "name2", label: "اسم العائلة" },
+    { name: "subscription_date2", label: "تاريخ الاشتراك" },
+    { name: "service_name2", label: "نوع الباقة" },
+    { name: "grade2", label: "الصف " },
+    { name: "unscheduled2", label: "غير مجدولة " },
+    { name: "dropdown", label: "" },
+    { name: "actions", label: "" },
 
   ],
  
