@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
@@ -57,20 +57,20 @@ const MultiChoices = <T extends FieldValues>({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const intervalRef = useRef<number | null>(null);
 
-  const { user } = useAppSelector((state) => state.auth);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(
-      actGetChoices({
-        // url: END_POINTS[name as keyof typeof END_POINTS].url,
-        url: END_POINTS[name as keyof typeof END_POINTS].url,
-      })
-    )
-      .unwrap()
-      .then((data) => setData(data));
-  }, [dispatch, user?.token, name]);
+    if (!fields) {
+        dispatch(
+            actGetChoices({
+                // url: END_POINTS[name as keyof typeof END_POINTS].url,
+                url: END_POINTS[name as keyof typeof END_POINTS].url,
+            })
+        )
+            .unwrap()
+            .then((data) => setData(data));
+    }
+  }, [dispatch, name, fields]);
 
   const onClickHandler = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {

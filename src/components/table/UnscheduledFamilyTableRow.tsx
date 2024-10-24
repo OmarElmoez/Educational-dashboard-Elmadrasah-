@@ -59,7 +59,6 @@ const UnscheduledFamilyTableRow = ({
             </span>
           </td>
         )}
-
         <td>{name}</td>
         {/* <td>{name}</td> */}
         <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
@@ -68,9 +67,9 @@ const UnscheduledFamilyTableRow = ({
         <td>{unscheduled}</td>
         {/* <td>{scheduled_status}</td> */}
         <td className={tdRow}>
-          {/*  * link to form *  */}
+          {/*  TODO: here will be the id form row (rowData.id)  */}
           <Link
-            to={`/admin/schedule-lesson/${rowData.id}`}
+            to={`/admin/schedule-lesson/${1}`}
             aria-label="Action button"
             style={{ backgroundColor: "#C92516" }}
             className={table_btn}

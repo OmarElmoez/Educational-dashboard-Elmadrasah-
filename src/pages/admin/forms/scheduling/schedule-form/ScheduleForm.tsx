@@ -29,7 +29,7 @@ const ScheduleForm = ({
   const endType = watch("end_type");
 
   const DAYS_OPTIONS = [
-    { label: "حد", value: "sunday", id: 1 },
+    { label: "احد", value: "sunday", id: 1 },
     { label: "اثنين", value: "monday", id: 2 },
     { label: "ثلاثاء", value: "tuesday", id: 3 },
     { label: "أربعاء", value: "wednesday", id: 4 },

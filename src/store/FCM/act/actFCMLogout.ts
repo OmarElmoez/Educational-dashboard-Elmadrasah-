@@ -1,21 +1,29 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import axiosInstance from "@/utils/axiosInstance";
+// import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const actFCMLogout = createAsyncThunk(
   "FCM/actFCMLogout",
-  async ({ FCM_token }: { FCM_token: string }, thunkAPI) => {
+  async ({ token, FCM_token }: { token: string | undefined, FCM_token: string }, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
-      const url = "/notify/devices/logout/";
+      const url = "https://elmadrasah-development-ff14bf466889.herokuapp.com/notify/devices/logout/";
 
       const data = {
         registration_id: FCM_token,
         type: "web",
       };
 
-      await axiosInstance.post(url, data);
+      const config = {
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Token ${token}`,
+          }
+      }
+
+      await axios.post(url, data, config);
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

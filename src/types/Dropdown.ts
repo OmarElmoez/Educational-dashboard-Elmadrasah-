@@ -4,13 +4,13 @@ import { TModalRef,  } from "./shared";
 
 type TOption = {
   value: string;
-  label: string;
+  label: string | undefined;
 };
 
 type TDropdownProps<T extends FieldValues, U> = {
   name: Path<T>;
   label: string;
-  options: TOption[];
+  options: TOption[] | undefined;
   chosen?: string;
   register: UseFormRegister<T>;
   error: string;

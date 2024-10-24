@@ -1,8 +1,8 @@
-import { DROPDOWN_END_POINTS, TOptionsFor } from "@/constants/end-points";
-import { TResponseOption } from "@/types/shared";
+import {DROPDOWN_END_POINTS, TOptionsFor} from "@/constants/end-points";
+import {TResponseOption} from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import axiosInstance from "@/utils/axiosInstance";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 // import axios from "axios";
 
 type TResponse = TResponseOption[];
@@ -25,14 +25,12 @@ const actGetDropdownOptions = createAsyncThunk(
 
       const response = await axiosInstance.get<TResponse>(url);
 
-      const formattedOptions = response.data.map((option) => {
-        return {
-          label: option.name,
-          value: option.id.toString(),
-        };
+      return response.data.map((option) => {
+          return {
+              label: option.name,
+              value: option.id.toString(),
+          };
       });
-
-      return formattedOptions;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

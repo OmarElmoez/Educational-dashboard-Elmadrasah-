@@ -21,13 +21,13 @@ const Dropdown = <T extends FieldValues, U extends string>({
   children = null,
   handleChange,
 }: TDropdownProps<T, U>) => {
-  const chosenValue = options.find((option) => option.value === chosen)?.value;
+  const chosenValue = options?.find((option) => option.value === chosen)?.value;
 
   const dispatch = useAppDispatch();
 
   const handleChosenState = (event: React.MouseEvent<HTMLSelectElement>) => {
     if (name === "state") {
-      const selectedState = options.find(
+      const selectedState = options?.find(
         (option) => option.value === event.currentTarget.value
       )?.label;
 
@@ -61,7 +61,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
           // }
         >
           <option value="">--اختر--</option>          
-          {options.map((option, index) => (
+          {options?.map((option, index) => (
             <option key={`${option.value}-${index}`} value={option.value}>
               {option.label}
             </option>

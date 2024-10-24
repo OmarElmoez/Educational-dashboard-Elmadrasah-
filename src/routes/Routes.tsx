@@ -218,7 +218,7 @@ const router = createBrowserRouter([
         element: <GeneralUnscheduledLists />,
       },
       {
-        path: 'schedule-lesson',
+        path: 'schedule-lesson/:id',
         element: <ScheduleLesson />,
       }
     ],
