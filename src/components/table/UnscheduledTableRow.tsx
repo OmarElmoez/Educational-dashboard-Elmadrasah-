@@ -18,7 +18,7 @@ const UnscheduledTableRow = ({
   handleChecked,
 }: UnscheduledTableRowProps) => {
   // ********** edit names
-  const { name, subscription_date, service_name, scheduled_status, grade } =
+  const { name, subscription_date, service_name, scheduled_status, grade, unscheduled } =
     rowData;
 
   return (
@@ -39,10 +39,11 @@ const UnscheduledTableRow = ({
         </td>
       )}
       <td> {name} </td>
-      <td> {name} </td>
+      {/* <td> {name} </td> */}
       <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
       <td> {service_name} </td>
       <td> {grade} </td>
+      <td>{unscheduled}</td>
       <td className={tdRow}>
         {/*  * link to form *  */}
         <Link
@@ -52,7 +53,7 @@ const UnscheduledTableRow = ({
         >
           {scheduled_status === "unscheduled"
             ? "في انتظار الجدولة"
-            : "تمت الجدولة"}{" "}
+            : "تمت الجدولة"}
         </Link>
       </td>
     </tr>

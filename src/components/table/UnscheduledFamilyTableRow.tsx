@@ -61,7 +61,7 @@ const UnscheduledFamilyTableRow = ({
         )}
 
         <td>{name}</td>
-        <td>{name}</td>
+        {/* <td>{name}</td> */}
         <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
         <td>{service_name}</td>
         <td>{grade}</td>
