@@ -35,10 +35,10 @@ const TABLE_HEAD_DATA = {
 
 
    unscheduled: [
-    { name: "name", label: "الاسم الاول" },
-    { name: "name_last", label: "الاسم الاخير " },
+    { name: "name", label: "الاسم" },
+    // { name: "name_last", label: "الاسم الاخير " },
     { name: "subscription_date", label: "تاريخ الاشتراك" },
-    { name: "service_name", label: "تاريخ الاشتراك" },
+    { name: "service_name", label: "نوع الباقة" },
     { name: "grade  ", label: "الصف " },
     { name: "unscheduled  ", label: "غير مجدولة " },
     { name: "action", label: "" },
