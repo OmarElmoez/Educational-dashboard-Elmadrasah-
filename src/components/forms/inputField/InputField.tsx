@@ -12,6 +12,7 @@ const InputField = <T extends FieldValues>({
   textarea,
   disabled = false,
   isRequired = false,
+  value,
   onChange, // Add onChange as a prop
 }: TInputField<T> & { onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void }) => {
   return (
@@ -39,6 +40,7 @@ const InputField = <T extends FieldValues>({
           placeholder={placeholder}
           disabled={disabled}
           onChange={onChange} // Handle onChange 
+          defaultValue={value}
         />
       )}
       <p className="error" style={{ position: "absolute", bottom: "0" }}>

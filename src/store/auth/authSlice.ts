@@ -40,6 +40,12 @@ const authSlice = createSlice({
       state.loading = "idle";
       state.credintials = undefined;
     },
+    // profile: (state) => {
+    //   state.user = null;
+    //   state.error = null;
+    //   state.loading = "idle";
+    //   state.credintials = undefined;
+    // },
   },
   extraReducers: (builder) => {
     // Regular Login
@@ -48,8 +54,6 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actAuthLogin.fulfilled, (state, action) => {
-      console.log("action", action);
-      
       state.loading = "succeeded";
       state.user = action.payload.user;
       state.modified_email = action.payload.modified_email;
