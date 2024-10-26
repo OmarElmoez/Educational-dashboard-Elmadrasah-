@@ -31,6 +31,7 @@ import {
   CopyInvoicesForm,
   ScheduleLesson,
   GeneralUnscheduledLists,
+  GeneralScheduledEmployeesLists,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -220,7 +221,12 @@ const router = createBrowserRouter([
       {
         path: 'schedule-lesson',
         element: <ScheduleLesson />,
-      }
+      },
+      {
+        path: 'schedule-emplyee',
+        element: <GeneralScheduledEmployeesLists />,
+      },
+
     ],
   },
 

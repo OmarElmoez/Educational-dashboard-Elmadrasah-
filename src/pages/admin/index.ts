@@ -23,6 +23,7 @@ import InvoiceDetails from "./lists/invoice/InvoiceDetails";
 import GeneralUnscheduledLists from "./lists/Unscheduled/GeneralUnscheduledLists";
 import UnscheduledList from "./lists/Unscheduled/UnscheduledList";
 import UnscheduledFamilyList from "./lists/Unscheduled/UnscheduledFamilyList";
+import GeneralScheduledEmployeesLists from "./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists";
 
 export {
   AdminClassesPage,
@@ -49,5 +50,6 @@ export {
   GeneralUnscheduledLists,
   UnscheduledList,
   UnscheduledFamilyList,
+  GeneralScheduledEmployeesLists,
 
 };
