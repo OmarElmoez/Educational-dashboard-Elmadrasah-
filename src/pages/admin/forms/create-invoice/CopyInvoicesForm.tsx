@@ -440,10 +440,12 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
     )
       .unwrap()
       .then((res) => {
-        console.log("res:", res);
-
-        openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!");
         navigate(`/admin/invoice-details/${res?.id}`);
+        if(dataStatus === "Approved") {
+          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoice-details/${res?.id}`)});
+        } else {
+          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoice-details/${res?.id}`)});
+        }
       })
       .catch((error) =>
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)

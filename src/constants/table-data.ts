@@ -54,6 +54,26 @@ const TABLE_HEAD_DATA = {
     { name: "actions", label: "" },
 
   ],
+  scheduledStatus: [
+    { name: "avatar", label: "صورة شخصية" },
+    { name: "name", label: "الاسم الأول/الأخير / الهاتف" },
+    { name: "subject", label: "المادة " },
+    { name: "status", label: "الحالة " },
+    { name: "sent_time", label: " وقت الإرسال " },
+    { name: "accept_time", label: "وقت القبول" },
+    { name: "actions", label: "أكشن    " },
+
+  ],
+  scheduledStatusWinners: [
+    { name: "avatar", label: "صورة شخصية" },
+    { name: "name", label: "الاسم الأول/الأخير / الهاتف" },
+    { name: "subject", label: "المادة " },
+    { name: "status", label: "الحالة " },
+    { name: "sent_time", label: " وقت الإرسال " },
+    { name: "accept_time", label: "وقت القبول" },
+    { name: "class ", label: "عدد الحصص" },
+
+  ],
  
 
 

@@ -1,15 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../lists.module.css";
 import { Row } from "@/components";
-import {
-  getUnscheduledFamilyList,
-  getUnscheduledList,
-} from "@/services/unscheduled";
 import WinnersList from "./WinnersTableList";
 import ParticipantList from "./ParticipantList";
+import { useParams } from "react-router-dom";
 // -----------------------------------------------------------------------------------------
 const {
-  balance_container,
   balance_right,
   balance_right_header,
   balance_right_header_title,
@@ -21,11 +17,12 @@ const {
 
 // -----------------------------------------------------------------------------------------
 const GeneralScheduledEmployeesLists = () => {
-  // table data states:
-  const [studentsCount, setStudentsCount] = useState<number>(0);
-  const [familiesCount, setFamiliesCount] = useState<number>(0);
 
   const [activeTab, setActiveTab] = useState<string>("winners");
+  const {std_id, id} = useParams();
+console.log("std_id, id", std_id, id);
+
+
 
   const TABS = [
     {
@@ -35,29 +32,14 @@ const GeneralScheduledEmployeesLists = () => {
     },
     {
       id: "losers",
-      title: "طلاب مستقلين",
+      title: "المدرسين المشاركين  ",
       component: ParticipantList,
     },
   ];
 
-
-
-  useEffect(() => {
-    // get All Data length
-    getUnscheduledList(1, null).then((res) => {
-      setStudentsCount(res.count);
-    });
-
-    getUnscheduledFamilyList(1, null).then((res) => {
-      setFamiliesCount(res.count);
-    });
-  }, []);
-
-
-
   return (
     <>
-      <section className={balance_container}>
+      <section>
         <div className={balance_right}>
           <h3 className={balance_right_header_title}>
            التقويم
@@ -73,8 +55,7 @@ const GeneralScheduledEmployeesLists = () => {
                     activeTab === tab.id ? active_tab_button : tab_button
                   }
                 >
-                  {tab.title} (
-                  {tab.id === "winners" ? familiesCount : studentsCount})
+                  {tab.title}
                 </button>
               ))}
             </Row>

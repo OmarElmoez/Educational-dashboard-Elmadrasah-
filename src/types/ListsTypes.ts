@@ -1,5 +1,6 @@
 export type TUnscheduled = {
   id: number;
+  customer_id: number;
   name: string;
   type: string;
   subscription_date: string;
@@ -8,11 +9,12 @@ export type TUnscheduled = {
   grade: string;
   purchased: number;
   unscheduled: number;
-  students:null;
+  students: null;
 };
 
 export type TUnscheduledFamily = {
   id: number;
+  customer_id: number;
   name: string;
   type: string;
   subscription_date: string;
@@ -22,4 +24,16 @@ export type TUnscheduledFamily = {
   purchased: number;
   unscheduled: number;
   students: TUnscheduled[] | null;
+};
+
+export type TdraftLessonsStatusResponse = {
+  id: number;
+  name: string;
+  phone: string;
+  image: string | null;
+  subject: string;
+  status: "Accepted" | "Rejected";
+  send_datetime: string;
+  accept_datetime: string;
+  lessons_count: number;
 };
