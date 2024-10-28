@@ -18,7 +18,7 @@ const AddNewSubjectModal = forwardRef((_, ref) => {
   const dialog = useRef<HTMLDialogElement>(null);
 
   const dispatch = useAppDispatch();
-  // const { credintials } = useAppSelector((state) => state.auth);
+  // const { credentials } = useAppSelector((state) => state.auth);
   const { loading } = useAppSelector((state) => state.formSubjects);
 
   const {

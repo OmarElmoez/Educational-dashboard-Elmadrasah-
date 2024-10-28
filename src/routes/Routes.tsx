@@ -220,7 +220,7 @@ const router = createBrowserRouter([
         element: <GeneralUnscheduledLists />,
       },
       {
-        path: 'schedule-lesson/:id',
+        path: 'schedule-lesson/:id/:credit',
         element: <ScheduleLesson />,
       },
       {

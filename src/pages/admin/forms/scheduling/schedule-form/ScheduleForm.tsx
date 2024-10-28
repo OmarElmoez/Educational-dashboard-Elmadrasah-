@@ -1,7 +1,7 @@
-import { Dropdown, InputField, Row } from "@/components";
+import {Dropdown, InputField, Row} from "@/components";
 import styles from "./schedule-form.module.css";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import {FieldValues, Path, UseFormRegister, UseFormWatch} from "react-hook-form";
+import {useState} from "react";
 
 const {
   customRadioLabel,
@@ -11,42 +11,52 @@ const {
   endType_row,
   after_count,
   week_day,
+  selected
 } = styles;
 
-const ScheduleForm = ({
+const ScheduleForm = <T extends FieldValues>({
   className,
   onClose,
-}: {
+  register,
+  watch,
+  resetRepetition,
+  setValue
+  }: {
   className?: string;
   onClose: () => void;
+  register: UseFormRegister<T>,
+  watch: UseFormWatch<T>,
+  resetRepetition: () => void,
+  setValue: (name: Path<T>, value: string | null | undefined) => void,
 }) => {
-  const { register, watch } = useForm();
 
   const [selectedRepeatType, setSelectedRepeatType] = useState("");
   const [monthsType, setMonthsType] = useState("");
   const [weekDays, setWeekDays] = useState<string[]>([]);
 
-  const endType = watch("end_type");
+  // todo:  you need to know why it works ^_^, it doesn't refer to the correct type.
+  const endType = watch('end_repeat' as Path<T>);
+
 
   const DAYS_OPTIONS = [
-    { label: "احد", value: "sunday", id: 1 },
-    { label: "اثنين", value: "monday", id: 2 },
-    { label: "ثلاثاء", value: "tuesday", id: 3 },
-    { label: "أربعاء", value: "wednesday", id: 4 },
-    { label: "خميس", value: "thursday", id: 5 },
-    { label: "جمعة", value: "friday", id: 6 },
-    { label: "سبت", value: "saturday", id: 7 },
+    {label: "احد", value: "sunday", id: 1},
+    {label: "اثنين", value: "monday", id: 2},
+    {label: "ثلاثاء", value: "tuesday", id: 3},
+    {label: "أربعاء", value: "wednesday", id: 4},
+    {label: "خميس", value: "thursday", id: 5},
+    {label: "جمعة", value: "friday", id: 6},
+    {label: "سبت", value: "saturday", id: 7},
   ];
 
   return (
     <form className={className}>
+
       <InputField
-        type="date"
         label="تاريخ البدء"
-        placeholder="2023-01-01"
         register={register}
-        name="start_date"
+        name={"start_date" as Path<T>}
         error=""
+        disabled
       />
 
       <Row>
@@ -54,46 +64,37 @@ const ScheduleForm = ({
           label="إعادة التكرار كل :"
           register={register}
           options={[
-            { label: "أيام", value: "days" },
-            { label: "أسبوع", value: "week" },
-            { label: "شهر", value: "month" },
+            {label: "أيام", value: "daily"},
+            {label: "أسبوع", value: "weekly"},
+            {label: "شهر", value: "monthly"},
           ]}
-          name="repeat_every"
+          name={"repeat_every" as Path<T>}
           error=""
           handleChange={(value: string) => {
             setSelectedRepeatType(value);
           }}
         />
 
-        {selectedRepeatType === "days" && (
+        {(selectedRepeatType === "daily" || selectedRepeatType === 'weekly') && (
           <InputField
-            label="عدد الايام"
-            placeholder="15"
+            label={selectedRepeatType === 'daily' ? "عدد الايام" : "عدد الاسابيع"}
+            placeholder={selectedRepeatType === 'daily' ? "15" : "4"}
             register={register}
-            name="repeat_days_count"
+            name={"repeat_count" as Path<T>}
             error=""
+            type="number"
           />
         )}
 
-        {selectedRepeatType === "week" && (
-          <InputField
-            label="عدد الاسابيع"
-            placeholder="4"
-            register={register}
-            name="repeat_weeks_count"
-            error=""
-          />
-        )}
-
-        {selectedRepeatType === "month" && (
+        {selectedRepeatType === "monthly" && (
           <Dropdown
             label="التكرار شهرياً"
             register={register}
             options={[
-              { label: "يوم", value: "day" },
-              { label: "ارباع", value: "quarter" },
+              {label: "يوم", value: "day"},
+              {label: "ارباع", value: "quarter"},
             ]}
-            name="repeat_months_type"
+            name={"repeat_monthly" as Path<T>}
             error=""
             handleChange={(value: string) => {
               setMonthsType(value);
@@ -107,9 +108,8 @@ const ScheduleForm = ({
           <InputField
             label=""
             type="date"
-            placeholder="15"
             register={register}
-            name="repeat_months_day_count"
+            name={"repeat_monthly_date" as Path<T>}
             error=""
           />
         </Row>
@@ -121,26 +121,28 @@ const ScheduleForm = ({
             label="الربع المراد تكراره : "
             register={register}
             options={[
-              { label: "الربع الاول", value: "first_quarter" },
-              { label: "الربع الثاني", value: "second_quarter" },
-              { label: "الربع الثالث", value: "third_quarter" },
-              { label: "الربع الرابع", value: "fourth_quarter" },
+              {label: "الربع الاول", value: "first"},
+              {label: "الربع الثاني", value: "second"},
+              {label: "الربع الثالث", value: "third"},
+              {label: "الربع الرابع", value: "fourth"},
             ]}
-            name="repeat_months_quarter_type"
+            name={"on_quarter" as Path<T>}
             error=""
           />
         </Row>
       )}
 
-      {(selectedRepeatType === "week" || monthsType === "quarter") && (
+      {(selectedRepeatType === "weekly" || monthsType === "quarter") && (
         <>
           <p className="adminFormLabel">في أيام</p>
-          <Row style={{ marginTop: "1rem" }}>
+          <Row style={{marginTop: "1rem"}}>
             {DAYS_OPTIONS.map((day) => (
-              <label key={day.id} htmlFor={day.value} className={week_day}>
+              <label key={day.id} htmlFor={day.value}
+                     className={`${week_day} ${weekDays.includes(day.value) ? selected : ''}`}>
                 <input
                   type="checkbox"
-                  {...register("week_days")}
+                  {...register("days" as Path<T>)}
+                  className='repetitionWeekDay'
                   id={day.value}
                   value={day.value}
                   checked={weekDays.includes(day.value)}
@@ -173,7 +175,7 @@ const ScheduleForm = ({
           <label className={customRadioLabel}>
             <input
               type="radio"
-              {...register("end_type")}
+              {...register("end_repeat" as Path<T>)}
               className={customRadioInput}
               value="never"
             />
@@ -186,7 +188,7 @@ const ScheduleForm = ({
           <label className={customRadioLabel}>
             <input
               type="radio"
-              {...register("end_type")}
+              {...register("end_repeat" as Path<T>)}
               className={customRadioInput}
               value="on"
             />
@@ -196,18 +198,18 @@ const ScheduleForm = ({
 
           <input
             type="date"
-            {...register("end_date")}
+            {...register("end_repeat_on" as Path<T>)}
             id=""
             disabled={endType !== "on"}
-            style={{ backgroundColor: "transparent" }}
+            style={{backgroundColor: "transparent"}}
           />
         </section>
 
-        <section className={endType_row} style={{ gap: "5.2rem" }}>
+        <section className={endType_row} style={{gap: "5.2rem"}}>
           <label className={customRadioLabel}>
             <input
               type="radio"
-              {...register("end_type")}
+              {...register("end_repeat" as Path<T>)}
               className={customRadioInput}
               value="after"
             />
@@ -218,7 +220,7 @@ const ScheduleForm = ({
           <div className={after_count}>
             <input
               type="number"
-              {...register("after_count")}
+              {...register("repeat_times" as Path<T>)}
               id=""
               disabled={endType !== "after"}
             />
@@ -227,11 +229,19 @@ const ScheduleForm = ({
         </section>
       </Row>
 
-      <Row style={{ justifyContent: "flex-end", marginTop: "2.4rem" }}>
-        <button type="submit" className="btn submit-btn">
+      <Row style={{justifyContent: "flex-end", marginTop: "2.4rem"}}>
+        <button type="button" onClick={onClose} className="btn submit-btn">
           حفظ
         </button>
-        <button type="button" className="btn cancel-btn" onClick={onClose}>
+        <button type="button" className="btn cancel-btn" onClick={() => {
+          resetRepetition()
+          onClose();
+          setMonthsType('')
+          setSelectedRepeatType('')
+          setWeekDays([])
+          setValue("end_repeat_on" as Path<T>, null)
+          setValue("repeat_times" as Path<T>, null)
+        }}>
           يُلغي
         </button>
       </Row>

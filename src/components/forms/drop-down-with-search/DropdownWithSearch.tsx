@@ -1,26 +1,40 @@
-import { useEffect, useState } from "react";
+// todo: Make it dynamic to get several data
+
+/**
+ * How to use this component:
+ *
+ * 1- you pass (register, name, setValue) from (useForm hook) to get the value from the component.
+ *
+ * 2- you pass (handleChange) if you want to use the (selected option) in another process like (filtration).
+ *    - this (handleChange) will give you the whole option (label & value)
+ */
+
+import {useEffect, useState} from "react";
 import styles from "./dropdownWithSearch.module.css";
-import { TOption } from "@/types/Dropdown";
-import { useDebounce } from "@/hooks";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetDropdownOptions } from "@/store/single-actions";
-import { useLocation } from "react-router-dom";
+import {TOption} from "@/types/Dropdown";
+import {useDebounce} from "@/hooks";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {actGetDropdownOptions} from "@/store/single-actions";
+import {FieldValues, Path, UseFormRegister} from "react-hook-form";
 
-const { select_box, popup_box, search_box, options_box } = styles;
+const {select_box, popup_box, search_box, options_box} = styles;
 
-const DropdownWithSearch = ({
-  options,
-  handleChange,
-  label,
-  placeholder = "اختر",
-  handleGetOption,
-  setSelectedCustomer,
-  selectedCustomer,
-}: {
+const DropdownWithSearch = <T extends FieldValues>({
+                                                     options,
+                                                     handleChange,
+                                                     label,
+                                                     placeholder = "اختر",
+                                                     register,
+                                                     name,
+                                                     setValue,
+                                                   }: {
+  register: UseFormRegister<T>,
+  name: Path<T>,
+  setValue: (name: Path<T>, value: string) => void,
   options: TOption[];
   label: string;
   placeholder?: string;
-  handleChange?: (id: string) => void;
+  handleChange?: (option: TOption) => void;
   // to get option as needed option.label not id
   handleGetOption?: (option: TOption | null) => void;
   setSelectedCustomer?: (param: TOption) => void;
@@ -32,26 +46,15 @@ const DropdownWithSearch = ({
   const [searchResults, setsearchResults] = useState<TOption[]>([]);
   const debouncedQuery = useDebounce(searchQuery);
   const dispatch = useAppDispatch();
-  const { credintials } = useAppSelector((state) => state.auth);
+  const {credintials: credentials} = useAppSelector((state) => state.auth);
 
-
-  const location = useLocation();
-  const isBalanceRoute = location.pathname === "/admin/balance-list";
-  
 
   const handleOptionClick = (option: TOption) => {
     setSelectedOption(option);
     setIsOpen(false);
-
-    if (setSelectedCustomer) {
-      setSelectedCustomer(option);
-    }
-
+    setValue(name, option.value);
     if (handleChange) {
-      handleChange(option.value);
-    }
-    if (handleGetOption) {
-      handleGetOption(option);
+      handleChange(option);
     }
   };
 
@@ -66,22 +69,22 @@ const DropdownWithSearch = ({
       .then((res) => {
         setsearchResults(res);
       });
-  }, [debouncedQuery, dispatch, credintials?.token]);
+  }, [debouncedQuery, dispatch, credentials?.token]);
 
   return (
     <article className="group">
+      {/* Hidden input for form registration */}
+      <input
+        {...register(name)}
+        type="hidden"
+      />
       <label className={`adminFormLabel`}>{label}</label>
       <section
         className={`select_wrapper ${select_box}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {/* here will be the selected option */}
-
-        {(isBalanceRoute ? (selectedCustomer) : selectedOption) ? (
-          <span>{selectedOption?.label}</span>
-        ) : (
-          <span className="dropdown-placeholder">{placeholder}</span>
-        )}
+        {selectedOption ? (<span>{selectedOption?.label}</span>) : (
+          <span className="dropdown-placeholder">{placeholder}</span>)}
       </section>
       {isOpen && (
         <section className={popup_box}>
