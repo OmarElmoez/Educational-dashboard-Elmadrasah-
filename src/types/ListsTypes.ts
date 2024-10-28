@@ -36,4 +36,5 @@ export type TdraftLessonsStatusResponse = {
   send_datetime: string;
   accept_datetime: string;
   lessons_count: number;
+  lesson_draft_id: number;
 };
