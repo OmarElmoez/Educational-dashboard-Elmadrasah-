@@ -18,8 +18,16 @@ const UnscheduledTableRow = ({
   handleChecked,
 }: UnscheduledTableRowProps) => {
   // ********** edit names
-  const { name, subscription_date, service_name, scheduled_status, grade, unscheduled } =
-    rowData;
+  const {
+    id,
+    customer_id,
+    name,
+    subscription_date,
+    service_name,
+    scheduled_status,
+    grade,
+    unscheduled,
+  } = rowData;
 
   return (
     <tr key={rowData.id}>
@@ -47,13 +55,54 @@ const UnscheduledTableRow = ({
       <td className={tdRow}>
         {/*  TODO: here will be the id form row (rowData.id)  */}
         <Link
-          to={`/admin/schedule-lesson/${1}`}
+          // to={`/admin/schedule-lesson/${1}`}
+          to= {(() => {
+            switch (scheduled_status) {
+              case "unscheduled":
+                return `/admin/schedule-lesson/${id}`;
+              case "scheduled":
+                return `/admin/schedule-emplyee/${customer_id}/${id}`;
+              case "scheduling_error":
+                return `/admin/schedule-errors/${customer_id}/${id}`;
+              case "under_scheduling":
+                return "/admin/all-unscheduled-list";
+              default:
+                return `admin/all-unscheduled-list`;
+            }
+          })()}
           aria-label="Action button"
+          style={{
+            backgroundColor: (() => {
+              switch (scheduled_status) {
+                case "unscheduled":
+                  return "#1C8A44";
+                case "scheduled":
+                  return "#1E27DE";
+                case "scheduling_error":
+                  return "#C92516";
+                case "under_scheduling":
+                  return "#FFB72B";
+                default:
+                  return "#FFB72B";
+              }
+            })(),
+          }}
           className={table_btn}
         >
-          {scheduled_status === "unscheduled"
-            ? "في انتظار الجدولة"
-            : "تمت الجدولة"}
+          {(() => {
+            switch (scheduled_status) {
+              case "unscheduled":
+                return "في انتظار الجدولة";
+              case "scheduled":
+                return "تمت الجدولة";
+              case "scheduling_error":
+                return "يوجد خطأ في الجدولة";
+              case "under_scheduling":
+                return "اعتماد المواعيد ";
+              default:
+                return "في انتظار الجدولة";
+            }
+          })()} 
         </Link>
       </td>
     </tr>

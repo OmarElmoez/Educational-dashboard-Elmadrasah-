@@ -15,7 +15,7 @@ import EditInvoiceForm from "./forms/create-invoice/EditInvoiceForm";
 import CopyInvoicesForm from "./forms/create-invoice/CopyInvoicesForm";
 import ScheduleLesson from "./forms/scheduling/ScheduleLesson";
 
-// LIST: 
+// LIST:
 import StudentsList from "./lists/StudentsList";
 import InvoicesList from "./lists/InvoicesList";
 import PackageBalanceList from "./lists/balance/PackageBalanceList";
@@ -23,6 +23,8 @@ import InvoiceDetails from "./lists/invoice/InvoiceDetails";
 import GeneralUnscheduledLists from "./lists/Unscheduled/GeneralUnscheduledLists";
 import UnscheduledList from "./lists/Unscheduled/UnscheduledList";
 import UnscheduledFamilyList from "./lists/Unscheduled/UnscheduledFamilyList";
+import GeneralScheduledEmployeesLists from "./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists";
+import SchedulingErrorsTableList from "./lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
 
 export {
   AdminClassesPage,
@@ -30,7 +32,6 @@ export {
   AdminTeachersPage,
   AdminReportsPage,
   AdminStudentsPage,
-
   AddEmployeeForm,
   AddTeacherForm,
   AddParentForm,
@@ -49,5 +50,6 @@ export {
   GeneralUnscheduledLists,
   UnscheduledList,
   UnscheduledFamilyList,
-
+  GeneralScheduledEmployeesLists,
+  SchedulingErrorsTableList,
 };

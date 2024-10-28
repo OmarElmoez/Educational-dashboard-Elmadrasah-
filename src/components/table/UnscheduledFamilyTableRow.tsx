@@ -34,8 +34,16 @@ const UnscheduledFamilyTableRow = ({
 }: UnscheduledFamilyTableRowProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const { name, subscription_date, service_name, scheduled_status, grade, unscheduled } =
-    rowData;
+  const {
+    id,
+    customer_id,
+    name,
+    subscription_date,
+    service_name,
+    scheduled_status,
+    grade,
+    unscheduled,
+  } = rowData;
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -68,15 +76,67 @@ const UnscheduledFamilyTableRow = ({
         {/* <td>{scheduled_status}</td> */}
         <td className={tdRow}>
           {/*  TODO: here will be the id form row (rowData.id)  */}
-          <Link
+          {/* <Link
             to={`/admin/schedule-lesson/${1}`}
             aria-label="Action button"
-            style={{ backgroundColor: "#C92516" }}
+            style={{
+               backgroundColor: `${scheduled_status === "unscheduled" ? "#C92516" :  "#FFB72B" }  ` 
+              }}
             className={table_btn}
           >
             {scheduled_status === "unscheduled"
               ? "في انتظار الجدولة"
               : "تمت الجدولة"}
+          </Link> */}
+
+          <Link
+            to={(() => {
+              switch (scheduled_status) {
+                case "unscheduled":
+                  return `/admin/schedule-lesson/${id}`;
+                case "scheduled":
+                  return `/admin/schedule-emplyee/${customer_id}/${id}`;
+                case "scheduling_error":
+                  return `/admin/schedule-errors/${customer_id}/${id}`;
+                case "under_scheduling":
+                  return "/admin/all-unscheduled-list";
+                default:
+                  return `admin/all-unscheduled-list`;
+              }
+            })()}
+            aria-label="Action button"
+            style={{
+              backgroundColor: (() => {
+                switch (scheduled_status) {
+                  case "unscheduled":
+                    return "#1C8A44";
+                  case "scheduled":
+                    return "#1E27DE";
+                  case "scheduling_error":
+                    return "#C92516";
+                  case "under_scheduling":
+                    return "#FFB72B";
+                  default:
+                    return "#FFB72B";
+                }
+              })(),
+            }}
+            className={table_btn}
+          >
+            {(() => {
+              switch (scheduled_status) {
+                case "unscheduled":
+                  return "في انتظار الجدولة";
+                case "scheduled":
+                  return "تمت الجدولة";
+                case "scheduling_error":
+                  return "يوجد خطأ في الجدولة";
+                case "under_scheduling":
+                  return "اعتماد المواعيد ";
+                default:
+                  return "في انتظار الجدولة";
+              }
+            })()}
           </Link>
         </td>
         <td onClick={toggleExpand} style={{ cursor: "pointer" }}>
@@ -104,26 +164,16 @@ const UnscheduledFamilyTableRow = ({
       {isExpanded &&
         childrenRows &&
         childrenRows?.map((child) => (
-          <tr key={child?.id} className={isExpanded ? active_row_container : ""}>
+          <tr
+            key={child?.id}
+            className={isExpanded ? active_row_container : ""}
+          >
             <td></td>
             <td>{child?.name}</td>
-            <td>{child?.name}</td>
-            <td style={{ whiteSpace: "nowrap" }}>
-              {format(new Date(child?.subscription_date), "yyyy-MM-dd")}
-            </td>
-            <td>{child?.service_name}</td>
-            <td>{child?.grade}</td>
+            <td> </td>
+            <td></td>
+            <td> {child?.grade}</td>
             {/* <td>{child.scheduled_status}</td> */}
-            {/* <td>
-              <Link
-                to="/admin/schedule-lesson"
-                aria-label="Action button"
-                style={{ backgroundColor: "#C92516" }}
-                className={table_btn}
-              >
-                {child?.scheduled_status}
-              </Link>
-            </td> */}
           </tr>
         ))}
 

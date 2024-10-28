@@ -63,7 +63,7 @@ const InvoiceOptionsDropdown: React.FC = () => {
         )
         .then(unwrapResult)
         .then(() => {
-          openFeedbackModal("succeeded", "تم حذف الفاتورة بنجاح");
+          openFeedbackModal("succeeded", "تم الغاء الفاتورة بنجاح");
           navigate(`/admin/invoices-list`);
         })
         .catch((error: string) => {

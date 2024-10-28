@@ -4,7 +4,7 @@ import styles from "./table.module.css";
 const { table, hiddenInput, checkmark, checkmarkBox,  } = styles;
 
 type TTableProps = {
-  headData: { name: string; label: string }[];
+  headData?: { name: string; label: string }[];
   onCheckAll?: () => void;
   children: React.ReactNode ;
   isCheckbox?:boolean;
@@ -25,7 +25,7 @@ const MainTable = ({ headData, onCheckAll, children, isCheckbox= true }: TTableP
                />
             </span>
           </th>}
-          {headData.map((head) => (
+          {headData && headData?.map((head) => (
             <th key={head.name}>{head.label}</th>
           ))}
         </tr>

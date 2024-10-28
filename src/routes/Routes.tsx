@@ -31,6 +31,7 @@ import {
   CopyInvoicesForm,
   ScheduleLesson,
   GeneralUnscheduledLists,
+  GeneralScheduledEmployeesLists,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -50,6 +51,7 @@ import {
 } from "@/pages/shared";
 import { Login, PhoneNumber, SetPassword } from "@/pages/login";
 import { SIDEBAR_DATA } from "@/constants";
+import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
 
 const router = createBrowserRouter([
   // Login Routes
@@ -220,7 +222,16 @@ const router = createBrowserRouter([
       {
         path: 'schedule-lesson/:id',
         element: <ScheduleLesson />,
-      }
+      },
+      {
+        path: 'schedule-emplyee/:std_id/:id',
+        element: <GeneralScheduledEmployeesLists />,
+      },
+      {
+        path: 'schedule-errors/:std_id/:id',
+        element: <ScheduledErrorsTableList />,
+      },
+
     ],
   },
 
