@@ -143,6 +143,5 @@ tr.ctive_row_container:nth-last-of-type(1) {
   white-space: pre-line !important;
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: start;
+  /* justify-content: stalessons_count */
 }

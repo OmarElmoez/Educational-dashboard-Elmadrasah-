@@ -46,7 +46,7 @@ const ScheduledErrorsTableList = () => {
               <EmployeeDetailsTableRow
                 key={row.id}
                 rowData={row}
-                onClick={() => handleRescheduleClick(row.id)}
+                onClick={() => handleRescheduleClick(row.lesson_draft_id)}
               />
             ))}
         </MainTable>
