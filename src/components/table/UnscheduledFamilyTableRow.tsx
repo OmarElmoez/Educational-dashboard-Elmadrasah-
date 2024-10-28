@@ -78,6 +78,8 @@ const UnscheduledFamilyTableRow = ({
           {/*  TODO: here will be the id form row (rowData.id)  */}
           {/* <Link
             to={`/admin/schedule-lesson/${1}`}
+          <Link
+            to={`/admin/schedule-lesson/${1}/${rowData.unscheduled}`}
             aria-label="Action button"
             style={{
                backgroundColor: `${scheduled_status === "unscheduled" ? "#C92516" :  "#FFB72B" }  ` 
@@ -93,7 +95,7 @@ const UnscheduledFamilyTableRow = ({
             to={(() => {
               switch (scheduled_status) {
                 case "unscheduled":
-                  return `/admin/schedule-lesson/${id}`;
+                  return `/admin/schedule-lesson/${id}/${rowData.unscheduled}`;
                 case "scheduled":
                   return `/admin/schedule-emplyee/${customer_id}/${id}`;
                 case "scheduling_error":

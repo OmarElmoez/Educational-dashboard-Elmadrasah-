@@ -31,7 +31,7 @@ const END_POINTS = {
     placeholder: "رابط دخول الحصة",
   },
   // Temp data
-  days: {
+  day: {
     url: "",
     placeholder: "الأيام",
   },
