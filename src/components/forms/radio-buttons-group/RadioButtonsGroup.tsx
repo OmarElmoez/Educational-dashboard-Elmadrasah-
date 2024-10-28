@@ -18,6 +18,7 @@ type TRadioButtonsGroupProps<T extends FieldValues> = {
   options: { value: string | number; label: string }[];
   disabled?: boolean;
   style?: React.CSSProperties;
+  error?: string;
 };
 
 const RadioButtonsGroup = <T extends FieldValues>({
@@ -26,6 +27,7 @@ const RadioButtonsGroup = <T extends FieldValues>({
   options,
   disabled = false,
   style,
+  error
 }: TRadioButtonsGroupProps<T>) => {
   return (
     <div className={radioOptions} style={style}>
@@ -42,6 +44,7 @@ const RadioButtonsGroup = <T extends FieldValues>({
           <span className={radioLabel}>{option.label}</span>
         </label>
       ))}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

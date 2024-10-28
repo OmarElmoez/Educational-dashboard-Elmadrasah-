@@ -173,10 +173,9 @@ const REPORT_OPTIONS = [
 ];
 
 const FOLLOW_UP_OPTIONS = [
-  { label: '5 حصص', value: '5_classes' },
-  { label: 'أسبوع', value: 'week' },
-  { label: "10 أيام", value: "10_days" },
-  { label: '10 حصص', value: '10_classes' },
+  { label: '5 حصص', value: '5' },
+  { label: '10 حصص', value: '10' },
+  { label: "20 حصة", value: "20" },
 ];
 
 

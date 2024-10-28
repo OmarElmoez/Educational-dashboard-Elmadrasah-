@@ -3,7 +3,7 @@ import tstyles from "../../../../components/table/table.module.css";
 // import { Link } from "react-router-dom";
 import ReloadIcon from "@/assets/reload_icon.svg?react";
 import { arSA } from "date-fns/locale";
-const { tdRow, table_btn, table_column_cell } = tstyles;
+const { table_btn, table_column_cell } = tstyles;
 
 type EmployeeDetailsTableRowProps<T> = {
   rowData: T;

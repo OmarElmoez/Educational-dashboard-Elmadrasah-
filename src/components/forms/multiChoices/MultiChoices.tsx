@@ -184,7 +184,6 @@ const MultiChoices = <T extends FieldValues>({
             setIsWrapperClicked(!isWrapperClicked);
           }
         }}
-        // onBlur={() => setIsWrapperClicked(false)}
       >
         {renderPreview()}
       </section>

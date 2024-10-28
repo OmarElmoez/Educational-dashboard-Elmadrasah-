@@ -92,11 +92,20 @@
   color: #565E59;
 }
 
-.week_day:has(input:checked) {
+/*.week_day:has(input:checked) {*/
+/*  background-color: #1C8A44;*/
+/*  color: #fff;*/
+/*}*/
+
+.week_day.selected {
   background-color: #1C8A44;
   color: #fff;
 }
 
-.week_day:has(input:checked) span {
+/*.week_day:has(input:checked) span {*/
+/*  color: #fff;*/
+/*}*/
+
+.week_day.selected span {
   color: #fff;
 }

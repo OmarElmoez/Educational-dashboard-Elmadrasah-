@@ -59,7 +59,7 @@ type TServiceHandler = {
 const CreateInvoiceForm = () => {
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
   const { openFeedbackModal } = useFeedback();
   const navigate = useNavigate();
 
@@ -241,8 +241,8 @@ const CreateInvoiceForm = () => {
     setTreatmentType(treatment);
   };
 
-  const handleCustomer = (id: string) => {
-    setCustomer(id);
+  const handleCustomer = (option: TOption) => {
+    setCustomer(option.value);
   };
 
   const handleGetVatValue = async () => {
@@ -407,12 +407,11 @@ const CreateInvoiceForm = () => {
 
     handleGetVatValue();
     // eslint-disable-next-line
-  }, [dispatch, user?.token]);
+  }, [dispatch, credintials?.token]);
 
   const onSubmit = (data: TCreateInvoiceFormData) => {
     data.formatted_number = invoiceNumber;
     data.tax_count = parseFloat(data.tax_count).toString();
-    data.customer = customer;
 
     data.status = dataStatus;
     if (chargesFields?.length === 0 && packagesFields?.length === 0) {
@@ -457,6 +456,9 @@ const CreateInvoiceForm = () => {
 
       <Row>
         <DropdownWithSearch
+          register={register}
+          name="customer"
+          setValue={setValue}
           options={customersList}
           handleChange={handleCustomer}
           label="اختر العميل"

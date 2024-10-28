@@ -55,11 +55,10 @@ const UnscheduledTableRow = ({
       <td className={tdRow}>
         {/*  TODO: here will be the id form row (rowData.id)  */}
         <Link
-          // to={`/admin/schedule-lesson/${1}`}
           to= {(() => {
             switch (scheduled_status) {
               case "unscheduled":
-                return `/admin/schedule-lesson/${id}`;
+                return `/admin/schedule-lesson/${id}/${rowData.unscheduled}`;
               case "scheduled":
                 return `/admin/schedule-emplyee/${customer_id}/${id}`;
               case "scheduling_error":
@@ -102,7 +101,7 @@ const UnscheduledTableRow = ({
               default:
                 return "في انتظار الجدولة";
             }
-          })()} 
+          })()}
         </Link>
       </td>
     </tr>

@@ -68,7 +68,6 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
 
   // customer dropdown
   const [customersList, setCustomersList] = useState<TOption[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<TOption | null>(null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -97,11 +96,12 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
       <div className={formGroup}>
         <label className={form_label}>اسم العميل</label>
         <DropdownWithSearch
+          register={register}
+          name="name"
+          setValue={setValue}
           label=""
           options={customersList}
-          handleGetOption={handleGetOption}
-          selectedCustomer={selectedCustomer}
-          setSelectedCustomer={setSelectedCustomer}
+          handleChange={handleGetOption}
           placeholder="اختر العميل"
         />
       </div>
