@@ -68,28 +68,12 @@ const UnscheduledFamilyTableRow = ({
           </td>
         )}
         <td>{name}</td>
-        {/* <td>{name}</td> */}
         <td>{format(new Date(subscription_date), "yyyy-MM-dd")}</td>
         <td>{service_name}</td>
         <td>{grade}</td>
         <td>{unscheduled}</td>
-        {/* <td>{scheduled_status}</td> */}
         <td className={tdRow}>
-          {/*  TODO: here will be the id form row (rowData.id)  */}
-          {/* <Link
-            to={`/admin/schedule-lesson/${1}`}
-          <Link
-            to={`/admin/schedule-lesson/${1}/${rowData.unscheduled}`}
-            aria-label="Action button"
-            style={{
-               backgroundColor: `${scheduled_status === "unscheduled" ? "#C92516" :  "#FFB72B" }  ` 
-              }}
-            className={table_btn}
-          >
-            {scheduled_status === "unscheduled"
-              ? "في انتظار الجدولة"
-              : "تمت الجدولة"}
-          </Link> */}
+
 
           <Link
             to={(() => {
@@ -175,7 +159,6 @@ const UnscheduledFamilyTableRow = ({
             <td> </td>
             <td></td>
             <td> {child?.grade}</td>
-            {/* <td>{child.scheduled_status}</td> */}
           </tr>
         ))}
 
