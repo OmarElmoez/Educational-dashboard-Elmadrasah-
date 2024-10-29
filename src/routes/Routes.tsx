@@ -32,6 +32,7 @@ import {
   ScheduleLesson,
   GeneralUnscheduledLists,
   GeneralScheduledEmployeesLists,
+  RescheduleLesson,
 } from "@/pages/admin";
 import {
   TeacherClassesPage,
@@ -222,6 +223,10 @@ const router = createBrowserRouter([
       {
         path: 'schedule-lesson/:id/:credit',
         element: <ScheduleLesson />,
+      },
+      {
+        path: 'reschedule-lesson/:id/',
+        element: <RescheduleLesson />,
       },
       {
         path: 'schedule-emplyee/:std_id/:id',

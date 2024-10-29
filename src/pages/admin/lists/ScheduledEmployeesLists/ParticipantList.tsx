@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MainTable from "@/components/table/MainTable";
 import { getscheduledParticipantsTeachersList } from "@/services/unscheduled";
 import { TdraftLessonsStatusResponse } from "@/types/ListsTypes";
@@ -14,27 +14,25 @@ const ParticipantList = () => {
   >(null);
 
   const { std_id, id } = useParams();
-  console.log("std_id, id", std_id, id);
+  const navigate = useNavigate();
+
+  const handleRescheduleClick = (id: number) => {
+    navigate(`/admin/reschedule-lesson/${id}/`);
+  };
+
 
   useEffect(() => {
     // get All Data
     if (std_id && id) {
       getscheduledParticipantsTeachersList(std_id, id).then((res) => {
         if (res?.length) {
-          console.log("resxaxa", res);
           setTableData(res);
         }
       });
     }
   }, [std_id, id]);
 
-  {
-    /*  TODO: Upadte it with real function  */
-  }
-  const handleRescheduleClick = (id: number) => {
-    console.log("handleClick", id);
-  };
-
+  
   return (
     <>
       <section>

@@ -14,6 +14,7 @@ import EditInvoiceForm from "./forms/create-invoice/EditInvoiceForm";
 // import CopyInvoiceForm from "./forms/create-invoice/CopyInvoiceForm";
 import CopyInvoicesForm from "./forms/create-invoice/CopyInvoicesForm";
 import ScheduleLesson from "./forms/scheduling/ScheduleLesson";
+import RescheduleLesson from "./forms/scheduling/RescheduleLesson";
 
 // LIST:
 import StudentsList from "./lists/StudentsList";
@@ -47,6 +48,7 @@ export {
   // CopyInvoiceForm,
   CopyInvoicesForm,
   ScheduleLesson,
+  RescheduleLesson,
   GeneralUnscheduledLists,
   UnscheduledList,
   UnscheduledFamilyList,

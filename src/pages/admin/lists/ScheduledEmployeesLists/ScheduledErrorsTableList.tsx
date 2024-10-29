@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MainTable from "@/components/table/MainTable";
 
 import { TdraftLessonsStatusResponse } from "@/types/ListsTypes";
@@ -15,12 +15,10 @@ const ScheduledErrorsTableList = () => {
   >(null);
 
   const { std_id, id } = useParams();
+  const navigate = useNavigate();
 
-  {
-    /*  TODO: Upadte it with real function  */
-  }
   const handleRescheduleClick = (id: number) => {
-    console.log("handleClick", id);
+    navigate(`/admin/reschedule-lesson/${id}/`);
   };
 
   useEffect(() => {
