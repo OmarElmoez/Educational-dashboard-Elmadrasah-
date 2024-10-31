@@ -20,6 +20,7 @@ type Teacher = {
 type Subject = {
   id: number;
   name: string;
+  student_credit: number;
   created_at: string;
 };
 
@@ -41,10 +42,15 @@ type Shift = {
   created_at: string;
 };
 
+export type TDay = {
+  id: number;
+  name: string;
+}
+
 type LeadflowData = {
   customer: Customer;
   students: Student[];
-  days: any[];
+  days: TDay[];
   shift: Shift;
   time: any[];
   timezone: string;
@@ -54,7 +60,7 @@ type LeadflowData = {
   form: number;
 };
 
-type LessonDraftData = {
+ export type TLessonDraftData = {
   package_id: number;
   service_id: number;
   description: string;
@@ -66,17 +72,24 @@ type LessonDraftData = {
   time_zone: null | string;
   is_auto: boolean;
   repeat: boolean;
-  repeat_every: null | number;
+  repeat_every: 'daily' | 'weekly' | 'monthly' | '';
   repeat_count: null | number;
-  end_repeat: null | string;
+  repeat_monthly: 'day' | 'quarter' | null;
+  repeat_monthly_date: string | null;
+  on_quarter: "first" | "second" | "third" | "fourth" | null;
+  end_repeat: 'never' | 'after' | 'on' | null;
   end_repeat_on: null | string;
-  end_repeat_after: null | number;
+  repeat_times: null | number;
   days: null | any[];
+  lesson_draft_id: number | null,
+  follow_up_type: number | string | null,
+  teacher_language: string | null,
+  gender: string | null
 };
 
-type TRescheduleLessonResponse = {
+export type TRescheduleLessonResponse = {
   leadflow_data: LeadflowData[];
-  lesson_draft_data: LessonDraftData;
+  lesson_draft_data: TLessonDraftData;
 };
 
 const actGetRescheduleLessonData = createAsyncThunk(

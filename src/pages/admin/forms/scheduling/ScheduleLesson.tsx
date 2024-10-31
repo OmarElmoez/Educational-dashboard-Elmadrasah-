@@ -1,13 +1,4 @@
-import {
-  BasicModal,
-  Dropdown,
-  DropdownWithSearch,
-  Heading,
-  InputField,
-  MultiChoices,
-  RadioButtonsGroup,
-  Row,
-} from "@/components";
+import {BasicModal, Dropdown, DropdownWithSearch, Heading, InputField, RadioButtonsGroup, Row,} from "@/components";
 import {TIMEZONES_OPTIONS} from "@/constants";
 import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
@@ -21,7 +12,7 @@ import RepeatIcon from "@/assets/repeat.svg?react";
 import {TModalRef} from "@/types/shared";
 import ScheduleForm from "./schedule-form/ScheduleForm";
 import actGetScheduleLessonData from "@/store/single-actions/actGetScheduleLessonData";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {TLeadFlowData} from "@/schemas/getScheduleLessonSchema.ts";
 import createOptionsFrom from "@/utils/createOptionsFrom";
 import removeDuplicates from "@/utils/removeDuplicates";
@@ -31,6 +22,7 @@ import PostScheduleLessonSchema, {
   TScheduleLessonFormDataForServer
 } from "@/schemas/postScheduleLessonSchema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
+import actSendScheduleLessonData from "@/store/single-actions/actSendScheduleLessonData.ts";
 
 const previewTeacherStyle = {
   border: "1px dashed #7AB790",
@@ -63,6 +55,7 @@ const ScheduleLesson = () => {
       defaultValues: {
         subjects: [{gender: "", language: "", student_credit: "", subject: ""}],
         repeat: false,
+        lesson_draft_id: null
       },
       resolver: zodResolver(PostScheduleLessonSchema),
     }
@@ -109,57 +102,18 @@ const ScheduleLesson = () => {
       dispatch(actGetScheduleLessonData({id, credit}))
       .unwrap()
       .then((res) => {
+        console.log('data from scheduleLesson', res)
         setCustomerData(res);
         setValue('lesson_credit', credit)
       });
     }
   }, [credit, dispatch, id, setValue]);
 
-  // Temp fields for multiChoice component, real data will be used from the store.
-  const DAYS = [
-    {
-      id: 1,
-      name: "الاحد",
-    },
-    {
-      id: 2,
-      name: "الاثنين",
-    },
-    {
-      id: 3,
-      name: "الثلاثاء",
-    },
-    {
-      id: 4,
-      name: "الاربعاء",
-    },
-    {
-      id: 5,
-      name: "الخميس",
-    },
-    {
-      id: 6,
-      name: "الجمعة",
-    },
-    {
-      id: 7,
-      name: "السبت",
-    },
-  ];
-
-  const TEACHERS = [
-    {value: '1', label: "محمد أحمد"},
-    {value: '2', label: "فاطمة علي"},
-    {value: '3', label: "عبد الرحمن محمود"},
-    {value: '4', label: "زينب حسن"},
-    {value: '5', label: "يوسف خالد"},
-    {value: '6', label: "نور الدين عمر"},
-    {value: '7', label: "ليلى إبراهيم"},
-  ];
-
   const selectedTeachersType = watch("is_auto");
 
   const scheduleRef = useRef<TModalRef>(null);
+
+  const navigate = useNavigate()
 
   // We use this method because the data came from the server is duplicated.
   const studentsOptions = Array.from(
@@ -184,10 +138,27 @@ const ScheduleLesson = () => {
     );
 
     if (scheduledClasses > Number(data.lesson_credit)) {
-
       openFeedbackModal("warning", `لا يمكن جدولة أكثر من ${data.lesson_credit} حصص`);
       return;
     }
+
+    if (data.is_auto === 'true') {
+      data.teacher_ids = customerData?.teachers.map(teacher => teacher.id);
+    }
+
+    if (data.repeat_every === '') {
+      data.repeat_every = null;
+    }
+
+    if (data.description === '') {
+      data.description = null;
+    }
+
+    if (data.end_repeat_on === undefined) {
+      data.end_repeat_on === null
+    }
+
+    data.received_days = customerData?.days.map(day => day.id.toString());
 
 
     const serverData: TScheduleLessonFormDataForServer = {
@@ -207,10 +178,13 @@ const ScheduleLesson = () => {
       follow_up_type: Number(data.follow_up_type),
       repeat_count: Number(data.repeat_count) || 0,
       repeat_times: Number(data.repeat_times) || 0,
-      days: data.days && data.days.join(', '),
       is_auto: data.is_auto === "true",
     }
 
+    dispatch(actSendScheduleLessonData(serverData)).unwrap().then(() => {
+      openFeedbackModal("succeeded", "تم ارسال الاشعارات بنجاح", "")
+      navigate('/admin/calendar/all-unscheduled-list')
+    });
     console.log(serverData);
   };
 
@@ -255,12 +229,38 @@ const ScheduleLesson = () => {
         <Heading text="مواقيت الإتاحة للطالب" style={{marginTop: "2.8rem"}}/>
 
         <Row>
-          {customerData && <MultiChoices
-              error=""
-              name="day"
-              register={register}
-              fields={customerData?.days.length === 0 ? DAYS : customerData?.days}
-          />}
+          {/*{customerData && <MultiChoices*/}
+          {/*    error=""*/}
+          {/*    name="day"*/}
+          {/*    register={register}*/}
+          {/*    fields={customerData?.days.length === 0 ? DAYS : customerData?.days}*/}
+          {/*/>}*/}
+
+          <>
+            <article className="group">
+              <span className="adminFormLabel">الايام</span>
+              {customerData?.days.length !== 0 ? (
+                  <section
+                    className="inputField"
+                    style={{display: "flex", gap: "1rem", flexWrap: "wrap", paddingBlock: "0.7rem"}}
+                  >
+                    {customerData?.days.map((day) => {
+                        return (
+                          <span
+                            style={previewTeacherStyle}
+                            key={day.id}
+                          >
+                        {day.name}
+                      </span>
+                        );
+                      }
+                    )}
+                  </section>)
+                :
+                (<span className="error">لم يتم تحديد أيام</span>)
+              }
+            </article>
+          </>
 
           <InputField
             label="الفترة"
@@ -309,8 +309,8 @@ const ScheduleLesson = () => {
               register={register}
               label="النوع"
               options={[
-                {label: "معلم", value: "male"},
-                {label: "معلمة", value: "female"},
+                {label: "معلم", value: "Male"},
+                {label: "معلمة", value: "Female"},
               ]}
               error={errors.subjects?.[index]?.gender?.message as string}
             />
@@ -388,30 +388,17 @@ const ScheduleLesson = () => {
           {selectedTeachersType === "false" && (
             <>
 
-              <DropdownWithSearch label="المعلمين" name="employee_id" register={register} options={TEACHERS}
+              <DropdownWithSearch label="المعلمين" name="employee_id" register={register} optionsFor="teachers"
                                   setValue={setValue}/>
 
 
-              <Dropdown
-                label="الموقع الأفتراضي"
-                register={register}
-                options={[
-                  {
-                    label: "location_one",
-                    value: "1"
-                  },
-                  {
-                    label: "location_two",
-                    value: "2"
-                  },
-                ]}
-                name="location_id"
-                error={errors.location_id?.message as string}
-              />
+              <DropdownWithSearch label="الموقع الأفتراضي" name="location_id" register={register} optionsFor="locations"
+                                  setValue={setValue}/>
+
             </>
           )}
 
-          {selectedTeachersType === "true" && (
+          {(selectedTeachersType === "true" && teachersOptions.length !== 0) ?
             <>
               <article className="group">
                 <section
@@ -420,22 +407,23 @@ const ScheduleLesson = () => {
                 >
                   {teachersOptions.map((teacher) =>
                     teacher.subjects.map((subject: any) => {
-                      return (
-                        <span
-                          style={previewTeacherStyle}
-                          key={`${teacher.id}_${subject.id}`}
-                        >
+                        return (
+                          <span
+                            style={previewTeacherStyle}
+                            key={`${teacher.id}_${subject.id}`}
+                          >
                         {teacher.first_name} {teacher.last_name} -{" "}
-                          {subject.name}
+                            {subject.name}
                       </span>
-                      );
+                        );
                     })
                   )}
                 </section>
               </article>
               <article className="group"></article>
-            </>
-          )}
+            </> : (selectedTeachersType === '' || selectedTeachersType === 'true') ? (
+              <span className="error">لا يوجد مدرسين</span>) : ''
+          }
         </Row>
 
         <Row>
@@ -557,7 +545,7 @@ const ScheduleLesson = () => {
             className="btn cancel-btn"
             onClick={() => {
               console.log(errors);
-              console.log('error for repeat on',control._getWatch('end_repeat_on'))
+              console.log('error for repeat on', control._getWatch('end_repeat_on'))
             }}
           >
             يُلغي

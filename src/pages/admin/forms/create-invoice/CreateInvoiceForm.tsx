@@ -62,8 +62,6 @@ const CreateInvoiceForm = () => {
   const { credintials } = useAppSelector((state) => state.auth);
   const { openFeedbackModal } = useFeedback();
   const navigate = useNavigate();
-
-  const [customersList, setCustomersList] = useState<TOption[]>([]);
   const [servicesList, setServicesList] = useState<TOption[]>([]);
   const [dataStatus, setDataStatus] = useState<
     "Saved" | "Approved" | "Paid" | "Void"
@@ -386,14 +384,6 @@ const CreateInvoiceForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ optionsFor: "customers" })
-    ).then((res) => {
-      if (Array.isArray(res?.payload)) {
-        setCustomersList(res.payload);
-      }
-    });
-
-    dispatch(
       actGetDropdownOptions({ optionsFor: "services" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
@@ -459,7 +449,7 @@ const CreateInvoiceForm = () => {
           register={register}
           name="customer"
           setValue={setValue}
-          options={customersList}
+          optionsFor="customers"
           handleChange={handleCustomer}
           label="اختر العميل"
         />

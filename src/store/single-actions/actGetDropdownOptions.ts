@@ -19,8 +19,12 @@ const actGetDropdownOptions = createAsyncThunk(
 
     try {
       let url = DROPDOWN_END_POINTS[optionsFor];
-      if (searchQuery) {
-        url = `${DROPDOWN_END_POINTS[optionsFor]}${searchQuery}`;
+      if (optionsFor !== 'locations' && searchQuery !== '') {
+        url = `${DROPDOWN_END_POINTS[optionsFor]}&first_name=${searchQuery}`;
+      }
+
+      if (optionsFor === 'locations' && searchQuery !== '') {
+        url = `${DROPDOWN_END_POINTS[optionsFor]}&search=${searchQuery}`;
       }
 
       const response = await axiosInstance.get<TResponse>(url);

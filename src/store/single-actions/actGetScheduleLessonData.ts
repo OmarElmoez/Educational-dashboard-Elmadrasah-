@@ -6,14 +6,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 const actGetScheduleLessonData = createAsyncThunk(
   "single-actions/actGetScheduleLessonData",
   async ({id, credit}: {id: string, credit: string}, thunkAPI) => {
-    // async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
       const response = await axiosInstance.get<TScheduleLessonResponse>(
         "/event/customer-answers/?customer_id=" + id + "&credit=" + credit
       );
-      // const response = await axiosInstance.get("/event/customer-answers/?customer_id=1");
       return response.data.leadflow_data[0];
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));

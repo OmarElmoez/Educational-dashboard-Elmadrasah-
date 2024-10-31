@@ -27,7 +27,7 @@ const RadioButtonsGroup = <T extends FieldValues>({
   options,
   disabled = false,
   style,
-  error
+  error,
 }: TRadioButtonsGroupProps<T>) => {
   return (
     <div className={radioOptions} style={style}>

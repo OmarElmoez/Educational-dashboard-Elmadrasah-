@@ -45,7 +45,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
       <div className="select_wrapper">
         <select
           {...register(name)}
-          defaultValue={chosenValue}
+          value={chosenValue}
           onClick={handleChosenState}
           disabled={disabled || false}
           className={`${disabled && "disabled_btn"}`}

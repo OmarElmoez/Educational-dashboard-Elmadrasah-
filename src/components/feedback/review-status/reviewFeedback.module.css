@@ -3,6 +3,7 @@
   max-width: 100%;
   padding: 3.2rem;
   text-align: center;
+  z-index: 10;
 }
 
 .reviewModal h3 {

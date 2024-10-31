@@ -11,7 +11,7 @@ type TDropdownProps<T extends FieldValues, U> = {
   name: Path<T>;
   label: string;
   options: TOption[] | undefined;
-  chosen?: string;
+  chosen?: string | null;
   register: UseFormRegister<T>;
   error: string;
   isRequired?: boolean;

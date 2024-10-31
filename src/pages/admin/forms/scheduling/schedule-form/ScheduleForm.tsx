@@ -1,7 +1,9 @@
 import {Dropdown, InputField, Row} from "@/components";
 import styles from "./schedule-form.module.css";
 import {FieldValues, Path, UseFormRegister, UseFormWatch} from "react-hook-form";
-import {useState} from "react";
+import {useEffect, useMemo, useState} from "react";
+import {TDay, TLessonDraftData} from "@/store/single-actions/actGetRescheduleLessonData.ts";
+import turnDaysIntoEnglish from "@/utils/turnDaysIntoEnglish.ts";
 
 const {
   customRadioLabel,
@@ -15,37 +17,48 @@ const {
 } = styles;
 
 const ScheduleForm = <T extends FieldValues>({
-  className,
-  onClose,
-  register,
-  watch,
-  resetRepetition,
-  setValue
-  }: {
+                                               className,
+                                               onClose,
+                                               register,
+                                               watch,
+                                               resetRepetition,
+                                               setValue,
+                                               draftLessonData,
+                                               selectedDays
+                                             }: {
   className?: string;
   onClose: () => void;
   register: UseFormRegister<T>,
   watch: UseFormWatch<T>,
   resetRepetition: () => void,
   setValue: (name: Path<T>, value: string | null | undefined) => void,
+  draftLessonData?: TLessonDraftData,
+  selectedDays?: TDay[]
 }) => {
 
   const [selectedRepeatType, setSelectedRepeatType] = useState("");
   const [monthsType, setMonthsType] = useState("");
+
+  const formattedSelectedDays: string[] = useMemo(() => selectedDays?.map(selectedDay => selectedDay.name) || [], [selectedDays]);
   const [weekDays, setWeekDays] = useState<string[]>([]);
+
+  useEffect(() => {
+    setValue('days' as Path<T>, turnDaysIntoEnglish(formattedSelectedDays)?.join(', '))
+    setWeekDays(formattedSelectedDays);
+  }, [formattedSelectedDays, setValue])
 
   // todo:  you need to know why it works ^_^, it doesn't refer to the correct type.
   const endType = watch('end_repeat' as Path<T>);
 
 
   const DAYS_OPTIONS = [
-    {label: "احد", value: "sunday", id: 1},
-    {label: "اثنين", value: "monday", id: 2},
-    {label: "ثلاثاء", value: "tuesday", id: 3},
-    {label: "أربعاء", value: "wednesday", id: 4},
-    {label: "خميس", value: "thursday", id: 5},
-    {label: "جمعة", value: "friday", id: 6},
-    {label: "سبت", value: "saturday", id: 7},
+    {label: "الأحد", value: "sunday", id: 1},
+    {label: "الأثنين", value: "monday", id: 2},
+    {label: "الثلاثاء", value: "tuesday", id: 3},
+    {label: "الأربعاء", value: "wednesday", id: 4},
+    {label: "الخميس", value: "thursday", id: 5},
+    {label: "الجمعة", value: "friday", id: 6},
+    {label: "السبت", value: "saturday", id: 7},
   ];
 
   return (
@@ -75,10 +88,10 @@ const ScheduleForm = <T extends FieldValues>({
           }}
         />
 
-        {(selectedRepeatType === "daily" || selectedRepeatType === 'weekly') && (
+        {((selectedRepeatType === "daily" || selectedRepeatType === 'weekly') || (draftLessonData?.repeat_count && selectedRepeatType !== "monthly" && draftLessonData?.repeat_every !== 'monthly')) && (
           <InputField
-            label={selectedRepeatType === 'daily' ? "عدد الايام" : "عدد الاسابيع"}
-            placeholder={selectedRepeatType === 'daily' ? "15" : "4"}
+            label={(selectedRepeatType === 'daily' || draftLessonData?.repeat_every === 'daily') ? "عدد الايام" : "عدد الاسابيع"}
+            placeholder={(selectedRepeatType === 'daily' || draftLessonData?.repeat_every === 'daily') ? "15" : "4"}
             register={register}
             name={"repeat_count" as Path<T>}
             error=""
@@ -86,7 +99,7 @@ const ScheduleForm = <T extends FieldValues>({
           />
         )}
 
-        {selectedRepeatType === "monthly" && (
+        {(selectedRepeatType === "monthly" || draftLessonData?.repeat_every === 'monthly' && selectedRepeatType !== 'daily' && selectedRepeatType !== 'weekly') && (
           <Dropdown
             label="التكرار شهرياً"
             register={register}
@@ -103,7 +116,7 @@ const ScheduleForm = <T extends FieldValues>({
         )}
       </Row>
 
-      {monthsType === "day" && (
+      {(monthsType === "day" || draftLessonData?.repeat_monthly_date && selectedRepeatType !== 'daily'  && selectedRepeatType !== 'weekly' && !draftLessonData?.on_quarter) && (
         <Row>
           <InputField
             label=""
@@ -115,7 +128,7 @@ const ScheduleForm = <T extends FieldValues>({
         </Row>
       )}
 
-      {monthsType === "quarter" && (
+      {(monthsType === "quarter" || draftLessonData?.on_quarter && selectedRepeatType !== 'daily' && selectedRepeatType !== 'weekly') && (
         <Row>
           <Dropdown
             label="الربع المراد تكراره : "
@@ -132,26 +145,26 @@ const ScheduleForm = <T extends FieldValues>({
         </Row>
       )}
 
-      {(selectedRepeatType === "weekly" || monthsType === "quarter") && (
+      {( selectedRepeatType === "weekly" || monthsType === "quarter" || draftLessonData?.on_quarter || draftLessonData?.repeat_every === 'weekly') && selectedRepeatType !== "daily" && (
         <>
           <p className="adminFormLabel">في أيام</p>
           <Row style={{marginTop: "1rem"}}>
             {DAYS_OPTIONS.map((day) => (
               <label key={day.id} htmlFor={day.value}
-                     className={`${week_day} ${weekDays.includes(day.value) ? selected : ''}`}>
+                     className={`${week_day} ${weekDays?.includes(day.label) ? selected : ''}`}>
                 <input
                   type="checkbox"
                   {...register("days" as Path<T>)}
                   className='repetitionWeekDay'
                   id={day.value}
-                  value={day.value}
-                  checked={weekDays.includes(day.value)}
+                  value={day.label}
+                  checked={weekDays?.includes(day.label)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setWeekDays((prev) => [...prev, day.value]);
+                      setWeekDays((prev) => [...prev, day.label]);
                     } else {
                       setWeekDays((prev) =>
-                        prev.filter((val) => val !== day.value)
+                        prev.filter((val) => val !== day.label)
                       );
                     }
                   }}
@@ -246,7 +259,7 @@ const ScheduleForm = <T extends FieldValues>({
         </button>
       </Row>
     </form>
-  );
-};
+  )
+}
 
 export default ScheduleForm;
