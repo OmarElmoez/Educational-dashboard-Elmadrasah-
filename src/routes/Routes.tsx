@@ -127,15 +127,19 @@ const router = createBrowserRouter([
         element: <AdminHomePage />,
       },
       {
-        path: "classes",
+        path: "calendar/classes",
         element: <AdminClassesPage />,
+      },
+      {
+        path: 'calendar/all-unscheduled-list',
+        element: <GeneralUnscheduledLists />,
       },
       {
         path: "students",
         element: <AdminStudentsPage />,
       },
       {
-        path: "teachers",
+        path: "employees/teachers",
         element: <AdminTeachersPage />,
       },
       {
@@ -165,27 +169,31 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'add-employee',
+        path: 'employees/add-employee',
         element: <AddEmployeeForm />,
       },
       {
-        path: 'add-teacher',
+        path: 'employees/add-teacher',
         element: <AddTeacherForm />,
       },
       {
-        path: 'add-parent',
+        path: 'students/add-family',
         element: <AddParentForm />,
       },
       {
-        path: 'add-student',
+        path: 'students/add-student',
         element: <AddStudentForm />,
       },
       {
-        path: 'add-family-student',
+        path: 'students/students-list',
+        element: <StudentsList />,
+      },
+      {
+        path: 'students/add-family-student',
         element: <AddStudentToFamilyForm />,
       },
       {
-        path: 'create-invoice',
+        path: 'invoices/create-invoice',
         element: <CreateInvoiceForm />,
       },
       {
@@ -201,25 +209,18 @@ const router = createBrowserRouter([
         element: <CopyInvoicesForm />,
       },
       {
-        path: 'students-list',
-        element: <StudentsList />,
-      },
-      {
-        path: 'invoices-list',
+        path: 'invoices/invoices-list',
         element: <InvoicesList />,
       },
       {
-        path: 'invoice-details/:id',
+        path: 'invoices/invoice-details/:id',
         element: <InvoiceDetails />,
       },
       {
-        path: 'balance-list',
+        path: 'invoices/balance-list',
         element: <PackageBalanceList />,
       },
-      {
-        path: 'all-unscheduled-list',
-        element: <GeneralUnscheduledLists />,
-      },
+     
       {
         path: 'schedule-lesson/:id/:credit',
         element: <ScheduleLesson />,

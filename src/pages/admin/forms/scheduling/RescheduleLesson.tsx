@@ -8,29 +8,29 @@ import {
   RadioButtonsGroup,
   Row,
 } from "@/components";
-import {TIMEZONES_OPTIONS} from "@/constants";
-import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
-import {actGetDropdownOptions} from "@/store/single-actions";
-import {TOption} from "@/types/Dropdown";
-import {useEffect, useRef, useState} from "react";
-import {useFieldArray, useForm} from "react-hook-form";
+import { TIMEZONES_OPTIONS } from "@/constants";
+import { FOLLOW_UP_OPTIONS } from "@/constants/dropdown-options";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { actGetDropdownOptions } from "@/store/single-actions";
+import { TOption } from "@/types/Dropdown";
+import { useEffect, useRef, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 
 // import CloseButton from "@/assets/close-button.svg?react";
 import RepeatIcon from "@/assets/repeat.svg?react";
-import {TModalRef} from "@/types/shared";
+import { TModalRef } from "@/types/shared";
 import ScheduleForm from "./schedule-form/ScheduleForm";
 import actGetRescheduleLessonData from "@/store/single-actions/actGetRescheduleLessonData";
-import {useParams} from "react-router-dom";
-import {TLeadFlowData} from "@/schemas/getScheduleLessonSchema.ts";
+import { useParams } from "react-router-dom";
+import { TLeadFlowData } from "@/schemas/getScheduleLessonSchema.ts";
 import createOptionsFrom from "@/utils/createOptionsFrom";
 import removeDuplicates from "@/utils/removeDuplicates";
-import {useFeedback} from "@/store/context";
+import { useFeedback } from "@/store/context";
 import PostScheduleLessonSchema, {
   TScheduleLessonFormData,
-  TScheduleLessonFormDataForServer
+  TScheduleLessonFormDataForServer,
 } from "@/schemas/postScheduleLessonSchema.ts";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const previewTeacherStyle = {
   border: "1px dashed #7AB790",
@@ -45,33 +45,31 @@ const RescheduleLesson = () => {
   const [servicesList, setServicesList] = useState<TOption[]>([]);
   const dispatch = useAppDispatch();
 
-  const {credintials} = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
 
   const [customerData, setCustomerData] = useState<TLeadFlowData>();
 
   const {
     register,
-    formState: {errors},
+    formState: { errors },
     watch,
     handleSubmit,
     control,
     setValue,
     reset,
     getValues,
-  } = useForm<TScheduleLessonFormData>(
-    {
-      defaultValues: {
-        subjects: [{gender: "", language: "", student_credit: "", subject: ""}],
-        repeat: false,
-      },
-      resolver: zodResolver(PostScheduleLessonSchema),
-    }
-  );
-  const {id} = useParams();
+  } = useForm<TScheduleLessonFormData>({
+    defaultValues: {
+      subjects: [{ gender: "", language: "", student_credit: "", subject: "" }],
+      repeat: false,
+    },
+    resolver: zodResolver(PostScheduleLessonSchema),
+  });
+  const { id } = useParams();
 
-  const {openFeedbackModal} = useFeedback();
+  const { openFeedbackModal } = useFeedback();
 
-  const {fields} = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "subjects",
   });
@@ -79,24 +77,22 @@ const RescheduleLesson = () => {
   const resetRepetition = () => {
     reset({
       ...getValues(),
-      repeat_every: '',
-      repeat_monthly: '',
+      repeat_every: "",
+      repeat_monthly: "",
       repeat_count: undefined,
       repeat_times: undefined,
       end_repeat_on: undefined,
       repeat_monthly_date: null,
-      on_quarter: '',
+      on_quarter: "",
       end_repeat: null,
       repeat: false,
-    })
-  }
+    });
+  };
 
   const [predefinedDate, setPredefinedDate] = useState("");
 
   useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({optionsFor: "services"})
-    ).then((res) => {
+    dispatch(actGetDropdownOptions({ optionsFor: "services" })).then((res) => {
       if (Array.isArray(res?.payload)) {
         setServicesList(res.payload);
       }
@@ -105,17 +101,17 @@ const RescheduleLesson = () => {
 
   useEffect(() => {
     // you should pass the id (get from useParams) to the action
-    if (id ) {
-      dispatch(actGetRescheduleLessonData({id}))
-      .unwrap()
-      .then((res) => {
-         /*  TODO: Upadte it to use lesson_draft_data  */
-        console.log("res: ", res.lesson_draft_data);
-        console.log("res.leadflow_data[0]: ", res.leadflow_data[0]);
-        setCustomerData(res.leadflow_data[0]);
-      });
+    if (id) {
+      dispatch(actGetRescheduleLessonData({ id }))
+        .unwrap()
+        .then((res) => {
+          /*  TODO: Upadte it to use lesson_draft_data  */
+          console.log("res: ", res.lesson_draft_data);
+          console.log("res.leadflow_data[0]: ", res.leadflow_data[0]);
+          setCustomerData(res.leadflow_data[0]);
+        });
     }
-  }, [ dispatch, id, setValue]);
+  }, [dispatch, id, setValue]);
 
   // Temp fields for multiChoice component, real data will be used from the store.
   const DAYS = [
@@ -150,13 +146,13 @@ const RescheduleLesson = () => {
   ];
 
   const TEACHERS = [
-    {value: '1', label: "محمد أحمد"},
-    {value: '2', label: "فاطمة علي"},
-    {value: '3', label: "عبد الرحمن محمود"},
-    {value: '4', label: "زينب حسن"},
-    {value: '5', label: "يوسف خالد"},
-    {value: '6', label: "نور الدين عمر"},
-    {value: '7', label: "ليلى إبراهيم"},
+    { value: "1", label: "محمد أحمد" },
+    { value: "2", label: "فاطمة علي" },
+    { value: "3", label: "عبد الرحمن محمود" },
+    { value: "4", label: "زينب حسن" },
+    { value: "5", label: "يوسف خالد" },
+    { value: "6", label: "نور الدين عمر" },
+    { value: "7", label: "ليلى إبراهيم" },
   ];
 
   const selectedTeachersType = watch("is_auto");
@@ -170,7 +166,6 @@ const RescheduleLesson = () => {
   const timeOptions = Array.from(
     new Set(createOptionsFrom(customerData?.time))
   );
-
 
   const subjectsOptions = Array.from(
     new Set(createOptionsFrom(customerData?.subjects))
@@ -186,21 +181,24 @@ const RescheduleLesson = () => {
     );
 
     if (scheduledClasses > Number(data.lesson_credit)) {
-
-      openFeedbackModal("warning", `لا يمكن جدولة أكثر من ${data.lesson_credit} حصص`);
+      openFeedbackModal(
+        "warning",
+        `لا يمكن جدولة أكثر من ${data.lesson_credit} حصص`
+      );
       return;
     }
-
 
     const serverData: TScheduleLessonFormDataForServer = {
       ...data,
       student_id: Number(data.student_id),
-      subjects: [{
-        subject: Number(data.subjects[0].subject),
-        student_credit: Number(data.subjects[0].student_credit),
-        language: data.subjects[0].language,
-        gender: data.subjects[0].gender,
-      }],
+      subjects: [
+        {
+          subject: Number(data.subjects[0].subject),
+          student_credit: Number(data.subjects[0].student_credit),
+          language: data.subjects[0].language,
+          gender: data.subjects[0].gender,
+        },
+      ],
       lesson_credit: Number(data.lesson_credit),
       location_id: Number(data.location_id),
       service_id: Number(data.service_id),
@@ -209,13 +207,12 @@ const RescheduleLesson = () => {
       follow_up_type: Number(data.follow_up_type),
       repeat_count: Number(data.repeat_count) || 0,
       repeat_times: Number(data.repeat_times) || 0,
-      days: data.days && data.days.join(', '),
+      days: data.days && data.days.join(", "),
       is_auto: data.is_auto === "true",
-    }
+    };
 
     console.log(serverData);
   };
-
 
   useEffect(() => {
     setValue("start_date", predefinedDate);
@@ -251,18 +248,21 @@ const RescheduleLesson = () => {
             error={errors.lesson_credit?.message as string}
             disabled
           />
-
         </Row>
 
-        <Heading text="مواقيت الإتاحة للطالب" style={{marginTop: "2.8rem"}}/>
+        <Heading text="مواقيت الإتاحة للطالب" style={{ marginTop: "2.8rem" }} />
 
         <Row>
-          {customerData && <MultiChoices
+          {customerData && (
+            <MultiChoices
               error=""
               name="day"
               register={register}
-              fields={customerData?.days.length === 0 ? DAYS : customerData?.days}
-          />}
+              fields={
+                customerData?.days.length === 0 ? DAYS : customerData?.days
+              }
+            />
+          )}
 
           <InputField
             label="الفترة"
@@ -304,15 +304,15 @@ const RescheduleLesson = () => {
         </Row>
 
         {fields.map((field, index) => (
-          <Row key={field.id} style={{alignItems: "center"}}>
+          <Row key={field.id} style={{ alignItems: "center" }}>
             <Dropdown
               // don't use subjects[${index}], it doesn't work.
               name={`subjects.${index}.gender`}
               register={register}
               label="النوع"
               options={[
-                {label: "معلم", value: "male"},
-                {label: "معلمة", value: "female"},
+                { label: "معلم", value: "male" },
+                { label: "معلمة", value: "female" },
               ]}
               error={errors.subjects?.[index]?.gender?.message as string}
             />
@@ -322,8 +322,8 @@ const RescheduleLesson = () => {
               register={register}
               label="اللغة"
               options={[
-                {label: "الإنجليزية", value: "en"},
-                {label: "العربية", value: "ar"},
+                { label: "الإنجليزية", value: "en" },
+                { label: "العربية", value: "ar" },
               ]}
               error={errors.subjects?.[index]?.language?.message as string}
             />
@@ -341,7 +341,9 @@ const RescheduleLesson = () => {
               placeholder="4"
               register={register}
               name={`subjects.${index}.student_credit`}
-              error={errors.subjects?.[index]?.student_credit?.message as string}
+              error={
+                errors.subjects?.[index]?.student_credit?.message as string
+              }
               type="number"
             />
             {/*<button*/}
@@ -371,17 +373,17 @@ const RescheduleLesson = () => {
         {/*  + إضافة مادة أخري*/}
         {/*</button>*/}
 
-        <Heading text="اختيار المٌعلمين" style={{marginTop: "2.8rem"}}/>
+        <Heading text="اختيار المٌعلمين" style={{ marginTop: "2.8rem" }} />
 
         <Row>
           <RadioButtonsGroup
             register={register}
             name="is_auto"
             options={[
-              {label: "اختيار يدوي", value: "false"},
-              {label: "اختيار تلقائي", value: "true"},
+              { label: "اختيار يدوي", value: "false" },
+              { label: "اختيار تلقائي", value: "true" },
             ]}
-            style={{gap: "11.6rem"}}
+            style={{ gap: "11.6rem" }}
             error=""
           />
         </Row>
@@ -389,10 +391,13 @@ const RescheduleLesson = () => {
         <Row>
           {selectedTeachersType === "false" && (
             <>
-
-              <DropdownWithSearch label="المعلمين" name="employee_id" register={register} options={TEACHERS}
-                                  setValue={setValue}/>
-
+              <DropdownWithSearch
+                label="المعلمين"
+                name="employee_id"
+                register={register}
+                options={TEACHERS}
+                setValue={setValue}
+              />
 
               <Dropdown
                 label="الموقع الأفتراضي"
@@ -400,11 +405,11 @@ const RescheduleLesson = () => {
                 options={[
                   {
                     label: "location_one",
-                    value: "1"
+                    value: "1",
                   },
                   {
                     label: "location_two",
-                    value: "2"
+                    value: "2",
                   },
                 ]}
                 name="location_id"
@@ -418,7 +423,7 @@ const RescheduleLesson = () => {
               <article className="group">
                 <section
                   className="inputField"
-                  style={{display: "flex", gap: "1rem", flexWrap: "wrap"}}
+                  style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
                 >
                   {teachersOptions.map((teacher) =>
                     teacher.subjects.map((subject: any) => {
@@ -427,9 +432,9 @@ const RescheduleLesson = () => {
                           style={previewTeacherStyle}
                           key={`${teacher.id}_${subject.id}`}
                         >
-                        {teacher.first_name} {teacher.last_name} -{" "}
+                          {teacher.first_name} {teacher.last_name} -{" "}
                           {subject.name}
-                      </span>
+                        </span>
                       );
                     })
                   )}
@@ -450,7 +455,7 @@ const RescheduleLesson = () => {
             onChange={(e) => setPredefinedDate(e.target.value)}
           />
 
-          {customerData?.time.length === 0 ?
+          {customerData?.time.length === 0 ? (
             <>
               <InputField
                 label="وقت البدء"
@@ -467,12 +472,13 @@ const RescheduleLesson = () => {
                 name="to_time"
                 error={errors.to_time?.message as string}
               />
-            </> : <article className="group"></article>}
-
-
+            </>
+          ) : (
+            <article className="group"></article>
+          )}
         </Row>
 
-        <Row style={{marginTop: "2.8rem"}}>
+        <Row style={{ marginTop: "2.8rem" }}>
           {/*<InputField*/}
           {/*    label="الأماكن المتاحة بالدرس"*/}
           {/*    placeholder="........"*/}
@@ -506,7 +512,7 @@ const RescheduleLesson = () => {
         {/*    }}*/}
         {/*/>*/}
 
-        <Heading text="خيارات المتابعة" style={{marginTop: "4.8rem"}}/>
+        <Heading text="خيارات المتابعة" style={{ marginTop: "4.8rem" }} />
 
         <Row>
           <Dropdown
@@ -531,15 +537,15 @@ const RescheduleLesson = () => {
             paddingInline: "1.6rem",
           }}
           onClick={() => {
-            scheduleRef.current?.open()
-            setValue('repeat', true)
+            scheduleRef.current?.open();
+            setValue("repeat", true);
           }}
         >
-          <RepeatIcon/>
+          <RepeatIcon />
           <span>إعادة التكرار</span>
         </button>
 
-        <Row style={{justifyContent: "flex-end", marginTop: "1.4rem"}}>
+        <Row style={{ justifyContent: "flex-end", marginTop: "1.4rem" }}>
           <button type="submit" className="btn submit-btn">
             حفظ
           </button>
@@ -559,7 +565,10 @@ const RescheduleLesson = () => {
             className="btn cancel-btn"
             onClick={() => {
               console.log(errors);
-              console.log('error for repeat on',control._getWatch('end_repeat_on'))
+              console.log(
+                "error for repeat on",
+                control._getWatch("end_repeat_on")
+              );
             }}
           >
             يُلغي
@@ -567,8 +576,7 @@ const RescheduleLesson = () => {
         </Row>
       </form>
     </>
-  )
-    ;
+  );
 };
 
 export default RescheduleLesson;

@@ -83,7 +83,7 @@ const InvoicesList = () => {
   };
 
   const handlView = (id: number) => {
-    navigate(`/admin/invoice-details/${id}`);
+    navigate(`/admin/invoices/invoice-details/${id}`);
   };
 
   const handlEdit = (id: number) => {

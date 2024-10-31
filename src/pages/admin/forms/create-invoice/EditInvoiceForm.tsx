@@ -454,9 +454,9 @@ const EditInvoiceForm = () => {
       .then((res) => {
         
         if(dataStatus === "Approved") {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoice-details/${res?.id}`)});
+          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
         } else {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoice-details/${res?.id}`)});
+          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
         }
       })
       .catch((error) =>

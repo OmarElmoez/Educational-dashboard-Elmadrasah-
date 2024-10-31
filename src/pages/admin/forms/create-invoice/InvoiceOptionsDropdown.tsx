@@ -35,7 +35,7 @@ const InvoiceOptionsDropdown: React.FC = () => {
       .then(unwrapResult)
       .then(() => {
         openFeedbackModal("succeeded", "تم حذف الفاتورة بنجاح");
-        navigate(`/admin/invoices-list`);
+        navigate(`/admin/invoices/invoices-list`);
       })
       .catch((error: string) => {
         console.log("error", error);
@@ -64,7 +64,7 @@ const InvoiceOptionsDropdown: React.FC = () => {
         .then(unwrapResult)
         .then(() => {
           openFeedbackModal("succeeded", "تم الغاء الفاتورة بنجاح");
-          navigate(`/admin/invoices-list`);
+          navigate(`/admin/invoices/invoices-list`);
         })
         .catch((error: string) => {
           console.log("error", error);
