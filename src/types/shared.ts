@@ -18,6 +18,12 @@ type TPath = {
   path: string;
   icon: React.ReactNode;
   phone_icon?: React.ReactNode;
+  children?: {
+    title: string;
+    path: string;
+    icon: React.ReactNode;
+    phone_icon?: React.ReactNode;
+  }[]
 };
 
 type TModalRef = {
