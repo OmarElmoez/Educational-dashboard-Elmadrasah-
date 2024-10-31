@@ -1,4 +1,7 @@
-// todo: Make it dynamic to get several data
+/* todo:
+    Make it accept different end points.
+    handle search end point.
+*/
 
 /**
  * How to use this component:
@@ -16,22 +19,23 @@ import {useDebounce} from "@/hooks";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {actGetDropdownOptions} from "@/store/single-actions";
 import {FieldValues, Path, UseFormRegister} from "react-hook-form";
+// import createOptionsFrom from "@/utils/createOptionsFrom.ts";
+import {TOptionsFor} from "@/constants/end-points.ts";
 
 const {select_box, popup_box, search_box, options_box} = styles;
 
 const DropdownWithSearch = <T extends FieldValues>({
-                                                     options,
                                                      handleChange,
                                                      label,
                                                      placeholder = "اختر",
                                                      register,
                                                      name,
                                                      setValue,
+  optionsFor,
                                                    }: {
   register: UseFormRegister<T>,
   name: Path<T>,
   setValue: (name: Path<T>, value: string) => void,
-  options: TOption[];
   label: string;
   placeholder?: string;
   handleChange?: (option: TOption) => void;
@@ -39,11 +43,13 @@ const DropdownWithSearch = <T extends FieldValues>({
   handleGetOption?: (option: TOption | null) => void;
   setSelectedCustomer?: (param: TOption) => void;
   selectedCustomer?: TOption | null;
+  optionsFor: TOptionsFor
 }) => {
+  const [options, setOptions] = useState<TOption[]>([])
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<TOption | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setsearchResults] = useState<TOption[]>([]);
+  const [searchResults, setSearchResults] = useState<TOption[]>([]);
   const debouncedQuery = useDebounce(searchQuery);
   const dispatch = useAppDispatch();
   const {credintials: credentials} = useAppSelector((state) => state.auth);
@@ -61,15 +67,16 @@ const DropdownWithSearch = <T extends FieldValues>({
   useEffect(() => {
     dispatch(
       actGetDropdownOptions({
-        optionsFor: "customersSearch",
+        optionsFor,
         searchQuery: debouncedQuery,
       })
     )
       .unwrap()
       .then((res) => {
-        setsearchResults(res);
+        setOptions(res);
+        setSearchResults(res);
       });
-  }, [debouncedQuery, dispatch, credentials?.token]);
+  }, [debouncedQuery, dispatch, credentials?.token, optionsFor]);
 
   return (
     <article className="group">
@@ -93,7 +100,7 @@ const DropdownWithSearch = <T extends FieldValues>({
             className={`inputField ${search_box}`}
             onChange={(e) => setSearchQuery(e.target.value)}
             value={searchQuery}
-            placeholder="ابحث عن العميل"
+            placeholder="ابحث"
           />
           <div>
 

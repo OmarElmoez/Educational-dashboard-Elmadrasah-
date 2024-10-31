@@ -43,6 +43,7 @@ const MultiChoices = <T extends FieldValues>({
   isRequired,
   disabled = false,
   fields,
+  predefinedDays,
 }: {
   register: UseFormRegister<T>;
   name: Path<T>;
@@ -50,10 +51,11 @@ const MultiChoices = <T extends FieldValues>({
   isRequired?: boolean;
   disabled?: boolean;
   fields?: TResponse;
+  predefinedDays?: number[]
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
-  const [selectedChoices, setSelectedChoices] = useState<number[]>([]);
+  const [selectedChoices, setSelectedChoices] = useState<number[]>(predefinedDays || []);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const intervalRef = useRef<number | null>(null);
 

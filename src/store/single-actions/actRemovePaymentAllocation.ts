@@ -21,12 +21,8 @@ const actRemovePaymentAllocation = createAsyncThunk(
       const response = await axiosInstance.get<TRemovePaymentAllocationResponse>(
         url,
       );
-      if (
-        response.data.message !== "Payment allocation removed successfully."
-      ) {
-        return false;
-      }
-      return true;
+      return response.data.message === "Payment allocation removed successfully.";
+
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

@@ -101,8 +101,8 @@ const DROPDOWN_END_POINTS = {
   locations: `/dashboard/location/?paginate=false`,
   families: `/customer/families?paginate=false`,
   customers: `/customer/customers/?paginate=false`,
-  customersSearch: `/customer/customers/?paginate=false&first_name=`,
   services: `/dashboard/service/?paginate=false`,
+  teachers: '/customer/default-teachers?paginate=false',
 }
 type TOptionsFor = keyof typeof DROPDOWN_END_POINTS;
 

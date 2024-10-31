@@ -79,7 +79,7 @@ const UnscheduledFamilyTableRow = ({
             to={(() => {
               switch (scheduled_status) {
                 case "unscheduled":
-                  return `/admin/schedule-lesson/${id}/${rowData.unscheduled}`;
+                  return `/admin/schedule-lesson/${customer_id}/${rowData.unscheduled}`;
                 case "scheduled":
                   return `/admin/schedule-emplyee/${customer_id}/${id}`;
                 case "scheduling_error":
