@@ -30,7 +30,6 @@ import PostScheduleLessonSchema, {
 import {zodResolver} from "@hookform/resolvers/zod";
 import createOptionsFrom from "@/utils/createOptionsFrom.ts";
 import removeDuplicates from "@/utils/removeDuplicates.ts";
-import turnDaysIntoEnglish from "@/utils/turnDaysIntoEnglish.ts";
 import actSendScheduleLessonData from "@/store/single-actions/actSendScheduleLessonData.ts";
 
 const previewTeacherStyle = {
