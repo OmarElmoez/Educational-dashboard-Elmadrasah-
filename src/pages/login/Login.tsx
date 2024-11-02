@@ -15,7 +15,6 @@ import actFCMLogin from "@/store/FCM/act/actFCMLogin";
 import { useFirebaseMessaging } from "@/hooks";
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import actGetLessonsByRange from "@/store/lessons/act/actGetLessonsByRange";
-import {useFeedback} from "@/store/context";
 
 const Login = () => {
   const { loading, error } = useAppSelector((state) => state.auth);
@@ -25,8 +24,6 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
-
-  const {openFeedbackModal} = useFeedback();
 
   const today = new Date();
   const startDate = startOfMonth(today);
@@ -140,7 +137,7 @@ const Login = () => {
                 googleLoginHandler(credential as string);
               }}
               onError={() => {
-                openFeedbackModal('failed', "Login Failed")
+                alert("Login Failed")
               }}
             />
           </div>
