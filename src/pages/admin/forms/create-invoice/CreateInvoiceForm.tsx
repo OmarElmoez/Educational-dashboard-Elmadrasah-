@@ -217,7 +217,8 @@ const CreateInvoiceForm = () => {
           });
       }
       catch (error) {
-        openFeedbackModal("failed", `${error}`)
+        console.log(error)
+        // openFeedbackModal("failed", `${error}`)
       }
     }
   };
