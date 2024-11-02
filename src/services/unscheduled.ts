@@ -81,7 +81,6 @@ export const getscheduledWinnersTeachersList = async (std_id: string, id: string
   // const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`event/draft-lessons/scheduled/?customer_id=86&package_id=5`);
   const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`/event/draft-lessons/scheduled/?customer_id=${std_id}&package_id=${id}`);
 
-  console.log("response.data:", response.data)
   return response.data;
 };
 
@@ -89,13 +88,12 @@ export const getscheduledParticipantsTeachersList = async (std_id: string, id: s
   // const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`/event/draft-lessons/participants/?`);
   const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`/event/draft-lessons/participants/?customer_id=${std_id}&package_id=${id}`);
 
-  console.log("response.data:", response.data)
   return response.data;
 };
 
 export const getscheduledErrorsList = async (std_id: string, id: string): Promise<TdraftLessonsStatusResponse[]> => {
   // const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`/event/draft-lessons/scheduling_error/?customer_id=13&package_id=27`);
   const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`/event/draft-lessons/scheduling_error/?customer_id=${std_id}&package_id=${id}`);
-  console.log("response.data:", response.data)
+
   return response.data;
 };

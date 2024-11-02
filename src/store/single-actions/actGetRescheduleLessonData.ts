@@ -102,7 +102,6 @@ const actGetRescheduleLessonData = createAsyncThunk(
       const response = await axiosInstance.get<TRescheduleLessonResponse>(
         "/event/draft-lessons/" + id
       );
-      console.log("response.data", response.data);
 
       return response.data;
     } catch (error) {

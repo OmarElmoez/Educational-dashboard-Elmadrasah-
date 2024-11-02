@@ -223,8 +223,9 @@ const CopyInvoicesForm = () => {
               );
             }
           });
-      } catch (error) {
-        console.log(error);
+      }
+      catch (error) {
+        openFeedbackModal('failed', `${error}`)
       }
     }
   };
@@ -282,8 +283,6 @@ const CopyInvoicesForm = () => {
     ): { total: number; salesTax: number; subtotal: number } => {
       let total = subtotal;
       let salesTax = 0;
-console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
-
       // const [taxTreatment] = watchFields;
 
       switch (treatmentType) {
@@ -324,8 +323,7 @@ console.log("subtotal", subtotal, "salesTaxRate", salesTaxRate);
     const [tax_treatment, tax_count] = watchFields;
 
     if (tax_treatment !== null && tax_count !== "" && tax_count !== undefined) {
-      console.log("vvvvvvv",  parseFloat(sub_total.toString()),
-      parseFloat(tax_count));
+      parseFloat(tax_count)
 
       const { total, salesTax, subtotal } = calculateTotal(
         parseFloat(sub_total.toString()),

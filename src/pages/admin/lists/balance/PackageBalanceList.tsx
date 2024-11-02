@@ -74,8 +74,6 @@ const PackageBalanceList = () => {
   const handleFilterSubmit = (filters: FilterFormData | null) => {
     setSearchTerm(filters);
     filterFormRef.current?.close();
-    console.log("filters", filters);
-    
   };
 
   // Debounce Function

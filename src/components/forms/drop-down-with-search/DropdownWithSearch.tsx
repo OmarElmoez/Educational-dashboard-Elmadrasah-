@@ -41,8 +41,6 @@ const DropdownWithSearch = <T extends FieldValues>({
   handleChange?: (option: TOption) => void;
   // to get option as needed option.label not id
   handleGetOption?: (option: TOption | null) => void;
-  setSelectedCustomer?: (param: TOption) => void;
-  selectedCustomer?: TOption | null;
   optionsFor: TOptionsFor
 }) => {
   const [options, setOptions] = useState<TOption[]>([])

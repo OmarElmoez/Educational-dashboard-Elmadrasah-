@@ -16,7 +16,6 @@ export const getPackageBalanceList = async (
   page: number,
   searchTerm: FilterFormData | null
 ): Promise<TBalanceResponse> => {
-  console.log("searchTerm", searchTerm);
 
   const response = await axiosInstance.get<TBalanceResponse>("/customer/balance/", {
     params: {

@@ -14,12 +14,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import styles from "../filterForm.module.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { PACKAGE_STATUS_OPTIONS, STATUS_OPTIONS } from "@/constants";
 import { Dropdown, DropdownWithSearch } from "@/components";
 import { TOption } from "@/types/Dropdown";
-import { useAppDispatch } from "@/store/hooks";
-import { actGetDropdownOptions } from "@/store/single-actions";
 // -------------------------------------------------------------------
 
 const {
@@ -75,28 +73,12 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
   const handleSubmitForm = (data: FilterFormData) => {
     onSubmit(data);
     reset();
-    setSelectedCustomer(null);
+    // setSelectedCustomer(null);
   };
 
   const handleReset = () => {
-    console.log("errors:", errors);
     reset();
-    setSelectedCustomer(null);
   };
-
-  const [customersList, setCustomersList] = useState<TOption[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<TOption | null>(null);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({ optionsFor: "customers" })
-    ).then((res) => {
-      if (Array.isArray(res?.payload)) {
-        setCustomersList(res.payload);
-      }
-    });
-  }, [dispatch]);
 
   const handleGetOption = (option: TOption | null) => {
     setValue("name", option?.label);
@@ -111,10 +93,8 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
           name="name"
           setValue={setValue}
           label="الاسم"
-          options={customersList}
+          optionsFor="customers"
           handleGetOption={handleGetOption}
-          selectedCustomer={selectedCustomer}
-          setSelectedCustomer={setSelectedCustomer}
           placeholder="اختر الطالب"
         />
       </div>

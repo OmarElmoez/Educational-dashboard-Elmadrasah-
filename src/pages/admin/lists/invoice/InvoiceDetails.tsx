@@ -213,9 +213,8 @@ const InvoiceDetails: React.FC = () => {
         }
             
       })
-      .catch((err) => console.error(err));
     } catch (error) {
-      console.log(error);
+      openFeedbackModal('failed', `${error}`)
     }
   };
  

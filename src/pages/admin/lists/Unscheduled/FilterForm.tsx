@@ -65,19 +65,9 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
 
   const [servicesList, setServicesList] = useState<TOption[]>([]);
 
-
-  // customer dropdown
-  const [customersList, setCustomersList] = useState<TOption[]>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({ optionsFor: "customers" })
-    ).then((res) => {
-      if (Array.isArray(res?.payload)) {
-        setCustomersList(res.payload);
-      }
-    });
 
     dispatch(
       actGetDropdownOptions({ optionsFor: "services" })
@@ -100,7 +90,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
           name="name"
           setValue={setValue}
           label=""
-          options={customersList}
+          optionsFor="customers"
           handleChange={handleGetOption}
           placeholder="اختر العميل"
         />
@@ -117,16 +107,6 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
         />
       </div>
 
-      {/* <div className={formGroup}>
-        <label className={form_label}>نوع الباقة </label>
-        <Dropdown
-          label=""
-          name="service_name"
-          register={register}
-          options={SCHEDULED_STATUS_OPTIONS}
-          error={errors.service_name?.message as string}
-        />
-      </div> */}
       <div className={formGroup}>
         <label className={form_label}> حالة الجدولة </label>
         <Dropdown

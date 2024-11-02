@@ -113,7 +113,6 @@ const AddEmployeeForm = () => {
       (isTeacher || data.employee_type === "Teacher") &&
       (data.initial_students.length === 0 || data.subject_choices.length === 0)
     ) {
-      console.log("in");
 
       return openFeedbackModal(
         "warning",
@@ -713,16 +712,16 @@ const AddEmployeeForm = () => {
           >
             يلغى
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              console.log("errors", errors);
-              console.log("values", control._getWatch("subject_choices"));
-            }}
-            className="btn cancel-btn"
-          >
-            test
-          </button>
+          {/*<button*/}
+          {/*  type="button"*/}
+          {/*  onClick={() => {*/}
+          {/*    console.log("errors", errors);*/}
+          {/*    console.log("values", control._getWatch("subject_choices"));*/}
+          {/*  }}*/}
+          {/*  className="btn cancel-btn"*/}
+          {/*>*/}
+          {/*  test*/}
+          {/*</button>*/}
         </div>
       </form>
     </>

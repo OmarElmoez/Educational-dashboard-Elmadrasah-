@@ -23,8 +23,6 @@ const StudentsList = () => {
       previous?: string | null;
     }) => {
       if (next) {
-        console.log("next", next);
-
         dispatch(actGetStudents({ next }));
         return;
       }

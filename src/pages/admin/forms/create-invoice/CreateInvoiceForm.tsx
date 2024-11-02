@@ -125,7 +125,6 @@ const CreateInvoiceForm = () => {
   });
 
   const handleAddCharge = () => {
-    console.log("add charge");
     appendCharge({
       title: "",
       description: "",
@@ -216,8 +215,9 @@ const CreateInvoiceForm = () => {
               );
             }
           });
-      } catch (error) {
-        console.log(error);
+      }
+      catch (error) {
+        openFeedbackModal("failed", `${error}`)
       }
     }
   };
@@ -417,8 +417,6 @@ const CreateInvoiceForm = () => {
       id: null,
     };
 
-    console.log("from on Submit:", data);
-
     dispatch(
       actSendDataToServer({
         formData: serverData,
@@ -427,7 +425,6 @@ const CreateInvoiceForm = () => {
     )
       .unwrap()
       .then((res) => {
-        console.log("res:", res);
         navigate(`/admin/invoices/invoice-details/${res?.id}`);
         if(dataStatus === "Approved") {
           return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});

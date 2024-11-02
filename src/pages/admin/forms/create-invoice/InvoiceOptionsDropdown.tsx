@@ -23,7 +23,6 @@ const InvoiceOptionsDropdown: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleDelee = () => {
-    console.log("Delete clicked");
     openFeedbackModal(
       "confirm",
       "تأكيد حذف الفاتورة",
@@ -38,14 +37,12 @@ const InvoiceOptionsDropdown: React.FC = () => {
         navigate(`/admin/invoices/invoices-list`);
       })
       .catch((error: string) => {
-        console.log("error", error);
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
       })
     })
   };
 
   const handleVoid = () => {
-    console.log("void clicked");
     openFeedbackModal(
       "confirm",
       "تأكيد الغاء الفاتورة",
@@ -67,7 +64,6 @@ const InvoiceOptionsDropdown: React.FC = () => {
           navigate(`/admin/invoices/invoices-list`);
         })
         .catch((error: string) => {
-          console.log("error", error);
           openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error, 5000);
         })
       }
@@ -79,7 +75,6 @@ const InvoiceOptionsDropdown: React.FC = () => {
       id: "copy",
       label: "نسخ",
       onClick: () => {
-        console.log("Copy clicked");
         navigate(`/admin/copy-invoice/${id}`);
       },
     },
@@ -87,7 +82,6 @@ const InvoiceOptionsDropdown: React.FC = () => {
       id: "edit",
       label: "تعديل",
       onClick: () => {
-        console.log("Edit clicked");
         navigate(`/admin/edit-invoice/${id}`);
       },
     },

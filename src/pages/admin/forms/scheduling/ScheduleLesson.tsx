@@ -102,7 +102,6 @@ const ScheduleLesson = () => {
       dispatch(actGetScheduleLessonData({id, credit}))
       .unwrap()
       .then((res) => {
-        console.log('data from scheduleLesson', res)
         setCustomerData(res);
         setValue('lesson_credit', credit)
       });
@@ -185,7 +184,7 @@ const ScheduleLesson = () => {
       openFeedbackModal("succeeded", "تم ارسال الاشعارات بنجاح", "")
       navigate('/admin/calendar/all-unscheduled-list')
     });
-    console.log(serverData);
+
   };
 
 
@@ -544,8 +543,7 @@ const ScheduleLesson = () => {
             type="button"
             className="btn cancel-btn"
             onClick={() => {
-              console.log(errors);
-              console.log('error for repeat on', control._getWatch('end_repeat_on'))
+              reset();
             }}
           >
             يُلغي
