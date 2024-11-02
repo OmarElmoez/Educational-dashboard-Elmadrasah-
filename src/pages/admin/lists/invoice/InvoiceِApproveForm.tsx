@@ -65,16 +65,12 @@ const InvoiceِApproveForm = ({
   });
 
   const onSubmit = (data: TInvoiceHistoryFormData) => {
-    console.log("data: ", data);
-    console.log(customer_id, invoice_id, amount, date);
 
     const serverData: TInvoiceHistoryFormDataForServer = {
       ...data,
       customer_id: customer_id,
       invoice_id: invoice_id,
     };
-
-    console.log("serverData", serverData);
 
     dispatch(
       actSendDataToServer({

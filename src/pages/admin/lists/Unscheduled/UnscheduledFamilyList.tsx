@@ -70,7 +70,6 @@ const UnscheduledFamilyList = ({ formRef, debounceSearchTerm }: UnscheduledFamil
   const handleFilterSubmit = (filters: FilterFormData | null) => {
     setCurrentPage(1);
     setSearchTerm(filters);
-    console.log('data from submit filter form', filters);
     formRef.current?.close();
   };
 

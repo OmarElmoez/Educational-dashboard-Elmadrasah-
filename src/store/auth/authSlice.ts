@@ -63,7 +63,6 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(actAuthLogin.rejected, (state, action) => {
-      console.log("action rejected", action);
       state.loading = "failed";
       if (isString(action.payload)) {
         state.error = action.payload;

@@ -12,8 +12,6 @@ const actGetCities = createAsyncThunk(
   async ({ countryCode }: { countryCode: string }, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
-    console.log(countryCode);
-
     try {
       const response = await axios.get<TResponse>(
         `http://api.geonames.org/searchJSON?country=${countryCode}&featureClass=P&maxRows=250&username=omarelmoez`

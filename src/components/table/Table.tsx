@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import styles from "./table.module.css";
 import { TCustomer } from "@/types/table";
 
@@ -16,14 +15,14 @@ const fieldsWithDifferentDirection = ["mobile_phone", "home_phone"];
 const Table = ({ headData, bodyData, checkAll, setCheckAll }: TTableProps) => {
 
 
-  useEffect(() => {
-    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"], checked');
-    checkboxes.forEach((checkbox) => {
-      if (checkbox instanceof HTMLInputElement) {
-        console.log(checkbox.dataset.id);
-      }
-    });
-  }, [checkAll]);
+  // useEffect(() => {
+  //   const checkboxes = document.querySelectorAll('tbody input[type="checkbox"], checked');
+  //   checkboxes.forEach((checkbox) => {
+  //     if (checkbox instanceof HTMLInputElement) {
+  //       console.log(checkbox.dataset.id);
+  //     }
+  //   });
+  // }, [checkAll]);
 
   return (
     <table className={table}>

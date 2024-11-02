@@ -3,7 +3,7 @@ import styles from "../lists.module.css";
 import { Row } from "@/components";
 import WinnersList from "./WinnersTableList";
 import ParticipantList from "./ParticipantList";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 // -----------------------------------------------------------------------------------------
 const {
   balance_right,
@@ -19,10 +19,7 @@ const {
 const GeneralScheduledEmployeesLists = () => {
 
   const [activeTab, setActiveTab] = useState<string>("winners");
-  const {std_id, id} = useParams();
-console.log("std_id, id", std_id, id);
-
-
+  // const {std_id, id} = useParams();
 
   const TABS = [
     {

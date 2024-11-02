@@ -21,7 +21,7 @@ import { actGetCountries } from "@/store/location/LocationSlice";
 import {
   AddTeacherSchema,
   TAddTeacherFormData,
-  TAddTeacherFormDataForServer,
+  // TAddTeacherFormDataForServer,
 } from "@/schemas/AddTeacherSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -40,9 +40,9 @@ import {
 
 const AddTeacherForm = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const {user} = useAppSelector((state) => state.auth);
 
-  const { countries, cities, states, chosenState, chosenRegion } =
+  const {countries, cities, states, chosenState, chosenRegion} =
     useAppSelector((state) => state.location);
 
   const [choices, setChoices] = useState<TOption[]>([]);
@@ -51,7 +51,7 @@ const AddTeacherForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: {errors},
     setValue,
     reset,
   } = useForm<TAddTeacherFormData>({
@@ -59,18 +59,18 @@ const AddTeacherForm = () => {
     resolver: zodResolver(AddTeacherSchema),
     defaultValues: {
       availabilities: [
-        { day: "", start_time: "", end_time: "", description: "" },
+        {day: "", start_time: "", end_time: "", description: ""},
       ], // Start with one entry
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const {fields, append, remove} = useFieldArray({
     control,
     name: "availabilities",
   });
 
   const handleAdd = () => {
-    append({ start_time: "", end_time: "", description: "" });
+    append({start_time: "", end_time: "", description: ""});
   };
   const handleRemove = (index: number) => {
     remove(index); // Removes field at the specified index
@@ -89,20 +89,17 @@ const AddTeacherForm = () => {
     // Add region to timezone value
     data["timezone"] = `${chosenRegion}/${data["timezone"]}`;
 
-    const serverData: TAddTeacherFormDataForServer = {
-      ...data,
-      default_subject: parseInt(data["default_subject"]),
-      subject_choices: data["subject_choices"]?.map((subject) => {
-        return parseInt(subject);
-      }),
-      initial_students: data["initial_students"]?.map((student) => {
-        return parseInt(student);
-      }),
-      is_active: data["is_active"] === "true",
-    };
-
-    console.log(serverData);
-    console.log("DATA", data);
+    //   const serverData: TAddTeacherFormDataForServer = {
+    //     ...data,
+    //     default_subject: parseInt(data["default_subject"]),
+    //     subject_choices: data["subject_choices"]?.map((subject) => {
+    //       return parseInt(subject);
+    //     }),
+    //     initial_students: data["initial_students"]?.map((student) => {
+    //       return parseInt(student);
+    //     }),
+    //     is_active: data["is_active"] === "true",
+    //   };
   };
 
   useEffect(() => {
@@ -117,16 +114,16 @@ const AddTeacherForm = () => {
         url: END_POINTS["subject_choices"].url,
       })
     )
-      .unwrap()
-      .then((res) => {
-        const formattedSubjects = res.map((subject) => {
-          return {
-            label: subject.name,
-            value: subject.id.toString(),
-          };
-        });
-        setChoices(formattedSubjects);
+    .unwrap()
+    .then((res) => {
+      const formattedSubjects = res.map((subject) => {
+        return {
+          label: subject.name,
+          value: subject.id.toString(),
+        };
       });
+      setChoices(formattedSubjects);
+    });
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
@@ -135,13 +132,13 @@ const AddTeacherForm = () => {
 
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
-      <Heading text=" إضافة موظف جديد" />
+      <Heading text=" إضافة موظف جديد"/>
       <Row>
         <Dropdown
           label="اختار نوع الموظف"
           name="employee_type"
           register={register}
-          options={[{ label: "مُعلم", value: "Teacher" }]}
+          options={[{label: "مُعلم", value: "Teacher"}]}
           error={errors.employee_type?.message as string}
         />
 
@@ -315,9 +312,9 @@ const AddTeacherForm = () => {
         />
       </Row>
 
-      <hr className="hr" />
+      <hr className="hr"/>
 
-      <Heading text="المرفقات" />
+      <Heading text="المرفقات"/>
 
       <Row>
         <UploadFile
@@ -383,9 +380,9 @@ const AddTeacherForm = () => {
         />
       </Row>
 
-      <hr className="hr" />
+      <hr className="hr"/>
 
-      <Heading text="المواد" />
+      <Heading text="المواد"/>
 
       <Row>
         <MultiChoices
@@ -397,9 +394,9 @@ const AddTeacherForm = () => {
         <article className="group"></article>
       </Row>
 
-      <hr className="hr" />
+      <hr className="hr"/>
 
-      <Heading text="تفاصيل التوظيف" />
+      <Heading text="تفاصيل التوظيف"/>
 
       <Row>
         <InputField
@@ -457,12 +454,12 @@ const AddTeacherForm = () => {
         />
       </Row>
 
-      <hr className="hr" />
+      <hr className="hr"/>
 
-      <Heading text="مواقيت العمل" />
+      <Heading text="مواقيت العمل"/>
       <div>
         {fields.map((field, index) => (
-          <Row key={field.id} style={{ alignItems: "center" }}>
+          <Row key={field.id} style={{alignItems: "center"}}>
             <Dropdown
               label="حدد اليوم"
               isRequired
@@ -508,7 +505,7 @@ const AddTeacherForm = () => {
             {index > 0 ? (
               <div className="mainContainer">
                 <button type="button" onClick={() => handleRemove(index)}>
-                  <CloseButton />
+                  <CloseButton/>
                 </button>
                 <button
                   className="add-action-btn mr-1"
@@ -519,7 +516,7 @@ const AddTeacherForm = () => {
                 </button>
               </div>
             ) : (
-              <div style={{ alignItems: "center" }}>
+              <div style={{alignItems: "center"}}>
                 <button
                   className="add-action-btn"
                   type="button"
@@ -532,7 +529,7 @@ const AddTeacherForm = () => {
           </Row>
         ))}
 
-        <br />
+        <br/>
         <span className="helper-text">
           * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
           بشكل عام هنا.
@@ -543,9 +540,9 @@ const AddTeacherForm = () => {
         </span>
       </div>
 
-      <hr className="hr" />
+      <hr className="hr"/>
 
-      <Heading text="رابط موقع المعلم" />
+      <Heading text="رابط موقع المعلم"/>
 
       <Row>
         <InputField
@@ -560,9 +557,9 @@ const AddTeacherForm = () => {
         <article className="group"></article>
       </Row>
 
-      <hr className="hr" />
+      <hr className="hr"/>
 
-      <Heading text="الطلاب المعينون" />
+      <Heading text="الطلاب المعينون"/>
 
       <Row>
         <MultiChoices
@@ -574,19 +571,19 @@ const AddTeacherForm = () => {
         <article className="group"></article>
       </Row>
 
-      <hr className="hr" />
+      <hr className="hr"/>
 
       <CalendarSettingsForm
-          register={register}
-          errors={errors}
-          setValue={setValue}
-          fields={RADIO_FIELDS_FOR_CALENDAR}
-        />
+        register={register}
+        errors={errors}
+        setValue={setValue}
+        fields={RADIO_FIELDS_FOR_CALENDAR}
+      />
 
       <NotificationForm
         register={register}
       />
-      <hr className="hr" />
+      <hr className="hr"/>
 
       <div className="flex-end">
         <button type="submit" className="btn submit-btn">
@@ -605,6 +602,6 @@ const AddTeacherForm = () => {
       </div>
     </form>
   );
-};
+}
 
 export default AddTeacherForm;

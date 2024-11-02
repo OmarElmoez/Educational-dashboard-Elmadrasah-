@@ -122,7 +122,6 @@ const EditInvoiceForm = () => {
   });
 
   const handleAddCharge = () => {
-    console.log("add charge");
     appendCharge({
       title: "",
       description: "",
@@ -175,7 +174,6 @@ const EditInvoiceForm = () => {
       dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
         .unwrap()
         .then((res) => {
-          console.log('from get data', res);
           res.customer.toString();
           reset(res)
         })
@@ -228,8 +226,9 @@ const EditInvoiceForm = () => {
               );
             }
           });
-      } catch (error) {
-        console.log(error);
+      }
+      catch (error) {
+        openFeedbackModal("failed", `${error}`)
       }
     }
   };
@@ -289,9 +288,6 @@ const EditInvoiceForm = () => {
     ): { total: number; salesTax: number; subtotal: number } => {
       let total = subtotal;
       let salesTax = 0;
-
-      console.log('salesTaxRate from total', salesTaxRate);
-      
 
       // const [taxTreatment] = watchFields;
 
@@ -426,7 +422,6 @@ const EditInvoiceForm = () => {
 
   const onSubmit = (data: TEditInvoiceFormData) => {
     data.formatted_number = invoiceNumber;
-    console.log("data.formatted_number", data.formatted_number);
 
     data.tax_count = parseFloat(data.tax_count).toString();
 
@@ -441,7 +436,6 @@ const EditInvoiceForm = () => {
       customer: data.customer?.toString(),
     };
 
-    console.log("serverData:", serverData);
     dispatch(
       actSendDataToServer({
         formData: serverData,
@@ -880,8 +874,7 @@ const EditInvoiceForm = () => {
         <button
           type="button"
           onClick={() => {
-            console.log(errors);
-            
+            reset()
           }}
           className="btn cancel-btn"
         >

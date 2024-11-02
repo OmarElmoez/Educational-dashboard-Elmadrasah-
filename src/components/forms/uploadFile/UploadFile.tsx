@@ -43,7 +43,6 @@ const UploadFile = <T extends FieldValues>({
 
     if (acceptedFiles && acceptedFiles.length > 0) {
       const filesArray = Array.from(acceptedFiles); // Convert FileList to array
-      console.log(filesArray);
       const newPreviews = filesArray.map((file) => ({
         url: URL.createObjectURL(file),
         name: file.name,

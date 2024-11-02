@@ -20,8 +20,6 @@ const ParticipantList = () => {
     navigate(`/admin/reschedule-lesson/${id}/`);
   };
 
-  console.log(tableData)
-
   useEffect(() => {
     // get All Data
     if (std_id && id) {

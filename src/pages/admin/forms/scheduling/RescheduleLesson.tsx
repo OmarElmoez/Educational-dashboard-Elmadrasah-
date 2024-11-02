@@ -113,9 +113,6 @@ const RescheduleLesson = () => {
       dispatch(actGetRescheduleLessonData({id}))
       .unwrap()
       .then((res) => {
-        /*  TODO: Upadte it to use lesson_draft_data  */
-        console.log("res: ", res.lesson_draft_data);
-        console.log("res.leadflow_data[0]: ", res.leadflow_data[0]);
         setPreviousData(res);
         setCustomerData(res);
       });
@@ -234,7 +231,6 @@ const RescheduleLesson = () => {
       navigate('/admin/calendar/all-unscheduled-list')
     });
 
-    console.log(serverData);
   };
 
 
@@ -590,11 +586,7 @@ const RescheduleLesson = () => {
             type="button"
             className="btn cancel-btn"
             onClick={() => {
-              console.log(errors);
-              console.log(
-                "error for repeat on",
-                control._getWatch("end_repeat_on")
-              );
+              reset()
             }}
           >
             يُلغي

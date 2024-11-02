@@ -23,7 +23,6 @@ const WinnersList = () => {
         if(res?.length){
           setTableData(res)
         }
-        console.log("res", res);
       });
     }
 
