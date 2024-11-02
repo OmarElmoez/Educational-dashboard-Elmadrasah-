@@ -7,9 +7,9 @@ import InvoiceOptionsDropdown from "../../forms/create-invoice/InvoiceOptionsDro
 import { actGetData } from "@/store/single-actions";
 import { useAppDispatch } from "@/store/hooks";
 import { useFeedback } from "@/store/context";
-import InvoiceِApproveForm from "./InvoiceِApproveForm";
 import styles from "./invoiceDetails.module.css";
 import actRemovePaymentAllocation from "@/store/single-actions/actRemovePaymentAllocation";
+import InvoiceApproveForm from "./InvoiceِApproveForm";
 
 // -------------------------------------------------------------------------------
 
@@ -214,7 +214,8 @@ const InvoiceDetails: React.FC = () => {
             
       })
     } catch (error) {
-      openFeedbackModal('failed', `${error}`)
+      console.log(error)
+      // openFeedbackModal('failed', `${error}`)
     }
   };
  
@@ -455,7 +456,7 @@ const InvoiceDetails: React.FC = () => {
 
       <footer className={payHistory}>
         {details && (
-          <InvoiceِApproveForm
+          <InvoiceApproveForm
             customer_id={details?.customer}
             invoice_id={details?.id}
             amount={finalAmount.toString()}
