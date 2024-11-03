@@ -64,20 +64,20 @@ const SIDEBAR_DATA = {
       phone_icon: <PH_calendarIcon />,
       children: [
         {
-          title: "دخول الحصة للطالب** ",
-          path: "classes",
+          title: "دخول الحصة للطالب",
+          path: "join-student",
           icon: <CalendarMiniIcon />,
           phone_icon: <PH_calendarIcon />,
         },
         {
-          title: "**دخول الحصة للمدرس",
-          path: "classes",
+          title: "دخول الحصة للمدرس",
+          path: "join-teacher",
           icon: <CalendarMiniIcon />,
           phone_icon: <PH_calendarIcon />,
         },
         {
-          title: "**الدرس كامل",
-          path: "classes",
+          title: "الدرس كامل",
+          path: "all-lesson",
           icon: <Lesson />,
           phone_icon: <PH_calendarIcon />,
         },
@@ -101,13 +101,13 @@ const SIDEBAR_DATA = {
       phone_icon: <PH_boyIcon />,
       children: [
         {
-          title: " الطلاب",
+          title: "الطلاب",
           path: "students/students-list",
           icon: <StudentsIcon />,
         },
         {
-          title: "العائلات **",
-          path: "students/students-list",
+          title: "العائلات",
+          path: "students/families-list",
           icon: <FamiliesIcon />,
         },
         {
@@ -121,7 +121,7 @@ const SIDEBAR_DATA = {
           icon: <AddStdFamilyIcon />,
         },
         {
-          title: " إضافة طالب منفصل",
+          title: "إضافة طالب منفصل",
           path: "students/add-student",
           icon: <AddStdIcon />,
         },
@@ -134,14 +134,14 @@ const SIDEBAR_DATA = {
       phone_icon: <PH_teacherIcon />,
       children: [
         {
-          title: "** الموظفين",
+          title: "الموظفين",
           path: "employees/teachers",
           icon: <EmployeesIcon />,
           phone_icon: <PH_teacherIcon />,
         },
         {
-          title: "** ساعات عمل الموظفين",
-          path: "employees/teachers",
+          title: "ساعات عمل الموظفين",
+          path: "employees/work-hours",
           icon: <EmployeeHoursIcon />,
           phone_icon: <PH_teacherIcon />,
         },
@@ -151,14 +151,14 @@ const SIDEBAR_DATA = {
           icon: <AddEmployeIcon />,
         },
         {
-          title: "**مدفوعات الموظفين ",
-          path: "employees/teachers",
+          title: "مدفوعات الموظفين",
+          path: "employees/purchases",
           icon: <EmployePaymentsIcon />,
           phone_icon: <PH_teacherIcon />,
         },
         {
-          title: "** استيراد الموظفين",
-          path: "employees/teachers",
+          title: "استيراد الموظفين",
+          path: "employees/import",
           icon: <UploadIcon />,
           phone_icon: <PH_teacherIcon />,
         },
@@ -170,18 +170,18 @@ const SIDEBAR_DATA = {
       icon: <InvoiceIcon />,
       children: [
         {
-          title: "**أرصدة العملاء ",
-          path: "invoices/invoices-list",
+          title: "أرصدة العملاء",
+          path: "invoices/customer-balances",
           icon: <ClientCreditsIcon />,
         },
         {
-          title: "أرصدة الاشتراكات ",
+          title: "أرصدة الاشتراكات",
           path: "invoices/balance-list",
           icon: <ClientSubbsIcon />,
         },
         {
           title: "المدفوعات",
-          path: "invoices/invoices-list",
+          path: "invoices/payments",
           icon: <ClientpaymentsIcon />,
         },
         {
@@ -190,18 +190,18 @@ const SIDEBAR_DATA = {
           icon: <ClientInvoicesIcon />,
         },
         {
-          title: "إنشاء فاتورة واحدة ",
+          title: "إنشاء فاتورة واحدة",
           path: "invoices/create-invoice",
           icon: <CreateInvoicesIcon />,
         },
         {
-          title: "إنشاء فواتير متعددة** ",
-          path: "invoices/invoices-list",
+          title: "إنشاء فواتير متعددة",
+          path: "invoices/create-multiple-invoices",
           icon: <CreateInvoicesIcon_2 />,
         },
         {
-          title: "إصدار مذكرة ائتمان **",
-          path: "invoices/invoices-list",
+          title: "إصدار مذكرة ائتمان",
+          path: "invoices/create-credit-memo",
           icon: <ClientReportIcon />,
         },
       ],

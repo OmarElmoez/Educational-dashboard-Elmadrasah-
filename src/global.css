@@ -87,6 +87,7 @@ menu {
 
 .mainContainer {
   display: flex;
+  position: relative;
 }
 
 /* .grid {
@@ -125,9 +126,9 @@ menu {
 }
 
 .active {
-  background-color: #ffb72b;
-  border-radius: 0.8rem;
-  font-weight: 700;
+  background-color: var(--main-color);
+  border-radius: 0.5rem;
+  color: #fff;
 }
 
 .error {

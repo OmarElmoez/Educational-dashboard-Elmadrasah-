@@ -1,31 +1,33 @@
-import AdminClassesPage from "./classes/Classes";
-import AdminHomePage from "./HomePage";
-import AdminTeachersPage from "./Teachers";
-import AdminReportsPage from "./Reports";
-import AdminStudentsPage from "./Students";
-// FORMS
-import AddEmployeeForm from "./forms/AddEmployeeForm";
-import AddTeacherForm from "./forms/AddTeacherForm";
-import AddParentForm from "./forms/AddParentForm";
-import AddStudentForm from "./forms/AddStudentForm";
-import AddStudentToFamilyForm from "./forms/AddStudentToFamilyForm";
-import CreateInvoiceForm from "./forms/create-invoice/CreateInvoiceForm";
-import EditInvoiceForm from "./forms/create-invoice/EditInvoiceForm";
-// import CopyInvoiceForm from "./forms/create-invoice/CopyInvoiceForm";
-import CopyInvoicesForm from "./forms/create-invoice/CopyInvoicesForm";
-import ScheduleLesson from "./forms/scheduling/ScheduleLesson";
-import RescheduleLesson from "./forms/scheduling/RescheduleLesson";
+import {lazy} from "react";
 
+const AdminClassesPage = lazy(() => import('./classes/Classes'))
+const AdminHomePage = lazy(() => import('./HomePage'))
+const AdminTeachersPage = lazy(() => import('./Teachers'));
+const AdminReportsPage = lazy(() => import('./Reports'));
+const AdminStudentsPage = lazy(() => import('./Students'));
+// FORMS
+const AddEmployeeForm = lazy(() => import("./forms/AddEmployeeForm"));
+const AddTeacherForm = lazy(() => import('./forms/AddTeacherForm'));
+const AddParentForm = lazy(() => import('./forms/AddParentForm'));
+const AddStudentForm = lazy(() => import('./forms/AddStudentForm'));
+const AddStudentToFamilyForm = lazy(() => import('./forms/AddStudentToFamilyForm'));
+const CreateInvoiceForm = lazy(() => import('./forms/create-invoice/CreateInvoiceForm'));
+const EditInvoiceForm = lazy(() => import('./forms/create-invoice/EditInvoiceForm'));
+// import CopyInvoiceForm from "./forms/create-invoice/CopyInvoiceForm";
+const CopyInvoicesForm = lazy(() => import('./forms/create-invoice/CopyInvoicesForm'));
+const ScheduleLesson = lazy(() => import('./forms/scheduling/ScheduleLesson'));
+const RescheduleLesson = lazy(() => import('./forms/scheduling/RescheduleLesson'));
 // LIST:
-import StudentsList from "./lists/StudentsList";
-import InvoicesList from "./lists/InvoicesList";
-import PackageBalanceList from "./lists/balance/PackageBalanceList";
-import InvoiceDetails from "./lists/invoice/InvoiceDetails";
-import GeneralUnscheduledLists from "./lists/Unscheduled/GeneralUnscheduledLists";
-import UnscheduledList from "./lists/Unscheduled/UnscheduledList";
-import UnscheduledFamilyList from "./lists/Unscheduled/UnscheduledFamilyList";
-import GeneralScheduledEmployeesLists from "./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists";
-import SchedulingErrorsTableList from "./lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
+const StudentsList = lazy(() => import('./lists/StudentsList'));
+const InvoicesList = lazy(() => import('./lists/InvoicesList'));
+const PackageBalanceList = lazy(() => import('./lists/balance/PackageBalanceList'));
+const InvoiceDetails = lazy(() => import('./lists/invoice/InvoiceDetails'));
+const GeneralUnscheduledLists = lazy(() => import('./lists/Unscheduled/GeneralUnscheduledLists'));
+const UnscheduledList = lazy(() => import('./lists/Unscheduled/UnscheduledList'));
+const UnscheduledFamilyList = lazy(() => import('./lists/Unscheduled/UnscheduledFamilyList'));
+const GeneralScheduledEmployeesLists = lazy(() => import('./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists'));
+const SchedulingErrorsTableList = lazy(() => import('./lists/ScheduledEmployeesLists/ScheduledErrorsTableList'));
+
 
 export {
   AdminClassesPage,
@@ -40,12 +42,10 @@ export {
   AddStudentToFamilyForm,
   CreateInvoiceForm,
   EditInvoiceForm,
-  // CopyInvoiceForm,
   StudentsList,
   InvoicesList,
   PackageBalanceList,
   InvoiceDetails,
-  // CopyInvoiceForm,
   CopyInvoicesForm,
   ScheduleLesson,
   RescheduleLesson,

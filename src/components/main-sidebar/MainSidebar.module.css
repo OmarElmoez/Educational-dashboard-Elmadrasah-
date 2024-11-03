@@ -1,58 +1,23 @@
 /* height 737 */
 
 .sidebar {
-  background-color: transparent;
-  padding: 3.2rem 0.4rem;
+  background-color: #EFEFEF;
+  padding: 3.2rem 1.8rem 4.8rem;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  max-width: 80px;
   position: relative;
-  height: inherit;
-  min-height: 150vh;
+  z-index: 5;
 }
 
 .main_nav_menu  {
-  width: 83px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #EFEFEF;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  padding-top: 32px;
-  height: auto;
-  min-height: 100vh;
-  height: -webkit-fill-available;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  padding-top: 3rem;
 }
-.main_nav_menu_footer  {
-  width: 83px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #EFEFEF;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  padding-top: 32px;
-  height: auto;
-
-}
-/* .main_nav_menu {
-  width: 83px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #EFEFEF;
-
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  padding-top: 32px;
-} */
 
 .collapse_menu {
   width: 165px;
@@ -181,9 +146,9 @@
 }
 
 .sidebar .main_menu {
-  padding-bottom: 2.4rem;
-  margin-bottom: 2.4rem;
-  border-bottom: 1px solid #ebebeb;
+  /*padding-bottom: 2.4rem;*/
+  /*margin-bottom: 2.4rem;*/
+  /*border-bottom: 1px solid #ebebeb;*/
 }
 
 .sidebar menu a,
