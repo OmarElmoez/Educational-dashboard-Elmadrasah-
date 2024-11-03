@@ -30,5 +30,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "firebase-config.ts", "public/firebase-messaging-sw.js"]
+  "include": ["src", "firebase-config.ts", "public/firebase-messaging-sw.js", "public/lottieFiles/index.ts"]
 }
