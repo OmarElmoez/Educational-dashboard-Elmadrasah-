@@ -7,7 +7,6 @@ const LottieHandler = ({ type }: { type: keyof typeof LottieFilesPaths }) => {
       loop
       autoplay
       src={`${LottieFilesPaths[type]}`}
-      width="auto"
     />
   )
 }
