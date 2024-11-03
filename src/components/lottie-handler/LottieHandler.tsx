@@ -1,4 +1,4 @@
-import LottieFilesPaths from "@/assets/lottieFiles";
+import LottieFilesPaths from "public/lottieFiles";
 import {DotLottieReact} from "@lottiefiles/dotlottie-react";
 
 const LottieHandler = ({ type }: { type: keyof typeof LottieFilesPaths }) => {

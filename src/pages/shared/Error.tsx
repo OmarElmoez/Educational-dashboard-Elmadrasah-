@@ -1,6 +1,6 @@
 import LottieHandler from "@/components/lottie-handler/LottieHandler.tsx";
 import {Link} from "react-router-dom";
-import LottieFilesPaths from "@/assets/lottieFiles";
+import LottieFilesPaths from "public/lottieFiles";
 
 const Error = ({type, isLogin = false}: { type: keyof typeof LottieFilesPaths, isLogin?: boolean }) => {
   return (
