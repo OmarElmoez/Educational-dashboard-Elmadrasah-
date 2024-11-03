@@ -1,4 +1,6 @@
+import {lazy} from "react";
+
 import LoginLayout from "./login/LoginLayout";
-import MainLayout from "./MainLayout";
+const MainLayout = lazy(() => import("./MainLayout"));
 
 export { LoginLayout, MainLayout };

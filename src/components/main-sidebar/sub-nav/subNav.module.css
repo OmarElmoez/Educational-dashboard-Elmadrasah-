@@ -1,0 +1,36 @@
+.sub_nav {
+  width: 165px;
+  /* 4,8rem is the height of the header */
+  height: calc(100% - 4.8rem);
+  padding: 2.3rem 0.8rem 0;
+  background-color: #F9F9F9;
+  position: absolute;
+  top: 4.8rem;
+  right: 0;
+  transition: 0.3s;
+}
+
+.sub_nav h2 {
+  color: #000000;
+  font-size: 1.2rem;
+}
+
+.sub_nav menu {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.6rem;
+  color: #9D9D9D
+}
+
+.sub_nav menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.8rem 1.2rem 0.8rem 0;
+}
+
+.sub_nav__link span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: inherit;
+}

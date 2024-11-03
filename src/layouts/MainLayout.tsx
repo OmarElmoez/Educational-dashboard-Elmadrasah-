@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import { Header, MainSidebar } from "@/components";
 import { TPath } from "@/types/shared";
 import { SidebarContextProvider, FeedbackProvider } from "@/store/context/";
@@ -14,6 +14,7 @@ const MainLayout = ({ sideBarData }: { sideBarData: TPath[] }) => {
   useEffect(() => {
 
   if (user === null) {
+    console.log('user from main layout')
     dispatch(actGetUserProfile())
   }
     

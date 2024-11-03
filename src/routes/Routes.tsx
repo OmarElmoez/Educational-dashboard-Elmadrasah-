@@ -1,6 +1,6 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { MainLayout, LoginLayout } from "@/layouts";
-import { StudentHomePage } from "@/pages/student";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {LoginLayout, MainLayout} from "@/layouts";
+import {StudentHomePage} from "@/pages/student";
 import ProdectedRoute from "./ProtectedRoute";
 
 // ==================== Icons ====================
@@ -11,66 +11,56 @@ import ProdectedRoute from "./ProtectedRoute";
 // import Report from "@/assets/reports.svg?react";
 import {
   AddEmployeeForm,
-  AddTeacherForm,
   AddParentForm,
   AddStudentForm,
+  AddStudentToFamilyForm,
+  AddTeacherForm,
   AdminClassesPage,
   AdminHomePage,
   AdminReportsPage,
   AdminStudentsPage,
   AdminTeachersPage,
-  AddStudentToFamilyForm,
+  CopyInvoicesForm,
   CreateInvoiceForm,
-  // CopyInvoiceForm,
-  StudentsList,
+  EditInvoiceForm,
+  GeneralScheduledEmployeesLists,
+  GeneralUnscheduledLists,
+  InvoiceDetails,
   InvoicesList,
   PackageBalanceList,
-  InvoiceDetails,
-  EditInvoiceForm,
-  // CopyInvoiceForm,
-  CopyInvoicesForm,
-  ScheduleLesson,
-  GeneralUnscheduledLists,
-  GeneralScheduledEmployeesLists,
   RescheduleLesson,
+  ScheduleLesson,
+  StudentsList,
 } from "@/pages/admin";
-import {
-  TeacherClassesPage,
-  TeacherHomePage,
-  TeacherReportsPage,
-  TeacherStudentsPage,
-} from "@/pages/teacher";
-import { FamilyHomePage, FamilyNotesPage } from "@/pages/family";
-import {
-  CalendarPage,
-  HelpPage,
-  NotificationsPage,
-  Profile,
-  Roles,
-  Security,
-  SettingsPage,
-} from "@/pages/shared";
-import { Login, PhoneNumber, SetPassword } from "@/pages/login";
-import { SIDEBAR_DATA } from "@/constants";
+import {TeacherClassesPage, TeacherHomePage, TeacherReportsPage, TeacherStudentsPage,} from "@/pages/teacher";
+import {FamilyHomePage, FamilyNotesPage} from "@/pages/family";
+import {CalendarPage, Error, HelpPage, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
+import {Login, PhoneNumber, SetPassword} from "@/pages/login";
+import {SIDEBAR_DATA} from "@/constants";
 import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
+import PageSuspense from "@/components/page-suspense/PageSuspense.tsx";
 
 const router = createBrowserRouter([
   // Login Routes
   {
     path: "/",
-    element: <LoginLayout />,
+    element: <LoginLayout/>,
     children: [
       {
         index: true,
-        element: <Login />,
+        element: <Login/>,
       },
       {
         path: "set-phoneNumber",
-        element: <PhoneNumber />,
+        element: <PhoneNumber/>,
       },
       {
         path: "set-password",
-        element: <SetPassword />,
+        element: <SetPassword/>,
+      },
+      {
+        path: '*',
+        element: <Error type="error" isLogin={true}/>
       },
     ],
   },
@@ -80,33 +70,33 @@ const router = createBrowserRouter([
     path: "/student",
     element: (
       <ProdectedRoute allowedTypes={["Student"]}>
-        <MainLayout sideBarData={SIDEBAR_DATA["Student"]} />
+        <MainLayout sideBarData={SIDEBAR_DATA["Student"]}/>
       </ProdectedRoute>
     ),
     children: [
       {
         index: true,
-        element: <StudentHomePage />,
+        element: <StudentHomePage/>,
       },
       {
         path: "calendar",
-        element: <CalendarPage />,
+        element: <CalendarPage/>,
       },
       {
         path: "help",
-        element: <HelpPage />,
+        element: <HelpPage/>,
       },
       {
         path: "settings",
-        element: <SettingsPage />,
+        element: <SettingsPage/>,
         children: [
           {
             index: true,
-            element: <Profile />,
+            element: <Profile/>,
           },
           {
             path: "security",
-            element: <Security />,
+            element: <Security/>,
           },
         ],
       },
@@ -118,175 +108,229 @@ const router = createBrowserRouter([
     path: "/admin",
     element: (
       <ProdectedRoute allowedTypes={["Admin"]}>
-        <MainLayout sideBarData={SIDEBAR_DATA["Admin"]} />
+        <PageSuspense>
+
+          <MainLayout sideBarData={SIDEBAR_DATA["Admin"]}/>
+        </PageSuspense>
       </ProdectedRoute>
     ),
     children: [
       {
         index: true,
-        element: <AdminHomePage />,
+        element: <PageSuspense>
+          <AdminHomePage/>
+        </PageSuspense>,
       },
       {
         path: "calendar/classes",
-        element: <AdminClassesPage />,
+        element: <PageSuspense>
+          <AdminClassesPage/>
+        </PageSuspense>,
       },
       {
         path: 'calendar/all-unscheduled-list',
-        element: <GeneralUnscheduledLists />,
+        element: <PageSuspense>
+          <GeneralUnscheduledLists/>
+        </PageSuspense>,
       },
       {
         path: "students",
-        element: <AdminStudentsPage />,
+        element: <PageSuspense>
+          <AdminStudentsPage/>
+        </PageSuspense>,
       },
       {
         path: "employees/teachers",
-        element: <AdminTeachersPage />,
+        element: <PageSuspense><AdminTeachersPage/></PageSuspense>,
       },
       {
         path: "reports",
-        element: <AdminReportsPage />,
+        element: <PageSuspense><AdminReportsPage/></PageSuspense>,
       },
       {
         path: "help",
-        element: <HelpPage />,
+        element: <PageSuspense>
+          <HelpPage/>
+        </PageSuspense>,
       },
       {
         path: "settings",
-        element: <SettingsPage />,
+        element: <PageSuspense>
+          <SettingsPage/>
+        </PageSuspense>,
         children: [
           {
             index: true,
-            element: <Profile />,
+            element: <PageSuspense>
+              <Profile/>
+            </PageSuspense>,
           },
           {
             path: "security",
-            element: <Security />,
+            element: <PageSuspense>
+              <Security/>
+            </PageSuspense>,
           },
           {
             path: "roles",
-            element: <Roles />,
+            element: <PageSuspense>
+              <Roles/>
+            </PageSuspense>,
           },
         ],
       },
       {
         path: 'employees/add-employee',
-        element: <AddEmployeeForm />,
+        element: <PageSuspense>
+          <AddEmployeeForm/>
+        </PageSuspense>
+        ,
       },
       {
         path: 'employees/add-teacher',
-        element: <AddTeacherForm />,
+        element: <PageSuspense>
+          <AddTeacherForm/>
+        </PageSuspense>,
       },
       {
         path: 'students/add-family',
-        element: <AddParentForm />,
+        element: <PageSuspense>
+          <AddParentForm/>
+        </PageSuspense>,
       },
       {
         path: 'students/add-student',
-        element: <AddStudentForm />,
+        element: <PageSuspense>
+          <AddStudentForm/>
+        </PageSuspense>,
       },
       {
         path: 'students/students-list',
-        element: <StudentsList />,
+        element: <PageSuspense>
+          <StudentsList/>
+        </PageSuspense>,
       },
       {
         path: 'students/add-family-student',
-        element: <AddStudentToFamilyForm />,
+        element: <PageSuspense>
+          <AddStudentToFamilyForm/>
+        </PageSuspense>,
       },
       {
         path: 'invoices/create-invoice',
-        element: <CreateInvoiceForm />,
+        element: <PageSuspense>
+          <CreateInvoiceForm/>
+        </PageSuspense>,
       },
       {
         path: 'edit-invoice/:id',
-        element: <EditInvoiceForm />,
+        element: <PageSuspense>
+          <EditInvoiceForm/>
+        </PageSuspense>,
       },
-      // {
-      //   path: 'copy-invoice/:id',
-      //   element: <CopyInvoiceForm />,
-      // },
       {
         path: 'copy-invoice/:id',
-        element: <CopyInvoicesForm />,
+        element: <PageSuspense>
+          <CopyInvoicesForm/>
+        </PageSuspense>,
       },
       {
         path: 'invoices/invoices-list',
-        element: <InvoicesList />,
+        element: <PageSuspense>
+          <InvoicesList/>
+        </PageSuspense>,
       },
       {
         path: 'invoices/invoice-details/:id',
-        element: <InvoiceDetails />,
+        element: <PageSuspense>
+          <InvoiceDetails/>
+        </PageSuspense>,
       },
       {
         path: 'invoices/balance-list',
-        element: <PackageBalanceList />,
+        element: <PageSuspense>
+          <PackageBalanceList/>
+        </PageSuspense>,
       },
-     
+
       {
         path: 'schedule-lesson/:id/:credit',
-        element: <ScheduleLesson />,
+        element: <PageSuspense>
+          <ScheduleLesson/>
+        </PageSuspense>,
       },
       {
         path: 'reschedule-lesson/:id/',
-        element: <RescheduleLesson />,
+        element: <PageSuspense>
+          <RescheduleLesson/>
+        </PageSuspense>,
       },
       {
         path: 'schedule-emplyee/:std_id/:id',
-        element: <GeneralScheduledEmployeesLists />,
+        element: <PageSuspense>
+          <GeneralScheduledEmployeesLists/>
+        </PageSuspense>,
       },
       {
         path: 'schedule-errors/:std_id/:id',
-        element: <ScheduledErrorsTableList />,
+        element: <PageSuspense>
+          <ScheduledErrorsTableList/>
+        </PageSuspense>,
       },
-
+      {
+        path: '*',
+        element: <Error type="notFound"/>
+      },
     ],
   },
+
 
   // Teacher Routes
   {
     path: "/teacher",
     element: (
       <ProdectedRoute allowedTypes={["Teacher"]}>
-        <MainLayout sideBarData={SIDEBAR_DATA["Teacher"]} />
+        <MainLayout sideBarData={SIDEBAR_DATA["Teacher"]}/>
       </ProdectedRoute>
     ),
     children: [
       {
         index: true,
-        element: <TeacherHomePage />,
+        element: <TeacherHomePage/>,
       },
       {
         path: "classes",
-        element: <TeacherClassesPage />,
+        element: <TeacherClassesPage/>,
       },
       {
         path: "reports",
-        element: <TeacherReportsPage />,
+        element: <TeacherReportsPage/>,
       },
       {
         path: "students",
-        element: <TeacherStudentsPage />,
+        element: <TeacherStudentsPage/>,
       },
       {
         path: "help",
-        element: <HelpPage />,
+        element: <HelpPage/>,
       },
       {
         path: "settings",
-        element: <SettingsPage />,
+        element: <SettingsPage/>,
         children: [
           {
             index: true,
-            element: <Profile />,
+            element: <Profile/>,
           },
           {
             path: "security",
-            element: <Security />,
+            element: <Security/>,
           },
         ],
       },
       {
         path: 'notifications',
-        element: <NotificationsPage />
+        element: <NotificationsPage/>
       }
     ],
   },
@@ -296,37 +340,37 @@ const router = createBrowserRouter([
     path: "/family",
     element: (
       <ProdectedRoute allowedTypes={["Family"]}>
-        <MainLayout sideBarData={SIDEBAR_DATA["Family"]} />
+        <MainLayout sideBarData={SIDEBAR_DATA["Family"]}/>
       </ProdectedRoute>
     ),
     children: [
       {
         index: true,
-        element: <FamilyHomePage />,
+        element: <FamilyHomePage/>,
       },
       {
         path: "calendar",
-        element: <CalendarPage />,
+        element: <CalendarPage/>,
       },
       {
         path: "notes",
-        element: <FamilyNotesPage />,
+        element: <FamilyNotesPage/>,
       },
       {
         path: "help",
-        element: <HelpPage />,
+        element: <HelpPage/>,
       },
       {
         path: "settings",
-        element: <SettingsPage />,
+        element: <SettingsPage/>,
         children: [
           {
             index: true,
-            element: <Profile />,
+            element: <Profile/>,
           },
           {
             path: "security",
-            element: <Security />,
+            element: <Security/>,
           },
         ],
       },
@@ -335,7 +379,7 @@ const router = createBrowserRouter([
 ]);
 
 const Routes = () => {
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router}/>;
 };
 
 export default Routes;

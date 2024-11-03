@@ -51,7 +51,9 @@ const Login = () => {
             return;
           }
           dispatch(actGetUserProfile());
+          if (data.user.user_type !== 'Admin') {
           dispatch(actGetReviewQuestions());
+          }
           dispatch(
             actGetLessonsByRange({
               start_date: format(startDate, "dd-MM-yyyy"),
