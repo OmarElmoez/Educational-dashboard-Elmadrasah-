@@ -61,7 +61,7 @@ const actSendDataToServer = createAsyncThunk(
          });
       }
 
-      return response.data;
+      return response.data || response;
     } catch (error: any) {
       return rejectWithValue(axiosErrorHandler(error));
     }

@@ -1,19 +1,12 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import {
-  CircleLoadingIndecator,
-  Dropdown,
-  Heading,
-  Row,
-  SingleCheckbox,
-} from "@/components";
-import { InputField } from "@/components";
-import { useAppDispatch } from "@/store/hooks";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {CircleLoadingIndecator, Dropdown, Heading, InputField, Row, SingleCheckbox,} from "@/components";
+import {useAppDispatch} from "@/store/hooks";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
-import { useFeedback } from "@/store/context";
-import { PAYMENT_OPTIONS } from "@/constants/dropdown-options";
+import {useFeedback} from "@/store/context";
+import {PAYMENT_OPTIONS} from "@/constants/dropdown-options";
 
 const invoiceHistorySchema = z.object({
   amount: z.string().min(1, "برجاء ادخال المبلغ"),
@@ -35,12 +28,12 @@ export type TInvoiceHistoryFormDataForServer = Omit<
 };
 // -------------------------------------------------------------------------
 
-const InvoiceِApproveForm = ({
-  customer_id,
-  invoice_id,
-  amount,
-  date,
-}: {
+const InvoiceApproveForm = ({
+                              customer_id,
+                              invoice_id,
+                              amount,
+                              date,
+                            }: {
   customer_id: number;
   invoice_id: number;
   amount: string;
@@ -48,13 +41,13 @@ const InvoiceِApproveForm = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const { openFeedbackModal } = useFeedback();
+  const {openFeedbackModal} = useFeedback();
 
   const {
     register,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
   } = useForm<TInvoiceHistoryFormData>({
     mode: "onBlur",
     resolver: zodResolver(invoiceHistorySchema),
@@ -78,14 +71,16 @@ const InvoiceِApproveForm = ({
         formData: serverData,
       })
     )
-      .unwrap()
-      .then(() => {
+    .unwrap()
+    .then((res) => {
+      console.log('from approve invoice: ', res)
+      if (res !== "Invoice already paid or not approved for pay.") {
         openFeedbackModal("succeeded", "تم اضافة  الفاتورة بنجاح!");
-        // dispatch action to get the updated data
-      })
-      .catch((error) => {
-        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
-      });
+      } else {
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", res);
+      }
+      // dispatch action to get the updated data
+    })
   };
 
   useEffect(() => {
@@ -94,9 +89,9 @@ const InvoiceِApproveForm = ({
 
   return (
     <form action="post" onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="سجل الدفع" />
+      <Heading text="سجل الدفع"/>
 
-      <Row style={{ flexWrap: "wrap" }}>
+      <Row style={{flexWrap: "wrap"}}>
         <InputField
           label=" المبلغ"
           isRequired
@@ -147,7 +142,7 @@ const InvoiceِApproveForm = ({
           disabled={isSubmitting || amount === "0"}
         >
           {isSubmitting ? (
-            <CircleLoadingIndecator size={16} color="#fff" />
+            <CircleLoadingIndecator size={16} color="#fff"/>
           ) : (
             " حفظ الدفع"
           )}
@@ -157,4 +152,4 @@ const InvoiceِApproveForm = ({
   );
 };
 
-export default InvoiceِApproveForm;
+export default InvoiceApproveForm;

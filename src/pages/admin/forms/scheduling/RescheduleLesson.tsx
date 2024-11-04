@@ -31,6 +31,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import createOptionsFrom from "@/utils/createOptionsFrom.ts";
 import removeDuplicates from "@/utils/removeDuplicates.ts";
 import actSendScheduleLessonData from "@/store/single-actions/actSendScheduleLessonData.ts";
+import turnDaysIntoEnglishString from "@/utils/turnDaysIntoEnglish.ts";
 
 const previewTeacherStyle = {
   border: "1px dashed #7AB790",
@@ -83,7 +84,7 @@ const RescheduleLesson = () => {
   const resetRepetition = () => {
     reset({
       ...getValues(),
-      repeat_every: '',
+      repeat_every: null,
       repeat_monthly: '',
       repeat_count: undefined,
       repeat_times: undefined,
@@ -113,8 +114,12 @@ const RescheduleLesson = () => {
       dispatch(actGetRescheduleLessonData({id}))
       .unwrap()
       .then((res) => {
+        if (typeof res === 'string') {
+          openFeedbackModal("failed", `${res}`)
+        } else {
         setPreviousData(res);
-        setCustomerData(res);
+          setCustomerData(res);
+        }
       });
     }
   }, [ dispatch, id, setValue]);
@@ -140,10 +145,7 @@ const RescheduleLesson = () => {
     setValue('from_time', response.lesson_draft_data.from_time);
     setValue('to_time', response.lesson_draft_data.to_time);
     setValue('description', response.lesson_draft_data.description);
-    setValue('repeat_every',
-      response
-        .lesson_draft_data.repeat_every === null ? '' : response.lesson_draft_data.repeat_every
-    );
+    setValue('repeat_every', response.lesson_draft_data.repeat_every);
     setValue('end_repeat', response.lesson_draft_data.end_repeat);
     setValue('repeat_times',
       response
@@ -155,6 +157,7 @@ const RescheduleLesson = () => {
     setValue('repeat_monthly_date', response.lesson_draft_data.repeat_monthly_date);
     setValue('on_quarter', response.lesson_draft_data.on_quarter);
     setValue('repeat_count', response.lesson_draft_data.repeat_count?.toString());
+    setValue('package_id', response.lesson_draft_data.package_id)
   }
   const navigate = useNavigate();
   const selectedTeachersType = watch("is_auto");
@@ -173,6 +176,7 @@ const RescheduleLesson = () => {
   const teachersOptions = removeDuplicates(customerData?.leadflow_data[0].teachers);
 
   const onSubmit = (data: TScheduleLessonFormData) => {
+    console.log('submitted data: ', data)
     const scheduledClasses = data.subjects.reduce(
       (total: number, subject: any) => {
         return total + Number(subject.count);
@@ -204,6 +208,10 @@ const RescheduleLesson = () => {
       data.description = null;
     }
 
+    if (data.days === '') {
+      data.days = null;
+    }
+
     data.lesson_draft_id = Number(id);
 
     const serverData: TScheduleLessonFormDataForServer = {
@@ -219,7 +227,7 @@ const RescheduleLesson = () => {
       location_id: Number(data.location_id) || null,
       service_id: Number(data.service_id),
       time_id: Number(data.time_id),
-      employee_id: Number(data.employee_id),
+      employee_id: Number(data.employee_id) || null,
       follow_up_type: Number(data.follow_up_type),
       repeat_count: Number(data.repeat_count) || 0,
       repeat_times: Number(data.repeat_times) || 0,
@@ -340,7 +348,7 @@ const RescheduleLesson = () => {
             name="service_id"
             register={register}
             error={errors?.service_id?.message as string}
-            chosen={customerData?.lesson_draft_data.service_id === null ? '0' : customerData?.lesson_draft_data.service_id.toString()}
+            // chosen={customerData?.lesson_draft_data.service_id === null ? '0' : customerData?.lesson_draft_data.service_id.toString()}
           />
         </Row>
 
@@ -542,7 +550,7 @@ const RescheduleLesson = () => {
             options={FOLLOW_UP_OPTIONS}
             name="follow_up_type"
             error={errors.follow_up_type?.message as string}
-            chosen={customerData?.lesson_draft_data.follow_up_type === null ? '0' : customerData?.lesson_draft_data.follow_up_type.toString()}
+            // chosen={customerData?.lesson_draft_data.follow_up_type === null ? '0' : customerData?.lesson_draft_data.follow_up_type.toString()}
           />
 
           <article className="group"></article>
@@ -568,7 +576,10 @@ const RescheduleLesson = () => {
         </button>
 
         <Row style={{justifyContent: "flex-end", marginTop: "1.4rem"}}>
-          <button type="submit" className="btn submit-btn">
+          <button type="submit" className="btn submit-btn" onClick={() => {
+            if (Array.isArray(control._getWatch('days'))) {
+              setValue('days', turnDaysIntoEnglishString(control._getWatch('days')))
+          }}}>
             حفظ
           </button>
           <button
@@ -586,7 +597,8 @@ const RescheduleLesson = () => {
             type="button"
             className="btn cancel-btn"
             onClick={() => {
-              reset()
+              console.log('days value: ', control._getWatch('days'))
+              console.log(errors)
             }}
           >
             يُلغي

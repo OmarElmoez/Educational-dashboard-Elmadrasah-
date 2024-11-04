@@ -27,8 +27,8 @@ const PostScheduleLessonSchema =
     day_period: z.string().optional(),
     follow_up_type: z.string().nullable().optional(),
     received_days: z.array(z.string()).optional(),
-    days: (z.string()).optional(),
-    repeat_every: z.enum(['daily', 'weekly', 'monthly', '']).nullable().optional(),
+    days: (z.string()).nullable().optional(),
+    repeat_every: z.enum(['daily', 'weekly', 'monthly']).nullable().optional(),
     repeat_count: z.string().nullable().optional(),
     repeat_monthly: z.enum(['day', 'quarter', '']).nullable().optional(),
     repeat_times: z.string().nullable().optional(),
@@ -38,6 +38,7 @@ const PostScheduleLessonSchema =
     on_quarter: z.enum(['first', 'second', 'third', 'fourth', '']).nullable().optional(),
     teacher_ids: z.array(z.number()).optional(),
     lesson_draft_id: z.number().nullable().optional(),
+    package_id: z.number().optional(),
   })
   .transform((data) => ({
     ...data,
@@ -67,7 +68,6 @@ type TKeysToOmit =
   | "employee_id"
   | "follow_up_type"
   | "is_auto"
-  | "days"
   | "repeat_count"
   | "repeat_times"
 
@@ -84,7 +84,7 @@ export type TScheduleLessonFormDataForServer = Omit<TScheduleLessonFormData, TKe
   }]
   service_id: number;
   time_id: number;
-  employee_id: number;
+  employee_id: number | null;
   follow_up_type: number;
   is_auto: boolean;
   repeat_count: number | null;

@@ -72,7 +72,7 @@ const ScheduleLesson = () => {
   const resetRepetition = () => {
     reset({
       ...getValues(),
-      repeat_every: '',
+      repeat_every: null,
       repeat_monthly: '',
       repeat_count: undefined,
       repeat_times: undefined,
@@ -99,12 +99,12 @@ const ScheduleLesson = () => {
   useEffect(() => {
     // you should pass the id (get from useParams) to the action
     if (id && credit) {
-      dispatch(actGetScheduleLessonData({id, credit}))
-      .unwrap()
+      dispatch(actGetScheduleLessonData({id, credit})).unwrap()
       .then((res) => {
+        console.log('from get schedule lesson', res)
         setCustomerData(res);
         setValue('lesson_credit', credit)
-      });
+      })
     }
   }, [credit, dispatch, id, setValue]);
 
@@ -145,9 +145,6 @@ const ScheduleLesson = () => {
       data.teacher_ids = customerData?.teachers.map(teacher => teacher.id);
     }
 
-    if (data.repeat_every === '') {
-      data.repeat_every = null;
-    }
 
     if (data.description === '') {
       data.description = null;
@@ -158,6 +155,10 @@ const ScheduleLesson = () => {
     }
 
     data.received_days = customerData?.days.map(day => day.id.toString());
+
+    if (data.days === '') {
+      data.days = null;
+    }
 
 
     const serverData: TScheduleLessonFormDataForServer = {

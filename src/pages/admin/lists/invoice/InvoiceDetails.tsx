@@ -214,8 +214,7 @@ const InvoiceDetails: React.FC = () => {
             
       })
     } catch (error) {
-      console.log(error)
-      // openFeedbackModal('failed', `${error}`)
+      openFeedbackModal('failed', `${error}`)
     }
   };
  

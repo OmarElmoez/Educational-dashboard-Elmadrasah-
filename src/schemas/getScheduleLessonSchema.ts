@@ -58,7 +58,7 @@ const leadflowDataSchema = z.object({
 });
 
 const responseSchema = z.object({
-  leadflow_data: z.array(leadflowDataSchema)
+  leadflow_data: z.array(leadflowDataSchema),
 });
 
 export type TLeadFlowData = z.infer<typeof leadflowDataSchema>;

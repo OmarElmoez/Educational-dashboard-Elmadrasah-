@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const state = store.getState();
     const token = state.auth.credintials?.token;
-    console.log('from axios instance', token)
 
     if (token) {
       config.headers.Authorization = `Token ${token}`;
