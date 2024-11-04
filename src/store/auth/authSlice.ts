@@ -38,7 +38,10 @@ const authSlice = createSlice({
       state.user = null;
       state.error = null;
       state.loading = "idle";
-      state.credintials = undefined;
+      state.credintials = {
+        token: '',
+        role: undefined,
+      };
     },
     // profile: (state) => {
     //   state.user = null;
