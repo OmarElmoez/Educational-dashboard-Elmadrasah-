@@ -8,17 +8,17 @@ import {actGetUserProfile} from "@/store/profile/ProfileSlice.ts";
 const MainLayout = ({ sideBarData }: { sideBarData: TPath[] }) => {
 
   const { user } = useAppSelector((state) => state.profile);
+  const { loading } = useAppSelector(state => state.auth)
 
   const dispatch = useAppDispatch();
   
   useEffect(() => {
 
-  if (user === null) {
-    console.log('user from main layout')
+  if (user === null && loading === 'succeeded') {
     dispatch(actGetUserProfile())
   }
     
-  }, [dispatch, user]);
+  }, [dispatch, loading, user]);
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
