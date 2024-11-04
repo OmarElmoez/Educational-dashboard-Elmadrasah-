@@ -1,4 +1,4 @@
-const turnDaysIntoEnglish = (arabicDays: string[] | undefined) => {
+const turnDaysIntoEnglishString = (arabicDays: string[] | undefined) => {
   const weekdays: { [key: string]: string } = {
     "الأحد": "Sunday",
     "الأثنين": "Monday",
@@ -9,7 +9,7 @@ const turnDaysIntoEnglish = (arabicDays: string[] | undefined) => {
     "السبت": "Saturday"
   };
 
-  return arabicDays?.map((arabicDay: string) => weekdays[arabicDay]);
+  return arabicDays?.map((arabicDay: string) => weekdays[arabicDay]).join(', ');
 }
 
-export default turnDaysIntoEnglish;
+export default turnDaysIntoEnglishString;

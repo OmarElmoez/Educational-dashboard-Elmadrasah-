@@ -72,7 +72,7 @@ type LeadflowData = {
   time_zone: null | string;
   is_auto: boolean;
   repeat: boolean;
-  repeat_every: 'daily' | 'weekly' | 'monthly' | '';
+  repeat_every: 'daily' | 'weekly' | 'monthly' | null;
   repeat_count: null | number;
   repeat_monthly: 'day' | 'quarter' | null;
   repeat_monthly_date: string | null;

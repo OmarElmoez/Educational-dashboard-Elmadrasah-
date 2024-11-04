@@ -1,9 +1,9 @@
 import {Dropdown, InputField, Row} from "@/components";
 import styles from "./schedule-form.module.css";
 import {FieldValues, Path, UseFormRegister, UseFormWatch} from "react-hook-form";
-import {useEffect, useMemo, useState} from "react";
+import { useMemo, useState} from "react";
 import {TDay, TLessonDraftData} from "@/store/single-actions/actGetRescheduleLessonData.ts";
-import turnDaysIntoEnglish from "@/utils/turnDaysIntoEnglish.ts";
+import turnDaysIntoEnglishString from "@/utils/turnDaysIntoEnglish.ts";
 
 const {
   customRadioLabel,
@@ -42,10 +42,6 @@ const ScheduleForm = <T extends FieldValues>({
   const formattedSelectedDays: string[] = useMemo(() => selectedDays?.map(selectedDay => selectedDay.name) || [], [selectedDays]);
   const [weekDays, setWeekDays] = useState<string[]>([]);
 
-  useEffect(() => {
-    setValue('days' as Path<T>, turnDaysIntoEnglish(formattedSelectedDays)?.join(', '))
-    setWeekDays(formattedSelectedDays);
-  }, [formattedSelectedDays, setValue])
 
   // todo:  you need to know why it works ^_^, it doesn't refer to the correct type.
   const endType = watch('end_repeat' as Path<T>);
@@ -116,7 +112,7 @@ const ScheduleForm = <T extends FieldValues>({
         )}
       </Row>
 
-      {(monthsType === "day" || draftLessonData?.repeat_monthly_date && selectedRepeatType !== 'daily'  && selectedRepeatType !== 'weekly' && !draftLessonData?.on_quarter) && (
+      {(monthsType === "day" || draftLessonData?.repeat_monthly_date && selectedRepeatType !== 'daily' && selectedRepeatType !== 'weekly' && !draftLessonData?.on_quarter) && (
         <Row>
           <InputField
             label=""
@@ -145,27 +141,29 @@ const ScheduleForm = <T extends FieldValues>({
         </Row>
       )}
 
-      {( selectedRepeatType === "weekly" || monthsType === "quarter" || draftLessonData?.on_quarter || draftLessonData?.repeat_every === 'weekly') && selectedRepeatType !== "daily" && (
+      {(selectedRepeatType === "weekly" || monthsType === "quarter" || draftLessonData?.on_quarter || draftLessonData?.repeat_every === 'weekly') && selectedRepeatType !== "daily" && (
         <>
           <p className="adminFormLabel">في أيام</p>
           <Row style={{marginTop: "1rem"}}>
             {DAYS_OPTIONS.map((day) => (
               <label key={day.id} htmlFor={day.value}
-                     className={`${week_day} ${weekDays?.includes(day.label) ? selected : ''}`}>
+                     className={`${week_day} ${(weekDays.length === 0 ? formattedSelectedDays : weekDays)?.includes(day.label) ? selected : ''}`}>
                 <input
                   type="checkbox"
                   {...register("days" as Path<T>)}
                   className='repetitionWeekDay'
                   id={day.value}
                   value={day.label}
-                  checked={weekDays?.includes(day.label)}
+                  checked={formattedSelectedDays?.includes(day.label)}
                   onChange={(e) => {
-                    if (e.target.checked) {
-                      setWeekDays((prev) => [...prev, day.label]);
-                    } else {
+                    console.log('from on change', weekDays)
+                    if (weekDays.includes(e.target.value)) {
+                      console.log('checked', e.target)
                       setWeekDays((prev) =>
                         prev.filter((val) => val !== day.label)
                       );
+                    } else {
+                      setWeekDays((prev) => [...prev, day.label]);
                     }
                   }}
                 />
@@ -243,7 +241,10 @@ const ScheduleForm = <T extends FieldValues>({
       </Row>
 
       <Row style={{justifyContent: "flex-end", marginTop: "2.4rem"}}>
-        <button type="button" onClick={onClose} className="btn submit-btn">
+        <button type="button" onClick={() => {
+          onClose();
+          setValue('days' as Path<T>, turnDaysIntoEnglishString(weekDays))
+        }} className="btn submit-btn">
           حفظ
         </button>
         <button type="button" className="btn cancel-btn" onClick={() => {
