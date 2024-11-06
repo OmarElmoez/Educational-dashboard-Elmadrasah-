@@ -7,6 +7,7 @@ import {useAppDispatch} from "@/store/hooks";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 import {useFeedback} from "@/store/context";
 import {PAYMENT_OPTIONS} from "@/constants/dropdown-options";
+import {useNavigate} from "react-router-dom";
 
 const invoiceHistorySchema = z.object({
   amount: z.string().min(1, "برجاء ادخال المبلغ"),
@@ -57,6 +58,8 @@ const InvoiceApproveForm = ({
     },
   });
 
+  const navigate = useNavigate()
+
   const onSubmit = (data: TInvoiceHistoryFormData) => {
 
     const serverData: TInvoiceHistoryFormDataForServer = {
@@ -75,7 +78,8 @@ const InvoiceApproveForm = ({
     .then((res) => {
       console.log('from approve invoice: ', res)
       if (res !== "Invoice already paid or not approved for pay.") {
-        openFeedbackModal("succeeded", "تم اضافة  الفاتورة بنجاح!");
+        openFeedbackModal("succeeded", "تم الدفع بنجاح");
+        navigate('/admin/calendar/all-unscheduled-list')
       } else {
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", res);
       }

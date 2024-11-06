@@ -33,7 +33,7 @@ const PhoneField = <T extends FieldValues>({
         render={({ field, fieldState }) => (
           <MuiTelInput
             {...field}
-            defaultCountry="EG"
+            defaultCountry="AE"
             helperText={
               !field.value && fieldState.invalid
                 ? "برجاء ادخال رقم الهاتف"

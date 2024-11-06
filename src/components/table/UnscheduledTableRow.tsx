@@ -53,12 +53,11 @@ const UnscheduledTableRow = ({
       <td> {grade} </td>
       <td>{unscheduled}</td>
       <td className={tdRow}>
-        {/*  TODO: here will be the id form row (rowData.id)  */}
         <Link
           to= {(() => {
             switch (scheduled_status) {
               case "unscheduled":
-                return `/admin/schedule-lesson/${id}/${rowData.unscheduled}`;
+                return `/admin/schedule-lesson/${customer_id}/${rowData.unscheduled}/${rowData.id}`;
               case "scheduled":
                 return `/admin/schedule-emplyee/${customer_id}/${id}`;
               case "scheduling_error":

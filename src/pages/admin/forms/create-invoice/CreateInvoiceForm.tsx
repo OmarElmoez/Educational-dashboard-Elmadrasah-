@@ -1,39 +1,27 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  actGetDropdownOptions,
-  actGetData,
-  actSendDataToServer,
-} from "@/store/single-actions";
-import { useFeedback } from "@/store/context";
+import React, {useCallback, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useFieldArray, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {actGetData, actGetDropdownOptions, actSendDataToServer,} from "@/store/single-actions";
+import {useFeedback} from "@/store/context";
 import {
   CircleLoadingIndecator,
   Dropdown,
   DropdownWithSearch,
   Heading,
+  InputField,
   Row,
   SingleCheckbox,
 } from "@/components";
-import { InputField } from "@/components";
-import {
-  CreateInvoiceSchema,
-  TCreateInvoiceFormData,
-  // TCreateInvoiceSchemaFormDataForServer,
-} from "@/schemas/CreateInvoiceSchema";
-import { TOption } from "@/types/Dropdown";
-import {
-  ADD_SERVICE_OPTIONS,
-  REPORT_OPTIONS,
-  TAX_TREATMENT_OPTIONS,
-} from "@/constants";
+import {CreateInvoiceSchema, TCreateInvoiceFormData,} from "@/schemas/CreateInvoiceSchema";
+import {TOption} from "@/types/Dropdown";
+import {ADD_SERVICE_OPTIONS, REPORT_OPTIONS, TAX_TREATMENT_OPTIONS,} from "@/constants";
 import CloseButton from "@/assets/close-button.svg?react";
 import styles from "./createInvoice.module.css";
-import { TService, TTax_Treatment } from "@/types/shared";
+import {TService, TTax_Treatment} from "@/types/shared";
 
-const { row, close_btn_container } = styles;
+const {row, close_btn_container} = styles;
 
 interface filterRes {
   service: string;
@@ -41,6 +29,7 @@ interface filterRes {
   quantity: string;
   unit_price: string | number;
 }
+
 interface vatRes {
   id: number;
   created_at: string;
@@ -59,8 +48,8 @@ type TServiceHandler = {
 const CreateInvoiceForm = () => {
   const dispatch = useAppDispatch();
 
-  const { credintials } = useAppSelector((state) => state.auth);
-  const { openFeedbackModal } = useFeedback();
+  const {credintials} = useAppSelector((state) => state.auth);
+  const {openFeedbackModal} = useFeedback();
   const navigate = useNavigate();
   const [servicesList, setServicesList] = useState<TOption[]>([]);
   const [dataStatus, setDataStatus] = useState<
@@ -76,7 +65,7 @@ const CreateInvoiceForm = () => {
     control,
     watch,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
     reset,
   } = useForm<TCreateInvoiceFormData>({
     mode: "onBlur",
@@ -119,7 +108,7 @@ const CreateInvoiceForm = () => {
     name: "lessons",
   });
 
-  const { fields: filtrationFields, append: appendfiltration } = useFieldArray({
+  const {fields: filtrationFields, append: appendfiltration} = useFieldArray({
     control,
     name: "filtration",
   });
@@ -182,7 +171,7 @@ const CreateInvoiceForm = () => {
 
   const handleFilter = async () => {
     if (watchFiltration) {
-      const { start_date, end_date, report } = watchFiltration[0];
+      const {start_date, end_date, report} = watchFiltration[0];
 
       try {
         if (!customer) {
@@ -200,23 +189,22 @@ const CreateInvoiceForm = () => {
             },
           })
         )
-          .unwrap()
-          .then((res: filterRes[]) => {
-            if (res?.length) {
-              res.forEach((item) =>
-                appendLessons({
-                  student: customer || "",
-                  description: item?.description || "",
-                  service: item?.service || "",
-                  invoice_unit_price: item?.unit_price.toString() || "",
-                  invoice_discount_rate: "",
-                  invoice_amount: "",
-                })
-              );
-            }
-          });
-      }
-      catch (error) {
+        .unwrap()
+        .then((res: filterRes[]) => {
+          if (res?.length) {
+            res.forEach((item) =>
+              appendLessons({
+                student: customer || "",
+                description: item?.description || "",
+                service: item?.service || "",
+                invoice_unit_price: item?.unit_price.toString() || "",
+                invoice_discount_rate: "",
+                invoice_amount: "",
+              })
+            );
+          }
+        });
+      } catch (error) {
         console.log(error)
         // openFeedbackModal("failed", `${error}`)
       }
@@ -245,9 +233,9 @@ const CreateInvoiceForm = () => {
   };
 
   const handleGetVatValue = async () => {
-    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false" }))
-      .unwrap()
-      .then((res: vatRes[]) => setValue("tax_count", `${res[0].vat_rate}%`));
+    dispatch(actGetData({endpoint: "customer/vat/?code=AE&paginate=false"}))
+    .unwrap()
+    .then((res: vatRes[]) => setValue("tax_count", `${res[0].vat_rate}%`));
   };
 
   const watchFields = watch(["tax_treatment", "tax_count"]);
@@ -265,7 +253,7 @@ const CreateInvoiceForm = () => {
       chargesAmount += Number(watch(`charges.${index}.amount`)) || 0;
     });
 
-    return { packagesAmount, chargesAmount };
+    return {packagesAmount, chargesAmount};
   }, [packagesFields, chargesFields, watch]);
 
   // TAX
@@ -302,13 +290,13 @@ const CreateInvoiceForm = () => {
           throw new Error("Invalid tax treatment");
       }
 
-      return { total, salesTax, subtotal };
+      return {total, salesTax, subtotal};
     },
     [treatmentType]
   );
 
   const handleCalcTax = useCallback(() => {
-    const { packagesAmount, chargesAmount } = calculateAmounts();
+    const {packagesAmount, chargesAmount} = calculateAmounts();
 
     const sub_total = packagesAmount + chargesAmount;
 
@@ -317,7 +305,7 @@ const CreateInvoiceForm = () => {
     const [tax_treatment, tax_count] = watchFields;
 
     if (tax_treatment !== null && tax_count !== "") {
-      const { total, salesTax, subtotal } = calculateTotal(
+      const {total, salesTax, subtotal} = calculateTotal(
         parseFloat(sub_total.toString()),
         parseFloat(tax_count)
       );
@@ -336,7 +324,7 @@ const CreateInvoiceForm = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
 
     const unitPrice = name.includes("unit_price")
       ? parseFloat(value)
@@ -361,7 +349,7 @@ const CreateInvoiceForm = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
 
     const unitPrice = name.includes("unit_price")
       ? parseFloat(value)
@@ -385,23 +373,26 @@ const CreateInvoiceForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ optionsFor: "services" })
+      actGetDropdownOptions({optionsFor: "services"})
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
         setServicesList(res.payload);
       }
     });
 
-    dispatch(actGetData({ endpoint: "customer/invoice/last" }))
-      .unwrap()
-      .then((res) => setInvoiceNumber(res.invoice_number));
+    dispatch(actGetData({endpoint: "customer/invoice/last"}))
+    .unwrap()
+    .then((res) => {
+      console.log('from create invoice: ', res)
+      setInvoiceNumber(res.invoice_number)
+    });
 
     handleGetVatValue();
     // eslint-disable-next-line
   }, [dispatch, credintials?.token]);
 
   const onSubmit = (data: TCreateInvoiceFormData) => {
-    data.formatted_number = invoiceNumber;
+    data.formatted_number = `INV-${invoiceNumber}`;
     data.tax_count = parseFloat(data.tax_count).toString();
 
     data.status = dataStatus;
@@ -424,23 +415,27 @@ const CreateInvoiceForm = () => {
         purpose: "create_invoice",
       })
     )
-      .unwrap()
-      .then((res) => {
-        navigate(`/admin/invoices/invoice-details/${res?.id}`);
-        if(dataStatus === "Approved") {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
-        } else {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
+    .unwrap()
+    .then((res) => {
+      if (typeof res === "string") {
+        return openFeedbackModal('failed', res);
+      } else {
+        if (dataStatus === "Approved") {
+          openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!");
+          navigate(`/admin/invoices/invoice-details/${res?.id}`)
+          return
         }
-      })
-      .catch((error) =>
-        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)
-      );
+      navigate(`/admin/invoices/invoice-details/${res?.id}`);
+      }
+    })
+    .catch((error) =>
+      openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)
+    );
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="انشاء فاتورة" />
+      <Heading text="انشاء فاتورة"/>
 
       <Row>
         <DropdownWithSearch
@@ -584,7 +579,7 @@ const CreateInvoiceForm = () => {
           />
           <div className={close_btn_container}>
             <button type="button" onClick={() => handleRemoveCharge(index)}>
-              <CloseButton />
+              <CloseButton/>
             </button>
           </div>
         </div>
@@ -649,7 +644,7 @@ const CreateInvoiceForm = () => {
 
           <div className={close_btn_container}>
             <button type="button" onClick={() => handleRemovePackages(index)}>
-              <CloseButton />
+              <CloseButton/>
             </button>
           </div>
         </div>
@@ -685,7 +680,7 @@ const CreateInvoiceForm = () => {
             error={errors?.filtration?.[index]?.report?.message as string}
           />
 
-          <div className="group addBtn" style={{ maxWidth: "fit-content" }}>
+          <div className="group addBtn" style={{maxWidth: "fit-content"}}>
             <button
               type="button"
               onClick={handleFilter}
@@ -758,14 +753,14 @@ const CreateInvoiceForm = () => {
           />
           <div className={close_btn_container}>
             <button type="button" onClick={() => handleRemoveCharge(index)}>
-              <CloseButton />
+              <CloseButton/>
             </button>
           </div>
         </div>
       ))}
 
       {/* ********* END ROW ********************* */}
-      <hr className="hr" />
+      <hr className="hr"/>
 
       <Row>
         {/* ****** REVIEW NAMES ******* */}
@@ -797,7 +792,7 @@ const CreateInvoiceForm = () => {
           error={errors?.sales_tax_total?.message as string}
         />
       </Row>
-      <hr className="hr" />
+      <hr className="hr"/>
 
       <Row>
         <InputField
@@ -821,7 +816,7 @@ const CreateInvoiceForm = () => {
         />
       </Row>
 
-      <Heading text="تعليمات" />
+      <Heading text="تعليمات"/>
       <Row>
         <InputField
           label=""
@@ -834,7 +829,7 @@ const CreateInvoiceForm = () => {
       <div className="submit-buttons-container">
         <button type="submit" className="btn submit-btn">
           {isSubmitting ? (
-            <CircleLoadingIndecator size={16} color="#fff" />
+            <CircleLoadingIndecator size={16} color="#fff"/>
           ) : (
             " حفظ"
           )}

@@ -67,6 +67,7 @@ const AddParentForm = () => {
       .unwrap()
       .then(() => {
         openFeedbackModal("succeeded", "تم اضافة العائلة بنجاح!");
+        reset()
       })
       .catch((error) => {
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
@@ -84,7 +85,7 @@ const AddParentForm = () => {
   const formattedStates = formatStates(states);
 
   return (
-    <form action="post" onSubmit={handleSubmit(onSubmit)}>
+    <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <Heading text="إضافة عائلة جديدة" />
       <Heading text="معلومات الاتصال" />
 

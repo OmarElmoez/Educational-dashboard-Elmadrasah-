@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const EditInvoiceSchema = z.object({
   customer: z.number().optional(),
+  customer_name: z.string().optional(),
   invoice_type: z.enum(["invoice", "credit_note"]).default("invoice"),
   formatted_number: z.string().optional(),
   date: z.string().min(1, "برجاء ادخال تاريخ الفاتورة"),
@@ -94,22 +95,20 @@ export const EditInvoiceSchema = z.object({
 
 export type TEditInvoiceFormData = z.infer<typeof EditInvoiceSchema>;
 
-type TKeysToOmit = "id" | "customer";
+type TKeysToOmit = "id";
 
 export type TEditInvoiceFormDataForServer = Omit<
   TEditInvoiceFormData,
   TKeysToOmit
 > & {
   id: number | null | string;
-  customer?: string;
 };
 
-type TKeysToOmitGet = "id"  | "customer"
+type TKeysToOmitGet = "id"
  
 export type TEditInvoiceFormDataForGet = Omit<
   TEditInvoiceFormData,
   TKeysToOmitGet
 > & {
   id: number | null | string;
-  customer: number;
 };

@@ -254,7 +254,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: 'schedule-lesson/:id/:credit',
+        path: 'schedule-lesson/:id/:credit/:package_id',
         element: <PageSuspense>
           <ScheduleLesson/>
         </PageSuspense>,

@@ -2,7 +2,7 @@ import {
   AddNewSubjectModal,
   CircleLoadingIndecator,
   CountriesDropdown,
-  Dropdown,
+  Dropdown, DropdownWithSearch,
   Heading,
   MultiChoices,
   PhoneField,
@@ -655,15 +655,18 @@ const AddEmployeeForm = () => {
         <hr className="hr" />
         <Heading text="رابط موقع المعلم" />
         <Row>
-          <InputField
-            label="رابط الموقع URL"
-            placeholder="https//test.com"
-            type="url"
-            register={register}
-            name="link"
-            disabled={!isTeacher && employType === "Staff"}
-            error={errors.link?.message as string}
-          />
+          {/*<InputField*/}
+          {/*  label="رابط الموقع URL"*/}
+          {/*  placeholder="https//test.com"*/}
+          {/*  type="url"*/}
+          {/*  register={register}*/}
+          {/*  name="link"*/}
+          {/*  disabled={!isTeacher && employType === "Staff"}*/}
+          {/*  error={errors.link?.message as string}*/}
+          {/*/>*/}
+
+          <DropdownWithSearch label="الموقع الأفتراضي" name="link" register={register} optionsFor="locations"
+                              setValue={setValue}/>
 
           <article className="group"></article>
         </Row>

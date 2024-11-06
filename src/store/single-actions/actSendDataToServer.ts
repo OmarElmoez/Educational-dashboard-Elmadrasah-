@@ -47,7 +47,7 @@ const actSendDataToServer = createAsyncThunk(
       let response; 
 
       if (isEdit) {
-         response = await axiosInstance.patch(url+ id, formData, {
+         response = await axiosInstance.patch(url + id, formData, {
           headers: {
             "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
           },
