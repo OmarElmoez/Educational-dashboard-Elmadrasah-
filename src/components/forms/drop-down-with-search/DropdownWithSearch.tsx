@@ -1,8 +1,3 @@
-/* todo:
-    Make it accept different end points.
-    handle search end point.
-*/
-
 /**
  * How to use this component:
  *

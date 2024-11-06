@@ -39,7 +39,7 @@ import AddParentForm from "./AddParentForm";
 
 const AddStudentToFamilyForm = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
   const { openFeedbackModal } = useFeedback();
 
   const { countries } = useAppSelector((state) => state.location);
@@ -101,6 +101,7 @@ const AddStudentToFamilyForm = () => {
       .unwrap()
       .then(() => {
         openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+        reset()
       })
       .catch((error) => {
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
@@ -131,9 +132,11 @@ const AddStudentToFamilyForm = () => {
     )
       .unwrap()
       .then((data) => setFamiliesList(data));
-  }, [dispatch, user?.token]);
+  }, [dispatch, credintials?.token]);
 
   const addNewFamilyRef = useRef<TModalRef>(null);
+
+  const [removePreviewChoices, setRemovePreviewChoices] = useState(false)
 
   return (
     <>
@@ -141,7 +144,7 @@ const AddStudentToFamilyForm = () => {
         <AddParentForm />
       </BasicModal>
 
-      <form action="post" onSubmit={handleSubmit(onSubmit)}>
+      <form method="post" onSubmit={handleSubmit(onSubmit)}>
         <Heading text="إضافة طالب جديد للعائلة " />
         <Heading text="تفاصيل العائلة " />
 
@@ -299,6 +302,7 @@ const AddStudentToFamilyForm = () => {
             register={register}
             name="subject_choices"
             error={errors.subject_choices?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
           <InputField
             label="معلومات إضافية"
@@ -315,6 +319,7 @@ const AddStudentToFamilyForm = () => {
             register={register}
             name="initial_services"
             error={errors.initial_services?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -331,6 +336,7 @@ const AddStudentToFamilyForm = () => {
             register={register}
             name="initial_teachers"
             error={errors.initial_teachers?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <ColorField
@@ -378,6 +384,7 @@ const AddStudentToFamilyForm = () => {
             type="button"
             onClick={() => {
               reset();
+              setRemovePreviewChoices(true)
             }}
             className="btn cancel-btn"
           >

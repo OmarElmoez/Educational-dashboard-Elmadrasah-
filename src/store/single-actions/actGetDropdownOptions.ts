@@ -19,11 +19,11 @@ const actGetDropdownOptions = createAsyncThunk(
 
     try {
       let url = DROPDOWN_END_POINTS[optionsFor];
-      if (optionsFor !== 'locations' && searchQuery !== '') {
+      if ((optionsFor === 'teachers' || optionsFor === 'customers') && searchQuery !== '') {
         url = `${DROPDOWN_END_POINTS[optionsFor]}&first_name=${searchQuery}`;
       }
 
-      if (optionsFor === 'locations' && searchQuery !== '') {
+      if ((optionsFor === 'locations' || optionsFor === 'subjects') && searchQuery !== '') {
         url = `${DROPDOWN_END_POINTS[optionsFor]}&search=${searchQuery}`;
       }
 

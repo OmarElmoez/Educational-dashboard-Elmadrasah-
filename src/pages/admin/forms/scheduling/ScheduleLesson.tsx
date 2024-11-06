@@ -60,7 +60,7 @@ const ScheduleLesson = () => {
       resolver: zodResolver(PostScheduleLessonSchema),
     }
   );
-  const {id, credit} = useParams();
+  const {id, credit, package_id} = useParams();
 
   const {openFeedbackModal} = useFeedback();
 
@@ -158,6 +158,12 @@ const ScheduleLesson = () => {
 
     if (data.days === '') {
       data.days = null;
+    }
+
+    data.package_id = Number(package_id);
+
+    if (data.repeat_every === '') {
+      data.repeat_every = null;
     }
 
 
@@ -326,22 +332,27 @@ const ScheduleLesson = () => {
               error={errors.subjects?.[index]?.language?.message as string}
             />
 
-            <Dropdown
-              name={`subjects.${index}.subject`}
-              register={register}
-              label="المادة"
-              options={subjectsOptions}
-              error={errors.subjects?.[index]?.subject?.message as string}
-            />
+            {customerData?.subjects.length !== 0 && <Dropdown
+                name={`subjects.${index}.subject`}
+                register={register}
+                label="المادة"
+                options={subjectsOptions}
+                error={errors.subjects?.[index]?.subject?.message as string}
+            />}
 
-            <InputField
-              label="عدد الحصص"
-              placeholder="4"
-              register={register}
-              name={`subjects.${index}.student_credit`}
-              error={errors.subjects?.[index]?.student_credit?.message as string}
-              type="number"
-            />
+            {customerData?.subjects.length === 0 &&
+                <DropdownWithSearch register={register} name={`subjects.${index}.subject`} setValue={setValue} label="المادة"
+                                    optionsFor="subjects" />
+                }
+
+              <InputField
+                label="عدد الحصص"
+                placeholder="4"
+                register={register}
+                name={`subjects.${index}.student_credit`}
+                error={errors.subjects?.[index]?.student_credit?.message as string}
+                type="number"
+                />
             {/*<button*/}
             {/*  type="button"*/}
             {/*  style={{marginTop: "1rem"}}*/}
@@ -352,7 +363,7 @@ const ScheduleLesson = () => {
             {/*  <CloseButton/>*/}
             {/*</button>*/}
           </Row>
-        ))}
+          ))}
         {/*<button*/}
         {/*  style={{display: "block", marginRight: "auto"}}*/}
         {/*  className="add-action-btn"*/}
@@ -407,15 +418,15 @@ const ScheduleLesson = () => {
                 >
                   {teachersOptions.map((teacher) =>
                     teacher.subjects.map((subject: any) => {
-                        return (
-                          <span
-                            style={previewTeacherStyle}
-                            key={`${teacher.id}_${subject.id}`}
-                          >
+                      return (
+                        <span
+                          style={previewTeacherStyle}
+                          key={`${teacher.id}_${subject.id}`}
+                        >
                         {teacher.first_name} {teacher.last_name} -{" "}
-                            {subject.name}
+                          {subject.name}
                       </span>
-                        );
+                      );
                     })
                   )}
                 </section>
@@ -544,7 +555,7 @@ const ScheduleLesson = () => {
             type="button"
             className="btn cancel-btn"
             onClick={() => {
-              reset();
+              console.log(errors)
             }}
           >
             يُلغي

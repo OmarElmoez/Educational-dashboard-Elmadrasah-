@@ -114,7 +114,7 @@ interface Details {
   reference: string;
   tax_treatment: string;
   status: string;
-  start_date: string;
+  start_date: 'Saved' | "Approved" | "Paid" | "Void";
   end_date: string;
   lesson_status: string | null;
   terms_text: string;
@@ -207,6 +207,7 @@ const InvoiceDetails: React.FC = () => {
       .unwrap()
       .then((data) => {          
         if (data) {
+          console.log('from invoice details: ', data)
           setDetails(data);
           setFinalAmount(data?.amount_due);
           setAllocationsPay(data?.payment_allocations);
@@ -453,16 +454,16 @@ const InvoiceDetails: React.FC = () => {
         )}
       </div>
 
+        {details?.status === 'Approved' && (
       <footer className={payHistory}>
-        {details && (
           <InvoiceApproveForm
             customer_id={details?.customer}
             invoice_id={details?.id}
             amount={finalAmount.toString()}
             date={details?.due_date}
           />
-        )}
       </footer>
+        )}
     </div>
   );
 };

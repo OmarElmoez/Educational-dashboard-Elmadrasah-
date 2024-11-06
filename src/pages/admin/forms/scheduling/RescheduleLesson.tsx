@@ -214,6 +214,10 @@ const RescheduleLesson = () => {
 
     data.lesson_draft_id = Number(id);
 
+    if (data.repeat_every === '') {
+      data.repeat_every = null;
+    }
+
     const serverData: TScheduleLessonFormDataForServer = {
       ...data,
       student_id: Number(data.student_id),

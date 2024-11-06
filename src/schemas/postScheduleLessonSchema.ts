@@ -18,8 +18,8 @@ const PostScheduleLessonSchema =
     description: z.string().nullable().optional(),
     from_date: z.string().date().nullable(),
     to_date: z.string().date().optional(), // when submitting the form assign it to the same value as from_date
-    from_time: z.string().time().nullable().optional(),
-    to_time: z.string().time().nullable().optional(),
+    from_time: z.string().nullable().optional(),
+    to_time: z.string().nullable().optional(),
     time_id: z.string().optional(),
     is_auto: z.string(),
     employee_id: z.string().optional(), // this is the id you get from useParams.
@@ -28,7 +28,7 @@ const PostScheduleLessonSchema =
     follow_up_type: z.string().nullable().optional(),
     received_days: z.array(z.string()).optional(),
     days: (z.string()).nullable().optional(),
-    repeat_every: z.enum(['daily', 'weekly', 'monthly']).nullable().optional(),
+    repeat_every: z.enum(['daily', 'weekly', 'monthly', '']).nullable().optional(),
     repeat_count: z.string().nullable().optional(),
     repeat_monthly: z.enum(['day', 'quarter', '']).nullable().optional(),
     repeat_times: z.string().nullable().optional(),

@@ -54,17 +54,15 @@ const EditInvoiceForm = () => {
   const dispatch = useAppDispatch();
 
   const { id } = useParams();
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
   const { openFeedbackModal } = useFeedback();
   const navigate = useNavigate();
 
-  const [customersList, setCustomersList] = useState<TOption[]>([]);
   const [servicesList, setServicesList] = useState<TOption[]>([]);
   const [dataStatus, setDataStatus] = useState<
     "Saved" | "Approved" | "Paid" | "Void"
   >("Saved");
 
-  const [invoiceNumber, setInvoiceNumber] = useState("");
   const [serviceType, setServiceType] = useState<TService>();
 
   const {
@@ -80,7 +78,7 @@ const EditInvoiceForm = () => {
     resolver: zodResolver(EditInvoiceSchema),
     defaultValues: {
       tax_treatment: "Tax Exclusive",
-      formatted_number: invoiceNumber,
+      // formatted_number: invoiceNumber,
       payment_allocations: [],
       charges: [],
       packages: [],
@@ -174,18 +172,21 @@ const EditInvoiceForm = () => {
       dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
         .unwrap()
         .then((res) => {
-          res.customer.toString();
+          console.log('response from getting custom invoice: ', res)
           reset(res)
+          setValue('customer_name', res.customer_name)
+          // setValue('formatted_number', res.formatted_number)
+          setCustomer(res.customer)
         })
         .catch((err) => console.error(err));
     };
 
     fetchData();
-  }, [dispatch, id, reset]);
+  }, [dispatch, id, reset, setValue]);
 
   const watchFiltration = watch("filtration");
 
-  const [customer, setCustomer] = useState("");
+  const [customer, setCustomer] = useState<number>();
 
   const [treatmentType, setTreatmentType] = useState<TTax_Treatment>(
     watch("tax_treatment")
@@ -196,10 +197,6 @@ const EditInvoiceForm = () => {
       const { start_date, end_date, report } = watchFiltration[0];
 
       try {
-        if (!customer) {
-          return openFeedbackModal("failed", "برجاء اختيار العميل اولا");
-        }
-
         dispatch(
           actGetData({
             endpoint: "customer/lesson_filter/",
@@ -216,7 +213,7 @@ const EditInvoiceForm = () => {
             if (res?.length) {
               res.forEach((item) =>
                 appendLessons({
-                  student: customer || "",
+                  student: customer?.toString() || "",
                   description: item?.description || "",
                   service: item?.service || "",
                   invoice_unit_price: item?.unit_price.toString() || "",
@@ -228,8 +225,7 @@ const EditInvoiceForm = () => {
           });
       }
       catch (error) {
-        console.log(error)
-        // openFeedbackModal("failed", `${error}`)
+        openFeedbackModal("failed", `${error}`)
       }
     }
   };
@@ -251,17 +247,6 @@ const EditInvoiceForm = () => {
     setTreatmentType(treatment);
   };
 
-  const handleCustomer = (id: string) => {
-    setCustomer(id);
-  };
-
-  const handleGetVatValue = async () => {
-    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false" }))
-      .unwrap()
-      .then((res: vatRes[]) => {
-        setValue("tax_count", `${res[0].vat_rate}`)
-      });
-  };
 
   const watchFields = watch(["tax_treatment", "tax_count"]);
 
@@ -397,32 +382,28 @@ const EditInvoiceForm = () => {
   };
 
   useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({ optionsFor: "customers" })
-    ).then((res) => {
-      if (Array.isArray(res?.payload)) {
-        setCustomersList(res.payload);
-      }
-    });
 
     dispatch(
       actGetDropdownOptions({ optionsFor: "services" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
+        console.log('services from edit form: ', res.payload)
         setServicesList(res.payload);
       }
     });
 
-    dispatch(actGetData({ endpoint: "customer/invoice/last" }))
-      .unwrap()
-      .then((res) => setInvoiceNumber(res.invoice_number));
-
-    handleGetVatValue();
+    dispatch(actGetData({ endpoint: "customer/vat/?code=AE&paginate=false" }))
+    .unwrap()
+    .then((res: vatRes[]) => {
+      setValue("tax_count", `${res[0].vat_rate}`)
+    });
     // eslint-disable-next-line
-  }, [dispatch, user?.token]);
+  }, [dispatch, credintials?.token]);
 
   const onSubmit = (data: TEditInvoiceFormData) => {
-    data.formatted_number = invoiceNumber;
+    console.log('submitted data from edit invoice: ', data)
+
+
 
     data.tax_count = parseFloat(data.tax_count).toString();
 
@@ -430,11 +411,12 @@ const EditInvoiceForm = () => {
     if (chargesFields?.length === 0 && packagesFields?.length === 0) {
       return openFeedbackModal("failed", "يجب عليك اختيار خدمة");
     }
+    // We don't need to send formatted_number to server, so we remove it from the data.
+    const {formatted_number, ...restData} = data;
 
     const serverData: TEditInvoiceFormDataForServer = {
-      ...data,
+      ...restData,
       id: null,
-      customer: data.customer?.toString(),
     };
 
     dispatch(
@@ -447,11 +429,16 @@ const EditInvoiceForm = () => {
     )
       .unwrap()
       .then((res) => {
-        
-        if(dataStatus === "Approved") {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
+
+        if (typeof res === "string") {
+          return openFeedbackModal('failed', res);
         } else {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
+          if (dataStatus === "Approved") {
+            openFeedbackModal("succeeded", "تم اعتماد الفاتورة");
+            navigate(`/admin/invoices/invoice-details/${res?.id}`);
+            return;
+          }
+        navigate(`/admin/invoices/invoice-details/${res?.id}`);
         }
       })
       .catch((error) =>
@@ -464,15 +451,12 @@ const EditInvoiceForm = () => {
       <Heading text="تعديل فاتورة" />
 
       <Row>
-        <Dropdown
+        <InputField
           label="العميل"
-          name="customer"
+          name="customer_name"
+          disabled
           register={register}
-          // placeholder="حدد العميل"
-          isRequired
-          options={customersList}
-          handleChange={handleCustomer}
-          error={errors?.customer?.message as string}
+          error=""
         />
       </Row>
 
@@ -495,19 +479,14 @@ const EditInvoiceForm = () => {
           name="due_date"
           error={errors?.due_date?.message as string}
         />
-        {/* ****** create new InputField style ******** */}
-        {/* <section> */}
+
         <InputField
           label="رقم الفاتورة"
-          placeholder={`INV- ${invoiceNumber}`}
           disabled
-          value={invoiceNumber}
           register={register}
           name="formatted_number"
           error={errors?.formatted_number?.message as string}
         />
-        {/* <div>-INV</div> */}
-        {/* </section> */}
 
         <InputField
           label=" مرجع"
@@ -624,6 +603,7 @@ const EditInvoiceForm = () => {
             options={servicesList}
             name={`packages.${index}.service`}
             register={register}
+            chosen={`${servicesList[index]}.value`}
             error={errors?.packages?.[index]?.service?.message as string}
           />
 
@@ -872,15 +852,15 @@ const EditInvoiceForm = () => {
           يعتمد
         </button>
 
-        <button
-          type="button"
-          onClick={() => {
-            reset()
-          }}
-          className="btn cancel-btn"
-        >
-          يلغى
-        </button>
+        {/*<button*/}
+        {/*  type="button"*/}
+        {/*  onClick={() => {*/}
+        {/*    reset()*/}
+        {/*  }}*/}
+        {/*  className="btn cancel-btn"*/}
+        {/*>*/}
+        {/*  يلغى*/}
+        {/*</button>*/}
       </div>
     </form>
   );
