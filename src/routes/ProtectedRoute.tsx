@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/store/hooks";
 import { TUserRole } from "@/types/shared";
-import React from "react";
+import { ReactNode } from "react";
 import { Navigate} from "react-router-dom";
 
 const ProtectedRoute = ({
@@ -8,7 +8,7 @@ const ProtectedRoute = ({
   children,
 }: {
   allowedTypes: TUserRole[];
-  children: React.ReactNode;
+  children: ReactNode;
 }) => {
 
   const { credintials } = useAppSelector((state) => state.auth);
