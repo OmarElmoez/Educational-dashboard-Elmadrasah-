@@ -91,7 +91,7 @@ const Login = () => {
   return (
     <article className={loginBox}>
       <h2>تسجيل الدخول</h2>
-      <form action="post" onSubmit={handleSubmit(onSubmit)}>
+      <form method="post" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"
           control={control}

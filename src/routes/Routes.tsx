@@ -39,12 +39,15 @@ import {Login, PhoneNumber, SetPassword} from "@/pages/login";
 import {SIDEBAR_DATA} from "@/constants";
 import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
 import PageSuspense from "@/components/page-suspense/PageSuspense.tsx";
+import CheckAuth from "@/routes/CheckAuth.tsx";
 
 const router = createBrowserRouter([
   // Login Routes
   {
     path: "/",
-    element: <LoginLayout/>,
+    element: (<CheckAuth>
+      <LoginLayout/>
+    </CheckAuth>),
     children: [
       {
         index: true,
@@ -109,7 +112,6 @@ const router = createBrowserRouter([
     element: (
       <ProdectedRoute allowedTypes={["Admin"]}>
         <PageSuspense>
-
           <MainLayout sideBarData={SIDEBAR_DATA["Admin"]}/>
         </PageSuspense>
       </ProdectedRoute>
