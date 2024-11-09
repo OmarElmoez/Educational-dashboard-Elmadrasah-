@@ -33,8 +33,8 @@ import {
   StudentsList,
 } from "@/pages/admin";
 import {TeacherClassesPage, TeacherHomePage, TeacherReportsPage, TeacherStudentsPage,} from "@/pages/teacher";
-import {FamilyHomePage, FamilyNotesPage} from "@/pages/family";
-import {CalendarPage, Error, HelpPage, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
+import {FamilyHomePage, FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
+import {Error, HelpPage, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
 import {Login, PhoneNumber, SetPassword} from "@/pages/login";
 import {SIDEBAR_DATA} from "@/constants";
 import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
@@ -342,37 +342,37 @@ const router = createBrowserRouter([
     path: "/family",
     element: (
       <ProdectedRoute allowedTypes={["Family"]}>
-        <MainLayout sideBarData={SIDEBAR_DATA["Family"]}/>
+        <PageSuspense><MainLayout sideBarData={SIDEBAR_DATA["Family"]}/></PageSuspense>
       </ProdectedRoute>
     ),
     children: [
       {
         index: true,
-        element: <FamilyHomePage/>,
+        element: <PageSuspense><FamilyHomePage/></PageSuspense>,
       },
       {
         path: "calendar",
-        element: <CalendarPage/>,
+        element: <PageSuspense><FamilyClasses /></PageSuspense>,
       },
       {
         path: "notes",
-        element: <FamilyNotesPage/>,
+        element: <PageSuspense><FamilyNotesPage/></PageSuspense>,
       },
       {
         path: "help",
-        element: <HelpPage/>,
+        element: <PageSuspense><HelpPage/></PageSuspense>,
       },
       {
         path: "settings",
-        element: <SettingsPage/>,
+        element: <PageSuspense><SettingsPage/></PageSuspense>,
         children: [
           {
             index: true,
-            element: <Profile/>,
+            element: <PageSuspense><Profile/></PageSuspense>,
           },
           {
             path: "security",
-            element: <Security/>,
+            element: <PageSuspense><Security/></PageSuspense>,
           },
         ],
       },
