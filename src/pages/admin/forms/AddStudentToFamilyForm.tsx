@@ -102,6 +102,7 @@ const AddStudentToFamilyForm = () => {
       .then(() => {
         openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
         reset()
+        setRemovePreviewChoices(true)
       })
       .catch((error) => {
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);

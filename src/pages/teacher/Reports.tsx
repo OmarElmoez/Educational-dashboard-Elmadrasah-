@@ -144,7 +144,7 @@ const TeacherReportsPage = () => {
         {status_lessons?.map((lesson) => (
           <article key={lesson.id} className={report}>
             <section className={reportInfo}>
-              <h3>الطالب: {lesson.participants[0].student_name}</h3>
+              <h3>الطالب: {lesson.participants[0]?.student_name}</h3>
               <section className={reportDateAndTime}>
                 <div>
                   <CalendarIcon />

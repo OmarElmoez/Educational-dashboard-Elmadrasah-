@@ -1,16 +1,19 @@
 import {ReactNode, useEffect} from "react";
-import {useAppSelector} from "@/store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
 import {useNavigate} from "react-router-dom";
+import {actGetUserProfile} from "@/store/profile/ProfileSlice.ts";
 
 const CheckAuth = ({children}: { children: ReactNode }) => {
   const {credintials} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (credintials?.role) {
       navigate(`/${credintials?.role?.toLowerCase()}`);
+      dispatch(actGetUserProfile())
     }
-  }, [credintials?.role, navigate]);
+  }, [credintials?.role, dispatch, navigate]);
 
   if (!credintials?.role) {
     return children;

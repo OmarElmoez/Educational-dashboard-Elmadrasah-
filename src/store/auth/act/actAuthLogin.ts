@@ -1,7 +1,7 @@
-import { TUserRole } from "@/types/shared";
+import {TUserRole} from "@/types/shared";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import { TFormData } from "@/schemas/LoginSchema";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import {TFormData} from "@/schemas/LoginSchema";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosInstance from "@/utils/axiosInstance";
 
 type TAuthLoginResponse = {
@@ -22,14 +22,17 @@ type TAuthLoginResponse = {
 const actAuthLogin = createAsyncThunk(
   "auth/actAuthLogin",
   async (formData: TFormData, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+    const {rejectWithValue} = thunkAPI;
 
     try {
       const response = await axiosInstance.post<TAuthLoginResponse>(
         "/user/login/",
         formData
       );
-      return response.data;
+
+      console.log('response form auth action: ', response)
+      return response.data || response;
+
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

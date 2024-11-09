@@ -1,3 +1,7 @@
-import StudentHomePage from "./HomePage";
+import {lazy} from "react";
 
-export { StudentHomePage }   
+const StudentHomePage = lazy(() => import("./HomePage"));
+
+const Classes = lazy(() => import("./classes/Classes"));
+
+export { StudentHomePage, Classes }

@@ -61,8 +61,8 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.modified_email = action.payload.modified_email;
       state.credintials = {
-        token: action.payload.user.token ?? "",
-        role: action.payload.user.user_type,
+        token: action.payload.user?.token ?? "",
+        role: action.payload.user?.user_type,
       };
     });
     builder.addCase(actAuthLogin.rejected, (state, action) => {

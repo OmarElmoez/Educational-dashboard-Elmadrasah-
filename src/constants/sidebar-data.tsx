@@ -1,5 +1,4 @@
 import {
-  BoyIcon,
   CalendarIcon,
   Lesson,
   UnscheduledIcon,
@@ -24,7 +23,6 @@ import {
   CreateInvoicesIcon,
   CreateInvoicesIcon_2,
   ClientReportIcon,
-
   StudentsIcon,
   FamiliesIcon,
   AddStdFamilyIcon,
@@ -41,12 +39,14 @@ const SIDEBAR_DATA = {
       path: "/student",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      children: undefined
     },
     {
       title: "الجدول",
       path: "calendar",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      children: undefined
     },
   ],
 
@@ -56,6 +56,7 @@ const SIDEBAR_DATA = {
       path: "/admin",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      children: undefined
     },
     {
       title: "التقويم",
@@ -212,6 +213,7 @@ const SIDEBAR_DATA = {
       path: "reports",
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
+      children: undefined
     },
 
 
@@ -224,24 +226,28 @@ const SIDEBAR_DATA = {
       path: "/teacher",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      children: undefined
     },
     {
       title: "الحصص",
       path: "classes",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      children: undefined
     },
     {
       title: "الطلاب",
       path: "students",
-      icon: <BoyIcon />,
+      icon: <StudentIcon />,
       phone_icon: <PH_boyIcon />,
+      children: undefined
     },
     {
       title: "التقارير",
       path: "reports",
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
+      children: undefined
     },
   ],
 
@@ -251,18 +257,21 @@ const SIDEBAR_DATA = {
       path: "/family",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      children: undefined
     },
     {
       title: "الجدول",
       path: "calendar",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      children: undefined
     },
     {
       title: "الملاحظات",
       path: "notes",
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
+      children: undefined
     },
   ],
 };

@@ -71,7 +71,7 @@ const MainSidebar = ({data}: TSidebarProps) => {
   //   setIsSidebarOpen(false);
   // };
 
-  const activeTitleSubLinks = SIDEBAR_DATA['Admin'].find(obj => obj.title === activeLinkTitle)?.children
+  const activeTitleSubLinks: TPath[] | undefined = SIDEBAR_DATA[`${credintials?.role}` as keyof typeof SIDEBAR_DATA].find(obj => obj.title === activeLinkTitle)?.children
 
 
   const handleToggle = useCallback(() => {
@@ -85,7 +85,10 @@ const MainSidebar = ({data}: TSidebarProps) => {
   return (
     <>
       <SubNav mainTitle={activeLinkTitle}
-              style={(isSubNavOpen && activeTitleSubLinks?.length !== undefined) ? {transform: "translateX(-80px)", zIndex: 4} : {
+              style={(isSubNavOpen && activeTitleSubLinks?.length !== undefined) ? {
+                transform: "translateX(-80px)",
+                zIndex: 4
+              } : {
                 transform: "translateX(100%)",
                 zIndex: -1
               }}
