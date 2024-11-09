@@ -29,6 +29,8 @@ import DropdownWithSearch from "./forms/drop-down-with-search/DropdownWithSearch
 import RadioButtonsGroup from "./forms/radio-buttons-group/RadioButtonsGroup";
 import CheckBoxesGroup from "./forms/check-boxes-group/CheckBoxesGroup";
 import BasicModal from "./add-new-subject-model/BasicModal";
+import WelcomeSection from "./welcome-section/WelcomeSection.tsx";
+import ProgressCircle from "./progress-circle/ProgressCirlce.tsx";
 
 export {
   Header,
@@ -62,4 +64,6 @@ export {
   RadioButtonsGroup,
   CheckBoxesGroup,
   BasicModal,
+  WelcomeSection,
+  ProgressCircle,
 };

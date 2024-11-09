@@ -1,7 +1,9 @@
-import TeacherClassesPage from "./Classes";
-import TeacherHomePage from "./HomePage";
-import TeacherReportsPage from "./Reports";
-import TeacherStudentsPage from "./Students";
-// import Rate from "./Rate";
+import {lazy} from "react";
+
+const TeacherClassesPage = lazy(() => import('./classes/Classes.tsx'))
+const TeacherHomePage = lazy(() => import('./HomePage'))
+const TeacherReportsPage = lazy(() => import('./Reports'));
+const TeacherStudentsPage = lazy(() => import('./Students'));
+
 
 export { TeacherClassesPage, TeacherHomePage, TeacherReportsPage, TeacherStudentsPage }

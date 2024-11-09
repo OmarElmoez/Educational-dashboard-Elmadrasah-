@@ -1,0 +1,20 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg {
+  transform: rotate(-90deg);
+}
+
+.progress_circle {
+  transition: stroke-dashoffset 0.5s ease-in-out;
+}
+
+.progress_number {
+  position: absolute;
+  font-size: 2.4rem;
+  color: var(--main-color)
+}

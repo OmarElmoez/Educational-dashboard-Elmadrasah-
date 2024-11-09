@@ -1,6 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {LoginLayout, MainLayout} from "@/layouts";
-import {StudentHomePage} from "@/pages/student";
+import {Classes, StudentHomePage} from "@/pages/student";
 import ProdectedRoute from "./ProtectedRoute";
 
 // ==================== Icons ====================
@@ -73,33 +73,33 @@ const router = createBrowserRouter([
     path: "/student",
     element: (
       <ProdectedRoute allowedTypes={["Student"]}>
-        <MainLayout sideBarData={SIDEBAR_DATA["Student"]}/>
+        <PageSuspense><MainLayout sideBarData={SIDEBAR_DATA["Student"]}/></PageSuspense>
       </ProdectedRoute>
     ),
     children: [
       {
         index: true,
-        element: <StudentHomePage/>,
+        element: <PageSuspense><StudentHomePage/></PageSuspense>,
       },
       {
         path: "calendar",
-        element: <CalendarPage/>,
+        element: <PageSuspense><Classes/></PageSuspense>,
       },
       {
         path: "help",
-        element: <HelpPage/>,
+        element: <PageSuspense><HelpPage/></PageSuspense>,
       },
       {
         path: "settings",
-        element: <SettingsPage/>,
+        element: <PageSuspense><SettingsPage/></PageSuspense>,
         children: [
           {
             index: true,
-            element: <Profile/>,
+            element: <PageSuspense><Profile/></PageSuspense>,
           },
           {
             path: "security",
-            element: <Security/>,
+            element: <PageSuspense><Security/></PageSuspense>,
           },
         ],
       },
@@ -292,41 +292,41 @@ const router = createBrowserRouter([
     path: "/teacher",
     element: (
       <ProdectedRoute allowedTypes={["Teacher"]}>
-        <MainLayout sideBarData={SIDEBAR_DATA["Teacher"]}/>
+        <PageSuspense><MainLayout sideBarData={SIDEBAR_DATA["Teacher"]}/></PageSuspense>
       </ProdectedRoute>
     ),
     children: [
       {
         index: true,
-        element: <TeacherHomePage/>,
+        element: <PageSuspense><TeacherHomePage/></PageSuspense>,
       },
       {
         path: "classes",
-        element: <TeacherClassesPage/>,
+        element: <PageSuspense><TeacherClassesPage/></PageSuspense>,
       },
       {
         path: "reports",
-        element: <TeacherReportsPage/>,
+        element: <PageSuspense><TeacherReportsPage/></PageSuspense>,
       },
       {
         path: "students",
-        element: <TeacherStudentsPage/>,
+        element: <PageSuspense><TeacherStudentsPage/></PageSuspense>,
       },
       {
         path: "help",
-        element: <HelpPage/>,
+        element: <PageSuspense><HelpPage/></PageSuspense>,
       },
       {
         path: "settings",
-        element: <SettingsPage/>,
+        element: <PageSuspense><SettingsPage/></PageSuspense>,
         children: [
           {
             index: true,
-            element: <Profile/>,
+            element: <PageSuspense><Profile/></PageSuspense>,
           },
           {
             path: "security",
-            element: <Security/>,
+            element: <PageSuspense><Security/></PageSuspense>,
           },
         ],
       },

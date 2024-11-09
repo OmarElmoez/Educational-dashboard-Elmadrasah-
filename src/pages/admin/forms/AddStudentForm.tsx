@@ -63,6 +63,8 @@ const AddStudentForm = () => {
     }
     data["mobile_phone"] = enteredPhoneParts.join("");
 
+    data['user_account'] = data['status'] === 'true';
+
     const serverData: TAddStudentFormDataForServer = {
       ...data,
       is_superuser: false,
@@ -100,12 +102,15 @@ const AddStudentForm = () => {
       })
     )
       .unwrap()
-      .then(() => {
+      .then((res) => {
+        if (typeof res === 'string') {
+          openFeedbackModal('failed', res);
+          return;
+        }
         openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+        reset()
+        setRemovePreviewChoices(true)
       })
-      .catch((error) => {
-        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
-      });
   };
 
   useEffect(() => {
@@ -116,7 +121,7 @@ const AddStudentForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ optionsFor: "locations" })
+      actGetDropdownOptions({ optionsFor: "locations", searchQuery: '' })
     )
       .unwrap()
       .then((data) => {
@@ -130,6 +135,8 @@ const AddStudentForm = () => {
 
   const [curriculumOptions, setCurriculumOptions] = useState<TOption[]>([]);
 
+  const [removePreviewChoices, setRemovePreviewChoices] = useState(false)
+
   useEffect(() => {
     dispatch(
       actGetDropdownOptions({ optionsFor: "curriculums" })
@@ -141,7 +148,7 @@ const AddStudentForm = () => {
   }, [dispatch, user?.token]);
 
   return (
-    <form action="post" onSubmit={handleSubmit(onSubmit)}>
+    <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <Heading text="إضافة طالب جديد مستقل" />
       <Heading text="معلومات الاتصال" />
 
@@ -365,6 +372,7 @@ const AddStudentForm = () => {
           register={register}
           name="subject_choices"
           error={errors.subject_choices?.message as string}
+          removePreviewChoices={removePreviewChoices}
         />
       </Row>
 
@@ -384,6 +392,7 @@ const AddStudentForm = () => {
           register={register}
           name="initial_services"
           error={errors.initial_services?.message as string}
+          removePreviewChoices={removePreviewChoices}
         />
 
         <Dropdown
@@ -400,6 +409,7 @@ const AddStudentForm = () => {
           register={register}
           name="initial_teachers"
           error={errors.initial_teachers?.message as string}
+          removePreviewChoices={removePreviewChoices}
         />
 
         <ColorField
@@ -449,6 +459,7 @@ const AddStudentForm = () => {
           type="button"
           onClick={() => {
             reset();
+            setRemovePreviewChoices(true)
           }}
           className="btn cancel-btn"
         >

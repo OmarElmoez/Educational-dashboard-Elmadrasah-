@@ -1,0 +1,15 @@
+.welcome_section {
+  padding-inline: 3.2rem;
+  padding-block: 0.4rem;
+  border-radius: 1rem;
+  background-color: #CBCFCD4D;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.welcome_section__title {
+  color: var(--main-color);
+  font-weight: 500;
+  font-size: 2.8rem;
+}

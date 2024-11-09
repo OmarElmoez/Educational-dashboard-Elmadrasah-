@@ -15,6 +15,7 @@ import actFCMLogin from "@/store/FCM/act/actFCMLogin";
 import { useFirebaseMessaging } from "@/hooks";
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import actGetLessonsByRange from "@/store/lessons/act/actGetLessonsByRange";
+import {useFeedback} from "@/store/context";
 
 const Login = () => {
   const { loading, error } = useAppSelector((state) => state.auth);
@@ -22,6 +23,8 @@ const Login = () => {
   const { fcmToken } = useFirebaseMessaging();
 
   const dispatch = useAppDispatch();
+
+  const { openFeedbackModal } = useFeedback();
 
   const navigate = useNavigate();
 
@@ -42,16 +45,20 @@ const Login = () => {
   const onSubmit: SubmitHandler<TFormData> = (data) => {
     dispatch(actAuthLogin(data))
       .unwrap()
-      .then((data) => {
-        if (data.set_password_url) {
+      .then((res) => {
+        if (typeof res === "string") {
+          openFeedbackModal('failed', res);
+          return ;
+        }
+        if (res.set_password_url) {
           navigate(`/set-password`);
         } else {
-          if (data.user?.phone === null) {
+          if (res.user?.phone === null) {
             navigate("/set-phoneNumber");
             return;
           }
           dispatch(actGetUserProfile());
-          if (data.user.user_type !== 'Admin') {
+          if (res.user.user_type !== 'Admin') {
           dispatch(actGetReviewQuestions());
           }
           dispatch(
@@ -65,7 +72,7 @@ const Login = () => {
               actFCMLogin({ FCM_token: fcmToken })
             );
           }
-          navigate(`/${data.user?.user_type?.toLowerCase()}`, {
+          navigate(`/${res.user?.user_type?.toLowerCase()}`, {
             replace: true,
           });
         }

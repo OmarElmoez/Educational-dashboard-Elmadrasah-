@@ -1,11 +1,13 @@
 import { Suspense, ReactNode } from "react";
-import LottieHandler from "@/components/lottie-handler/LottieHandler.tsx";
+import LoadingIndicator from "../loadingIndicator/LoadingIndicator.tsx";
 
 
 const PageSuspense = ({ children }: { children: ReactNode }) => {
   return (
     <Suspense
-      fallback={<LottieHandler type="loading" />}
+      fallback={<div className="loadingBox">
+        <LoadingIndicator/>
+      </div>}
     >
       {children}
     </Suspense>
