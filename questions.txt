@@ -1,2 +1,0 @@
-1- Why we create actSendQueryToServer ? ( it is not used ).
-2- IN CreateInvoiceForm.tsx file why you send the filteration action in a function ? (there is single-actions folder in store)
