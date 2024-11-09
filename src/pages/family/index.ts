@@ -1,4 +1,7 @@
-import FamilyHomePage from "./HomePage";
-import FamilyNotesPage from "./Notes";
+import {lazy} from "react";
 
-export { FamilyHomePage, FamilyNotesPage }
+const FamilyHomePage = lazy(() => import('./HomePage'))
+const FamilyNotesPage = lazy(() => import('./Notes'))
+const Classes = lazy(() => import('./classes/Classes.tsx'))
+
+export { FamilyHomePage, FamilyNotesPage, Classes }
