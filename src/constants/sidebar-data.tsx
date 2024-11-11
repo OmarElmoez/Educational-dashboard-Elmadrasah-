@@ -66,7 +66,7 @@ const SIDEBAR_DATA = {
       children: [
         {
           title: "دخول الحصة للطالب",
-          path: "join-student",
+          path: "calendar/join-student",
           icon: <CalendarMiniIcon />,
           phone_icon: <PH_calendarIcon />,
         },

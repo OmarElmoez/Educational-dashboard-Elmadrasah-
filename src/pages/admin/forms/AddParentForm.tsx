@@ -5,11 +5,11 @@ import {
   CircleLoadingIndecator,
   CountriesDropdown,
   Dropdown,
-  Heading,
+  InputField,
   PhoneField,
   Row,
 } from "@/components";
-import { InputField } from "@/components";
+import { Heading } from "@/components/UI";
 import { NotificationForm } from "@/components/mini-forms";
 import { useFeedback } from "@/store/context";
 import { actGetCountries } from "@/store/location/LocationSlice";

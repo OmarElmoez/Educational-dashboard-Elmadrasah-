@@ -1,4 +1,5 @@
-import {BasicModal, Dropdown, DropdownWithSearch, Heading, InputField, RadioButtonsGroup, Row,} from "@/components";
+import {BasicModal, Dropdown, DropdownWithSearch, InputField, RadioButtonsGroup, Row,} from "@/components";
+import {Heading} from "@/components/UI"
 import {TIMEZONES_OPTIONS} from "@/constants";
 import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";

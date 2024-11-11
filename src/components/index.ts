@@ -5,7 +5,6 @@ import Success from "./feedback/success/Success";
 import UploadPhoto from "./uploadPhoto/UploadPhoto";
 import ReviewForm from "./review-form/ReviewForm";
 import InfoCard from "./info-card/InfoCard";
-import Heading from "./heading/Heading";
 import LoadingIndicator from "./loadingIndicator/LoadingIndicator";
 import CircleLoadingIndecator from "./loadingIndicator/CircleLoadingIndecator";
 import ReviewFeedback from "./feedback/review-status/ReviewFeedback";
@@ -31,6 +30,8 @@ import CheckBoxesGroup from "./forms/check-boxes-group/CheckBoxesGroup";
 import BasicModal from "./add-new-subject-model/BasicModal";
 import WelcomeSection from "./welcome-section/WelcomeSection.tsx";
 import ProgressCircle from "./progress-circle/ProgressCirlce.tsx";
+import ClassesForDay from "./classes-for-day/ClassesForDay.tsx";
+import Tabs from './tabs/Tabs.tsx'
 
 export {
   Header,
@@ -40,7 +41,6 @@ export {
   UploadPhoto,
   ReviewForm,
   InfoCard,
-  Heading,
   LoadingIndicator,
   CircleLoadingIndecator,
   ReviewFeedback,
@@ -66,4 +66,6 @@ export {
   BasicModal,
   WelcomeSection,
   ProgressCircle,
+  ClassesForDay,
+  Tabs,
 };

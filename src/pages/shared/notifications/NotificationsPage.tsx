@@ -1,4 +1,4 @@
-import { Heading } from "@/components";
+import { Heading } from "@/components/UI";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import styles from "./notifications.module.css";
 import NotificationAvatar from "@/assets/notification-avatar.svg?react";

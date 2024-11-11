@@ -1,6 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {LoginLayout, MainLayout} from "@/layouts";
-import {Classes, StudentHomePage} from "@/pages/student";
+import {Classes, JoinLesson, StudentHomePage} from "@/pages/student";
 import ProdectedRoute from "./ProtectedRoute";
 
 // ==================== Icons ====================
@@ -127,6 +127,13 @@ const router = createBrowserRouter([
         path: "calendar/classes",
         element: <PageSuspense>
           <AdminClassesPage/>
+        </PageSuspense>,
+      },
+      // todo: add the id of the lesson to get the data for this specific lesson
+      {
+        path: "calendar/join-student",
+        element: <PageSuspense>
+          <JoinLesson/>
         </PageSuspense>,
       },
       {

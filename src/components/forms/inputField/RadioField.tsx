@@ -1,7 +1,7 @@
 import { TRadioField } from "@/types/InputField";
 import { FieldValues } from "react-hook-form";
 import "./input.css";
-import Heading from "@/components/heading/Heading";
+import {Heading} from "@/components/UI";
 import RadioButtonsGroup from "../radio-buttons-group/RadioButtonsGroup";
 
 const RadioField = <T extends FieldValues>({

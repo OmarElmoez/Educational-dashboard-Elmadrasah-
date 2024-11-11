@@ -2,7 +2,8 @@ import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {CircleLoadingIndecator, Dropdown, Heading, InputField, Row, SingleCheckbox,} from "@/components";
+import {CircleLoadingIndecator, Dropdown, InputField, Row, SingleCheckbox,} from "@/components";
+import {Heading} from "@/components/UI"
 import {useAppDispatch} from "@/store/hooks";
 import actSendDataToServer from "@/store/single-actions/actSendDataToServer";
 import {useFeedback} from "@/store/context";

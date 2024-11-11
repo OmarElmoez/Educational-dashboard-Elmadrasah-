@@ -9,11 +9,11 @@ import {
   CircleLoadingIndecator,
   Dropdown,
   DropdownWithSearch,
-  Heading,
   InputField,
   Row,
   SingleCheckbox,
 } from "@/components";
+import {Heading} from '@/components/UI'
 import {CreateInvoiceSchema, TCreateInvoiceFormData,} from "@/schemas/CreateInvoiceSchema";
 import {TOption} from "@/types/Dropdown";
 import {ADD_SERVICE_OPTIONS, REPORT_OPTIONS, TAX_TREATMENT_OPTIONS,} from "@/constants";

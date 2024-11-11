@@ -1,13 +1,13 @@
 import {
   CountriesDropdown,
   Dropdown,
-  Heading,
+  InputField,
   MultiChoices,
   PhoneField,
   Row,
   UploadFile,
 } from "@/components";
-import { InputField } from "@/components";
+import { Heading } from "@/components/UI";
 import {
   STATUS_OPTIONS,
   EMPLOYEE_TITLES,

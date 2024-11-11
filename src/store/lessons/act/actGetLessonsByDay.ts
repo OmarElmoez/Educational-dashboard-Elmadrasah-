@@ -1,30 +1,30 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { TLesson } from "@/schemas/LessonSchema";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance.ts";
 
 type TGetLessonsByDayParams = {
-  from_date: string | undefined;
+  day: string | undefined;
 };
 
 type TGetLessonsByDayResponse = {
-  results: TLesson[];
+  result: TLesson[];
 };
 
 const actGetLessonsByDay = createAsyncThunk(
   "lessons/actGetLessonsByDay",
-  async ({ from_date }: TGetLessonsByDayParams, thunkAPI) => {
+  async ({ day }: TGetLessonsByDayParams, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
       const url = "/dashboard/lesson/";
 
-      const response = await axios.get<TGetLessonsByDayResponse>(url, {
+      const response = await axiosInstance.get<TGetLessonsByDayResponse>(url, {
         params: {
-          from_date,
+          day,
         },
       });
-      return response.data.results;
+      return response.data.result;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

@@ -2,12 +2,12 @@ import {
   BasicModal,
   Dropdown,
   DropdownWithSearch,
-  Heading,
   InputField,
   // MultiChoices,
   RadioButtonsGroup,
   Row,
 } from "@/components";
+import {Heading} from '@/components/UI'
 import {TIMEZONES_OPTIONS} from "@/constants";
 import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";

@@ -9,9 +9,9 @@ const Heading = ({
   style?: React.CSSProperties;
 }) => {
   return (
-    <div className={styles.heading} style={style}>
+    <h3 className={styles.heading} style={style}>
       {text}
-    </div>
+    </h3>
   );
 };
 

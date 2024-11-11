@@ -1,0 +1,42 @@
+.personal_info {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.img_box {
+  width: 72px;
+  height: 72px;
+  border-radius: 1rem;
+  border: 1px solid var(--main-color);
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text_box h4 {
+  font-weight: 500;
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+}
+
+.text_box p {
+  margin-top: 1.2rem;
+  font-size: 1.8rem;
+  color: #ACACAC;
+}
+
+menu {
+  color: #616161;
+  margin-top: 2rem;
+  display: grid;
+  gap: 2rem;
+}
+
+menu li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

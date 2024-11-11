@@ -3,7 +3,8 @@ import {
   Path,
   UseFormRegister,
 } from "react-hook-form";
-import { SingleCheckbox, Heading, CheckBoxesGroup } from "@/components";
+import { SingleCheckbox, CheckBoxesGroup } from "@/components";
+import {Heading} from '@/components/UI';
 import { LESSON_CHECK_BOXES } from "@/constants/checkbox-options";
 
 export interface TNotificationFormProps<T extends FieldValues> {

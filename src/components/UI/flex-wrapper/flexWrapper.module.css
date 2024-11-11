@@ -1,0 +1,9 @@
+.wrapper {
+  display: flex;
+  gap: 2.4rem;
+  margin-top: 4.8rem;
+}
+
+.wrapper > article {
+  flex: 1;
+}

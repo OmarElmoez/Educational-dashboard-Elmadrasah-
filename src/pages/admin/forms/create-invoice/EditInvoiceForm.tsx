@@ -12,11 +12,11 @@ import { useFeedback } from "@/store/context";
 import {
   CircleLoadingIndecator,
   Dropdown,
-  Heading,
+  InputField,
   Row,
   SingleCheckbox,
 } from "@/components";
-import { InputField } from "@/components";
+import { Heading } from "@/components/UI";
 import { TOption } from "@/types/Dropdown";
 import {
   ADD_SERVICE_OPTIONS,

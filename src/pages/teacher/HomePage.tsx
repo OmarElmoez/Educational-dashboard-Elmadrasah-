@@ -22,7 +22,7 @@ const {
   join_error,
 } = styles;
 const TeacherHomePage = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials, user } = useAppSelector((state) => state.auth);
   const { today_lessons, error, loading } = useAppSelector(
     (state) => state.lessons
   );
@@ -33,8 +33,8 @@ const TeacherHomePage = () => {
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
-    dispatch(actGetLessonsByDay({ from_date: today }));
-  }, [dispatch, user?.token, today]);
+    dispatch(actGetLessonsByDay({ day: today }));
+  }, [dispatch, credintials?.token, today]);
 
   const dialogRef = useRef<TModalRef>(null);
 
