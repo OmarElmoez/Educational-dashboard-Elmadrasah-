@@ -1,0 +1,13 @@
+.rate_box {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.rate_box span {
+  color: var(--secondary-color);
+  font-weight: 500;
+  font-size: 2rem;
+}
+

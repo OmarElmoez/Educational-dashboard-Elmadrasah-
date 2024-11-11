@@ -6,12 +6,12 @@ import {
   ColorField,
   CountriesDropdown,
   Dropdown,
-  Heading,
+  InputField,
   MultiChoices,
   PhoneField,
   Row,
 } from "@/components";
-import { InputField } from "@/components";
+import { Heading } from "@/components/UI";
 import { NotificationForm } from "@/components/mini-forms";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";

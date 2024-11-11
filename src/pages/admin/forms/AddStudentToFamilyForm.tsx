@@ -6,13 +6,13 @@ import { useFeedback } from "@/store/context";
 import {
   ColorField,
   Dropdown,
-  Heading,
+  InputField,
   MultiChoices,
   PhoneField,
   Row,
   CircleLoadingIndecator,
 } from "@/components";
-import { InputField } from "@/components";
+import { Heading } from "@/components/UI";
 import { NotificationForm } from "@/components/mini-forms";
 import BasicModal from "@/components/add-new-subject-model/BasicModal";
 import {

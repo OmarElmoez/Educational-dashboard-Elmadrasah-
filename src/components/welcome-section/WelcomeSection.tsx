@@ -1,9 +1,3 @@
-/* TODO:
-*   Props:
-*     1- img as a component
-*     2- children*/
-
-
 import {ReactNode} from "react";
 import styles from './welcomeSection.module.css'
 import {useAppSelector} from "@/store/hooks.ts";

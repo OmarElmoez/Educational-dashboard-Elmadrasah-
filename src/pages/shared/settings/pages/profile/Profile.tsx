@@ -51,7 +51,7 @@ const Profile = () => {
 
   return (
     <section className={content}>
-      <form action="post" className={form} onSubmit={handleSubmit(onSubmit)}>
+      <form method="post" className={form} onSubmit={handleSubmit(onSubmit)}>
         <UploadPhoto register={register} name="image" setValue={setValue} />
         <section className={row}>
           <div className="group">
