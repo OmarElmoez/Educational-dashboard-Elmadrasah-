@@ -60,7 +60,7 @@ const TeacherHomePage = () => {
             onClick={() => setId(lesson.id)}
           >
             <section>
-              <h4>الطالب: {lesson.participants[0].student_name}</h4>
+              <h4>الطالب: {lesson.participants[0]?.student_name}</h4>
               <div>
                 <CalendarIconForCard />
                 <span>{formatDaysAndMonths(lesson.from_date)}</span>
@@ -103,6 +103,7 @@ const TeacherHomePage = () => {
                   dispatch(
                     actJoinLesson({
                       attendance_link: lesson.attendance_link,
+                      token: credintials?.token as string,
                     })
                   );
                 }}

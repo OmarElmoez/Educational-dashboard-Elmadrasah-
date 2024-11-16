@@ -10,6 +10,7 @@ import EgyptFlag from '@/assets/flag-egypt.svg?react';
 import EmiratesFlag from '@/assets/flag-united-arab-emirates.svg?react';
 import FileIcon from '@/assets/file-outline.svg?react';
 import {LoadingIndicator} from "@/components";
+import {useNavigate} from "react-router-dom";
 
 const {title, lessons_cards, card, status_box} = styles;
 
@@ -19,11 +20,64 @@ type TClassesForDayPros = {
 
 const Initial_Day = new Date();
 
+const statusInfo = {
+  Attended: {
+    label: "تم الحضور",
+    colors: {
+      outer_bg: "#B2CCEC4D",
+      inner_bg: "#B2CCEC",
+      text: "#0650A7",
+      border: "#1B84FF33"
+    }
+  },
+  Scheduled:
+    {
+      label: "لم تبدأ بعد",
+      colors: {
+        outer_bg: "#D6DDD880",
+        inner_bg: "#CCCCCC",
+        text: "#828684",
+        border: "#1B84FF33",
+      }
+    },
+  Missed:
+    {
+      label: "متغيب",
+      colors: {
+        outer_bg: "#FFEEEE",
+        inner_bg: "#FBCBD0",
+        text: "#F64E60",
+        border: "#CE122580 "
+      }
+    },
+  Progressing:
+    {
+      label: "الانضمام",
+      colors: {
+        outer_bg: "#1C8A4426",
+        inner_bg: "#1C8A444D",
+        text: "var(--main-color)",
+        border: "#1C8A4480",
+      }
+    },
+  Canceled:
+    {
+      label: "لم تبدأ بعد",
+      colors: {
+        outer_bg: "transparent",
+        inner_bg: "#CCCCCC",
+        text: "#828684",
+        border: "#1B84FF33"
+      }
+    },
+};
+
 const ClassesForDay = ({day = Initial_Day}: TClassesForDayPros) => {
 
   const dispatch = useAppDispatch();
   const {today_lessons, loading} = useAppSelector(state => state.lessons);
   const {openFeedbackModal} = useFeedback();
+  const {credintials} = useAppSelector(state => state.auth);
 
   const dateInArabic = day.toLocaleDateString("ar-EG", {
     day: "numeric",
@@ -49,57 +103,13 @@ const ClassesForDay = ({day = Initial_Day}: TClassesForDayPros) => {
     })
   }, [dispatch, openFeedbackModal, serverDateFormat]);
 
-  const statusInfo = {
-    Attended: {
-      label: "تم الحضور",
-      colors: {
-        outer_bg: "#B2CCEC4D",
-        inner_bg: "#B2CCEC",
-        text: "#0650A7",
-        border: "#1B84FF33"
-      }
-    },
-    Scheduled:
-      {
-        label: "لم تبدأ بعد",
-        colors: {
-          outer_bg: "#D6DDD880",
-          inner_bg: "#CCCCCC",
-          text: "#828684",
-          border: "#1B84FF33",
-        }
-      },
-    Missed:
-      {
-        label: "متغيب",
-        colors: {
-          outer_bg: "#FFEEEE",
-          inner_bg: "#FBCBD0",
-          text: "#F64E60",
-          border: "#CE122580 "
-        }
-      },
-    Progressing:
-      {
-        label: "الانضمام",
-        colors: {
-          outer_bg: "#1C8A4426",
-          inner_bg: "#1C8A444D",
-          text: "var(--main-color)",
-          border: "#1C8A4480",
-        }
-      },
-    Canceled:
-      {
-        label: "لم تبدأ بعد",
-        colors: {
-          outer_bg: "transparent",
-          inner_bg: "#CCCCCC",
-          text: "#828684",
-          border: "#1B84FF33"
-        }
-      },
-  };
+
+
+  const navigate = useNavigate();
+
+  const navigateToJoinPage = (id: number) => {
+    navigate(`/${credintials?.role?.toLowerCase()}/calendar/join-class/${id}`)
+  }
 
   return (
     <>
@@ -109,7 +119,7 @@ const ClassesForDay = ({day = Initial_Day}: TClassesForDayPros) => {
         {today_lessons.length === 0 && <p className="error">ليس لديك حصص اليوم !</p>}
         {today_lessons.length > 0 && today_lessons.map((lesson: TLesson) => {
           return (
-            <article key={lesson.id} className={card}
+            <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
 
               <h4>الأحياء</h4>
@@ -126,7 +136,7 @@ const ClassesForDay = ({day = Initial_Day}: TClassesForDayPros) => {
 
               <div>
                 <EmiratesFlag/>
-                <p>الطالب {lesson.participants[0].student_name}</p>
+                <p>الطالب {lesson.participants[0]?.student_name}</p>
               </div>
 
               <div>

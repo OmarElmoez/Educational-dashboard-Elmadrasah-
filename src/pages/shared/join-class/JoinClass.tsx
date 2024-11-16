@@ -1,0 +1,154 @@
+import HeroImg from '@/assets/join-lesson-cover.svg?react';
+import VideoCallIcon from '@/assets/videoCall.svg?react';
+import VideoCamIcon from '@/assets/videoCam.svg?react';
+import PhoneHangUpIcon from '@/assets/phoneHangUp.svg?react';
+import {Card, FlexWrapper, Heading} from "@/components/UI";
+import PersonalCard from "@/components/personal-card/PersonalCard.tsx";
+import {Tabs} from "@/components";
+import {STUDENT_TABS} from "@/constants/tabs.tsx";
+
+import styles from './joinClass.module.css'
+import {useParams} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
+import actJoinLesson from "@/store/lessons/act/actJoinLesson.ts";
+import {TLesson} from "@/schemas/LessonSchema.ts";
+import {useEffect, useState} from "react";
+import {actGetSpecificLessonData} from "@/services/lessons.ts";
+import {useFeedback} from "@/store/context";
+
+const {attendance_box, student_classes, progress_box, progress_bar, lesson_actions} = styles;
+
+const STATUS_TEXT = {
+  Attended: "تم الحضور",
+  Scheduled: "لم يبدأ الدرس بعد .",
+  Missed: "متغيب",
+  Progressing: "جارية",
+  Canceled: "تم الالغاء"
+}
+
+export type TPersonInfo = {
+  name: string;
+  subject: string | null;
+  image: string | null;
+  grade: string;
+  country: string | null;
+  language: string | null;
+  teacher_bio: string;
+  student_goal: string;
+//   todo: waiting for student classes
+}
+
+
+const JoinClass = () => {
+
+  const {classId} = useParams();
+
+  const [lessonData, setLessonData] = useState<TLesson>();
+
+  const dispatch = useAppDispatch();
+
+  const {credintials} = useAppSelector(state => state.auth)
+  const {error} = useAppSelector(state => state.lessons)
+
+  const [person, setPerson] = useState<TPersonInfo>({
+    name: '',
+    subject: null,
+    image: null,
+    grade: "",
+    country: null,
+    language: null,
+    teacher_bio: "",
+    student_goal: "",
+  })
+
+  const {openFeedbackModal} = useFeedback();
+
+  const isTeacher = credintials?.role === 'Teacher';
+
+  useEffect(() => {
+      if (classId) {
+        actGetSpecificLessonData(classId).then((res) => {
+          console.log('from lesson specific action: ',
+            res)
+          setLessonData(res);
+          setPerson({
+            name: isTeacher ? res.participants[0].student_name : res.employee_name,
+            grade: res.participants[0].grade,
+            image: isTeacher ? res.participants[0].image : res.employee_image,
+            subject: res.subject,
+            country: isTeacher ? res.participants[0].country : res.employee_country,
+            language: isTeacher ? res.participants[0].student_language : res.employee_language,
+            teacher_bio: res.employee_bio,
+            student_goal: res.participants[0].objective,
+          })
+        })
+      }
+    },
+    [classId, isTeacher]);
+
+  const lessonHandler = (status: 'start' | 'end') => {
+    dispatch(actJoinLesson({
+      attendance_link: (status === 'start' ? lessonData?.attendance_link : lessonData?.end_attendance_link) as string,
+      token: credintials?.token as string
+    }))
+    if (error) {
+      openFeedbackModal("failed",
+        `${error}`);
+    }
+  }
+
+
+  return (
+    <>
+      <div style={{textAlign: 'center'}}>
+        <HeroImg/>
+      </div>
+
+      <FlexWrapper>
+
+        <PersonalCard cardFor={isTeacher ? "student" : "teacher"} person={person} />
+
+        <Card>
+          <Heading text="الدرس الحالي" style={{fontSize: "3.2rem", marginTop: "0", marginBottom: "0"}}/>
+
+          <section className={attendance_box}>
+            <div style={{display: "flex", gap: "1.2rem", alignItems: "center"}}>
+              <VideoCallIcon/>
+              <Heading text="حضور الدرس" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
+            </div>
+            {lessonData?.status && <span>{STATUS_TEXT[lessonData.status]}</span>}
+          </section>
+
+          <section className={student_classes}>
+            <Heading text="حصص الطالب" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
+
+            <div className={progress_box}>
+              {/* todo: change width with the percentage came from the server */}
+              <div className={progress_bar} style={{width: "65%"}}></div>
+            </div>
+            <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم 65%</p>
+          </section>
+
+          <section className={lesson_actions}>
+            <button onClick={() => lessonHandler("start")}>
+              <VideoCamIcon/>
+              <span>بدأ الدرس</span>
+            </button>
+
+            <button onClick={() => lessonHandler('end')}>
+              <PhoneHangUpIcon/>
+              <span>إنهاء الدرس</span>
+            </button>
+          </section>
+        </Card>
+
+      </FlexWrapper>
+
+      <Heading text="تفاصيل الحصة" style={{fontSize: "3.2rem", marginTop: "4.8rem"}}/>
+
+      <Tabs tabs={STUDENT_TABS}/>
+    </>
+  )
+}
+
+export default JoinClass

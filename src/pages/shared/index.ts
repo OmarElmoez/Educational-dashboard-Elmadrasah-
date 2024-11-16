@@ -8,5 +8,6 @@ const Security = lazy(() => import('./settings/pages/security/Security'));
 const Roles = lazy(() => import('./settings/pages/roles/Roles'));
 const NotificationsPage = lazy(() => import("./notifications/NotificationsPage"));
 const Error = lazy(() => import('./Error.tsx'))
+const JoinClass = lazy(() => import("./join-class/JoinClass.tsx"))
 
-export { HelpPage, SettingsPage, CalendarPage, Profile, Security, Roles, NotificationsPage, Error };
+export { HelpPage, SettingsPage, CalendarPage, Profile, Security, Roles, NotificationsPage, Error, JoinClass };

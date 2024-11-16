@@ -1,12 +1,12 @@
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import { createPortal } from "react-dom";
+import React, {forwardRef, useImperativeHandle, useRef} from "react";
+import {createPortal} from "react-dom";
 import SuccessFeedback from "@/assets/successFeedback.svg?react";
 import FailedFeedback from "@/assets/failedFeedback.svg?react";
 import WarningFeedback from "@/assets/warningFeedback.svg?react";
 
 import styles from "../review-status/reviewFeedback.module.css";
 
-const { reviewModal, btn_container, caption } = styles;
+const {reviewModal, btn_container, caption} = styles;
 
 type TContentForStatus = {
   [key in "succeeded" | "failed" | "warning" | "confirm"]: {
@@ -39,39 +39,44 @@ const FeedbackAlert = forwardRef(
   ) => {
     const dialog = useRef<HTMLDialogElement>(null);
 
-    useImperativeHandle(ref, () => ({
-      open() {
-        dialog.current?.showModal();
+    useImperativeHandle(ref,
+      () => ({
+        open() {
+          dialog.current?.showModal();
 
-        setTimeout(() => {
+          if (status === 'confirm') return;
+
+          setTimeout(() => {
+              dialog.current?.close();
+              handleComplete();
+            },
+            timeout);
+        },
+
+
+        close() {
           dialog.current?.close();
-          handleComplete();
-        }, timeout);
-      },
-      
-      close() {
-        dialog.current?.close();
-      },
-    }));
+        },
+      }));
 
     const contentForStatus: TContentForStatus = {
       succeeded: {
-        icon: <SuccessFeedback />,
+        icon: <SuccessFeedback/>,
         title: title,
         desc: desc,
       },
       failed: {
-        icon: <FailedFeedback />,
+        icon: <FailedFeedback/>,
         title: title,
         desc: desc,
       },
       warning: {
-        icon: <WarningFeedback />,
+        icon: <WarningFeedback/>,
         title: title,
         desc: desc,
       },
       confirm: {
-        icon: <WarningFeedback />,
+        icon: <WarningFeedback/>,
         title: title,
         desc: desc,
       },
@@ -80,15 +85,15 @@ const FeedbackAlert = forwardRef(
     const handleConfirm = () => {
       onConfirm?.();
       dialog.current?.close();
-      
+
     };
 
     const handleComplete = () => {
       onComplete?.();
       dialog.current?.close();
-      
+
     };
-    
+
     const handleCancel = () => {
       onCancel?.();
       dialog.current?.close();
@@ -104,10 +109,10 @@ const FeedbackAlert = forwardRef(
           )}
           <div className={btn_container}>
             <button onClick={handleConfirm} className="btn error-btn">
-              Confirm
+              نعم , مسح
             </button>
             <button onClick={handleCancel} className="btn confirm-btn">
-              Cancel
+              إلغاء
             </button>
           </div>
         </dialog>,

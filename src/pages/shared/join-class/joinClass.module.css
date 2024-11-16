@@ -1,0 +1,59 @@
+.attendance_box {
+  margin-top: 2.5rem;
+}
+
+.attendance_box span {
+  color: #616161;
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin-top: 1rem;
+}
+
+.student_classes {
+  margin-top: 2rem;
+}
+
+.progress_box {
+  position: relative;
+  margin-top: 1.2rem;
+  background-color: #D4DED8;
+  border-radius: 9999px;
+  height: 25px;
+  overflow: hidden;
+}
+
+.progress_bar {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  background-image: repeating-linear-gradient(70deg, #1C8A44, #1C8A44 10px, #1C8A4490 10px, #1C8A4490 20px);
+  border-radius: 9999px;
+}
+
+.lesson_actions {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  margin-top: 2.5rem;
+}
+
+.lesson_actions button {
+  width: 18rem;
+  padding-block: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  font-size: 1.8rem;
+  color: #ffff;
+  border-radius: 1rem;
+}
+
+.lesson_actions button:first-child {
+  background-color: var(--main-color);
+}
+
+.lesson_actions button:nth-of-type(2) {
+  background-color: #C92516;
+}

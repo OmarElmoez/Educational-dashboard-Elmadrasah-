@@ -1,9 +1,27 @@
 import { z } from 'zod';
 
+const lessonFileSchema = z.object({
+  id: z.number(),
+  lesson: z.number(),
+  file: z.string().url(),
+  title: z.string(),
+  uploaded_at: z.string().datetime(),
+  uploaded_by: z.string()
+});
+
+export type TLessonFile = z.infer<typeof lessonFileSchema>
+
 export const LessonSchema = z.object({
   id: z.number(),
   location_name: z.string(),
   employee_name: z.string(),
+  employee_bio: z.string(),
+  employee_language: z.string().nullable(),
+  employee_country: z.string().nullable(),
+  subject: z.string().nullable(),
+  employee_image: z.string().url().nullable(),
+  employee_average_rating: z.number(),
+  lesson_files: z.array(lessonFileSchema),
   attendance_link: z.string(),
   end_attendance_link: z.string(),
   service_name: z.string(),
@@ -41,6 +59,12 @@ export const LessonSchema = z.object({
     student_name: z.string(),
     start_time_student: z.string().nullable(),
     end_time_student: z.string().nullable(),
+    grade: z.string(),
+    objective: z.string(),
+    remaining_classes_percentage: z.number().nullable(),
+    student_language: z.string(),
+    country: z.string(),
+    image: z.string().url().nullable(),
   }))
 });
 

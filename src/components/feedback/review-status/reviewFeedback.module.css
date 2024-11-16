@@ -8,11 +8,14 @@
 
 .reviewModal h3 {
   font-size: 2rem;
+  margin-top: 1.6rem;
 }
 
 .caption {
   font-size: 1rem;
   color: #B0B0B0;
+  margin: 1.6rem auto 0;
+  width: 50%;
 }
 
 .btn_container {
@@ -20,8 +23,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.btn_container button {
-  margin: 0 2.1rem;
+  gap: 2rem;
 }

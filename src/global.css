@@ -512,3 +512,7 @@ input#formatted_number::placeholder {
 .modal__form {
   margin-top: 1.6rem;
 }
+
+.tab_description {
+  color: #A0A1A7;
+}

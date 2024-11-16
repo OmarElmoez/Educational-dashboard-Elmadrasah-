@@ -1,0 +1,19 @@
+2- Apply (disable) for the whole section not just the input. ( ask for a design ).
+3- Arrange inputField folder in a way that it is more readable. ( exist in components folder ).
+4- Pass onChange function for dropdown component. to handle different cases. (don't pass state).
+
+6- Don't use any in Typescript. (  const feedbackAlertRef = useRef<any>(null); )
+7- reponse type in  actSendDataToServer keep it or remove it?
+8- remove MUI (set-password)
+9- create form component
+9- Modify FeedbackAlert.tsx;
+
+10- Create components for buttons 
+
+11 - convert sidebar context to a hook.
+
+// ======================= NO USE =======================
+13- There is no use for actGetFormSubjects
+14- There is no use for actGetLessons
+
+
