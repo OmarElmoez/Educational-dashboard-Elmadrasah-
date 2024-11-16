@@ -10,6 +10,7 @@ import actSendEduUploadedFiles from "@/store/single-actions/actSendEduUploadedFi
 import {useParams} from "react-router-dom";
 import {useFeedback} from "@/store/context";
 import {LoadingIndicator} from "@/components";
+import {TLessonFile} from "@/schemas/LessonSchema.ts";
 
 const {title_box, upload_box, submit_btn, preview_wrapper, preview_icon, preview_img} = styles;
 
@@ -24,7 +25,7 @@ export type TSubmittedData = {
   files: File[],
 }
 
-const UploadEduFilesForm = () => {
+const UploadEduFilesForm = ({afterUploadNewFile}: { afterUploadNewFile: (val: TLessonFile[]) => void }) => {
 
   const {classId} = useParams();
 
@@ -123,6 +124,7 @@ const UploadEduFilesForm = () => {
             "تم إضافة الملفات بنجاح");
           reset();
           setPreviewFiles([]);
+          afterUploadNewFile(res.uploaded_files)
         } else {
           setLoading(false);
           openFeedbackModal("failed",

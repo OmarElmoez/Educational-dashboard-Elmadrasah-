@@ -57,6 +57,10 @@ const UploadFiles = () => {
         });
       })
   }
+  
+  const afterUploadNewFile = (uploaded_files: TLessonFile[]) => {
+    setFiles(prevFiles => [...(uploaded_files || []), ...(prevFiles || [])]);
+  }
 
   return (
     <>
@@ -64,7 +68,7 @@ const UploadFiles = () => {
         <h3 className={modal_header}>رفع ملف جديد</h3>
       } borderBottom={false}>
         <p className={modal_desc}>قم بتحميل مواد الدراسة أو الملاحظات الخاصة بك هنا</p>
-        <UploadEduFilesForm/>
+        <UploadEduFilesForm afterUploadNewFile={afterUploadNewFile} />
       </BasicModal>
 
       <section>
