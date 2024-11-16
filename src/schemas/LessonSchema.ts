@@ -19,6 +19,7 @@ export const LessonSchema = z.object({
   employee_language: z.string().nullable(),
   employee_country: z.string().nullable(),
   subject: z.string().nullable(),
+  subject_name: z.string().nullable(),
   employee_image: z.string().url().nullable(),
   employee_average_rating: z.number(),
   lesson_files: z.array(lessonFileSchema),
@@ -65,6 +66,7 @@ export const LessonSchema = z.object({
     student_language: z.string(),
     country: z.string(),
     image: z.string().url().nullable(),
+    credit: z.number()
   }))
 });
 
