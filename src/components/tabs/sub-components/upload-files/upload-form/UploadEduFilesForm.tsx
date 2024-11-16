@@ -10,6 +10,8 @@ import actSendEduUploadedFiles from "@/store/single-actions/actSendEduUploadedFi
 import {useParams} from "react-router-dom";
 import {useFeedback} from "@/store/context";
 import {LoadingIndicator} from "@/components";
+import {TLessonFile} from "@/schemas/LessonSchema.ts";
+import {actEditLessonFileName} from "@/services/lessons.ts";
 
 const {title_box, upload_box, submit_btn, preview_wrapper, preview_icon, preview_img} = styles;
 
@@ -24,7 +26,15 @@ export type TSubmittedData = {
   files: File[],
 }
 
-const UploadEduFilesForm = () => {
+type TUploadedEduFilesFormProps = {
+  afterUploadNewFile: (val: TLessonFile[]) => void,
+  isEdit: boolean,
+  editFileId: number,
+  onClose: () => void,
+  afterEditFile: (file: TLessonFile) => void
+}
+
+const UploadEduFilesForm = ({afterUploadNewFile, isEdit, editFileId, onClose, afterEditFile}: TUploadedEduFilesFormProps) => {
 
   const {classId} = useParams();
 
@@ -114,6 +124,20 @@ const UploadEduFilesForm = () => {
 
   const onSubmit = (data: TSubmittedData) => {
     console.log(data)
+
+    if (isEdit && classId) {
+      setLoading(true)
+      actEditLessonFileName(classId, editFileId, data.title).then((res) => {
+        console.log('from edit action: ', res)
+        openFeedbackModal('succeeded', 'تم التعديل بنجاح');
+        reset();
+        onClose();
+        afterEditFile(res)
+        setLoading(false)
+      })
+      return;
+    }
+
     if (classId) {
       setLoading(true)
       dispatch(actSendEduUploadedFiles({classId, data})).unwrap().then((res) => {
@@ -123,6 +147,7 @@ const UploadEduFilesForm = () => {
             "تم إضافة الملفات بنجاح");
           reset();
           setPreviewFiles([]);
+          afterUploadNewFile(res.uploaded_files)
         } else {
           setLoading(false);
           openFeedbackModal("failed",
@@ -139,25 +164,26 @@ const UploadEduFilesForm = () => {
 
       <div className={title_box}>
         <span>عنوان</span>
-        <input type="text" {...register("title")} className="inputField"/>
+        <input type="text" {...register("title")} className="inputField" disabled={loading}/>
       </div>
 
       {loading ?
         <div style={{display: "flex", alignItems: 'center', justifyContent: "center"}}><LoadingIndicator/></div> :
-        <div className={upload_box} onClick={() => fileInputRef.current?.click()}>
-          {previewFiles.length === 0 ?
-            <>
-              <UploadIcon/>
+        isEdit ? "" :
+          <div className={upload_box} onClick={() => fileInputRef.current?.click()}>
+            {previewFiles.length === 0 ?
+              <>
+                <UploadIcon/>
 
-              <h5>قم بتحميل <span>الملف</span></h5>
+                <h5>قم بتحميل <span>الملف</span></h5>
 
-              <p>قم بتحميل ملف PDF أو صورة مربعة بصيغة .jpg أو .png.</p>
-            </> : renderPreview()
-          }
-        </div>}
+                <p>قم بتحميل ملف PDF أو صورة مربعة بصيغة .jpg أو .png.</p>
+              </> : renderPreview()
+            }
+          </div>}
 
-      <button className={submit_btn}>
-        رفع الملف
+      <button className={submit_btn} disabled={loading}>
+        {isEdit ? "تعديل" : "رفع الملف"}
       </button>
     </form>
   )

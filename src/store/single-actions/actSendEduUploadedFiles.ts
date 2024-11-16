@@ -2,6 +2,12 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
 import axiosInstance from "@/utils/axiosInstance.ts";
 import {TSubmittedData} from "@/components/tabs/sub-components/upload-files/upload-form/UploadEduFilesForm.tsx";
+import {TLessonFile} from "@/schemas/LessonSchema.ts";
+
+type TUploadEduFilesResponse = {
+  message: string;
+  uploaded_files: TLessonFile[],
+}
 
 const actSendEduUploadedFiles = createAsyncThunk("single-actions/send education files",
   async ({classId, data}: { classId: string, data: TSubmittedData | FormData }, thunkAPI) => {
@@ -29,7 +35,7 @@ const actSendEduUploadedFiles = createAsyncThunk("single-actions/send education 
             String(value));
         }
       })
-      const res = await axiosInstance.post(url,
+      const res = await axiosInstance.post<TUploadEduFilesResponse>(url,
         formData,
         config);
       return res.data;

@@ -72,12 +72,12 @@ const PersonalCard = ({cardFor, person}: TPersonalCardProps) => {
         </li>}
 
         {!forTeacher && <li>
-            <OnlineClassIcon/>
+            <OnlineClassIcon />
             <span>عدد الحصص: </span>
         </li>}
 
         <li>
-          <LanguageIcon/>
+          <LanguageIcon />
           <span>اللغة : {person.language}</span>
         </li>
 

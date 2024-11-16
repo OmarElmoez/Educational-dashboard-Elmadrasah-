@@ -45,8 +45,6 @@ const UnscheduledFamilyTableRow = ({
     unscheduled,
   } = rowData;
 
-  console.log('from family row: ', rowData);
-
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };

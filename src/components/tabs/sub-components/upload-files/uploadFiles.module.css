@@ -56,3 +56,9 @@
 .uploaded_by span {
   font-size: 1.4rem;
 }
+
+.file_dateInfo {
+  font-weight: 300;
+  font-size: 1.2rem;
+  color: #A0A1A7;
+}
