@@ -14,6 +14,7 @@ import {TLessonFile} from "@/schemas/LessonSchema.ts";
 import {useAppSelector} from "@/store/hooks.ts";
 import {useFeedback} from "@/store/context";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
+import getFileIcon from "@/utils/getFileIcon.tsx";
 
 const {action_box, modal_header, modal_desc, files_container, uploaded_by, file_action_box, file_dateInfo} = styles;
 
@@ -101,7 +102,8 @@ const UploadFiles = () => {
       } borderBottom={false}>
         {!editFile.isEdit && <p className={modal_desc}>قم بتحميل مواد الدراسة أو الملاحظات الخاصة بك هنا</p>}
         <UploadEduFilesForm afterUploadNewFile={afterUploadNewFile} isEdit={editFile.isEdit}
-                            editFileId={editFile.fileId} onClose={() => uploadFileRef.current?.close()} afterEditFile={afterEditFile}/>
+                            editFileId={editFile.fileId} onClose={() => uploadFileRef.current?.close()}
+                            afterEditFile={afterEditFile}/>
       </BasicModal>
 
       <section>
@@ -123,11 +125,15 @@ const UploadFiles = () => {
 
         <menu className={files_container}>
           {files?.map(file => {
+            const FileIcon = getFileIcon(file.file);
             return (
               <li key={file.id}>
-                <div style={{display: "grid", gap: "0.4rem"}}>
-                  <span style={{color: "#000"}}>{file.title}</span>
-                  <span className={file_dateInfo}>{formatFullArabicDate(file.uploaded_at)}</span>
+                <div style={{display: "flex", alignItems: "center", gap: "0.8rem"}}>
+                  <p style={{ minWidth: "1.6rem" }}>{FileIcon}</p>
+                  <p style={{display: "grid", gap: "0.4rem"}}>
+                    <span style={{color: "#000"}}>{file.title}</span>
+                    <span className={file_dateInfo}>{formatFullArabicDate(file.uploaded_at)}</span>
+                  </p>
                 </div>
 
 
