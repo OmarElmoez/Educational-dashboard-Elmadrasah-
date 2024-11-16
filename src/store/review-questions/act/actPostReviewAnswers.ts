@@ -2,7 +2,7 @@
 import { TEnteredData } from "@/components/review-form/ReviewForm";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance.ts";
 
 const actPostReviewAnswers = createAsyncThunk(
   "review-questions/actPostReviewAnswers",
@@ -10,7 +10,6 @@ const actPostReviewAnswers = createAsyncThunk(
     data: {
       lesson: number | undefined;
       questions: TEnteredData[];
-      token: string | undefined;
     },
     thunkAPI
   ) => {
@@ -18,15 +17,9 @@ const actPostReviewAnswers = createAsyncThunk(
 
     try {
       const url =
-        "https://elmadrasah-development-ff14bf466889.herokuapp.com/dashboard/review_answer/";
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${data.token}`,
-        },
-      };
+        "/dashboard/review_answer/";
 
-      await axios.post(url, data, config);
+      await axiosInstance.post(url, data);
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

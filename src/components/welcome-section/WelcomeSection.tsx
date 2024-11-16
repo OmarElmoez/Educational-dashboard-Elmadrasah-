@@ -13,7 +13,6 @@ const WelcomeSection = ({ children, img }: TWelcomeSectionProps) => {
 
   const { user } = useAppSelector(state => state.profile)
 
-  console.log('from welcome section user: ', user)
 
   return (
     <section className={welcome_section}>

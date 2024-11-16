@@ -1,0 +1,12 @@
+.preview_box {
+  border: 1px solid var(--main-color);
+  border-radius: 1rem;
+  position: relative;
+  padding: 1.5rem;
+}
+
+.preview_box button {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}

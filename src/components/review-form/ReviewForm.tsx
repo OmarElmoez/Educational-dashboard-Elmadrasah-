@@ -165,7 +165,7 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
           <ExistIcon onClick={() => dialog.current?.close()} />
         </header>
         <section>
-          <form action="post" onSubmit={handleSubmit(onSubmit)}>
+          <form method="post" onSubmit={handleSubmit(onSubmit)}>
             {records.map((record) => (
               <article key={record.id} className={styles.questionBox}>
                 <h3>{record.question_ar}</h3>

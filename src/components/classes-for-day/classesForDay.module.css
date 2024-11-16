@@ -15,6 +15,7 @@
   color: #6F6F6F;
   font-weight: 300;
   position: relative;
+  cursor: pointer;
 }
 
 .card h4 {

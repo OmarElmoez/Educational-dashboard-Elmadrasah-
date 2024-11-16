@@ -1,6 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {LoginLayout, MainLayout} from "@/layouts";
-import {Classes, JoinLesson, StudentHomePage} from "@/pages/student";
+import {Classes, StudentHomePage} from "@/pages/student";
 import ProdectedRoute from "./ProtectedRoute";
 
 // ==================== Icons ====================
@@ -34,7 +34,7 @@ import {
 } from "@/pages/admin";
 import {TeacherClassesPage, TeacherHomePage, TeacherReportsPage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyHomePage, FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
-import {Error, HelpPage, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
+import {Error, HelpPage, JoinClass, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
 import {Login, PhoneNumber, SetPassword} from "@/pages/login";
 import {SIDEBAR_DATA} from "@/constants";
 import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
@@ -129,11 +129,10 @@ const router = createBrowserRouter([
           <AdminClassesPage/>
         </PageSuspense>,
       },
-      // todo: add the id of the lesson to get the data for this specific lesson
       {
-        path: "calendar/join-student",
+        path: "calendar/join-class/:classId",
         element: <PageSuspense>
-          <JoinLesson/>
+          <JoinClass/>
         </PageSuspense>,
       },
       {
@@ -310,6 +309,10 @@ const router = createBrowserRouter([
       {
         path: "classes",
         element: <PageSuspense><TeacherClassesPage/></PageSuspense>,
+      },
+      {
+        path: "calendar/join-class/:classId",
+        element: <PageSuspense><JoinClass /></PageSuspense>
       },
       {
         path: "reports",

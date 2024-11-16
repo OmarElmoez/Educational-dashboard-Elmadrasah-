@@ -1,5 +1,9 @@
 const Summary = () => {
-  return (<h2>dates for summary</h2>)
+  return (
+    <section>
+      <p className='tab_description'>نظرة عامة سريعة علي تقدم الطالب والدورات القادمة</p>
+    </section>
+  )
 }
 
 export default Summary;

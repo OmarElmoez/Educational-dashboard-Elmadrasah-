@@ -1,23 +1,30 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
-import axiosInstance from "@/utils/axiosInstance";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
 
 type TJoinLesson = {
   attendance_link: string;
+  token: string;
 };
 
 const actJoinLesson = createAsyncThunk(
   "lessons/actJoinLesson",
   async (
-    { attendance_link }: TJoinLesson,
+    { attendance_link, token }: TJoinLesson,
     thunkAPI
   ) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      let url = attendance_link;
 
-      const response = await axiosInstance.get(url);
-      return response.data
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Token ${token}`,
+        }
+      }
+
+      return await axios.get(attendance_link,
+        config)
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

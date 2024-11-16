@@ -9,8 +9,8 @@ const { modal, headerModal } = styles;
 
 const BasicModal = forwardRef<
   TModalRef,
-  { children: React.ReactNode; header?: React.ReactNode }
->(({ children, header = null }, ref) => {
+  { children: React.ReactNode; header?: React.ReactNode; borderBottom?: boolean }
+>(({ children, header = null, borderBottom = true }, ref) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useImperativeHandle(ref, () => ({
@@ -29,7 +29,7 @@ const BasicModal = forwardRef<
   return createPortal(
     <dialog ref={dialogRef} className={modal}>
       {header && (
-        <div className={headerModal}>
+        <div className={headerModal} style={ { borderBottom: `${borderBottom} && "1px dashed #E4E4E4"` }}>
           {header}
           <button type="button" onClick={onCloseHandler}>
             <CloseButton />

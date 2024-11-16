@@ -35,7 +35,9 @@ const UploadFile = <T extends FieldValues>({
   label: string;
   error?: string;
 }) => {
-  const [previewUrls, setPreviewUrls] = useState<FilePreview[]>([]); // Multiple previews
+
+  const [previewFiles, setPreviewFiles] = useState<FilePreview[]>([]); // Multiple previews
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +50,7 @@ const UploadFile = <T extends FieldValues>({
         name: file.name,
         type: file.type,
       }));
-      setPreviewUrls((prevPreviews) => [...prevPreviews, ...newPreviews]);
+      setPreviewFiles((prevPreviews) => [...prevPreviews, ...newPreviews]);
       setValue(name, [
         ...((control._getWatch(name) as File[]) || []),
         ...filesArray,
@@ -119,13 +121,14 @@ const UploadFile = <T extends FieldValues>({
       );
     }
   };
+
   const removeFileHandler = (index: number) => {
-    const updatedPreviews = [...previewUrls];
+    const updatedPreviews = [...previewFiles];
     updatedPreviews.splice(index, 1);
-    setPreviewUrls(updatedPreviews);
+    setPreviewFiles(updatedPreviews);
     const updatedFiles = [
       ...((control._getWatch(name) as File[]) || []),
-    ].filter((file) => file.name !== [...previewUrls][index].name);
+    ].filter((file) => file.name !== [...previewFiles][index].name);
     setValue(name, updatedFiles);
   };
 
@@ -152,20 +155,20 @@ const UploadFile = <T extends FieldValues>({
           onChange={handleFileChange}
           ref={fileInputRef}
           className={hiddenInput}
-          disabled={previewUrls.length >= maxFiles}
+          disabled={previewFiles.length >= maxFiles}
         />
-        {previewUrls.length > 0 && (
+        {previewFiles.length > 0 && (
           <div className={previewContainer}>
             {/* Display all preview images */}
-            {previewUrls.map((url, index) => renderPreview(url, index))}
+            {previewFiles.map((file, index) => renderPreview(file, index))}
           </div>
         )}
         <button
           onClick={handleButtonClick}
           type="button"
-          disabled={previewUrls.length >= maxFiles}
+          disabled={previewFiles.length >= maxFiles}
           style={{
-            cursor: previewUrls.length >= maxFiles ? "not-allowed" : "pointer",
+            cursor: previewFiles.length >= maxFiles ? "not-allowed" : "pointer",
           }}
           className={uploadBtn}
         >

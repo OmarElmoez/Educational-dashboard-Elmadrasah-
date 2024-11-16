@@ -1,64 +1,89 @@
-/* TODO:
-*   1- receive an array of menu items, each one with icon and text
-*   2- receive a person object contains label, name, role, img
-*   3- after finishing this component use it in join pages for teacher and student */
-import {Card} from "@/components/UI";
+import {Card, Heading} from "@/components/UI";
 
 import ImgPlaceholder from '@/assets/person-placeholder.svg?react'
 import GraduationIcon from '@/assets/Graduation_ hat.svg?react';
 import LanguageIcon from '@/assets/Language.svg?react';
 import EgyptFlag from '@/assets/big-flag-egypt.svg?react';
+import EmiratesFlag from '@/assets/flag-united-arab-emirates.svg?react'
+import OnlineClassIcon from '@/assets/onlineClass.svg?react'
+import Stars from '@/assets/stars.svg?react';
 
 import styles from './personalCard.module.css'
-import {ReactNode} from "react";
-import {Heading} from "@/components/UI";
+import {TPersonInfo} from "@/pages/shared/join-class/JoinClass.tsx";
 
 const {
   personal_info,
   img_box,
-  text_box
+  text_box,
+  rate_box,
+  goalsAndSubjects
 } = styles;
 
 type TPersonalCardProps = {
-  children: ReactNode;
+  cardFor: 'student' | 'teacher';
+  person: TPersonInfo;
 }
 
-const PersonalCard = ({children}: TPersonalCardProps) => {
+const PersonalCard = ({cardFor, person}: TPersonalCardProps) => {
+
+  const forTeacher = cardFor === 'teacher';
+
   return (
     <Card>
-      <Heading text="تفاصيل المُعلم" style={{ fontSize: "3.2rem", marginTop: '0', marginBottom: '0' }} />
+      <Heading text={forTeacher ? "تفاصيل المعلم" : "تفاصيل الطالب"}
+               style={{fontSize: "3.2rem", margin: '0'}}/>
 
       <section className={personal_info}>
+
         <div className={img_box}>
-          {/* person.img */}
-          <ImgPlaceholder/>
+          {person.image ? <img src={person.image} alt="user image"/> : <ImgPlaceholder/>}
         </div>
+
         <div className={text_box}>
-          {/* person.name */}
-          <h4>أحمد محمد</h4>
-          {/* person.role */}
-          <p>أستاذ مادة العلوم</p>
+          <h4>{person?.name}</h4>
+          <p>{forTeacher ? `أستاذ مادة ${person.subject}` : `طالب بالصف ${person.grade}`} </p>
         </div>
+
       </section>
 
-      <>
-        {children}
-      </>
+      {forTeacher && <section className={rate_box}>
+        <span>التقييم</span>
+        <Stars/>
+      </section>}
+
+      {!forTeacher && <section className={goalsAndSubjects}>
+
+        <div>
+          <Heading text="المواد :" style={{fontSize: "2rem", margin: '0'}}/>
+          <span style={{color: "#616161"}}>العربي , القرآن الكريم</span>
+        </div>
+
+        <div>
+          <Heading text="هدف الطالب :" style={{fontSize: "2rem", margin: '0'}}/>
+          <span style={{color: "#616161"}}>{person.student_goal}</span>
+        </div>
+
+      </section>}
 
       <menu>
-        <li>
-          <GraduationIcon/>
-          <span>مدرس معتمد+10 عدد سنوات الخبرة</span>
-        </li>
+        {forTeacher && <li>
+            <GraduationIcon/>
+            <span>{person.teacher_bio}</span>
+        </li>}
+
+        {!forTeacher && <li>
+            <OnlineClassIcon/>
+            <span>عدد الحصص: </span>
+        </li>}
 
         <li>
           <LanguageIcon/>
-          <span>لغة المادة : عربي</span>
+          <span>اللغة : {person.language}</span>
         </li>
 
         <li>
-          <EgyptFlag/>
-          <span>الدولة: مصري</span>
+          {person.country === 'Egypt' ? <EgyptFlag/> : <EmiratesFlag/>}
+          <span>الدولة: {person.country}</span>
         </li>
       </menu>
     </Card>
