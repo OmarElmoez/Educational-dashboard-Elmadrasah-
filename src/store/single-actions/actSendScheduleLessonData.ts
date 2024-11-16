@@ -9,7 +9,7 @@ const actSendScheduleLessonData = createAsyncThunk("single-actions/sendScheduleL
   try {
     const url = "event/lessons/";
     const res = await axiosInstance.post<TScheduleLessonFormDataForServer>(url, data)
-    return res.data
+    return res.data || res
   } catch (e) {
     return rejectWithValue(axiosErrorHandler(e))
   }

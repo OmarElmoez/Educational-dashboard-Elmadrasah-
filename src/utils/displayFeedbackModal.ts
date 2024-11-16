@@ -9,3 +9,8 @@ const displayFeedbackModal = ({ ref }: { ref: React.RefObject<TModalRef> }) => {
 }
 
 export default displayFeedbackModal
+
+/*
+* TODO:
+*  - Fix the timeout of the modal to stop when it is a confirm model
+* */

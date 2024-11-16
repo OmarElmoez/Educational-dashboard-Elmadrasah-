@@ -4,7 +4,7 @@ import {ar} from 'date-fns/locale';
 const formatFullArabicDate = (isoDateString: string): string => {
   const date = parseISO(isoDateString);
 
-  return format(date, "EEEE'، 'd MMMM'، الساعة 'h:mm a", {
+  return format(date, "EEEE' , 'd MMMM' , الساعة 'h:mm a", {
     locale: ar,
   });
 };

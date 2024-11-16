@@ -7,7 +7,7 @@ const actGetSpecificLessonData = async (classId: string): Promise<TLesson> => {
     const response = await axiosInstance.get<TLesson>(`/dashboard/lesson/${classId}`);
 
     return response.data;
-  } catch(error) {
+  } catch (error) {
     return axiosErrorHandler(error)
   }
 }
@@ -23,7 +23,7 @@ const actGetLessonFiles = async (classId: string): Promise<TLessonFile[]> => {
   try {
     const response = await axiosInstance.get<TLessonFilesResponse>(`/event/lessons/${classId}/files/`);
     return response.data.results;
-  } catch(error) {
+  } catch (error) {
     return axiosErrorHandler(error)
   }
 }
@@ -31,9 +31,20 @@ const actGetLessonFiles = async (classId: string): Promise<TLessonFile[]> => {
 const actDeleteLessonFile = async (classId: string, fileId: number): Promise<void> => {
   try {
     await axiosInstance.delete(`/event/lessons/${classId}/files/${fileId}`);
-  } catch(error) {
+  } catch (error) {
     return axiosErrorHandler(error)
   }
 }
 
-export {actGetSpecificLessonData, actGetLessonFiles, actDeleteLessonFile};
+const actEditLessonFileName = async (classId: string, fileId: number, title: string): Promise<TLessonFile> => {
+  const formData = new FormData();
+  formData.append("title", title);
+  try {
+    const response = await axiosInstance.patch(`/event/lessons/${classId}/files/${fileId}/`, formData);
+    return response.data;
+  } catch (error) {
+    return axiosErrorHandler(error);
+  }
+}
+
+export {actGetSpecificLessonData, actGetLessonFiles, actDeleteLessonFile, actEditLessonFileName};

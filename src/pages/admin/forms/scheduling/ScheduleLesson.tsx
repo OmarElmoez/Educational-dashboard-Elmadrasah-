@@ -188,7 +188,11 @@ const ScheduleLesson = () => {
       is_auto: data.is_auto === "true",
     }
 
-    dispatch(actSendScheduleLessonData(serverData)).unwrap().then(() => {
+    dispatch(actSendScheduleLessonData(serverData)).unwrap().then((res) => {
+      if (typeof res === 'string') {
+        openFeedbackModal('failed', res);
+        return;
+      }
       openFeedbackModal("succeeded", "تم ارسال الاشعارات بنجاح", "")
       navigate('/admin/calendar/all-unscheduled-list')
     });
