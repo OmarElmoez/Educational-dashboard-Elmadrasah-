@@ -131,7 +131,7 @@ const AddTeacherForm = () => {
   const formattedStates = formatStates(states);
 
   return (
-    <form action="post" onSubmit={handleSubmit(onSubmit)}>
+    <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <Heading text=" إضافة موظف جديد"/>
       <Row>
         <Dropdown

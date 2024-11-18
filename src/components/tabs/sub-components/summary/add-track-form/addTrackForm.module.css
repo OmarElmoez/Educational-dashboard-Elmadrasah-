@@ -1,0 +1,48 @@
+.trackForm button,
+.trackForm > section{
+
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+
+.trackForm > section {
+  align-items: center;
+  color: #000;
+}
+
+.trackForm button {
+  margin-right: auto;
+  margin-top: 2.4rem;
+}
+
+.trackForm input {
+  flex: 1;
+  min-width: 252px;
+}
+
+.trackForm label {
+  visibility: hidden;
+}
+
+.trackForm textarea {
+  margin-right: -0.8rem;
+}
+
+.add_goal {
+  font-size: 1.2rem;
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  width: fit-content;
+  margin-top: 0.8rem;
+  margin-right: auto;
+}
+
+.goals_container {
+  flex: 1;
+  display: grid;
+  gap: 1rem;
+}
+

@@ -1,0 +1,94 @@
+.summary_header {
+  margin-top: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tracks_container {
+  border: 1px solid var(--main-color);
+  border-radius: 1rem;
+  padding: 2.4rem 2rem;
+  margin-top: 2.4rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.track_box:not(:last-of-type) {
+  margin-bottom: 1.6rem;
+}
+
+.track_label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.track_toggle {
+  display: none;
+}
+
+.track_info {
+  padding-inline: 1.6rem;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  max-height: 0;
+  /* to have smooth behavior don't make padding-block: 0; */
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+  border: none;
+  transition: all 0.5s;
+}
+
+.track_label svg {
+  transition: transform 0.3s;
+}
+
+.track_box:has(.track_toggle:checked) .track_label svg {
+  transform: rotate(180deg);
+}
+
+.track_box:has(.track_toggle:checked) .track_label svg path {
+  fill: var(--main-color);
+}
+
+.track_box:has(.track_toggle:checked) .track_info {
+  border: 1px solid #EBEBEB;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+  max-height: max-content;
+}
+
+.info_box {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.info_box:not(:last-of-type) {
+  margin-bottom: 1.2rem;
+}
+
+.info_text {
+  color: #6F6F6F;
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.goals {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.goals span::before {
+  position: absolute;
+  content: '';
+  right: -12px;
+  width: 4px;
+  height: 4px;
+  background: #6F6F6F;
+  top: 50%;
+  transform: translateY(-50%);
+}

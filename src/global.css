@@ -516,3 +516,9 @@ input#formatted_number::placeholder {
 .tab_description {
   color: #A0A1A7;
 }
+
+.modal_desc {
+  font-size: 1.4rem;
+  color: #A0A1A7;
+  margin-top: 1rem;
+}
