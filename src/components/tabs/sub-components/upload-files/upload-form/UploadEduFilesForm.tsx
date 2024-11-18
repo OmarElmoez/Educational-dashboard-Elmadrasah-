@@ -34,7 +34,13 @@ type TUploadedEduFilesFormProps = {
   afterEditFile: (file: TLessonFile) => void
 }
 
-const UploadEduFilesForm = ({afterUploadNewFile, isEdit, editFileId, onClose, afterEditFile}: TUploadedEduFilesFormProps) => {
+const UploadEduFilesForm = ({
+                              afterUploadNewFile,
+                              isEdit,
+                              editFileId,
+                              onClose,
+                              afterEditFile
+                            }: TUploadedEduFilesFormProps) => {
 
   const {classId} = useParams();
 
@@ -123,7 +129,6 @@ const UploadEduFilesForm = ({afterUploadNewFile, isEdit, editFileId, onClose, af
   }
 
   const onSubmit = (data: TSubmittedData) => {
-    console.log(data)
 
     if (isEdit && classId) {
       setLoading(true)

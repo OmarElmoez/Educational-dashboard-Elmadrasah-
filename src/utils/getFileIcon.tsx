@@ -60,7 +60,7 @@ const getFileIcon = (filename: string): ReactNode => {
     // 'tar': FileZip,
     // 'gz': FileZip
   };
-  
+
   return iconMapping[extension];
 };
 

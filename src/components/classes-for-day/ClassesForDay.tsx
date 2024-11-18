@@ -11,6 +11,7 @@ import EmiratesFlag from '@/assets/flag-united-arab-emirates.svg?react';
 import FileIcon from '@/assets/file-outline.svg?react';
 import {LoadingIndicator} from "@/components";
 import {useNavigate} from "react-router-dom";
+import formatDateIntoArabic from "@/utils/formatDateIntoArabic.ts";
 
 const {title, lessons_cards, card, status_box} = styles;
 
@@ -79,11 +80,7 @@ const ClassesForDay = ({day = Initial_Day}: TClassesForDayPros) => {
   const {openFeedbackModal} = useFeedback();
   const {credintials} = useAppSelector(state => state.auth);
 
-  const dateInArabic = day.toLocaleDateString("ar-EG", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
+  const dateInArabic = formatDateIntoArabic(day)
 
   // day - month - year
   const serverDateFormat = day.toISOString()

@@ -16,7 +16,7 @@ import {useFeedback} from "@/store/context";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import getFileIcon from "@/utils/getFileIcon.tsx";
 
-const {action_box, modal_header, modal_desc, files_container, uploaded_by, file_action_box, file_dateInfo} = styles;
+const {action_box, modal_header, files_container, uploaded_by, file_action_box, file_dateInfo} = styles;
 
 const UPLOADED_BY_CASES = {
   Admin: 'الادمن',
@@ -70,7 +70,6 @@ const UploadFiles = () => {
   }
 
   const watchFileHandler = (url: string) => {
-    // location.href = url;
     window.open(url, '_blank');
   }
 
@@ -100,7 +99,7 @@ const UploadFiles = () => {
       <BasicModal ref={uploadFileRef} header={
         <h3 className={modal_header}>{editFile.isEdit ? "تعديل عنوان الملف" : "رفع ملف جديد"}</h3>
       } borderBottom={false}>
-        {!editFile.isEdit && <p className={modal_desc}>قم بتحميل مواد الدراسة أو الملاحظات الخاصة بك هنا</p>}
+        {!editFile.isEdit && <p className='modal_desc'>قم بتحميل مواد الدراسة أو الملاحظات الخاصة بك هنا</p>}
         <UploadEduFilesForm afterUploadNewFile={afterUploadNewFile} isEdit={editFile.isEdit}
                             editFileId={editFile.fileId} onClose={() => uploadFileRef.current?.close()}
                             afterEditFile={afterEditFile}/>
@@ -124,7 +123,7 @@ const UploadFiles = () => {
         </div>
 
         <menu className={files_container}>
-          {files?.map(file => {
+          {files && files?.map(file => {
             const FileIcon = getFileIcon(file.file);
             return (
               <li key={file.id}>
@@ -150,18 +149,22 @@ const UploadFiles = () => {
                     <span style={{color: "#1C8A44"}}>مشاهدة</span>
                   </button>
 
-                  <button className={file_action_box} style={{backgroundColor: "#E8F0FA"}}
-                          onClick={() => editFileHandler(file.id)}>
-                    <EditIcon/>
-                    <span style={{color: "#0650A7"}}>تعديل</span>
-                  </button>
+                  {credintials?.role === file.uploaded_by &&
+                      <>
+                          <button className={file_action_box} style={{backgroundColor: "#E8F0FA"}}
+                                  onClick={() => editFileHandler(file.id)}>
+                              <EditIcon/>
+                              <span style={{color: "#0650A7"}}>تعديل</span>
+                          </button>
 
-                  <button className={file_action_box} style={{backgroundColor: "#FFE2E5"}}
-                          onClick={() => removeFileHandler(classId as string,
-                            file.id)}>
-                    <DeleteIcon/>
-                    <span style={{color: "#F64E60"}}>حذف</span>
-                  </button>
+                          <button className={file_action_box} style={{backgroundColor: "#FFE2E5"}}
+                                  onClick={() => removeFileHandler(classId as string,
+                                    file.id)}>
+                              <DeleteIcon/>
+                              <span style={{color: "#F64E60"}}>حذف</span>
+                          </button>
+                      </>
+                }
 
                 </div>
               </li>

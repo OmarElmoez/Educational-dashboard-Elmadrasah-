@@ -1,0 +1,12 @@
+.button {
+  color: #fff;
+  border-radius: 1rem;
+  padding-block: 0.85rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  height: 3.6rem;
+  width: 14.3rem;
+  background-color: var(--main-color);
+}

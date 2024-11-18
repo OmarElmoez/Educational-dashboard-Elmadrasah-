@@ -1,0 +1,26 @@
+.classes_wrapper {
+  margin-top: 2.4rem;
+  display: grid;
+  gap: 2rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.classes_wrapper > article {
+  padding-bottom: 1.2rem;
+  border-bottom: 1px dashed #EBEBEB;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #212121;
+  font-weight: 500;
+}
+
+.duration {
+  background-color: #1C8A444D;
+  border-radius: 1rem;
+  padding: 0.8rem 1rem;
+  width: 100px;
+  text-align: center;
+}
+
