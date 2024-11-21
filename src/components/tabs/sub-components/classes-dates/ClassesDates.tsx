@@ -1,15 +1,13 @@
 import styles from './classesDates.module.css';
 import formatDateIntoArabic from "@/utils/formatDateIntoArabic.ts";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
 import {actGetSharedLessons} from "@/services/lessons.ts";
 import {TLesson} from "@/schemas/LessonSchema.ts";
 
 const {classes_wrapper, duration} = styles;
 
-const ClassesDates = () => {
+const ClassesDates = ({classId}: {classId: string}) => {
 
-  const {classId} = useParams();
 
   const [sharedLessons, setSharedLessons] = useState<TLesson[]>([])
 
