@@ -8,7 +8,6 @@ import {BasicModal} from "@/components";
 import {useEffect, useRef, useState} from "react";
 import {TModalRef} from "@/types/shared.ts";
 import UploadEduFilesForm from "@/components/tabs/sub-components/upload-files/upload-form/UploadEduFilesForm.tsx";
-import {useParams} from "react-router-dom";
 import {actDeleteLessonFile, actGetLessonFiles} from "@/services/lessons.ts";
 import {TLessonFile} from "@/schemas/LessonSchema.ts";
 import {useAppSelector} from "@/store/hooks.ts";
@@ -25,11 +24,9 @@ const UPLOADED_BY_CASES = {
   Teacher: "المعلم"
 }
 
-const UploadFiles = () => {
+const UploadFiles = ({classId}: {classId: string}) => {
 
   const uploadFileRef = useRef<TModalRef>(null);
-
-  const {classId} = useParams();
 
   const {openFeedbackModal} = useFeedback();
 

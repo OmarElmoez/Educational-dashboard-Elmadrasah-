@@ -1,13 +1,13 @@
 import styles from './tabs.module.css'
-import {ReactNode, useState} from "react";
+import {JSX, useState, ComponentType} from "react";
 
 const {header_tab, active} = styles;
 
-type TTab = {
+export type TTab = {
   id: number,
   label: string,
-  description?: string,
-  content: ReactNode
+  content: ComponentType<any> | (() => JSX.Element),
+  contentProps?: Record<string, unknown>;
 }
 
 type TTabsPros = {
@@ -17,6 +17,15 @@ type TTabsPros = {
 const Tabs = ({tabs}: TTabsPros) => {
 
   const [activeId, setActiveId] = useState(0)
+
+  const renderContent = () => {
+    const activeTab = tabs[activeId];
+
+    const Component = activeTab.content;
+    return activeTab.contentProps
+      ? <Component {...activeTab.contentProps} />
+      : <Component/>;
+  }
 
   return (
     <>
@@ -30,7 +39,7 @@ const Tabs = ({tabs}: TTabsPros) => {
       </header>
 
       <>
-        {tabs[activeId].content}
+        {renderContent()}
       </>
 
     </>

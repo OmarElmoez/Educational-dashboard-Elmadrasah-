@@ -5,7 +5,6 @@ import PhoneHangUpIcon from '@/assets/phoneHangUp.svg?react';
 import {Card, FlexWrapper, Heading} from "@/components/UI";
 import PersonalCard from "@/components/personal-card/PersonalCard.tsx";
 import {Tabs} from "@/components";
-import {STUDENT_TABS} from "@/constants/tabs.tsx";
 
 import styles from './joinClass.module.css'
 import {useParams} from "react-router-dom";
@@ -15,6 +14,7 @@ import {TLesson} from "@/schemas/LessonSchema.ts";
 import {useEffect, useState} from "react";
 import {actGetSpecificLessonData} from "@/services/lessons.ts";
 import {useFeedback} from "@/store/context";
+import generateTabs from "@/utils/generateTabs.ts";
 
 const {attendance_box, student_classes, progress_box, progress_bar, lesson_actions} = styles;
 
@@ -146,7 +146,7 @@ const JoinClass = () => {
 
       <Heading text="تفاصيل الحصة" style={{fontSize: "3.2rem", marginTop: "4.8rem"}}/>
 
-      <Tabs tabs={STUDENT_TABS}/>
+      <Tabs tabs={generateTabs({lessonData, classId, isTeacher})}/>
     </>
   )
 }

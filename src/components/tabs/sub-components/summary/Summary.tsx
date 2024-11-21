@@ -4,7 +4,6 @@ import Arrow from '@/assets/faq_arrow.svg?react';
 
 import styles from './summary.module.css';
 import {useAppSelector} from "@/store/hooks.ts";
-import {useParams} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {actGetLessonTracks} from "@/services/lessons.ts";
 import formatDateIntoArabic from "@/utils/formatDateIntoArabic.ts";
@@ -36,11 +35,9 @@ export type TTrackFromServer = {
   }[]
 }
 
-const Summary = () => {
+const Summary = ({classId}: {classId: string}) => {
 
   const {credintials} = useAppSelector(state => state.auth);
-
-  const {classId} = useParams();
 
   const [tracks, setTracks] = useState<TTrackFromServer[]>([])
 
