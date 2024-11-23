@@ -63,7 +63,7 @@
 }
 
 .answers label:has(input[type="checkbox"]) {
-  box-shadow: 0px 5px 15px 0px #00000026;
+  box-shadow: 0 5px 15px 0 #00000026;
 }
 
 @media (max-width: 991px) {

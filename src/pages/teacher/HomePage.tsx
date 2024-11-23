@@ -103,7 +103,6 @@ const TeacherHomePage = () => {
                   dispatch(
                     actJoinLesson({
                       attendance_link: lesson.attendance_link,
-                      token: credintials?.token as string,
                     })
                   );
                 }}

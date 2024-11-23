@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const ReviewQuestionAnswerSchema = z.union([
   z.number(),
-  z.array(z.number()).min(1, 'Please select atleast one option'),
+  z.array(z.number()).min(1, 'برجاء تقديم اختيار واحد علي الاقل'),
   z.string(),
 ]);
 
