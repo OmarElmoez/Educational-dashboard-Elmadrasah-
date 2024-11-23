@@ -94,11 +94,11 @@ const AddTrackForm = ({addNewTrack}: { addNewTrack: (track: TTrackFromServer) =>
         <section className={goals_container}>
           {fields.map((field, index) => {
               return (
-                <>
-                  <input key={field.id} type="text" className='inputField' {...register(`track_goals.${index}.text`)}
+                <div key={field.id}>
+                  <input type="text" className='inputField' {...register(`track_goals.${index}.text`)}
                          placeholder={`هدف رقم ${index + 1}`}/>
                   {errors && <p className="error">{errors?.track_goals?.[index]?.text?.message}</p>}
-                </>
+                </div>
               )
             }
           )}

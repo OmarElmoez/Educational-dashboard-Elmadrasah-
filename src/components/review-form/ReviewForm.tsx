@@ -12,19 +12,14 @@ import styles from "./reviewForm.module.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-import Emoji_1 from "@/assets/emoji_1.svg?react";
-import Emoji_2 from "@/assets/emoji_2.svg?react";
-import Emoji_3 from "@/assets/emoji_3.svg?react";
-import Emoji_4 from "@/assets/emoji_4.svg?react";
-import Emoji_5 from "@/assets/emoji_5.svg?react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReviewSchema, TReview } from "@/schemas/ReviewSchema";
 import { actPostReviewAnswers } from "@/store/review-questions/reviewSlice";
-import { ReviewFeedback } from "@/components";
+import {ReviewFeedback, StarRating} from "@/components";
 import { TModalRef } from "@/types/shared";
 import displayFeedbackModal from "@/utils/displayFeedbackModal";
 
-const { reviewForm, rateLabel } = styles;
+const { reviewForm } = styles;
 
 type TModalProps = {
   lesson_id: number | undefined;
@@ -60,12 +55,14 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
     control,
     handleSubmit,
     reset,
+    setValue,
+    register,
     formState: { errors },
   } = useForm<TReview>({
     resolver: zodResolver(ReviewSchema),
   });
 
-  const { user } = useAppSelector((state) => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<TReview> = (data) => {
@@ -108,7 +105,7 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
     } = {
       lesson,
       questions,
-      token: user?.token,
+      token: credintials?.token,
     };
 
     dispatch(actPostReviewAnswers(formattedData))
@@ -143,14 +140,6 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
       });
     }
   }, [loading, dispatch, reset]);
-
-  const rateOptions = [
-    { id: 1, emoji: <Emoji_1 />, value: "1" },
-    { id: 2, emoji: <Emoji_2 />, value: "2" },
-    { id: 3, emoji: <Emoji_3 />, value: "3" },
-    { id: 4, emoji: <Emoji_4 />, value: "4" },
-    { id: 5, emoji: <Emoji_5 />, value: "5" },
-  ];
 
   return createPortal(
     <>
@@ -201,28 +190,8 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
                     ))}
 
                   {record.type === "rate" &&
-                    rateOptions.map((option) => (
-                      <Controller
-                        key={option.id}
-                        name={record.id.toString()}
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                          <>
-                            <label key={option.id} className={rateLabel}>
-                              <input
-                                type="radio"
-                                value={option.value}
-                                checked={value === option.value}
-                                onChange={(e) => {
-                                  onChange(e.target.value);
-                                }}
-                              />
-                              {option.emoji}
-                            </label>
-                          </>
-                        )}
-                      />
-                    ))}
+                      <StarRating name={record.id.toString()} setValue={setValue} register={register} />
+                  }
 
                   {record.type === "write" && (
                     <Controller

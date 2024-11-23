@@ -1,7 +1,7 @@
 import styles from './tabs.module.css'
 import {JSX, useState, ComponentType} from "react";
 
-const {header_tab, active} = styles;
+const {header, header_tab, active} = styles;
 
 export type TTab = {
   id: number,
@@ -29,7 +29,7 @@ const Tabs = ({tabs}: TTabsPros) => {
 
   return (
     <>
-      <header>
+      <header className={header}>
         {tabs.map((tab: TTab) => {
           return (
             <span key={tab.id} className={`${header_tab} ${activeId === tab.id && active}`}

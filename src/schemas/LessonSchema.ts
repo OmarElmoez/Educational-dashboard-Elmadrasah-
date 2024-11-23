@@ -13,6 +13,7 @@ export type TLessonFile = z.infer<typeof lessonFileSchema>
 
 export const LessonSchema = z.object({
   id: z.number(),
+  can_join: z.boolean(),
   location_name: z.string(),
   employee_name: z.string(),
   employee_bio: z.string(),
@@ -66,7 +67,8 @@ export const LessonSchema = z.object({
     student_language: z.string(),
     country: z.string(),
     image: z.string().url().nullable(),
-    credit: z.number()
+    credit: z.number().nullable(),
+    can_join: z.boolean(),
   }))
 });
 

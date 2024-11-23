@@ -82,8 +82,12 @@ const router = createBrowserRouter([
         element: <PageSuspense><StudentHomePage/></PageSuspense>,
       },
       {
-        path: "calendar",
-        element: <PageSuspense><Classes/></PageSuspense>,
+        path: 'calendar',
+        element: <PageSuspense><Classes /></PageSuspense>
+      },
+      {
+        path: "calendar/join-class/:classId",
+        element: <PageSuspense><JoinClass /></PageSuspense>
       },
       {
         path: "help",

@@ -4,17 +4,18 @@ import VideoCamIcon from '@/assets/videoCam.svg?react';
 import PhoneHangUpIcon from '@/assets/phoneHangUp.svg?react';
 import {Card, FlexWrapper, Heading} from "@/components/UI";
 import PersonalCard from "@/components/personal-card/PersonalCard.tsx";
-import {Tabs} from "@/components";
+import {ReviewForm, Tabs} from "@/components";
 
 import styles from './joinClass.module.css'
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
 import actJoinLesson from "@/store/lessons/act/actJoinLesson.ts";
 import {TLesson} from "@/schemas/LessonSchema.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {actGetSpecificLessonData} from "@/services/lessons.ts";
 import {useFeedback} from "@/store/context";
 import generateTabs from "@/utils/generateTabs.ts";
+import {TModalRef} from "@/types/shared.ts";
 
 const {attendance_box, student_classes, progress_box, progress_bar, lesson_actions} = styles;
 
@@ -48,7 +49,6 @@ const JoinClass = () => {
   const dispatch = useAppDispatch();
 
   const {credintials} = useAppSelector(state => state.auth)
-  const {error} = useAppSelector(state => state.lessons)
 
   const [person, setPerson] = useState<TPersonInfo>({
     name: '',
@@ -89,24 +89,37 @@ const JoinClass = () => {
   const lessonHandler = (status: 'start' | 'end') => {
     dispatch(actJoinLesson({
       attendance_link: (status === 'start' ? lessonData?.attendance_link : lessonData?.end_attendance_link) as string,
-      token: credintials?.token as string
     }))
-    if (error) {
-      openFeedbackModal("failed",
-        `${error}`);
+    .then((res) => {
+      if (typeof res.payload === 'string') {
+        openFeedbackModal("failed",
+          `${res.payload}`);
+        return;
+      }
+    });
+  }
+
+  const reviewRef = useRef<TModalRef>(null);
+  const openReviewForm = () => {
+    reviewRef.current?.open();
+  }
+
+  const onEndLesson = () => {
+      lessonHandler('end')
+    if (["Teacher", "Student"].includes(credintials?.role as string)) {
+      openReviewForm()
     }
   }
 
-
   return (
     <>
+      <ReviewForm ref={reviewRef} lesson_id={lessonData?.id} />
       <div style={{textAlign: 'center'}}>
         <HeroImg/>
       </div>
-
       <FlexWrapper>
 
-        <PersonalCard cardFor={isTeacher ? "student" : "teacher"} person={person} />
+        <PersonalCard cardFor={isTeacher ? "student" : "teacher"} person={person}/>
 
         <Card>
           <Heading text="الدرس الحالي" style={{fontSize: "3.2rem", marginTop: "0", marginBottom: "0"}}/>
@@ -130,12 +143,13 @@ const JoinClass = () => {
           </section>
 
           <section className={lesson_actions}>
-            <button onClick={() => lessonHandler("start")}>
-              <VideoCamIcon/>
-              <span>بدأ الدرس</span>
-            </button>
+            {((isTeacher && lessonData?.can_join) || (!isTeacher && lessonData?.participants[0].can_join)) &&
+                <button onClick={() => lessonHandler("start")}>
+                    <VideoCamIcon/>
+                    <span>بدأ الدرس</span>
+                </button>}
 
-            <button onClick={() => lessonHandler('end')}>
+            <button onClick={onEndLesson}>
               <PhoneHangUpIcon/>
               <span>إنهاء الدرس</span>
             </button>

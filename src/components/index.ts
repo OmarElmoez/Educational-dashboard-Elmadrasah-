@@ -32,6 +32,7 @@ import WelcomeSection from "./welcome-section/WelcomeSection.tsx";
 import ProgressCircle from "./progress-circle/ProgressCirlce.tsx";
 import ClassesForDay from "./classes-for-day/ClassesForDay.tsx";
 import Tabs from './tabs/Tabs.tsx'
+import StarRating from "./star-rating/StarRating.tsx";
 
 export {
   Header,
@@ -68,4 +69,5 @@ export {
   ProgressCircle,
   ClassesForDay,
   Tabs,
+  StarRating,
 };
