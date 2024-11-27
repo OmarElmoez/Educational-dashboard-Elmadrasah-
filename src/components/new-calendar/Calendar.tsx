@@ -1,0 +1,127 @@
+import {useContext, useState} from "react";
+import ChevronRight from '@/assets/chevronRight.svg?react';
+import ChevronLeft from '@/assets/chevronLeft.svg?react';
+
+import styles from './calendar.module.css'
+import {CalendarContext} from "@/store/context/CalendarContext.tsx";
+
+const {calendar_container, calendar_btn, months_wrapper, months_names, weekAbbreviations, days_wrapper} = styles;
+
+const Calendar = () => {
+
+  const {clickedDate, setClickedDate} = useContext(CalendarContext);
+
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1)
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
+
+  const months = ["ديسمبر", "يناير", "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر", "نوفمبر"]
+  const weekDaysAbbreviations = ["س", "أح", "أث", "ث", "ر", "خ", "ج"]
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const getCalendarDays = (year: number, month: number) => {
+    const firstDay = new Date(year, month, 1)
+    const startingDayIndex = firstDay.getDay()
+
+    const calendarDays = []
+    let currentDate = new Date(year, month - 1, 1 - startingDayIndex)
+
+    for (let i = 0; i < 42; i++) {
+      calendarDays.push({
+        day: new Date(currentDate),
+        isCurrentMonth: currentDate.getMonth() === month,
+        isPreviousMonth: currentDate.getMonth() === (month - 1 + 12) % 12,
+      })
+      currentDate.setDate(currentDate.getDate() + 1)
+    }
+
+    return calendarDays
+  }
+
+  const calendarDays = getCalendarDays(currentYear, currentMonth)
+
+  const handlePrevMonth = () => {
+    setCurrentMonth((prev) => {
+      if (prev === 0) {
+        setCurrentYear((y) => y - 1)
+        return 11
+      }
+      return prev - 1
+    })
+  }
+
+  const handleNextMonth = () => {
+    setCurrentMonth((prev) => {
+      if (prev === 11) {
+        setCurrentYear((y) => y + 1)
+        return 0
+      }
+      return prev + 1
+    })
+  }
+
+  return (
+    <section className={calendar_container}>
+      <div className={months_wrapper}>
+        <button
+          className={calendar_btn}
+          onClick={handlePrevMonth}
+        >
+          <ChevronRight/>
+        </button>
+        <div className={months_names}>
+          {[
+            months[(currentMonth - 1 + 12) % 12],
+            months[currentMonth],
+            months[(currentMonth + 1) % 12],
+          ].map((month, index) => (
+            <span
+              key={month}
+              style={{color: index === 1 ? "#fff" : "#bbdcc7"}}
+            >
+                      {month}
+                    </span>
+          ))}
+        </div>
+        <button
+          className={calendar_btn}
+          onClick={handleNextMonth}
+        >
+          <ChevronLeft/>
+        </button>
+      </div>
+
+      <div className={weekAbbreviations}>
+        {weekDaysAbbreviations.map((day) => (
+          <div key={day}>
+            {day}
+          </div>
+        ))}
+      </div>
+
+      <div className={days_wrapper}>
+        {calendarDays.map(({day}, index) => {
+          day.setHours(0, 0, 0, 0)
+          const isToday = day.getTime() === today.getTime()
+          const isClicked = day.getTime() === clickedDate.getTime()
+          const beforeToday = day.getTime() < today.getTime()
+          return (
+            <div
+              key={index}
+              style={{
+                background: (isToday || isClicked) ? "linear-gradient(90deg, #60D48A 4.01%, #35E93C 98.73%)" : "transparent",
+                color: beforeToday ? "#bbdcc7" : "#fff",
+                textDecoration: beforeToday ? 'line-through' : ""
+              }}
+              onClick={() => setClickedDate(day)}
+            >
+              {day.getDate()}
+            </div>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+export default Calendar

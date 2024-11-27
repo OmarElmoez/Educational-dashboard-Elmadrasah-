@@ -1,0 +1,9 @@
+.img_box {
+  border-radius: 1rem;
+  border: 1px solid var(--main-color);
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}

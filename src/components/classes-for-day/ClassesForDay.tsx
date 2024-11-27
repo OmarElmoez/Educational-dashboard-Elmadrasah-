@@ -1,5 +1,5 @@
 import styles from './classesForDay.module.css'
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
 import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 import {TLesson} from "@/schemas/LessonSchema.ts";
@@ -12,14 +12,9 @@ import FileIcon from '@/assets/file-outline.svg?react';
 import {LoadingIndicator} from "@/components";
 import {useNavigate} from "react-router-dom";
 import formatDateIntoArabic from "@/utils/formatDateIntoArabic.ts";
+import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 
 const {title, lessons_cards, card, status_box} = styles;
-
-type TClassesForDayPros = {
-  day?: Date;
-}
-
-const Initial_Day = new Date();
 
 const statusInfo = {
   Attended: {
@@ -73,24 +68,19 @@ const statusInfo = {
     },
 };
 
-const ClassesForDay = ({day = Initial_Day}: TClassesForDayPros) => {
+const ClassesForDay = () => {
 
   const dispatch = useAppDispatch();
   const {today_lessons, loading} = useAppSelector(state => state.lessons);
   const {openFeedbackModal} = useFeedback();
   const {credintials} = useAppSelector(state => state.auth);
 
-  const dateInArabic = formatDateIntoArabic(day)
+  const { clickedDate, formattedDate } = useContext(CalendarContext);
+  const dateInArabic = formatDateIntoArabic(clickedDate)
 
-  // day - month - year
-  const serverDateFormat = day.toISOString()
-  .split("T")[0]
-  .split("-")
-  .reverse()
-  .join("-");
 
   useEffect(() => {
-    dispatch(actGetLessonsByDay({day: serverDateFormat}))
+    dispatch(actGetLessonsByDay({day: formattedDate}))
     .unwrap()
     .then((res) => {
       if (typeof res === 'string') {
@@ -98,7 +88,7 @@ const ClassesForDay = ({day = Initial_Day}: TClassesForDayPros) => {
         return;
       }
     })
-  }, [dispatch, openFeedbackModal, serverDateFormat]);
+  }, [ dispatch, formattedDate, openFeedbackModal]);
 
 
 

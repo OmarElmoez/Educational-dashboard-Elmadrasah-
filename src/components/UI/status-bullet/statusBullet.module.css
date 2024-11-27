@@ -1,0 +1,17 @@
+.status_container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bullet {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.title {
+  font-size: 0.8rem;
+  color: #000000;
+}

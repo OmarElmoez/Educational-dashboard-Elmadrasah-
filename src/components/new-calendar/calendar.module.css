@@ -1,0 +1,55 @@
+.calendar_container {
+  padding: 3rem 4.5rem;
+  background-color: var(--main-color);
+  border-radius: 2.5rem;
+}
+
+.months_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar_btn {
+  width: 4rem;
+  height: 4rem;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 3px  #0000000D;
+}
+
+.months_names {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+}
+
+.weekAbbreviations {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  place-items: center;
+  color: #fff;
+  font-weight: 500;
+  margin-top: 3rem;
+
+}
+
+.days_wrapper {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  place-items: center;
+  margin-top: 2rem;
+}
+
+.days_wrapper > div {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  cursor: pointer;
+}

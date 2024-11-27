@@ -86,5 +86,5 @@ export {
   actEditLessonFileName,
   actGetLessonTracks,
   actAddNewTrack,
-  actGetSharedLessons
+  actGetSharedLessons,
 };

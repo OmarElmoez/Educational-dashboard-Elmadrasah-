@@ -1,7 +1,7 @@
 import {Outlet} from "react-router-dom";
 import {Header, MainSidebar} from "@/components";
 import {TPath} from "@/types/shared";
-import {SidebarContextProvider} from "@/store/context/";
+import {CalendarProvider, SidebarContextProvider} from "@/store/context/";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
 import {actGetUserProfile} from "@/store/profile/ProfileSlice.ts";
@@ -47,9 +47,11 @@ const MainLayout = ({sideBarData}: { sideBarData: TPath[] }) => {
         <MainSidebar data={sideBarData}/>
         <div className="contentBox">
           <Header/>
-          <section className="content">
-            <Outlet/>
-          </section>
+          <CalendarProvider>
+            <section className="content">
+                <Outlet/>
+            </section>
+          </CalendarProvider>
         </div>
       </main>
 

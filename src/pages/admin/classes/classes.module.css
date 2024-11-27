@@ -5,6 +5,13 @@
   margin-top: 2.4rem;
 }
 
+.calendar_wrapper {
+  margin-top: 3.2rem;
+  display: grid;
+  grid-template-columns: 488px 1fr;
+  gap: 2rem;
+}
+
 /*.container {*/
 /*  display: grid;*/
 /*  grid-auto-flow: column;*/

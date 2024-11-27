@@ -2,7 +2,7 @@ import HeroImg from '@/assets/join-lesson-cover.svg?react';
 import VideoCallIcon from '@/assets/videoCall.svg?react';
 import VideoCamIcon from '@/assets/videoCam.svg?react';
 import PhoneHangUpIcon from '@/assets/phoneHangUp.svg?react';
-import {Card, FlexWrapper, Heading} from "@/components/UI";
+import {Card, FlexWrapper, Heading, ProgressBar} from "@/components/UI";
 import PersonalCard from "@/components/personal-card/PersonalCard.tsx";
 import {ReviewForm, Tabs} from "@/components";
 
@@ -17,7 +17,7 @@ import {useFeedback} from "@/store/context";
 import generateTabs from "@/utils/generateTabs.ts";
 import {TModalRef} from "@/types/shared.ts";
 
-const {attendance_box, student_classes, progress_box, progress_bar, lesson_actions} = styles;
+const {attendance_box, student_classes, lesson_actions} = styles;
 
 const STATUS_TEXT = {
   Attended: "تم الحضور",
@@ -135,10 +135,7 @@ const JoinClass = () => {
           <section className={student_classes}>
             <Heading text="حصص الطالب" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
 
-            <div className={progress_box}>
-              {/* todo: change width with the percentage came from the server */}
-              <div className={progress_bar} style={{width: "65%"}}></div>
-            </div>
+            <ProgressBar width="65%" />
             <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم 65%</p>
           </section>
 

@@ -1,4 +1,4 @@
-import {Card, Heading} from "@/components/UI";
+import {Card, Heading, ImgBox} from "@/components/UI";
 
 import ImgPlaceholder from '@/assets/person-placeholder.svg?react'
 import GraduationIcon from '@/assets/Graduation_ hat.svg?react';
@@ -13,7 +13,6 @@ import {TPersonInfo} from "@/pages/shared/join-class/JoinClass.tsx";
 
 const {
   personal_info,
-  img_box,
   text_box,
   rate_box,
   goalsAndSubjects
@@ -35,9 +34,9 @@ const PersonalCard = ({cardFor, person}: TPersonalCardProps) => {
 
       <section className={personal_info}>
 
-        <div className={img_box}>
+        <ImgBox size="72px">
           {person.image ? <img src={person.image} alt="user image"/> : <ImgPlaceholder/>}
-        </div>
+        </ImgBox>
 
         <div className={text_box}>
           <h4>{person?.name}</h4>
