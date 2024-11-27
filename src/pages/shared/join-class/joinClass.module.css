@@ -13,24 +13,6 @@
   margin-top: 2rem;
 }
 
-.progress_box {
-  position: relative;
-  margin-top: 1.2rem;
-  background-color: #D4DED8;
-  border-radius: 9999px;
-  height: 25px;
-  overflow: hidden;
-}
-
-.progress_bar {
-  content: "";
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  background-image: repeating-linear-gradient(70deg, #1C8A44, #1C8A44 10px, #1C8A4490 10px, #1C8A4490 20px);
-  border-radius: 9999px;
-}
-
 .lesson_actions {
   display: flex;
   align-items: center;

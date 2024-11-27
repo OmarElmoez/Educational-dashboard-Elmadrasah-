@@ -43,7 +43,7 @@ const SetPassword = () => {
     <article className={loginBox}>
       <h2>تعيين كلمة المرور</h2>
       <p>من فضلك، قم بإدخال كلمة المرور الجديدة وتأكيدها لضمان أمان حسابك.</p>
-      <form action="post" onSubmit={handleSubmit(onSubmit)}>
+      <form method="post" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="new_password"
           control={control}

@@ -1,0 +1,35 @@
+.status_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.count_lessons {
+  margin-top: 1.2rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+.all_hours_info {
+  margin-top: 1.6rem;
+  display: grid;
+  gap: 1.6rem;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-left: 0.5rem;
+}
+
+.progress {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.2rem;
+}
+
+.progress > div {
+  width: 100%;
+}
+
+.progress span {
+  color: var(--main-color);
+  font-size: 1.2rem;
+}

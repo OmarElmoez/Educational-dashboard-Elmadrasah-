@@ -1,0 +1,38 @@
+.today_lessons {
+  font-weight: 500;
+  font-size: 1.4rem;
+  margin-top: 1.2rem;
+}
+
+.attendance_status {
+  margin-top: 1.6rem;
+  display: grid;
+  gap: 2.4rem;
+}
+
+.attendance_status > article {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.2rem;
+}
+
+.attendance_status > article > div {
+  width: 100%;
+}
+
+.attendance_status > article span {
+  color: var(--main-color);
+  font-size: 1.2rem;
+}
+
+.today_summary {
+  padding: 1.2rem 1.5rem;
+  border: 1px solid var(--main-color);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}

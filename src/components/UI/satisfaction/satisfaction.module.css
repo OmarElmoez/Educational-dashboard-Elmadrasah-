@@ -1,0 +1,9 @@
+.satisfaction_wrapper {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.satisfaction_wrapper span {
+  font-weight: 500;
+  font-size: 1.4rem;
+}

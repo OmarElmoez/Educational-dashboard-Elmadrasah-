@@ -1,0 +1,45 @@
+.teachers_menu {
+  margin-top: 2.4rem;
+  display: grid;
+  gap: 2.4rem;
+}
+
+.info {
+  display: flex;
+  gap: 1rem;
+}
+
+.info h4 {
+  font-weight: 500;
+}
+
+.text_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.teacher_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.teacher_box:nth-of-type(even) .subject_name {
+  background-color: #409860;
+  color: #fff;
+}
+
+.teacher_box:nth-of-type(odd) .subject_name {
+  background-color: #4098604D;
+  color: #171717;
+}
+
+.subject_name {
+  display: inline-block;
+  font-size: 1.2rem;
+  padding: 0.8rem 1rem;
+  text-align: center;
+  border-radius: 999px;
+}
+

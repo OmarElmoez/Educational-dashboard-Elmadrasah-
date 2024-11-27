@@ -6,3 +6,14 @@
   display: flex;
   align-items: center;
 }
+
+.stars_container svg {
+  width: 18px;
+  height: 18px;
+}
+
+.stars_container button svg {
+  width: 24px;
+  height: 24px;
+}
+
