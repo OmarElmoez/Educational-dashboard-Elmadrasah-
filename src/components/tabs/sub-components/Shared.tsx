@@ -67,7 +67,10 @@ type TStudent = {
   student_name: string;
 }
 
-export const TimingDetails = ({teachers, students}: { teachers: TTeacher[] | undefined, students: TStudent[] | undefined }) => {
+export const TimingDetails = ({teachers, students}: {
+  teachers?: TTeacher[] | undefined,
+  students?: TStudent[] | undefined
+}) => {
   return (
     <article className={timing}>
       <Heading text="توقيت دخول الدرس" style={{fontSize: "2rem", marginBottom: "0"}}/>

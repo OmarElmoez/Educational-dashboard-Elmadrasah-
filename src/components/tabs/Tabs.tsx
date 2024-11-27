@@ -16,7 +16,7 @@ type TTabsPros = {
 
 const Tabs = ({tabs}: TTabsPros) => {
 
-  const [activeId, setActiveId] = useState(1)
+  const [activeId, setActiveId] = useState(0)
 
   const renderContent = () => {
     const activeTab = tabs[activeId];
