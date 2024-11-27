@@ -6,7 +6,6 @@ type TJoinLesson = {
   attendance_link: string;
 };
 
-// @ts-ignore
 const actJoinLesson = createAsyncThunk(
   "lessons/actJoinLesson",
   async (

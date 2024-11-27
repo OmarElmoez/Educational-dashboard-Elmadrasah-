@@ -19,7 +19,7 @@ const CurrentHour = () => {
         </div>
       </article>
 
-      <TimingDetails teachers={[]} students={[]}/>
+      <TimingDetails />
 
       <TestClasses/>
 

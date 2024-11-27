@@ -2,8 +2,28 @@ import {ClassesForDay, ScheduleForDay, WelcomeSection} from "@/components";
 import CalendarImg from '@/assets/calendar-img.svg?react'
 import styles from './classes.module.css'
 import Calendar from "@/components/new-calendar/Calendar.tsx";
+import {TTab} from "@/components/tabs/Tabs.tsx";
+import {AllHours, CurrentHour, Overview} from "@/components/tabs/sub-components";
 
-const {welcome_paragraph, calendar_wrapper} = styles;
+const {welcome_paragraph} = styles;
+
+const ADMIN_TABS: TTab[] = [
+  {
+    id: 0,
+    label: "الساعة الحالية",
+    content: CurrentHour,
+  },
+  {
+    id: 1,
+    label: "نظرة عامة",
+    content: Overview,
+  },
+  {
+    id: 2,
+    label: "جميع الساعات",
+    content: AllHours,
+  }
+]
 
 const AdminClassesPage = () => {
   return (
@@ -12,9 +32,9 @@ const AdminClassesPage = () => {
         <p className={welcome_paragraph}>نأمل لك يوم عمل سعيد</p>
       </WelcomeSection>
 
-      <section className={calendar_wrapper}>
+      <section className='calendar_wrapper'>
         <Calendar />
-        <ScheduleForDay />
+        <ScheduleForDay tabs={ADMIN_TABS} />
       </section>
 
       <ClassesForDay />
