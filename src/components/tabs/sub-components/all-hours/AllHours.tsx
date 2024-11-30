@@ -22,7 +22,7 @@ type HourlyCounts = {
 };
 
 // Define the main type
-export type TLessonsForEachHour = {
+export type  TLessonsForEachHour = {
   total_lessons_today: number;
   hourly_counts: HourlyCounts;
 };

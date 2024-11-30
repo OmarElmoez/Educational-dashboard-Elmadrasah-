@@ -6,10 +6,11 @@ import ReloadIcon from '@/assets/reload.svg?react';
 
 import styles from './shared.module.css'
 import {ReactNode} from "react";
+import timeDifferenceStatus from "@/utils/timeDifferenceStatus.ts";
+import convert24HourToArabic from "@/utils/convert24HourToArabic.ts";
 
 const {test_classes, dot, satisfaction_container, timing, label, info_paragraphs, section_header} = styles;
 
-// todo: there will be an index to detect the api that the button will reload.
 export const TabHeader = ({text, children, onClick}: { text: string, children?: ReactNode, onClick: () => void }) => {
   return (
     <header className={section_header}>
@@ -54,22 +55,22 @@ export const StudentSatisfaction = () => {
 }
 
 
-type TTeacher = {
-  start_time_employee?: string,
+export type TTeacher = {
+  start_time_employee: string,
   status: string,
   from_time: string,
   teacher_name: string,
 }
 
-type TStudent = {
-  start_time_student?: string;
+export type TStudent = {
+  start_time_student: string;
   lesson__from_time: string;
   student_name: string;
 }
 
 export const TimingDetails = ({teachers, students}: {
-  teachers?: TTeacher[] | undefined,
-  students?: TStudent[] | undefined
+  teachers: TTeacher[],
+  students: TStudent[]
 }) => {
   return (
     <article className={timing}>
@@ -81,15 +82,19 @@ export const TimingDetails = ({teachers, students}: {
           <span>المعلمين</span>
         </div>
         <div className={info_paragraphs}>
-          <p style={{backgroundColor: "#E04A4A33"}}>
-            <span className={dot}></span>
-            <span>{teachers && teachers[0].teacher_name} : في الساعة 10:05 ص ( متأخر 5 دقائق )</span>
-          </p>
 
-          <p style={{backgroundColor: "#1C8A4433"}}>
-            <span className={dot}></span>
-            <span>ياسين يوسف : في الساعة 10:00 ص ( في الميعاد )</span>
-          </p>
+          {teachers.length > 0 && teachers.map((teacher, idx) => (
+            <p key={`${teacher.teacher_name}_${idx}`} style={{backgroundColor: `${timeDifferenceStatus(
+                teacher.from_time,
+                "13:50:00").bg_color}`}}>
+              <span className={dot}></span>
+              <span>{teacher.teacher_name} : في الساعة {convert24HourToArabic(
+                teacher.start_time_employee as string)} ( {timeDifferenceStatus(
+                teacher.from_time,
+                "13:50:00").text} )</span>
+            </p>
+          ))}
+
         </div>
       </section>
 
@@ -99,15 +104,19 @@ export const TimingDetails = ({teachers, students}: {
           <span>الطلاب</span>
         </div>
         <div className={info_paragraphs}>
-          <p style={{backgroundColor: "#E04A4A33"}}>
-            <span className={dot}></span>
-            <span>{students && students[0].student_name} : في الساعة 10:05 ص ( متأخر 5 دقائق )</span>
-          </p>
 
-          <p style={{backgroundColor: "#1C8A4433"}}>
-            <span className={dot}></span>
-            <span>ياسين يوسف : في الساعة 10:00 ص ( في الميعاد )</span>
-          </p>
+          {students.length > 0 && students.map((student, idx) => (
+            <p key={`${student.student_name}_${idx}`} style={{backgroundColor: `${timeDifferenceStatus(
+                student.lesson__from_time,
+                "14:00:00").bg_color}`}}>
+              <span className={dot}></span>
+              <span>{student.student_name} : في الساعة {convert24HourToArabic(
+                student.start_time_student as string)} ( {timeDifferenceStatus(
+                student.lesson__from_time,
+                "14:00:00").text} )</span>
+            </p>
+          ))}
+
         </div>
       </section>
     </article>

@@ -115,6 +115,8 @@ const TeacherReportsPage = () => {
     [dispatch]
   );
 
+  console.log(status_lessons);
+
   useEffect(() => {
     filterLessonsHandler({ lesson_status: currentStatus });
   }, [filterLessonsHandler, currentStatus]);
