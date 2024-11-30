@@ -1,4 +1,10 @@
-import {StudentSatisfaction, TabHeader, TestClasses, TimingDetails} from "@/components/tabs/sub-components/Shared.tsx";
+import {
+  StudentSatisfaction,
+  TabHeader,
+  TestClasses,
+  TimingDetails, TStudent,
+  TTeacher
+} from "@/components/tabs/sub-components/Shared.tsx";
 import {ProgressBar} from "@/components/UI";
 
 import EyeIcon from '@/assets/eye.svg?react';
@@ -9,23 +15,11 @@ import {getLessonsStatusOverview} from "@/services/lessonsStatus.ts";
 
 const {today_lessons, attendance_status, today_summary} = styles;
 
-type TTeacher = {
-  start_time_employee?: string;
-  status: string;
-  from_time: string;
-  teacher_name: string;
-};
-
-type TStudent = {
-  start_time_student?: string;
-  lesson__from_time: string;
-  student_name: string;
-};
-
 export type TOverview = {
   total_lessons_today: number;
   attended_lessons_count: number;
   not_attended_lessons_count: number;
+  attendance_percentage: number,
   teachers: TTeacher[];
   students: TStudent[];
 };
@@ -47,7 +41,7 @@ const Overview = () => {
 
   return (
     <section style={{ position: "relative" }}>
-      <TabHeader text="حصص اليوم" onClick={() => sendRequestToServer()} />
+      <TabHeader text="حصص اليوم" onClick={sendRequestToServer} />
 
       <p className={today_lessons}>عدد حصص اليوم {overViewData?.total_lessons_today} حصة</p>
 
@@ -55,7 +49,7 @@ const Overview = () => {
         <article>
           <div>
             <p style={{fontSize: '1.3rem;'}}>حضور</p>
-            <ProgressBar width="60%"/>
+            <ProgressBar width={`${overViewData?.attendance_percentage}%`}/>
           </div>
           <span>({overViewData?.attended_lessons_count})</span>
         </article>
@@ -70,7 +64,7 @@ const Overview = () => {
 
       </section>
 
-      <TimingDetails teachers={overViewData?.teachers} students={overViewData?.students} />
+      <TimingDetails teachers={overViewData?.teachers || []} students={overViewData?.students  || []} />
 
       <TestClasses />
 
