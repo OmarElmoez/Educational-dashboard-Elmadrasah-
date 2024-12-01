@@ -1,7 +1,7 @@
 import {ClassesForDay, ScheduleForDay, WelcomeSection} from "@/components";
 import CalendarImg from '@/assets/teacher-calendar-img.svg?react'
 import styles from './classes.module.css';
-import Calendar from "@/components/new-calendar/Calendar.tsx";
+import Calendar from "@/components/calendar/Calendar.tsx";
 import {TTab} from "@/components/tabs/Tabs.tsx";
 import {AllHours, CurrentHour, Students} from "@/components/tabs/sub-components";
 
