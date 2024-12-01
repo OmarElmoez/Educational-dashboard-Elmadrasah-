@@ -9,19 +9,16 @@ type TCalendarContextType = {
 export const CalendarContext = createContext<TCalendarContextType>({
   clickedDate: new Date(),
   formattedDate: "",
-  setClickedDate: () => {}
+  setClickedDate: () => {
+  }
 });
 
-const CalendarProvider = ({children}: {children: ReactNode}) => {
-  const [clickedDate, setClickedDate] = useState(new Date());
-  console.log('from calendar context: ', new Date().getMonth());
+const CalendarProvider = ({children}: { children: ReactNode }) => {
+  const [clickedDate, setClickedDate] = useState<Date>(new Date());
 
-  // serverDateFormat => day - month - year
-  const formattedDate = clickedDate.toISOString()
-  .split("T")[0]
-  .split("-")
-  .reverse()
-  .join("-");
+  const splittingDate = clickedDate.toLocaleDateString().split('/');
+
+  const formattedDate = `${splittingDate[1]}-${splittingDate[0]}-${splittingDate[2]}`;
 
   const ctxValue = {
     clickedDate,
