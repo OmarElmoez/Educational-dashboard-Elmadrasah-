@@ -11,32 +11,38 @@ const Calendar = () => {
 
   const {clickedDate, setClickedDate} = useContext(CalendarContext);
 
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1)
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
+  console.log('current month: ', currentMonth)
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
 
-  const months = ["ديسمبر", "يناير", "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر", "نوفمبر"]
-  const weekDaysAbbreviations = ["س", "أح", "أث", "ث", "ر", "خ", "ج"]
+  const months = ["يناير", "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر", "نوفمبر", "ديسمبر"]
+  console.log('first month: ', months[0]);
+  const weekDaysAbbreviations = ["ج", "س", "أح", "أث", "ث", "ر", "خ"]
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const getCalendarDays = (year: number, month: number) => {
     const firstDay = new Date(year, month, 1)
-    const startingDayIndex = firstDay.getDay()
+
+    const lastDay = new Date(year, month + 1, 0);
+
+    const totalDaysInMonth = lastDay.getDate();
 
     const calendarDays = []
-    let currentDate = new Date(year, month - 1, 1 - startingDayIndex)
 
-    for (let i = 0; i < 42; i++) {
+
+    for (let i = 0; i < totalDaysInMonth; i++) {
       calendarDays.push({
-        day: new Date(currentDate),
-        isCurrentMonth: currentDate.getMonth() === month,
-        isPreviousMonth: currentDate.getMonth() === (month - 1 + 12) % 12,
+        day: new Date(firstDay),
+        isCurrentMonth: firstDay.getMonth() === month,
+        isPreviousMonth: firstDay.getMonth() === (month - 1 + 12) % 12,
       })
-      currentDate.setDate(currentDate.getDate() + 1)
+      firstDay.setDate(firstDay.getDate() + 1)
     }
 
     return calendarDays
   }
+
 
   const calendarDays = getCalendarDays(currentYear, currentMonth)
 
@@ -76,7 +82,7 @@ const Calendar = () => {
             months[(currentMonth + 1) % 12],
           ].map((month, index) => (
             <span
-              key={month}
+              key={`${month}-${index}`}
               style={{color: index === 1 ? "#fff" : "#bbdcc7"}}
             >
                       {month}
@@ -101,7 +107,6 @@ const Calendar = () => {
 
       <div className={days_wrapper}>
         {calendarDays.map(({day}, index) => {
-          day.setHours(0, 0, 0, 0)
           const isToday = day.getTime() === today.getTime()
           const isClicked = day.getTime() === clickedDate.getTime()
           const beforeToday = day.getTime() < today.getTime()
