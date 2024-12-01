@@ -38,7 +38,6 @@ import Rate from "./star-rating/Rate.tsx";
 
 export {
   Header,
-  Calendar,
   MainSidebar,
   Success,
   UploadPhoto,
