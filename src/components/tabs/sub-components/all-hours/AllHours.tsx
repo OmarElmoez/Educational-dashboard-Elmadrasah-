@@ -3,8 +3,9 @@ import {ProgressBar, StatusBullet} from "@/components/UI";
 
 import styles from './allHours.module.css'
 import convertToArabicTime from "@/utils/convertToArabicTime.ts";
-import {useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {getLessonsStatusForEachHour} from "@/services/lessonsStatus.ts";
+import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 
 const {status_wrapper, count_lessons, all_hours_info, progress} = styles;
 
@@ -31,15 +32,27 @@ const AllHours = () => {
 
   const [allHoursLessonsData, setAllHoursLessonsData] = useState<TLessonsForEachHour>()
 
-  useEffect(() => {
-    sendRequestToServer()
-  }, [])
+  const {role, studentId} = useContext(CalendarContext)
 
-  const sendRequestToServer =  () => {
+  const sendRequestToServer =  useCallback(() => {
+    
+    if (role === 'Family' && studentId) {
+      getLessonsStatusForEachHour(studentId).then(res => {
+        setAllHoursLessonsData(res)
+      })
+      return ;
+    }
+    
     getLessonsStatusForEachHour().then((res: TLessonsForEachHour) => {
       setAllHoursLessonsData(res)
     })
-  }
+  }, [role, studentId])
+
+  useEffect(() => {
+    sendRequestToServer()
+  }, [sendRequestToServer])
+
+
 
   return (
     <section>

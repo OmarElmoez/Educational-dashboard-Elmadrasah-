@@ -32,7 +32,7 @@ import {
   ScheduleLesson,
   StudentsList,
 } from "@/pages/admin";
-import {TeacherClassesPage, TeacherHomePage, TeacherReportsPage, TeacherStudentsPage,} from "@/pages/teacher";
+import {TeacherClassesPage, TeacherHomePage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyHomePage, FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
 import {Error, HelpPage, JoinClass, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
 import {Login, PhoneNumber, SetPassword} from "@/pages/login";
@@ -318,10 +318,10 @@ const router = createBrowserRouter([
         path: "calendar/join-class/:classId",
         element: <PageSuspense><JoinClass /></PageSuspense>
       },
-      {
-        path: "reports",
-        element: <PageSuspense><TeacherReportsPage/></PageSuspense>,
-      },
+      // {
+      //   path: "reports",
+      //   element: <PageSuspense><TeacherReportsPage/></PageSuspense>,
+      // },
       {
         path: "students",
         element: <PageSuspense><TeacherStudentsPage/></PageSuspense>,
@@ -375,6 +375,10 @@ const router = createBrowserRouter([
       {
         path: "help",
         element: <PageSuspense><HelpPage/></PageSuspense>,
+      },
+      {
+        path: "calendar/join-class/:classId",
+        element: <PageSuspense><JoinClass /></PageSuspense>
       },
       {
         path: "settings",

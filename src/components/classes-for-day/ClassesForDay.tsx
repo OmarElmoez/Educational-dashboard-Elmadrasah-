@@ -1,9 +1,9 @@
 import styles from './classesForDay.module.css'
-import {useContext, useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
-import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
+import {useContext} from "react";
+import {useAppSelector} from "@/store/hooks.ts";
+
 import {TLesson} from "@/schemas/LessonSchema.ts";
-import {useFeedback} from "@/store/context";
+
 import formatHoursAndMinutes from "@/utils/formatHoursAndMinutes.ts";
 import ClockIcon from "@/assets/clock.svg?react";
 import EgyptFlag from '@/assets/flag-egypt.svg?react';
@@ -70,27 +70,16 @@ const statusInfo = {
 
 const ClassesForDay = () => {
 
-  const dispatch = useAppDispatch();
   const {today_lessons, loading} = useAppSelector(state => state.lessons);
-  const {openFeedbackModal} = useFeedback();
+
   const {credintials} = useAppSelector(state => state.auth);
 
-  const { clickedDate, formattedDate } = useContext(CalendarContext);
+  const {clickedDate} = useContext(CalendarContext);
   const dateInArabic = formatDateIntoArabic(clickedDate)
 
-
-  useEffect(() => {
-    dispatch(actGetLessonsByDay({day: formattedDate}))
-    .unwrap()
-    .then((res) => {
-      if (typeof res === 'string') {
-        openFeedbackModal("failed", res);
-        return;
-      }
-    })
-  }, [ dispatch, formattedDate, openFeedbackModal]);
-
-
+  const filteredLessons = today_lessons.filter(lesson => {
+    return clickedDate.setHours(0, 0, 0, 0) === new Date(lesson.from_date).setHours(0, 0, 0, 0);
+  })
 
   const navigate = useNavigate();
 
@@ -103,8 +92,8 @@ const ClassesForDay = () => {
       <h3 className={title}>حصص اليوم {dateInArabic}</h3>
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
-        {today_lessons.length === 0 && <p className="error">ليس لديك حصص اليوم !</p>}
-        {today_lessons.length > 0 && today_lessons.map((lesson: TLesson) => {
+        {filteredLessons.length === 0 && <p className="error">ليس لديك حصص اليوم !</p>}
+        {filteredLessons.length > 0 && filteredLessons.map((lesson: TLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>

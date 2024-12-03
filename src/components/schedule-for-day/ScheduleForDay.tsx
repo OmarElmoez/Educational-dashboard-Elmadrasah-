@@ -5,10 +5,10 @@ import {Tabs} from "@/components";
 
 const {schedule_container} = styles;
 
-const ScheduleForDay = ({tabs}: {tabs: TTab[]}) => {
+const ScheduleForDay = ({tabs, label}: {tabs: TTab[], label?: string}) => {
   return (
     <section className={schedule_container}>
-      <Heading text="جدولك اليوم"
+      <Heading text={label || "جدولك اليوم"}
                style={{paddingBottom: "1.2rem", borderBottom: "1px dashed #C0C6C2", marginBottom: "0"}}/>
       <article style={{ marginTop: "2.4rem" }}>
         <Tabs tabs={tabs}/>

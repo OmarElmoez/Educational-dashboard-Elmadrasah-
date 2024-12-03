@@ -8,8 +8,9 @@ import {
   TTeacher
 } from "@/components/tabs/sub-components/Shared.tsx";
 import styles from './currentHour.module.css'
-import {useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {getLessonsStatusForCurrentHour} from "@/services/lessonsStatus.ts";
+import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 
 const {status} = styles;
 
@@ -26,15 +27,27 @@ const CurrentHour = () => {
 
   const [currentHourData, setCurrentHourData] = useState<TLessonForCurrentHour>();
 
+  const {role, studentId} = useContext(CalendarContext)
+
+  /* todo: there is a problem, the else block is executed first then if block. that's because studentId at first render is null (see the Calendar Context) */
+
+  const sendRequestToServer = useCallback(() => {
+    if (role === 'Family' && studentId) {
+      getLessonsStatusForCurrentHour(studentId).then(res => {
+        setCurrentHourData(res)
+      })
+    } else {
+      console.log('from else condition: ');
+      getLessonsStatusForCurrentHour().then((res: TLessonForCurrentHour) => {
+        setCurrentHourData(res);
+      })
+    }
+  }, [role, studentId])
+
   useEffect(() => {
     sendRequestToServer()
-  }, [])
+  }, [sendRequestToServer])
 
-  const sendRequestToServer = () => {
-    getLessonsStatusForCurrentHour().then((res: TLessonForCurrentHour) => {
-      setCurrentHourData(res);
-    })
-  }
 
   return (
     <section>
@@ -52,11 +65,11 @@ const CurrentHour = () => {
         </div>
       </article>
 
-      <TimingDetails students={currentHourData?.students || []} teachers={currentHourData?.teachers || []}/>
+      {role === 'Admin' && <TimingDetails students={currentHourData?.students || []} teachers={currentHourData?.teachers || []}/>}
 
       <TestClasses/>
 
-      <StudentSatisfaction/>
+      {role === 'Admin' && <StudentSatisfaction/>}
 
     </section>
   )

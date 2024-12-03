@@ -1,22 +1,17 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import axiosInstance from "@/utils/axiosInstance";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
 const actGetData = createAsyncThunk(
   "single-actions/actGetData",
   async (
-    { endpoint, params = null }: { endpoint: string; params?: {} | null },
+    {endpoint, params}: { endpoint: string; params?: {} },
     thunkAPI
   ) => {
-    const { rejectWithValue } = thunkAPI;
+    const {rejectWithValue} = thunkAPI;
 
     try {
-      const url = endpoint;
-      let response;
-      if (params) {
-        response = await axiosInstance.get(url, { params });
-      }
-      response = await axiosInstance.get(url);
+      const response = await axiosInstance.get(endpoint, params);
       return response.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));

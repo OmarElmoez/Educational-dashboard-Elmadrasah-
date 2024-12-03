@@ -20,3 +20,26 @@
   font-weight: 500;
   color: var(--main-color)
 }
+
+.kids_wrapper {
+  margin-top: 4rem;
+}
+
+.kids_names {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.kids_names > div {
+  padding: 0.8rem 2.4rem;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  width: 282px;
+  max-width: 100%;
+}

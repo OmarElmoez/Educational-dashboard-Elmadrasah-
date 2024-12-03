@@ -14,8 +14,7 @@ export type TUser = {
 };
 
 export type TUserStatistics = {
-  total_lessons: number;
-  total_attended: number;
-  total_scheduled: number;
-  total_missed: number;
-};
+  id: number;
+  first_name: string;
+  last_name: string;
+}[];

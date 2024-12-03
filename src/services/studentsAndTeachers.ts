@@ -16,7 +16,7 @@ export type TRelatedTeacher = {
   average_rating: number,
 }
 
-export const getAllRelatedStudents = async(): Promise<TRelatedStudent[]> => {
+export const getAllRelatedStudents = async (): Promise<TRelatedStudent[]> => {
   try {
     const response = await axiosInstance.get<TRelatedStudent[]>("/event/shared-lessons/shared-students/");
     return response.data;
@@ -25,12 +25,18 @@ export const getAllRelatedStudents = async(): Promise<TRelatedStudent[]> => {
   }
 }
 
-export const getAllRelatedTeachers = async(): Promise<TRelatedTeacher[]> => {
+export const getAllRelatedTeachers = async (student_id?: number): Promise<TRelatedTeacher[]> => {
   try {
-    const response = await axiosInstance.get<TRelatedTeacher[]>("/event/shared-lessons/shared-teachers/");
+    let url = "/event/shared-lessons/shared-teachers/";
+    if (student_id) {
+      url = `/event/shared-lessons/shared-teachers/?student_id=${student_id}`
+    }
+    const response = await axiosInstance.get<TRelatedTeacher[]>(url);
     return response.data;
   } catch (error) {
     return axiosErrorHandler(error);
   }
 }
+
+
 

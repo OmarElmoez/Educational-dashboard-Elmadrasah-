@@ -4,6 +4,8 @@ import ChevronLeft from '@/assets/chevronLeft.svg?react';
 
 import styles from './calendar.module.css'
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
+import {useAppDispatch} from "@/store/hooks.ts";
+import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 
 const {calendar_container, calendar_btn, months_wrapper, months_names, weekAbbreviations, days_wrapper} = styles;
 
@@ -16,6 +18,8 @@ const Calendar = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
 
   const months = ["يناير", "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر", "نوفمبر", "ديسمبر"]
+
+  const monthsNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   const weekDaysAbbreviations = ["أح", "أث", "ث", "ر", "خ", "ج", "س"]
 
@@ -49,6 +53,8 @@ const Calendar = () => {
 
   const {calendarDays, abbreviations} = getCalendarDays(currentYear, currentMonth)
 
+  const dispatch = useAppDispatch();
+
 
   const handlePrevMonth = () => {
     setCurrentMonth((prev) => {
@@ -70,12 +76,26 @@ const Calendar = () => {
     })
   }
 
+  const displayTheCurrentMonth = (state: 'prev' | 'next') => {
+    let month;
+     if (state === 'prev') {
+       month =  monthsNumbers[(currentMonth - 1 + 12) % 12];
+     } else {
+       month = monthsNumbers[(currentMonth + 1) % 12];
+     }
+
+     dispatch(actGetLessonsByDay({date: `${month}-${currentYear}`}))
+  }
+
   return (
     <section className={calendar_container}>
       <div className={months_wrapper}>
         <button
           className={calendar_btn}
-          onClick={handlePrevMonth}
+          onClick={() => {
+            handlePrevMonth();
+            displayTheCurrentMonth('prev')
+          }}
         >
           <ChevronRight/>
         </button>
@@ -95,7 +115,10 @@ const Calendar = () => {
         </div>
         <button
           className={calendar_btn}
-          onClick={handleNextMonth}
+          onClick={() => {
+            handleNextMonth();
+            displayTheCurrentMonth('next')
+          }}
         >
           <ChevronLeft/>
         </button>
