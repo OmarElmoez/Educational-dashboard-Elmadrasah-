@@ -1,5 +1,5 @@
 import Row from "@/components/row/Row";
-import { SingleCheckbox } from "../inputField/CheckboxGroup";
+import { SingleCheckbox } from "@/components";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import React from "react";
 

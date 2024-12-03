@@ -4,27 +4,32 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "@/utils/axiosInstance.ts";
 
 type TGetLessonsByDayParams = {
-  day: string | undefined;
+  date: string | undefined;
+  studentId?: number;
 };
 
 type TGetLessonsByDayResponse = {
-  result: TLesson[];
+  results: TLesson[];
 };
 
 const actGetLessonsByDay = createAsyncThunk(
   "lessons/actGetLessonsByDay",
-  async ({ day }: TGetLessonsByDayParams, thunkAPI) => {
+  async ({ date, studentId }: TGetLessonsByDayParams, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
-      const url = "/dashboard/lesson/";
+      let url = "/dashboard/lesson/";
+      if (studentId) {
+        url = `/dashboard/lesson/?student_id=${studentId}`;
+      }
+
 
       const response = await axiosInstance.get<TGetLessonsByDayResponse>(url, {
         params: {
-          day,
+          date,
         },
       });
-      return response.data.result;
+      return response.data.results;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

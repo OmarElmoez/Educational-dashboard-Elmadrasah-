@@ -14,12 +14,7 @@ type TProfileState = {
 
 const initialState: TProfileState = {
   user: null,
-  statistics: {
-    total_lessons: 0,
-    total_attended: 0,
-    total_scheduled: 0,
-    total_missed: 0
-  },
+  statistics: [],
   loading: "idle",
   error: null,
   img_url: ""
@@ -37,7 +32,7 @@ const profileSlice = createSlice({
     builder.addCase(actGetUserProfile.pending, (state) => {
       state.loading = "pending"
       state.error = null
-    }),
+    })
 
     builder.addCase(actGetUserProfile.fulfilled, (state, action) => {
       state.loading = "succeeded"
@@ -45,7 +40,7 @@ const profileSlice = createSlice({
       state.statistics = action.payload.statistics
       state.img_url = action.payload.user.image
 
-    }),
+    })
 
     builder.addCase(actGetUserProfile.rejected, (state, action) => {
       state.loading = "failed"
@@ -58,11 +53,11 @@ const profileSlice = createSlice({
     builder.addCase(actUpdateUserProfile.pending, (state) => {
       state.loading = "pending"
       state.error = null
-    }),
+    })
 
     builder.addCase(actUpdateUserProfile.fulfilled, (state) => {
       state.loading = "succeeded"
-    }),
+    })
 
     builder.addCase(actUpdateUserProfile.rejected, (state, action) => {
       state.loading = "failed"

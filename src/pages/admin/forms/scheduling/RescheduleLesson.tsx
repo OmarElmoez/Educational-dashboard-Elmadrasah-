@@ -13,7 +13,7 @@ import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {actGetDropdownOptions} from "@/store/single-actions";
 import {TOption} from "@/types/Dropdown";
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useFieldArray, useForm} from "react-hook-form";
 
 // import CloseButton from "@/assets/close-button.svg?react";
@@ -98,38 +98,7 @@ const RescheduleLesson = () => {
 
   const [predefinedDate, setPredefinedDate] = useState("");
 
-  useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({optionsFor: "services"})
-    ).then((res) => {
-      if (Array.isArray(res?.payload)) {
-        setServicesList(res.payload);
-      }
-    });
-  }, [dispatch, credintials?.token]);
-
-  useEffect(() => {
-    // you should pass the id (get from useParams) to the action
-    if (id) {
-      dispatch(actGetRescheduleLessonData({id}))
-      .unwrap()
-      .then((res) => {
-        if (typeof res === 'string') {
-          openFeedbackModal("failed", `${res}`)
-        } else {
-        setPreviousData(res);
-          setCustomerData(res);
-        }
-      });
-    }
-  }, [ dispatch, id, setValue]);
-
-  /**
-   * we use this way, because it shows the value on the UI and set the value for the key when submitting.
-   *
-   * if we use defaultValues from useForm Hook, it didn't show the values on the UI.
-   */
-  const setPreviousData = (response: TRescheduleLessonResponse) => {
+  const setPreviousData = useCallback((response: TRescheduleLessonResponse) => {
     setValue('lesson_credit', response.leadflow_data[0].customer.credit.toString());
     setValue('student_id', response.leadflow_data[0].students[0].id.toString());
     setValue('time_id', response.leadflow_data[0].time[0]?.id.toString());
@@ -158,7 +127,40 @@ const RescheduleLesson = () => {
     setValue('on_quarter', response.lesson_draft_data.on_quarter);
     setValue('repeat_count', response.lesson_draft_data.repeat_count?.toString());
     setValue('package_id', response.lesson_draft_data.package_id)
-  }
+  }, [setValue])
+
+  useEffect(() => {
+    dispatch(
+      actGetDropdownOptions({optionsFor: "services"})
+    ).then((res) => {
+      if (Array.isArray(res?.payload)) {
+        setServicesList(res.payload);
+      }
+    });
+  }, [dispatch, credintials?.token]);
+
+  useEffect(() => {
+    // you should pass the id (get from useParams) to the action
+    if (id) {
+      dispatch(actGetRescheduleLessonData({id}))
+      .unwrap()
+      .then((res) => {
+        if (typeof res === 'string') {
+          openFeedbackModal("failed", `${res}`)
+        } else {
+        setPreviousData(res);
+          setCustomerData(res);
+        }
+      });
+    }
+  }, [dispatch, id, openFeedbackModal, setPreviousData, setValue]);
+
+  /**
+   * we use this way, because it shows the value on the UI and set the value for the key when submitting.
+   *
+   * if we use defaultValues from useForm Hook, it didn't show the values on the UI.
+   */
+
   const navigate = useNavigate();
   const selectedTeachersType = watch("is_auto");
 

@@ -27,7 +27,6 @@ const ADMIN_TABS: TTab[] = [
 
 const AdminClassesPage = () => {
 
-  
   return (
     <>
       <WelcomeSection img={<CalendarImg/>}>
