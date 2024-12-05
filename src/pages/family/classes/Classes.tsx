@@ -1,10 +1,10 @@
-import {ClassesForDay, ProgressCircle, ScheduleForDay, WelcomeSection} from "@/components";
+import {ClassesForDay, ProgressCircle, WelcomeSection} from "@/components";
 import CalendarImg from '@/assets/family-calendar-img.svg?react'
 import ImgPlaceholder from '@/assets/person-placeholder.svg?react'
 import styles from "./classes.module.css";
 import Calendar from "@/components/calendar/Calendar.tsx";
-import {AllHours, CurrentHour, Teachers} from "@/components/tabs/sub-components";
-import {TTab} from "@/components/tabs/Tabs.tsx";
+// import {AllHours, CurrentHour, Teachers} from "@/components/tabs/sub-components";
+// import {TTab} from "@/components/tabs/Tabs.tsx";
 import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
 import {Heading} from "@/components/UI";
 import {useContext, useEffect, useState} from "react";
@@ -13,23 +13,23 @@ import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 
 const {info, welcome_text, kids_wrapper, kids_names} = styles;
 
-const FAMILY_TABS: TTab[] = [
-  {
-    id: 0,
-    label: "الساعة الحالية",
-    content: CurrentHour,
-  },
-  {
-    id: 1,
-    label: "المٌعلمين",
-    content: Teachers,
-  },
-  {
-    id: 2,
-    label: "جميع الساعات",
-    content: AllHours,
-  }
-]
+// const FAMILY_TABS: TTab[] = [
+//   {
+//     id: 0,
+//     label: "الساعة الحالية",
+//     content: CurrentHour,
+//   },
+//   {
+//     id: 1,
+//     label: "المٌعلمين",
+//     content: Teachers,
+//   },
+//   {
+//     id: 2,
+//     label: "جميع الساعات",
+//     content: AllHours,
+//   }
+// ]
 
 type TChild =  {   id: number, first_name: string, last_name: string }
 
@@ -82,7 +82,7 @@ const Classes = () => {
 
       <section className='calendar_wrapper'>
         <Calendar/>
-        <ScheduleForDay tabs={FAMILY_TABS} label = { activeTab.name ? `جدول ${activeTab.name}` : undefined} />
+        {/*<ScheduleForDay tabs={FAMILY_TABS} label = { activeTab.name ? `جدول ${activeTab.name}` : undefined} />*/}
       </section>
 
       <ClassesForDay/>
