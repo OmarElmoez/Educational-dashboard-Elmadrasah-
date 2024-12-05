@@ -33,7 +33,7 @@ const TeacherHomePage = () => {
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
-    dispatch(actGetLessonsByDay({ day: today }));
+    dispatch(actGetLessonsByDay({ date: today }));
   }, [dispatch, credintials?.token, today]);
 
   const dialogRef = useRef<TModalRef>(null);
