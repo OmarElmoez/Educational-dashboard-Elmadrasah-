@@ -2,9 +2,8 @@ import axios from "axios";
 import store from "@/store";
 import axiosErrorHandler from "./axiosErrorHandler";
 
-// Don't forget to update the end-point for (actFCMLogin.ts)
 const axiosInstance = axios.create({
-  baseURL: "https://elmadrasah-development-ff14bf466889.herokuapp.com",
+  baseURL: import.meta.env.VITE_PRO_SERVER,
   headers: {
     "Content-Type": "application/json",
   },
