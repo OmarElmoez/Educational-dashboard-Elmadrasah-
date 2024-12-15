@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 .improvements.txt
+
+.env.local
