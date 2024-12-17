@@ -68,8 +68,6 @@ const JoinClass = () => {
   useEffect(() => {
       if (classId) {
         actGetSpecificLessonData(classId).then((res) => {
-          console.log('from lesson specific action: ',
-            res)
           setLessonData(res);
           setPerson({
             name: isTeacher ? res.participants[0].student_name : res.employee_name,

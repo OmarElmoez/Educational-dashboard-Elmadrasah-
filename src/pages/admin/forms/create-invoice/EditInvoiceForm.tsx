@@ -172,7 +172,6 @@ const EditInvoiceForm = () => {
       dispatch(actGetData({ endpoint: `customer/invoices/${id}/` }))
         .unwrap()
         .then((res) => {
-          console.log('response from getting custom invoice: ', res)
           reset(res)
           setValue('customer_name', res.customer_name)
           // setValue('formatted_number', res.formatted_number)
@@ -387,7 +386,6 @@ const EditInvoiceForm = () => {
       actGetDropdownOptions({ optionsFor: "services" })
     ).then((res) => {
       if (Array.isArray(res?.payload)) {
-        console.log('services from edit form: ', res.payload)
         setServicesList(res.payload);
       }
     });
@@ -401,9 +399,6 @@ const EditInvoiceForm = () => {
   }, [dispatch, credintials?.token]);
 
   const onSubmit = (data: TEditInvoiceFormData) => {
-    console.log('submitted data from edit invoice: ', data)
-
-
 
     data.tax_count = parseFloat(data.tax_count).toString();
 

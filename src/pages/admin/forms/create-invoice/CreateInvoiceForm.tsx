@@ -205,8 +205,7 @@ const CreateInvoiceForm = () => {
           }
         });
       } catch (error) {
-        console.log(error)
-        // openFeedbackModal("failed", `${error}`)
+        openFeedbackModal("failed", `${error}`)
       }
     }
   };
@@ -383,7 +382,6 @@ const CreateInvoiceForm = () => {
     dispatch(actGetData({endpoint: "customer/invoice/last"}))
     .unwrap()
     .then((res) => {
-      console.log('from create invoice: ', res)
       setInvoiceNumber(res.invoice_number)
     });
 

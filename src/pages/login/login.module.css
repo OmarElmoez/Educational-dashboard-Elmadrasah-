@@ -86,6 +86,7 @@
 
 .loginBox form a {
   color: #787575;
+  width: fit-content;
 }
 
 .loginBox form button {
