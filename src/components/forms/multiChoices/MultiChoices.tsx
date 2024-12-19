@@ -1,10 +1,11 @@
-import { useAppDispatch } from "@/store/hooks";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import {useAppDispatch} from "@/store/hooks";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {FieldValues, Path, UseFormRegister} from "react-hook-form";
 
 import styles from "./multiChoices.module.css";
-import { END_POINTS } from "@/constants";
-import actGetChoices, { TResponse } from "@/store/single-actions/actGetChoices";
+import {END_POINTS} from "@/constants";
+import actGetChoices, {TResponse} from "@/store/single-actions/actGetChoices";
+import {useDebounce} from "@/hooks";
 
 const {
   checkboxInput,
@@ -14,38 +15,40 @@ const {
   options,
   checkboxLabel,
   preview,
-  loadingIndicator,
-  circularProgress,
+  // loadingIndicator,
+  // circularProgress,
   select_box_flex,
   close_btn,
+  search_box
 } = styles;
 
-const LoadingIndicator = ({ progress }: { progress: number }) => (
-  <div className={loadingIndicator}>
-    <svg viewBox="0 0 36 36" className={circularProgress}>
-      <path
-        d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
-        fill="none"
-        stroke="#1C8A44"
-        strokeWidth="4"
-        strokeDasharray={`${progress}, 100`}
-      />
-    </svg>
-  </div>
-);
+// const LoadingIndicator = ({ progress }: { progress: number }) => (
+//   <div className={loadingIndicator}>
+//     <svg viewBox="0 0 36 36" className={circularProgress}>
+//       <path
+//         d="M18 2.0845
+//           a 15.9155 15.9155 0 0 1 0 31.831
+//           a 15.9155 15.9155 0 0 1 0 -31.831"
+//         fill="none"
+//         stroke="#1C8A44"
+//         strokeWidth="4"
+//         strokeDasharray={`${progress}, 100`}
+//       />
+//     </svg>
+//   </div>
+// );
 
 const MultiChoices = <T extends FieldValues>({
-  register,
-  name,
-  error,
-  isRequired,
-  disabled = false,
-  fields,
-  predefinedDays,
-  removePreviewChoices,
-}: {
+                                               register,
+                                               name,
+                                               error,
+                                               isRequired,
+                                               disabled = false,
+                                               fields,
+                                               predefinedDays,
+                                               removePreviewChoices,
+  position = "absolute",
+                                             }: {
   register: UseFormRegister<T>;
   name: Path<T>;
   error: string;
@@ -54,30 +57,35 @@ const MultiChoices = <T extends FieldValues>({
   fields?: TResponse;
   predefinedDays?: number[];
   removePreviewChoices?: boolean;
+  position?: "absolute" | 'relative';
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedQuery = useDebounce(searchQuery);
   const [selectedChoices, setSelectedChoices] = useState<number[]>(predefinedDays || []);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  // const [loadingProgress, setLoadingProgress] = useState(0);
   const intervalRef = useRef<number | null>(null);
   useEffect(() => {
-  if (removePreviewChoices) {
-    setSelectedChoices([]);
-  }
+    if (removePreviewChoices) {
+      setSelectedChoices([]);
+    }
   }, [removePreviewChoices]);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!fields) {
-        dispatch(
-            actGetChoices({
-                // url: END_POINTS[name as keyof typeof END_POINTS].url,
-                url: END_POINTS[name as keyof typeof END_POINTS].url,
-            })
-        )
-            .unwrap()
-            .then((data) => setData(data));
+      dispatch(
+        actGetChoices({
+          // url: END_POINTS[name as keyof typeof END_POINTS].url,
+          url: END_POINTS[name as keyof typeof END_POINTS].url,
+        })
+      )
+      .unwrap()
+      .then((data) => {
+        setData(data)
+      });
     }
   }, [dispatch, name, fields]);
 
@@ -87,7 +95,7 @@ const MultiChoices = <T extends FieldValues>({
         clearInterval(intervalRef.current);
       }
 
-      const { value } = e.currentTarget;
+      const {value} = e.currentTarget;
       const isSelected = selectedChoices.includes(Number(value));
       if (isSelected) {
         setSelectedChoices(
@@ -97,21 +105,21 @@ const MultiChoices = <T extends FieldValues>({
         setSelectedChoices([...selectedChoices, Number(value)]);
       }
 
-      setLoadingProgress(0);
-      intervalRef.current = window.setInterval(() => {
-        setLoadingProgress((prev) => {
-          if (prev >= 100) {
-            if (intervalRef.current !== null) {
-              clearInterval(intervalRef.current);
-            }
-            setTimeout(() => {
-              setIsWrapperClicked(false);
-            }, 0);
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 500);
+      // setLoadingProgress(0);
+      // intervalRef.current = window.setInterval(() => {
+      //   setLoadingProgress((prev) => {
+      //     if (prev >= 100) {
+      //       if (intervalRef.current !== null) {
+      //         clearInterval(intervalRef.current);
+      //       }
+      //       setTimeout(() => {
+      //         setIsWrapperClicked(false);
+      //       }, 0);
+      //       return 100;
+      //     }
+      //     return prev + 10;
+      //   });
+      // }, 500);
     },
     [selectedChoices]
   );
@@ -143,7 +151,7 @@ const MultiChoices = <T extends FieldValues>({
       <span
         key={choice}
         className={preview}
-        style={{ position: "relative", paddingLeft: "2rem" }}
+        style={{position: "relative", paddingLeft: "2rem"}}
       >
         {
           (fields ? fields : data).find((dataItem) => dataItem.id === choice)
@@ -171,6 +179,9 @@ const MultiChoices = <T extends FieldValues>({
     ));
   };
 
+  const filteredData = data.filter((item) => item.codename ? item.codename.toLowerCase().includes(
+    debouncedQuery.toLowerCase()) : item.name.toLowerCase().includes(debouncedQuery.toLowerCase()));
+
   return (
     <article className="group">
       <label
@@ -181,8 +192,8 @@ const MultiChoices = <T extends FieldValues>({
         {fields
           ? `${END_POINTS[name as keyof typeof END_POINTS].placeholder}`
           : ` يرجي اختيار ${
-              END_POINTS[name as keyof typeof END_POINTS].placeholder
-            }`}
+            END_POINTS[name as keyof typeof END_POINTS].placeholder
+          }`}
       </label>
       <section
         className={`select_wrapper inputField ${select_box_flex} ${
@@ -198,27 +209,36 @@ const MultiChoices = <T extends FieldValues>({
       </section>
       {error && <span className="error">{error}</span>}
       {isWrapperClicked && (
-        <section className={options}>
-          <LoadingIndicator progress={loadingProgress} />
-          {(fields ? fields : data).map((item) => (
-            <label key={item.id} className={checkboxItem}>
+        <section className={options} style={{ position: position === 'absolute' ? 'absolute' : 'relative' }}>
+          <input
+            type="search"
+            className={`inputField ${search_box}`}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery}
+            placeholder="ابحث"
+          />
+          <div style={{marginTop: "1rem"}}>
+            {/*<LoadingIndicator progress={loadingProgress} />*/}
+            {(filteredData ? filteredData : data).map((item) => (
+              <label key={item.id} className={checkboxItem}>
               <span
                 className={`${checkmark}  ${
                   !disabled && selectedChoices.includes(item.id) ? checked : ""
                 } `}
               ></span>
-              <input
-                type="checkbox"
-                className={checkboxInput}
-                value={item.id}
-                {...register(name)}
-                onClick={onClickHandler}
-                checked={selectedChoices.includes(item.id)}
-                disabled={disabled}
-              />
-              <span className={checkboxLabel}>{item.name}</span>
-            </label>
-          ))}
+                <input
+                  type="checkbox"
+                  className={checkboxInput}
+                  value={item.id}
+                  {...register(name)}
+                  onClick={onClickHandler}
+                  checked={selectedChoices.includes(item.id)}
+                  disabled={disabled}
+                />
+                <span className={checkboxLabel}>{item.codename ? item.codename : item.name}</span>
+              </label>
+            ))}
+          </div>
         </section>
       )}
     </article>

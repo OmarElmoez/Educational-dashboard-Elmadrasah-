@@ -60,7 +60,7 @@ export const AddEmployeeSchema = z.object({
   hire_date: z.string().optional(),
 
   initial_students: z.array(z.string()),
-  link: z.string().optional(),
+  initial_location: z.string().optional(),
   employee_wage: z.string().optional(),
   work_wage: z.string().optional(),
   calendar_color: z.string().optional(),
@@ -78,7 +78,13 @@ export const AddEmployeeSchema = z.object({
   // send_welcome_email: z.boolean().optional(),
   user_account: z.boolean(),
   is_superuser: z.boolean().optional(),
-});
+  user_permissions_id: z.array(z.string()).optional(),
+  groups_id: z.array(z.string()).optional(),
+})
+  .transform(data => ({
+    ...data,
+    gender: data.title === 'Mr' ? 'Male' : 'Female',
+  }))
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
 
@@ -86,7 +92,9 @@ type TKeysToOmit =
   | "default_subject"
   | "subject_choices"
   | "is_active"
-  | "initial_students";
+  | "initial_students"
+  | "user_permissions_id"
+  | "groups_id"
 
 export type TAddEmployeeFormDataForServer = Omit<
   TAddEmployeeFormData,
@@ -96,4 +104,6 @@ export type TAddEmployeeFormDataForServer = Omit<
   subject_choices: Array<number>;
   initial_students: number[];
   is_active: boolean;
+  user_permissions_id?: number[];
+  groups_id?: number[];
 };

@@ -47,6 +47,21 @@ const END_POINTS = {
     url: `/customer/families?paginate=false`,
     placeholder: "  العائلة",
   },
+
+  permissions: {
+    url: '/employee/permission/',
+    placeholder: "الصلاحيات"
+  },
+
+  user_permissions_id: {
+    url: '/employee/permission/',
+    placeholder: "الصلاحيات"
+  },
+
+  groups_id: {
+    url: "/employee/group/",
+    placeholder: "الدور الوظيفي"
+  }
  
 };
 

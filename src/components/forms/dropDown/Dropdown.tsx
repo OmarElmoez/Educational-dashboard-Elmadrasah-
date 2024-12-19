@@ -1,27 +1,31 @@
-import { FieldValues } from "react-hook-form";
-import { TDropdownProps } from "@/types/Dropdown";
+import {FieldValues} from "react-hook-form";
+import {TDropdownProps} from "@/types/Dropdown";
 import React from "react";
-import { useAppDispatch } from "@/store/hooks";
-import { setChosenState } from "@/store/location/LocationSlice";
+import {useAppDispatch} from "@/store/hooks";
+import {setChosenState} from "@/store/location/LocationSlice";
 import styles from "./dropDown.module.css";
 
-const { feedback } = styles;
+const {feedback} = styles;
 
 const Dropdown = <T extends FieldValues, U extends string>({
-  name,
-  options,
-  chosen,
-  register,
-  label,
-  error,
-  isRequired,
-  subjectRef,
-  isWithPopup = false,
-  disabled = false,
-  children = null,
-  handleChange,
-}: TDropdownProps<T, U>) => {
+                                                             name,
+                                                             options,
+                                                             chosen,
+                                                             register,
+                                                             label,
+                                                             error,
+                                                             isRequired,
+                                                             subjectRef,
+                                                             isWithPopup = false,
+                                                             disabled = false,
+                                                             children = null,
+                                                             handleChange,
+                                                           }: TDropdownProps<T, U>) => {
   const chosenValue = options?.find((option) => option.value === chosen)?.value;
+
+  if (name === "default_subject") {
+    console.log('options for subjects from dropdown: ', options);
+  }
 
   const dispatch = useAppDispatch();
 
@@ -60,7 +64,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
           //   )
           // }
         >
-          <option value="">--اختر--</option>          
+          <option value="">--اختر--</option>
           {options?.map((option, index) => (
             <option key={`${option.value}-${index}`} value={option.value}>
               {option.label}

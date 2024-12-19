@@ -5,6 +5,7 @@ const AdminHomePage = lazy(() => import('./HomePage'))
 const AdminTeachersPage = lazy(() => import('./Teachers'));
 const AdminReportsPage = lazy(() => import('./Reports'));
 const AdminStudentsPage = lazy(() => import('./Students'));
+const AdminRolesPage = lazy(() => import('./roles/Roles'));
 // FORMS
 const AddEmployeeForm = lazy(() => import("./forms/AddEmployeeForm"));
 const AddTeacherForm = lazy(() => import('./forms/AddTeacherForm'));
@@ -25,7 +26,8 @@ const InvoiceDetails = lazy(() => import('./lists/invoice/InvoiceDetails'));
 const GeneralUnscheduledLists = lazy(() => import('./lists/Unscheduled/GeneralUnscheduledLists'));
 const UnscheduledList = lazy(() => import('./lists/Unscheduled/UnscheduledList'));
 const UnscheduledFamilyList = lazy(() => import('./lists/Unscheduled/UnscheduledFamilyList'));
-const GeneralScheduledEmployeesLists = lazy(() => import('./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists'));
+const GeneralScheduledEmployeesLists = lazy(
+  () => import('./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists'));
 const SchedulingErrorsTableList = lazy(() => import('./lists/ScheduledEmployeesLists/ScheduledErrorsTableList'));
 
 
@@ -54,4 +56,5 @@ export {
   UnscheduledFamilyList,
   GeneralScheduledEmployeesLists,
   SchedulingErrorsTableList,
+  AdminRolesPage,
 };
