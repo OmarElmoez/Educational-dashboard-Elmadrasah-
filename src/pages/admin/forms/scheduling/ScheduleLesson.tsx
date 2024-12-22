@@ -102,7 +102,6 @@ const ScheduleLesson = () => {
     if (id && credit) {
       dispatch(actGetScheduleLessonData({id, credit})).unwrap()
       .then((res) => {
-        console.log('from get schedule lesson', res)
         setCustomerData(res);
         setValue('lesson_credit', credit)
       })
@@ -560,7 +559,7 @@ const ScheduleLesson = () => {
             type="button"
             className="btn cancel-btn"
             onClick={() => {
-              console.log(errors)
+              reset()
             }}
           >
             يُلغي

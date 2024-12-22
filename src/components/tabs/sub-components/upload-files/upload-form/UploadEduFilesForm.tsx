@@ -133,7 +133,6 @@ const UploadEduFilesForm = ({
     if (isEdit && classId) {
       setLoading(true)
       actEditLessonFileName(classId, editFileId, data.title).then((res) => {
-        console.log('from edit action: ', res)
         openFeedbackModal('succeeded', 'تم التعديل بنجاح');
         reset();
         onClose();

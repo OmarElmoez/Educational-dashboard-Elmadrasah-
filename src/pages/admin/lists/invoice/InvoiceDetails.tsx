@@ -207,7 +207,6 @@ const InvoiceDetails: React.FC = () => {
       .unwrap()
       .then((data) => {          
         if (data) {
-          console.log('from invoice details: ', data)
           setDetails(data);
           setFinalAmount(data?.amount_due);
           setAllocationsPay(data?.payment_allocations);

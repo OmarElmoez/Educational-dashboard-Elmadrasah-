@@ -77,7 +77,6 @@ const InvoiceApproveForm = ({
     )
     .unwrap()
     .then((res) => {
-      console.log('from approve invoice: ', res)
       if (res !== "Invoice already paid or not approved for pay.") {
         openFeedbackModal("succeeded", "تم الدفع بنجاح");
         navigate('/admin/calendar/all-unscheduled-list')

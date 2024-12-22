@@ -178,7 +178,6 @@ const RescheduleLesson = () => {
   const teachersOptions = removeDuplicates(customerData?.leadflow_data[0].teachers);
 
   const onSubmit = (data: TScheduleLessonFormData) => {
-    console.log('submitted data: ', data)
     const scheduledClasses = data.subjects.reduce(
       (total: number, subject: any) => {
         return total + Number(subject.count);
@@ -603,8 +602,7 @@ const RescheduleLesson = () => {
             type="button"
             className="btn cancel-btn"
             onClick={() => {
-              console.log('days value: ', control._getWatch('days'))
-              console.log(errors)
+              reset()
             }}
           >
             يُلغي

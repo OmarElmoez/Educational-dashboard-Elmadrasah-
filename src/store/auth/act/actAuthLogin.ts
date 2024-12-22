@@ -30,7 +30,6 @@ const actAuthLogin = createAsyncThunk(
         formData
       );
 
-      console.log('response form auth action: ', response)
       return response.data || response;
 
     } catch (error) {

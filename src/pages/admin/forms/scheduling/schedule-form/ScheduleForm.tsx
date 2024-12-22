@@ -156,9 +156,7 @@ const ScheduleForm = <T extends FieldValues>({
                   value={day.label}
                   checked={formattedSelectedDays?.includes(day.label)}
                   onChange={(e) => {
-                    console.log('from on change', weekDays)
                     if (weekDays.includes(e.target.value)) {
-                      console.log('checked', e.target)
                       setWeekDays((prev) =>
                         prev.filter((val) => val !== day.label)
                       );

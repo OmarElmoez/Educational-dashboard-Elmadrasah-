@@ -37,7 +37,6 @@ const CurrentHour = () => {
         setCurrentHourData(res)
       })
     } else {
-      console.log('from else condition: ');
       getLessonsStatusForCurrentHour().then((res: TLessonForCurrentHour) => {
         setCurrentHourData(res);
       })
