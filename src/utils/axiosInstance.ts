@@ -3,7 +3,7 @@ import store from "@/store";
 import axiosErrorHandler from "./axiosErrorHandler";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_PRO_SERVER,
+  baseURL: import.meta.env.VITE_URL_SERVER,
   headers: {
     "Content-Type": "application/json",
   },
