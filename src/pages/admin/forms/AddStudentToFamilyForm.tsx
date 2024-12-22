@@ -99,13 +99,17 @@ const AddStudentToFamilyForm = () => {
       })
     )
       .unwrap()
-      .then(() => {
-        openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
-        reset()
-        setRemovePreviewChoices(true)
-      })
+    .then((res) => {
+      if (typeof res === 'string') {
+        openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
+        return;
+      }
+      openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+      reset()
+      setRemovePreviewChoices(true)
+    })
       .catch((error) => {
-        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
+        openFeedbackModal("failed", error);
       });
   };
 

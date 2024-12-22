@@ -32,7 +32,7 @@ const EMPLOYEE_TITLES = [
   },
   {
     label: "Ms",
-    value: "Ms",
+    value: "Mrs",
   },
 ];
 

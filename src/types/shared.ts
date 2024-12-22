@@ -34,6 +34,7 @@ type TModalRef = {
 type TResponseOption = {
   id: number;
   name: string;
+  codename?: string;
 };
 
 type TService = "charges" | "packages" | "lessons";

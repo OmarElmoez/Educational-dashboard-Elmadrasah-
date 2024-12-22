@@ -95,9 +95,6 @@ const DropdownWithSearch = <T extends FieldValues>({
             value={searchQuery}
             placeholder="ابحث"
           />
-          <div>
-
-          </div>
           <div className={options_box}>
             {(searchResults.length > 0 ? searchResults : options).map(
               (result, index) => (

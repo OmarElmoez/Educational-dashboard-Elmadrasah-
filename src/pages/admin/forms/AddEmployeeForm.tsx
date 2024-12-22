@@ -2,68 +2,57 @@ import {
   AddNewSubjectModal,
   CircleLoadingIndecator,
   CountriesDropdown,
-  Dropdown, DropdownWithSearch,
+  Dropdown,
+  DropdownWithSearch,
+  InputField,
   MultiChoices,
   PhoneField,
   Row,
   SingleCheckbox,
-  UploadFile,
-  InputField
+  UploadFile
 } from "@/components";
-import { Heading } from "@/components/UI";
+import {Heading} from "@/components/UI";
 import {
-  STATUS_OPTIONS,
   EMPLOYEE_TITLES,
   EMPLOYEE_TYPES,
   INITIAL_CALENDAR_COLOR,
-  TIMEZONES_OPTIONS,
   RADIO_FIELDS_FOR_CALENDAR,
+  STATUS_OPTIONS,
+  TIMEZONES_OPTIONS,
 } from "@/constants";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetCountries } from "@/store/location/LocationSlice";
-import {
-  AddEmployeeSchema,
-  TAddEmployeeFormData,
-  TAddEmployeeFormDataForServer,
-} from "@/schemas/AddEmployeeSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {actGetCountries} from "@/store/location/LocationSlice";
+import {AddEmployeeSchema, TAddEmployeeFormData, TAddEmployeeFormDataForServer,} from "@/schemas/AddEmployeeSchema";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useEffect, useRef, useState} from "react";
+import {useFieldArray, useForm} from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import {
-  DAYS_OPTIONS,
-  WAGE_TYPES,
-  WORK_WAGE_TYPES,
-} from "@/constants/dropdown-options";
-import { TModalRef } from "@/types/shared";
-import {
-  CalendarSettingsForm,
-  NotificationForm,
-} from "@/components/mini-forms";
+import {DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES,} from "@/constants/dropdown-options";
+import {TModalRef} from "@/types/shared";
+import {CalendarSettingsForm, NotificationForm,} from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
-import {
-  actGetDropdownOptions,
-  actSendDataToServer,
-} from "@/store/single-actions";
-import { useFeedback } from "@/store/context";
+import {actGetDropdownOptions, actSendDataToServer,} from "@/store/single-actions";
+import {useFeedback} from "@/store/context";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
-  const { countries, cities, states, chosenState, chosenRegion } =
+  const {user} = useAppSelector((state) => state.auth);
+  const {countries, cities, states, chosenState, chosenRegion} =
     useAppSelector((state) => state.location);
 
-  const { openFeedbackModal } = useFeedback();
+  const {openFeedbackModal} = useFeedback();
 
   // const [choices, setChoices] = useState<TOption[]>([]);
-  const { subjects } = useAppSelector((state) => state.formSubjects);
+  const {subjects} = useAppSelector((state) => state.formSubjects);
+
+  const [removePreviewChoices, setRemovePreviewChoices] = useState(false)
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
     setValue,
     reset,
     watch,
@@ -72,19 +61,14 @@ const AddEmployeeForm = () => {
     resolver: zodResolver(AddEmployeeSchema),
     defaultValues: {
       availabilities: [
-        { day: "", start_time: "", end_time: "", description: "" },
+        {day: "", start_time: "", end_time: "", description: ""},
       ], // Start with one entry
       calendar_color: INITIAL_CALENDAR_COLOR,
       subject_choices: [],
       initial_students: [],
-      // calendar_setting: "",
-      // calendar_color_by: "",
-      // sms_lesson_reminders: false,
-      // email_lesson_reminders: false,
-      // whatsapp_reminders: false,
-      // app_reminders: false,
-      // web_reminders: false,
-      link: "",
+      groups_id: [],
+      user_permissions_id: [],
+      initial_location: "",
       wage_type: "",
       work_wage_type: "",
       default_subject: null,
@@ -96,13 +80,13 @@ const AddEmployeeForm = () => {
   const isTeacher = watch("include_as_teacher");
   const employType = watch("employee_type");
 
-  const { fields, append, remove } = useFieldArray({
+  const {fields, append, remove} = useFieldArray({
     control,
     name: "availabilities",
   });
 
   const handleAdd = () => {
-    append({ start_time: "", end_time: "", description: "" });
+    append({start_time: "", end_time: "", description: ""});
   };
   const handleRemove = (index: number) => {
     remove(index); // Removes field at the specified index
@@ -149,6 +133,8 @@ const AddEmployeeForm = () => {
         parseInt(student)
       ),
       is_active: data["is_active"] === "true",
+      user_permissions_id: data['user_permissions_id'] ? data['user_permissions_id'].map(item => Number(item)) : [],
+      groups_id: data['groups_id'] ? data['groups_id'].map(item => Number(item)) : []
     };
 
     dispatch(
@@ -158,13 +144,19 @@ const AddEmployeeForm = () => {
         purpose: "add_employee",
       })
     )
-      .unwrap()
-      .then(() => {
-        openFeedbackModal("succeeded", "تم اضافة الموظف بنجاح!");
-      })
-      .catch((error) => {
-        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
-      });
+    .unwrap()
+    .then((res) => {
+      if (typeof res === 'string') {
+        openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
+        return;
+      }
+      openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+      reset()
+      setRemovePreviewChoices(true)
+    })
+    .catch((error) => {
+      openFeedbackModal("failed", error);
+    });
   };
   useEffect(() => {
     if (countries.length === 0) {
@@ -174,7 +166,7 @@ const AddEmployeeForm = () => {
 
   useEffect(() => {
     dispatch(
-      actGetDropdownOptions({ optionsFor: "subjects" })
+      actGetDropdownOptions({optionsFor: "subjects"})
     );
   }, [dispatch, user?.token]);
 
@@ -185,9 +177,9 @@ const AddEmployeeForm = () => {
 
   return (
     <>
-      <AddNewSubjectModal ref={addNewSubjectRef} />
+      <AddNewSubjectModal ref={addNewSubjectRef}/>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Heading text="نوع الموظف" />
+        <Heading text="نوع الموظف"/>
 
         <Row>
           <Dropdown
@@ -379,13 +371,13 @@ const AddEmployeeForm = () => {
           />
         </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
         <span className="mainContainer">
-          <Heading text="المرفقات" />{" "}
+          <Heading text="المرفقات"/>{" "}
           <span
             className="required"
-            style={{ position: "relative", top: "0px" }}
+            style={{position: "relative", top: "0px"}}
           ></span>
         </span>
 
@@ -453,9 +445,9 @@ const AddEmployeeForm = () => {
           />
         </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
-        <Heading text="المواد" />
+        <Heading text="المواد"/>
 
         <Row>
           <MultiChoices
@@ -464,14 +456,15 @@ const AddEmployeeForm = () => {
             isRequired
             disabled={!isTeacher && employType === "Staff"}
             error={errors.subject_choices?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <article className="group"></article>
         </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
-        <Heading text="تفاصيل التوظيف" />
+        <Heading text="تفاصيل التوظيف"/>
 
         <Row>
           <InputField
@@ -551,7 +544,9 @@ const AddEmployeeForm = () => {
             subjectRef={addNewSubjectRef}
             error={errors.default_subject?.message as string}
           />
-
+          {/*<DropdownWithSearch label="الموضوع" name="default_subject" register={register} optionsFor="subjects"*/}
+          {/*                    setValue={setValue}/>*/}
+          {/*<p>{subjects.map(item => item.label)}</p>*/}
           <InputField
             label="معلومات إضافية"
             placeholder="اكتب معلوماتك الإضافية"
@@ -562,11 +557,11 @@ const AddEmployeeForm = () => {
           />
         </Row>
 
-        <hr className="hr" />
-        <Heading text="مواقيت العمل" />
+        <hr className="hr"/>
+        <Heading text="مواقيت العمل"/>
         <>
           {fields.map((field, index) => (
-            <Row key={field.id} style={{ alignItems: "center" }}>
+            <Row key={field.id} style={{alignItems: "center"}}>
               <Dropdown
                 label="حدد اليوم"
                 isRequired
@@ -617,7 +612,7 @@ const AddEmployeeForm = () => {
               {index > 0 ? (
                 <div className="mainContainer">
                   <button type="button" onClick={() => handleRemove(index)}>
-                    <CloseButton />
+                    <CloseButton/>
                   </button>
                   <button
                     className="add-action-btn mr-1"
@@ -628,7 +623,7 @@ const AddEmployeeForm = () => {
                   </button>
                 </div>
               ) : (
-                <div style={{ alignItems: "center" }}>
+                <div style={{alignItems: "center"}}>
                   <button
                     className="add-action-btn"
                     type="button"
@@ -641,7 +636,7 @@ const AddEmployeeForm = () => {
             </Row>
           ))}
 
-          <br />
+          <br/>
           <span className="helper-text">
             * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
             بشكل عام هنا.
@@ -652,8 +647,8 @@ const AddEmployeeForm = () => {
           </span>
         </>
 
-        <hr className="hr" />
-        <Heading text="رابط موقع المعلم" />
+        <hr className="hr"/>
+        <Heading text="رابط موقع المعلم"/>
         <Row>
           {/*<InputField*/}
           {/*  label="رابط الموقع URL"*/}
@@ -665,15 +660,15 @@ const AddEmployeeForm = () => {
           {/*  error={errors.link?.message as string}*/}
           {/*/>*/}
 
-          <DropdownWithSearch label="الموقع الأفتراضي" name="link" register={register} optionsFor="locations"
+          <DropdownWithSearch label="الموقع الأفتراضي" name="initial_location" register={register} optionsFor="locations"
                               setValue={setValue}/>
 
           <article className="group"></article>
         </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
-        <Heading text="الطلاب المعينون" />
+        <Heading text="الطلاب المعينون"/>
 
         <Row>
           <MultiChoices
@@ -681,12 +676,13 @@ const AddEmployeeForm = () => {
             name="initial_students"
             disabled={!isTeacher && employType === "Staff"}
             error={errors.initial_students?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <article className="group"></article>
         </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
         <CalendarSettingsForm
           register={register}
@@ -696,12 +692,42 @@ const AddEmployeeForm = () => {
           fields={RADIO_FIELDS_FOR_CALENDAR}
         />
 
-        <NotificationForm register={register} />
+        <NotificationForm register={register}/>
+
+        <hr className="hr"/>
+
+        <Heading text="إضافة صلاحيات"/>
+        <Row>
+          <MultiChoices
+            register={register}
+            name="groups_id"
+            isRequired
+            error={errors.groups_id?.message as string}
+            removePreviewChoices={removePreviewChoices}
+            position="relative"
+          />
+          <article className="group"></article>
+        </Row>
+
+        <hr className="hr"/>
+
+        <Heading text="إضافة صلاحيات خاصة"/>
+        <Row>
+          <MultiChoices
+            register={register}
+            name="user_permissions_id"
+            isRequired
+            error={errors.user_permissions_id?.message as string}
+            removePreviewChoices={removePreviewChoices}
+            position="relative"
+          />
+          <article className="group"></article>
+        </Row>
 
         <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
             {isSubmitting ? (
-              <CircleLoadingIndecator size={16} color="#fff" />
+              <CircleLoadingIndecator size={16} color="#fff"/>
             ) : (
               " حفظ"
             )}
@@ -710,6 +736,7 @@ const AddEmployeeForm = () => {
             type="button"
             onClick={() => {
               reset();
+              setRemovePreviewChoices(true);
             }}
             className="btn cancel-btn"
           >

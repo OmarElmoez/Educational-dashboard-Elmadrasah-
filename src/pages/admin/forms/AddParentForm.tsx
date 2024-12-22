@@ -65,10 +65,14 @@ const AddParentForm = () => {
       })
     )
       .unwrap()
-      .then(() => {
-        openFeedbackModal("succeeded", "تم اضافة العائلة بنجاح!");
-        reset()
-      })
+    .then((res) => {
+      if (typeof res === 'string') {
+        openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
+        return;
+      }
+      openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
+      reset()
+    })
       .catch((error) => {
         openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error);
       });

@@ -14,21 +14,22 @@ type TActGetDropdownOptionsProps = {
 
 const actGetDropdownOptions = createAsyncThunk(
   "getDropdownOptions",
-  async ({ optionsFor, searchQuery }: TActGetDropdownOptionsProps, thunkAPI) => {
+  async ({ optionsFor, searchQuery = '' }: TActGetDropdownOptionsProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
       let url = DROPDOWN_END_POINTS[optionsFor];
+
       if ((optionsFor === 'teachers' || optionsFor === 'customers') && searchQuery !== '') {
         url = `${DROPDOWN_END_POINTS[optionsFor]}&first_name=${searchQuery}`;
       }
 
       if ((optionsFor === 'locations' || optionsFor === 'subjects') && searchQuery !== '') {
         url = `${DROPDOWN_END_POINTS[optionsFor]}&search=${searchQuery}`;
+        console.log('url from dropdown action: ', url);
       }
 
       const response = await axiosInstance.get<TResponse>(url);
-
       return response.data.map((option) => {
           return {
               label: option.name,

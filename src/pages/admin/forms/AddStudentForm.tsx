@@ -104,13 +104,16 @@ const AddStudentForm = () => {
       .unwrap()
       .then((res) => {
         if (typeof res === 'string') {
-          openFeedbackModal('failed', res);
+          openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
           return;
         }
         openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
         reset()
         setRemovePreviewChoices(true)
       })
+    .catch((error) => {
+      openFeedbackModal("failed", error);
+    });
   };
 
   useEffect(() => {

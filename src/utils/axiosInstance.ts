@@ -1,7 +1,7 @@
 import axios from "axios";
 import store from "@/store";
 import axiosErrorHandler from "./axiosErrorHandler";
-// dynamically get url************
+
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_PRO_SERVER,
   headers: {

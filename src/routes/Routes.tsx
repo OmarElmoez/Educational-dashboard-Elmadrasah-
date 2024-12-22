@@ -31,6 +31,7 @@ import {
   RescheduleLesson,
   ScheduleLesson,
   StudentsList,
+  AdminRolesPage,
 } from "@/pages/admin";
 import {TeacherClassesPage, TeacherHomePage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyHomePage, FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
@@ -288,6 +289,10 @@ const router = createBrowserRouter([
         element: <PageSuspense>
           <ScheduledErrorsTableList/>
         </PageSuspense>,
+      },
+      {
+        path: 'roles',
+        element: <PageSuspense><AdminRolesPage /></PageSuspense>
       },
       {
         path: '*',
