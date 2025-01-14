@@ -1,3 +1,5 @@
+import {TUserRole} from "@/types/shared.ts";
+
 export type TUser = {
   id: number;
   first_name: string;
@@ -11,6 +13,7 @@ export type TUser = {
   message: string;
   status: number;
   new_notification: number;
+  user_type: TUserRole
 };
 
 export type TUserStatistics = {
