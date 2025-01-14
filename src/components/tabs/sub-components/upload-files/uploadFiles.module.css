@@ -17,11 +17,6 @@
   gap: 0.8rem;
 }
 
-.modal_header {
-  font-weight: 500;
-  font-size: 2rem;
-}
-
 .files_container {
   margin-top: 2.4rem;
   display: grid;

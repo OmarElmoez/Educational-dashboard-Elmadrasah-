@@ -33,7 +33,6 @@ const {
   balance_left,
   balance_right,
   balance_right_header,
-  search_bar,
   filter_button,
   link_item,
   divider,
@@ -111,7 +110,7 @@ const PackageBalanceList = () => {
             <h3>أرصدة الاشتراكات ( {allDataCount})</h3>
 
             <Row style={{gap: '1.6rem'}}>
-              <DebounceSearchBox classNames={search_bar} handleSearch={handleSearch} />
+              <DebounceSearchBox handleSearch={handleSearch} />
               {/* 
               <div className={search_bar}>
 

@@ -33,7 +33,6 @@ const {
   tab_button,
   active_tab_button,
   header_filter,
-  search_bar,
   filter_button,
   link_item,
   divider,
@@ -122,7 +121,7 @@ const GeneralUnscheduledLists = () => {
             </Row>
 
             <div className={header_filter}>
-              <DebounceSearchBox classNames={search_bar} handleSearch={handleSearch} />
+              <DebounceSearchBox handleSearch={handleSearch} />
 
               <button
                 className={filter_button}

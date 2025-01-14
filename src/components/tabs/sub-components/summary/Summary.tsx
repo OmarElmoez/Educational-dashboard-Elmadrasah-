@@ -35,7 +35,7 @@ export type TTrackFromServer = {
   }[]
 }
 
-const Summary = ({classId}: {classId: string}) => {
+const Summary = ({classId}: { classId: string }) => {
 
   const {credintials} = useAppSelector(state => state.auth);
 
@@ -57,10 +57,9 @@ const Summary = ({classId}: {classId: string}) => {
 
   return (
     <>
-      <BasicModal ref={addTrackRef} borderBottom={false} header={
-        <Heading text="إضافة مسار جديد" style={{ fontSize: "2rem", margin: "0" }} />
-      }>
-        <AddTrackForm addNewTrack={afterAddNewTrack} />
+      <BasicModal ref={addTrackRef} borderBottom={false} headerText="إضافة مسار جديد"
+                  headerTextStyle={{fontWeight: "500", fontSize: "2rem"}}>
+        <AddTrackForm addNewTrack={afterAddNewTrack}/>
       </BasicModal>
       <section>
         <p className='tab_description' style={{marginTop: "1.2rem"}}>نظرة عامة سريعة علي تقدم الطالب والدورات
@@ -69,10 +68,11 @@ const Summary = ({classId}: {classId: string}) => {
         <div className={summary_header}>
           <Heading text="مسار التعلم المخصص" style={{margin: "0"}}/>
 
-          {(credintials?.role === 'Teacher' || credintials?.role === 'Admin') && <Button onClick={() => addTrackRef.current?.open()}>
-              <AddIcon/>
-              <span>إضافة مسار</span>
-          </Button>}
+          {(credintials?.role === 'Teacher' || credintials?.role === 'Admin') &&
+              <Button onClick={() => addTrackRef.current?.open()}>
+                  <AddIcon/>
+                  <span>إضافة مسار</span>
+              </Button>}
         </div>
 
         {tracks?.length > 0 && (

@@ -30,7 +30,6 @@ const GeneralScheduledEmployeesLists = lazy(
   () => import('./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists'));
 const SchedulingErrorsTableList = lazy(() => import('./lists/ScheduledEmployeesLists/ScheduledErrorsTableList'));
 
-
 export {
   AdminClassesPage,
   AdminHomePage,

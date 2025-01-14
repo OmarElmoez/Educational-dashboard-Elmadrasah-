@@ -1,16 +1,12 @@
-.searchSection {
-  background-color: #f1f1f166;
-  border-radius: 10px;
-  padding: 1.6rem 1rem;
-}
-
 .searchBox {
   position: relative;
-  padding: 1rem 2.4rem;
+  padding: 1rem 1.6rem;
   border-radius: 8px;
   display: block;
   background-color: #fff;
-
+  border: 1px solid #c3c3c3;
+  height: 48px;
+  max-width: 100%;
 }
 
 .searchBox::before {
@@ -23,5 +19,12 @@
 .searchInput {
   background-color: transparent;
   width: 100%;
-  text-indent: 2rem;
+  text-indent: 2.5rem;
+}
+
+.searchSection {
+  background-color: #f1f1f166;
+  border-radius: 10px;
+  padding: 1.6rem 1rem;
+  height: 100vh;
 }

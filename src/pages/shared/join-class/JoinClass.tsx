@@ -103,7 +103,7 @@ const JoinClass = () => {
   }
 
   const onEndLesson = () => {
-      lessonHandler('end')
+    lessonHandler('end')
     if (["Teacher", "Student"].includes(credintials?.role as string)) {
       openReviewForm()
     }
@@ -111,7 +111,7 @@ const JoinClass = () => {
 
   return (
     <>
-      <ReviewForm ref={reviewRef} lesson_id={lessonData?.id} />
+      <ReviewForm ref={reviewRef} lesson_id={lessonData?.id}/>
       <div style={{textAlign: 'center'}}>
         <HeroImg/>
       </div>
@@ -133,21 +133,22 @@ const JoinClass = () => {
           <section className={student_classes}>
             <Heading text="حصص الطالب" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
 
-            <ProgressBar width="65%" />
+            <ProgressBar width="65%"/>
             <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم 65%</p>
           </section>
 
           <section className={lesson_actions}>
             {((isTeacher && lessonData?.can_join) || (!isTeacher && lessonData?.participants[0].can_join)) &&
-                <button onClick={() => lessonHandler("start")}>
+                <button onClick={() => lessonHandler("start")}
+                        style={{backgroundColor: lessonData?.can_join === false ? "var(--gray-color)" : "var(--main-color)"}}>
                     <VideoCamIcon/>
                     <span>بدأ الدرس</span>
                 </button>}
 
-            <button onClick={onEndLesson}>
-              <PhoneHangUpIcon/>
-              <span>إنهاء الدرس</span>
-            </button>
+            {!lessonData?.can_join && <button onClick={onEndLesson}>
+                <PhoneHangUpIcon/>
+                <span>إنهاء الدرس</span>
+            </button>}
           </section>
         </Card>
 

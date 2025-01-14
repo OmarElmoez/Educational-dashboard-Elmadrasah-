@@ -15,7 +15,7 @@ import {useFeedback} from "@/store/context";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import getFileIcon from "@/utils/getFileIcon.tsx";
 
-const {action_box, modal_header, files_container, uploaded_by, file_action_box, file_dateInfo} = styles;
+const {action_box, files_container, uploaded_by, file_action_box, file_dateInfo} = styles;
 
 const UPLOADED_BY_CASES = {
   Admin: 'الادمن',
@@ -24,7 +24,7 @@ const UPLOADED_BY_CASES = {
   Teacher: "المعلم"
 }
 
-const UploadFiles = ({classId}: {classId: string}) => {
+const UploadFiles = ({classId}: { classId: string }) => {
 
   const uploadFileRef = useRef<TModalRef>(null);
 
@@ -93,9 +93,8 @@ const UploadFiles = ({classId}: {classId: string}) => {
 
   return (
     <>
-      <BasicModal ref={uploadFileRef} header={
-        <h3 className={modal_header}>{editFile.isEdit ? "تعديل عنوان الملف" : "رفع ملف جديد"}</h3>
-      } borderBottom={false}>
+      <BasicModal ref={uploadFileRef} headerText={editFile.isEdit ? "تعديل عنوان الملف" : "رفع ملف جديد"}
+                  headerTextStyle={{fontWeight: "500", fontSize: "2rem"}} borderBottom={false}>
         {!editFile.isEdit && <p className='modal_desc'>قم بتحميل مواد الدراسة أو الملاحظات الخاصة بك هنا</p>}
         <UploadEduFilesForm afterUploadNewFile={afterUploadNewFile} isEdit={editFile.isEdit}
                             editFileId={editFile.fileId} onClose={() => uploadFileRef.current?.close()}
@@ -125,7 +124,7 @@ const UploadFiles = ({classId}: {classId: string}) => {
             return (
               <li key={file.id}>
                 <div style={{display: "flex", alignItems: "center", gap: "0.8rem"}}>
-                  <p style={{ minWidth: "1.6rem" }}>{FileIcon}</p>
+                  <p style={{minWidth: "1.6rem"}}>{FileIcon}</p>
                   <p style={{display: "grid", gap: "0.4rem"}}>
                     <span style={{color: "#000"}}>{file.title}</span>
                     <span className={file_dateInfo}>{formatFullArabicDate(file.uploaded_at)}</span>
@@ -161,7 +160,7 @@ const UploadFiles = ({classId}: {classId: string}) => {
                               <span style={{color: "#F64E60"}}>حذف</span>
                           </button>
                       </>
-                }
+                  }
 
                 </div>
               </li>

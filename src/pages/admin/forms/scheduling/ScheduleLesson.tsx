@@ -205,8 +205,8 @@ const ScheduleLesson = () => {
 
   return (
     <>
-      <BasicModal ref={scheduleRef}>
-        <h2 className="modal__title">ضبط إعادة التكرار</h2>
+      <BasicModal ref={scheduleRef} headerText="ضبط إعادة التكرار"
+                  headerTextStyle={{fontSize: "1.8rem", fontWeight: "500"}}>
         <ScheduleForm
           className="modal__form"
           onClose={() => scheduleRef.current?.close()}
@@ -345,18 +345,19 @@ const ScheduleLesson = () => {
             />}
 
             {customerData?.subjects.length === 0 &&
-                <DropdownWithSearch register={register} name={`subjects.${index}.subject`} setValue={setValue} label="المادة"
-                                    optionsFor="subjects" />
-                }
+                <DropdownWithSearch register={register} name={`subjects.${index}.subject`} setValue={setValue}
+                                    label="المادة"
+                                    optionsFor="subjects"/>
+            }
 
-              <InputField
-                label="عدد الحصص"
-                placeholder="4"
-                register={register}
-                name={`subjects.${index}.student_credit`}
-                error={errors.subjects?.[index]?.student_credit?.message as string}
-                type="number"
-                />
+            <InputField
+              label="عدد الحصص"
+              placeholder="4"
+              register={register}
+              name={`subjects.${index}.student_credit`}
+              error={errors.subjects?.[index]?.student_credit?.message as string}
+              type="number"
+            />
             {/*<button*/}
             {/*  type="button"*/}
             {/*  style={{marginTop: "1rem"}}*/}
@@ -367,7 +368,7 @@ const ScheduleLesson = () => {
             {/*  <CloseButton/>*/}
             {/*</button>*/}
           </Row>
-          ))}
+        ))}
         {/*<button*/}
         {/*  style={{display: "block", marginRight: "auto"}}*/}
         {/*  className="add-action-btn"*/}

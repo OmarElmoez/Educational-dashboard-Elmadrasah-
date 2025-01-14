@@ -1,12 +1,4 @@
-import {
-  BasicModal,
-  Dropdown,
-  DropdownWithSearch,
-  InputField,
-  // MultiChoices,
-  RadioButtonsGroup,
-  Row,
-} from "@/components";
+import {BasicModal, Dropdown, DropdownWithSearch, InputField, RadioButtonsGroup, Row,} from "@/components";
 import {Heading} from '@/components/UI'
 import {TIMEZONES_OPTIONS} from "@/constants";
 import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
@@ -148,7 +140,7 @@ const RescheduleLesson = () => {
         if (typeof res === 'string') {
           openFeedbackModal("failed", `${res}`)
         } else {
-        setPreviousData(res);
+          setPreviousData(res);
           setCustomerData(res);
         }
       });
@@ -253,8 +245,8 @@ const RescheduleLesson = () => {
 
   return (
     <>
-      <BasicModal ref={scheduleRef}>
-        <h2 className="modal__title">ضبط إعادة التكرار</h2>
+      <BasicModal ref={scheduleRef} headerText="ضبط إعادة التكرار"
+                  headerTextStyle={{fontSize: "1.8rem", fontWeight: "500"}}>
         <ScheduleForm
           className="modal__form"
           onClose={() => scheduleRef.current?.close()}
@@ -298,25 +290,25 @@ const RescheduleLesson = () => {
           {/*    predefinedDays={predefinedDays}*/}
           {/*/>*/}
           {/*}*/}
-            <article className="group">
+          <article className="group">
             <span className="adminFormLabel">الايام</span>
-              <section
-                className="inputField"
-                style={{display: "flex", gap: "1rem", flexWrap: "wrap", paddingBlock: "0.7rem"}}
-              >
-                {customerData?.leadflow_data[0].days.map((day) => {
-                    return (
-                      <span
-                        style={previewTeacherStyle}
-                        key={day.id}
-                      >
+            <section
+              className="inputField"
+              style={{display: "flex", gap: "1rem", flexWrap: "wrap", paddingBlock: "0.7rem"}}
+            >
+              {customerData?.leadflow_data[0].days.map((day) => {
+                  return (
+                    <span
+                      style={previewTeacherStyle}
+                      key={day.id}
+                    >
                         {day.name}
                       </span>
-                    );
-                  }
-                )}
-              </section>
-            </article>
+                  );
+                }
+              )}
+            </section>
+          </article>
 
           <InputField
             label="الفترة"
@@ -476,7 +468,8 @@ const RescheduleLesson = () => {
                 </section>
               </article>
               <article className="group"></article>
-            </> : (selectedTeachersType === '' || selectedTeachersType === 'true') ? (<span className="error">لا يوجد مدرسين</span>) : ''
+            </> : (selectedTeachersType === '' || selectedTeachersType === 'true') ? (
+              <span className="error">لا يوجد مدرسين</span>) : ''
           }
         </Row>
 
@@ -584,7 +577,8 @@ const RescheduleLesson = () => {
           <button type="submit" className="btn submit-btn" onClick={() => {
             if (Array.isArray(control._getWatch('days'))) {
               setValue('days', turnDaysIntoEnglishString(control._getWatch('days')))
-          }}}>
+            }
+          }}>
             حفظ
           </button>
           <button

@@ -31,7 +31,6 @@ import {
 
 import StudentIcon from "@/assets/student.svg?react";
 import UploadIcon from "@/assets/upload_icon.svg?react";
-import RolesIcon from "@/assets/roles.svg?react"
 
 const SIDEBAR_DATA = {
   Student: [
@@ -216,14 +215,6 @@ const SIDEBAR_DATA = {
       phone_icon: <PH_reportsIcon />,
       children: undefined
     },
-
-    {
-      title: "الادوار",
-      path: "roles",
-      icon: <RolesIcon />,
-      children: undefined
-    }
- 
   ],
 
   Teacher: [

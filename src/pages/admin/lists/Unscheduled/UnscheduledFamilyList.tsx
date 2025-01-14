@@ -12,7 +12,7 @@ import { getUnscheduledFamilyList } from "@/services/unscheduled";
 import styles from "../lists.module.css";
 
 // -----------------------------------------------------------------------------------------
-const { actions, modal_header_container, modal_header_title } = styles;
+const { actions } = styles;
 
 type UnscheduledFamilyListProps = {
   formRef: RefObject<TModalRef>;
@@ -94,12 +94,8 @@ const UnscheduledFamilyList = ({ formRef, debounceSearchTerm }: UnscheduledFamil
       <BasicModal
         key="2"
         ref={formRef}
-        header={
-          <div className={modal_header_container}>
-            <FilterIconSmall />
-            <p className={modal_header_title}>التصفية </p>
-          </div>
-        }
+        headerIcon={<FilterIconSmall />}
+        headerText="التصفية"
       >
         <FilterForm onSubmit={handleFilterSubmit} />
       </BasicModal>

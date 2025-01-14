@@ -145,7 +145,7 @@ const AddStudentToFamilyForm = () => {
 
   return (
     <>
-      <BasicModal ref={addNewFamilyRef}>
+      <BasicModal ref={addNewFamilyRef} headerText="">
         <AddParentForm />
       </BasicModal>
 

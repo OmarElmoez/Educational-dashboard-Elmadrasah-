@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import styles from "./searchSection.module.css";
-import { useDebounce } from "@/hooks";
+import {useDebounce} from "@/hooks";
 
-const { searchSection, searchInput, searchBox } = styles;
+const {searchInput, searchBox} = styles;
 
 const DebounceSearchBox = ({
-  classNames,
-  handleSearch,
-}: {
-  classNames?: string;
-  handleSearch:(param: string)=> void;
+                             width = 417,
+                             handleSearch,
+                           }: {
+  width?: number;
+  handleSearch: (param: string) => void;
 }) => {
   const [searchVal, setSearchVal] = useState("");
   const debouncedSearchTerm = useDebounce(searchVal);
@@ -21,25 +21,15 @@ const DebounceSearchBox = ({
   }, [debouncedSearchTerm]);
 
   return (
-    <section className={ classNames ? classNames : searchSection}>
-      { (!classNames) ? <label className={searchBox}>
-        <input
-          type="search"
-          placeholder="بحث"
-          className={searchInput}
-          onChange={(e) => setSearchVal(e.target.value)}
-          value={searchVal}
-        />
-      </label> 
-      :
-       <input
-          type="search"
-          placeholder="بحث"
-          className={searchInput}
-          onChange={(e) => setSearchVal(e.target.value)}
-          value={searchVal}
-        />}
-    </section>
+    <label className={searchBox} style={{ width: `${width}px` }}>
+      <input
+        type="search"
+        placeholder="بحث"
+        className={searchInput}
+        onChange={(e) => setSearchVal(e.target.value)}
+        value={searchVal}
+      />
+    </label>
   );
 };
 

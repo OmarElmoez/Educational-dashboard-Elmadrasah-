@@ -179,7 +179,7 @@ const MultiChoices = <T extends FieldValues>({
     ));
   };
 
-  const filteredData = data.filter((item) => item.codename ? item.codename.toLowerCase().includes(
+  const filteredData = data?.filter((item) => item.codename ? item.codename.toLowerCase().includes(
     debouncedQuery.toLowerCase()) : item.name.toLowerCase().includes(debouncedQuery.toLowerCase()));
 
   return (

@@ -4,6 +4,7 @@ import actGoogleLogin from "./act/actGoogleLogin";
 import { isString } from "@/types/gurads";
 import { TLoading, TUserRole } from "@/types/shared";
 import actSetPassword from "./act/actSetPassword";
+
 type TAuthState = {
   user: {
     id?: number;
@@ -126,4 +127,4 @@ export const { logout } = authSlice.actions;
 
 export { actAuthLogin, actGoogleLogin, actSetPassword };
 
-export default authSlice.reducer;
+export default authSlice.reducer || null;

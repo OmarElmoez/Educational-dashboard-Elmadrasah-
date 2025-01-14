@@ -6,7 +6,7 @@ import SetPasswordSchema, {
   TFormValues,
 } from "@/schemas/SetPasswordSchema";
 import { useNavigate } from "react-router-dom";
-import { actSetPassword } from "@/store/auth/authSlice";
+import { actSetPassword } from "@/store/auth/authSlice.ts";
 
 export type TFormValuesWithEmail = TFormValues & {
   email: string;

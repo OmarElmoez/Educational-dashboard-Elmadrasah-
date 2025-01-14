@@ -46,19 +46,21 @@ const StudentsList = () => {
   };
 
   return (
-    <section className={searchContainer}>
-      <Table
-        headData={TABLE_HEAD_DATA["students"]}
-        bodyData={students.data}
-        checkAll={checkAll}
-        setCheckAll={setCheckAll}
-      />
-      <SearchSection searchFor="students" />
+    <>
+      <section className={searchContainer}>
+        <Table
+          headData={TABLE_HEAD_DATA["students"]}
+          bodyData={students.data}
+          checkAll={checkAll}
+          setCheckAll={setCheckAll}
+        />
+        <SearchSection searchFor="students"/>
+      </section>
       <section className={actions}>
         <button
           onClick={() => {
             clearCheckAll();
-            getNewtPage({ previous: students.previous });
+            getNewtPage({previous: students.previous});
           }}
           disabled={!students.previous}
         >
@@ -82,7 +84,7 @@ const StudentsList = () => {
         <button
           onClick={() => {
             clearCheckAll();
-            getNewtPage({ next: students.next });
+            getNewtPage({next: students.next});
           }}
           disabled={!students.next}
         >
@@ -103,7 +105,7 @@ const StudentsList = () => {
           </svg>
         </button>
       </section>
-    </section>
+    </>
   );
 };
 

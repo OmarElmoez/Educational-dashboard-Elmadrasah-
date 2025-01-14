@@ -49,7 +49,7 @@ const PostScheduleLessonSchema =
       const selectedDate = data.from_date && new Date(data.from_date);
       const today = new Date();
 
-      return selectedDate && (selectedDate < today);
+      return selectedDate && (selectedDate >= today);
     }, {message: 'لا يمكن الجدولة بتاريخ فائت', path: ["from_date"]}
     )
 
