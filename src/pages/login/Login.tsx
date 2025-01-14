@@ -90,7 +90,7 @@ const Login = () => {
         if (data.user_type && data.phone) {
           navigate(`/${data.user_type?.toLowerCase()}`, { replace: true });
         } else {
-          alert("you are not registered yet");
+          openFeedbackModal('failed', "you are not registered yet")
         }
       });
   };
