@@ -134,7 +134,7 @@ menu {
 
 .active {
   background-color: var(--main-color);
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   color: #fff;
 }
 
@@ -193,11 +193,6 @@ menu {
   direction: ltr;
   padding-block: 0.5rem;
   border-radius: 1rem !important;
-}
-
-.icon {
-  display: flex;
-  align-items: center;
 }
 
 /* .icon svg,

@@ -1,12 +1,12 @@
-.attendance_box {
-  margin-top: 2.5rem;
+.page_header {
+  background: linear-gradient(rgba(28, 138, 68, 0.8), rgba(28, 138, 68, 0.8)), url("../../../assets/join-class-bg.png"), center, no-repeat;
+  background-size: cover;
+  border-radius: 1rem;
+  text-align: center;
 }
 
-.attendance_box span {
-  color: #616161;
-  font-size: 1.2rem;
-  font-weight: 300;
-  margin-top: 1rem;
+.attendance_box {
+  margin-top: 2.5rem;
 }
 
 .student_classes {
@@ -38,4 +38,18 @@
 
 .lesson_actions button:nth-of-type(2) {
   background-color: #C92516;
+}
+
+.lesson_status {
+  position: absolute;
+  left: 2.4rem;
+  top: 2.4rem;
+  color: #C99309;
+  background-color: #FFB8002E;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding-block: 1rem;
+  border-radius: 999px;
+  text-align: center;
+  width: 128px;
 }

@@ -17,7 +17,7 @@ import {useFeedback} from "@/store/context";
 import generateTabs from "@/utils/generateTabs.ts";
 import {TModalRef} from "@/types/shared.ts";
 
-const {attendance_box, student_classes, lesson_actions} = styles;
+const {attendance_box, student_classes, lesson_actions, page_header, lesson_status} = styles;
 
 const STATUS_TEXT = {
   Attended: "تم الحضور",
@@ -112,7 +112,7 @@ const JoinClass = () => {
   return (
     <>
       <ReviewForm ref={reviewRef} lesson_id={lessonData?.id}/>
-      <div style={{textAlign: 'center'}}>
+      <div className={page_header}>
         <HeroImg/>
       </div>
       <FlexWrapper>
@@ -127,7 +127,7 @@ const JoinClass = () => {
               <VideoCallIcon/>
               <Heading text="حضور الدرس" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
             </div>
-            {lessonData?.status && <span>{STATUS_TEXT[lessonData.status]}</span>}
+            {lessonData?.status && <span className={lesson_status}>{STATUS_TEXT[lessonData.status]}</span>}
           </section>
 
           <section className={student_classes}>
