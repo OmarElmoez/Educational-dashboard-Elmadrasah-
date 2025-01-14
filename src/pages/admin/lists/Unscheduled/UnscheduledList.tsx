@@ -11,7 +11,7 @@ import { TUnscheduled } from "@/types/ListsTypes";
 import { UnscheduledTableRow } from "@/components/table";
 
 // -----------------------------------------------------------------------------------------
-const { actions, modal_header_container, modal_header_title } = styles;
+const { actions } = styles;
 
 type UnscheduledListProps = {
   formRef:RefObject<TModalRef>;
@@ -95,12 +95,8 @@ const UnscheduledList = ({ formRef, debounceSearchTerm }: UnscheduledListProps) 
       <BasicModal
         key="1"
         ref={formRef}
-        header={
-          <div className={modal_header_container}>
-            <FilterIconSmall />
-            <p className={modal_header_title}>التصفية</p>
-          </div>
-        }
+        headerIcon={<FilterIconSmall />}
+        headerText="التصفية"
       >
         <FilterForm onSubmit={handleFilterSubmit} />
       </BasicModal>

@@ -1,19 +1,4 @@
 
-.modal_header_container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.modal_header_title {
-  font-size: 14px;
-  font-weight: 400;
-
-  color: #222121;
-  margin-right: 1rem;
-
-}
-
 .filterForm {
   width: 100%;
 }

@@ -3,7 +3,7 @@
 4- Pass onChange function for dropdown component. to handle different cases. (don't pass state).
 
 6- Don't use any in Typescript. (  const feedbackAlertRef = useRef<any>(null); )
-7- reponse type in  actSendDataToServer keep it or remove it?
+7- response type in  actSendDataToServer keep it or remove it?
 8- remove MUI (set-password)
 9- create form component
 9- Modify FeedbackAlert.tsx;
@@ -18,4 +18,5 @@
 
 15- create index.ts in utils folder
 
-
+================================== Important ==================================
+- make addNewSubjectModal as a form not a modal and use it inside <BasicModal> component
