@@ -1,67 +1,66 @@
 import styles from "./header.module.css";
-import Logo from "@/assets/logo.svg?react";
 import Bell from "@/assets/BellOutline.svg?react";
 import UserPhoto from "@/assets/profilePlaceholder.svg?react";
-import { useResponsive } from "@/hooks";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
 import actGetNotifications from "@/store/notifications/act/actGetNotifications";
 import LoadingIndicator from "../loadingIndicator/LoadingIndicator";
+import { useContext } from "react";
+import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 
 const {
   header,
   wrapper,
   box,
-  btn,
   badge,
   userPhoto,
   notifications,
   bell,
+  userInfo
 } = styles;
 const Header = () => {
 
-  const { isPhone } = useResponsive();
+  const {headerTitle} = useContext(CalendarContext);
 
   const dispatch = useAppDispatch();
 
-  const { img_url, user } = useAppSelector((state) => state.profile);
+  const {img_url, user} = useAppSelector((state) => state.profile);
 
-  const { loading } = useAppSelector((state) => state.notifications);
+  const {loading} = useAppSelector((state) => state.notifications);
 
   const navigate = useNavigate();
 
   const getNotificationsHandler = () => {
     dispatch(actGetNotifications())
-      .unwrap()
-      .then(() => {
-        navigate("notifications");
-      });
+    .unwrap()
+    .then(() => {
+      navigate("notifications");
+    });
   };
 
   return (
     <>
       {loading === "pending" && <div className="loadingBox">
-        <LoadingIndicator />
+          <LoadingIndicator/>
       </div>}
       <header className={header}>
         <section className={wrapper}>
-          {isPhone && <Logo />}
+          <span>{headerTitle}</span>
           <div className={box}>
-            {!isPhone && <button className={btn}>En</button>}
-            <div className={notifications} onClick={getNotificationsHandler}>
-              <Bell className={bell} />
-              <span className={badge}>{user?.new_notification || 0}</span>
-            </div>
-
-            {!isPhone && (
+            <section className={userInfo}>
               <div className={userPhoto}>
                 {img_url ? (
-                  <img src={img_url} alt="Avatar" />
+                  <img src={img_url} alt="Avatar"/>
                 ) : (
-                  <UserPhoto />
+                  <UserPhoto/>
                 )}
               </div>
-            )}
+              <span>{user?.first_name} {user?.last_name}</span>
+            </section>
+            <div className={notifications} onClick={getNotificationsHandler}>
+              <Bell className={bell}/>
+              {user?.new_notification ? <span className={badge}></span> : ""}
+            </div>
           </div>
         </section>
       </header>

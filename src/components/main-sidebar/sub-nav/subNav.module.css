@@ -1,11 +1,11 @@
 .sub_nav {
   width: 165px;
-  /* 4,8rem is the height of the header */
-  height: calc(100% - 4.8rem);
+  /* 10rem is the height of the header */
+  height: calc(100% - 10rem);
   padding: 2.3rem 0.8rem 0;
   background-color: #F9F9F9;
   position: absolute;
-  top: 4.8rem;
+  top: 10rem;
   right: 0;
   transition: 0.3s;
 }
@@ -16,7 +16,6 @@
 }
 
 .sub_nav menu {
-  margin-top: 2rem;
   display: grid;
   gap: 1.6rem;
   color: #9D9D9D

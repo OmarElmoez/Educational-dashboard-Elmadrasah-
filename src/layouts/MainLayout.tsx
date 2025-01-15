@@ -1,10 +1,10 @@
-import {Outlet} from "react-router-dom";
-import {Header, MainSidebar} from "@/components";
-import {TPath} from "@/types/shared";
-import {CalendarProvider} from "@/store/context/";
-import {useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
-import {actGetUserProfile} from "@/store/profile/ProfileSlice.ts";
+import { Outlet } from "react-router-dom";
+import { Header, MainSidebar } from "@/components";
+import { TPath } from "@/types/shared";
+import { CalendarProvider } from "@/store/context/";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
+import { actGetUserProfile } from "@/store/profile/ProfileSlice.ts";
 
 const MainLayout = ({sideBarData}: { sideBarData: TPath[] }) => {
 
@@ -41,18 +41,19 @@ const MainLayout = ({sideBarData}: { sideBarData: TPath[] }) => {
   }, []);
 
   return (
-      <main className="container mainContainer">
+    <main className="container mainContainer">
+      <CalendarProvider>
         <MainSidebar data={sideBarData}/>
         <div className="contentBox">
           <Header/>
-          <CalendarProvider>
-            <section className="content">
-                <Outlet/>
-            </section>
-          </CalendarProvider>
+          <section className="content">
+            <Outlet/>
+          </section>
         </div>
-      </main>
-  );
+      </CalendarProvider>
+    </main>
+  )
+    ;
 };
 
 export default MainLayout;

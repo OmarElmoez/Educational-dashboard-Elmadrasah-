@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import Logo from "@/assets/logo.png";
 import styles from "./MainSidebar.module.css";
 import { TPath } from "@/types/shared";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useFirebaseMessaging } from "@/hooks";
 import { HelpIcon, SettingsIcon, SignoutIcon, } from "@/assets/nav-icons";
@@ -12,6 +12,7 @@ import { removeProfile } from "@/store/profile/ProfileSlice";
 import actFCMLogout from "@/store/FCM/act/actFCMLogout";
 import SubNav from "@/components/main-sidebar/sub-nav/SubNav.tsx";
 import SIDEBAR_DATA from "../../constants/sidebar-data.tsx";
+import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 
 type TSidebarProps = {
   data: TPath[];
@@ -37,7 +38,8 @@ const MainSidebar = ({data}: TSidebarProps) => {
 
   const dispatch = useAppDispatch();
 
-  // const { isSidebarOpen, setIsSidebarOpen } = useContext(SidebarContext);
+  const {setHeaderTitle} = useContext(CalendarContext)
+
 
   const [isSubNavOpen, setIsSubNavOpen] = useState(false)
 
@@ -69,16 +71,16 @@ const MainSidebar = ({data}: TSidebarProps) => {
 
   return (
     <>
-      <SubNav mainTitle={activeLinkTitle}
-              style={(isSubNavOpen && activeTitleSubLinks?.length !== undefined) ? {
-                transform: "translateX(-80px)",
-                zIndex: 4
-              } : {
-                transform: "translateX(100%)",
-                zIndex: -1
-              }}
-              subLinks={activeTitleSubLinks}
-              setIsSubNavOpen={setIsSubNavOpen}
+      <SubNav
+        style={(isSubNavOpen && activeTitleSubLinks?.length !== undefined) ? {
+          transform: "translateX(-80px)",
+          zIndex: 4
+        } : {
+          transform: "translateX(100%)",
+          zIndex: -1
+        }}
+        subLinks={activeTitleSubLinks}
+        setIsSubNavOpen={setIsSubNavOpen}
       />
       <aside
         className={`${sidebar} `}
@@ -89,15 +91,16 @@ const MainSidebar = ({data}: TSidebarProps) => {
 
         <nav className={main_nav_menu}>
           <menu className={main_menu}>
-            {data.map(({title, path, icon, children}) => (
+            {data.map(({title, path, icon, children, page_title}) => (
               <li
                 key={title}
                 onClick={() => {
                   setActiveLinkTitle(title);
-                  handleToggle()
+                  setHeaderTitle(page_title);
+                  handleToggle();
                 }}
               >
-                {!children ? (
+                {children === undefined ? (
                   <NavLink
                     to={path}
                     end
@@ -106,17 +109,18 @@ const MainSidebar = ({data}: TSidebarProps) => {
                     title={title}
                   >
                     {path === "admin" && currentPath.includes(path) ? (
-                      <div className={`${active_link} ${icon_style}`}>
+                      <div className={`${icon_style}`}>
                         {icon}
                       </div>
                     ) : (
                       <div
                         className={
-                          (path === "/admin" && currentPath.endsWith(path))
+                          (path === "admin" && currentPath.endsWith(path))
                             ? `${active_link} ${icon_style}`
-                            : (path !== "/admin" && currentPath.includes(path))
-                              ? `${active_link} ${icon_style}`
-                              : `${icon_style}`
+                            : (path !== "admin" && currentPath.endsWith(path))
+                              ? `${active_link} ${icon_style}` : (path !== "/admin" && currentPath.includes(
+                                path)) ? `${active_link} ${icon_style}`
+                                : `${icon_style}`
                         }
                       >
                         {icon}
@@ -128,7 +132,7 @@ const MainSidebar = ({data}: TSidebarProps) => {
                   <div className={navList_item} title={title}>
                     <div
                       className={
-                        path !== "/admin" && currentPath.includes(path)
+                        path !== "admin" && currentPath.includes(path)
                           ? `${active_link} ${icon_style}`
                           : `${icon_style}`
                       }
@@ -144,12 +148,12 @@ const MainSidebar = ({data}: TSidebarProps) => {
           <menu className={main_menu}>
             <p className={support}>الدعم</p>
             <li>
-              <NavLink to="settings">
+              <NavLink to="settings" onClick={() => setHeaderTitle("اعدادات الحساب")}>
                 <SettingsIcon/>
               </NavLink>
             </li>
             <li>
-              <NavLink to="help">
+              <NavLink to="help" onClick={() => setHeaderTitle("المساعدة")}>
                 <HelpIcon/>
               </NavLink>
             </li>

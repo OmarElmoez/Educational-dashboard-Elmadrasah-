@@ -39,6 +39,7 @@ const SIDEBAR_DATA = {
       path: "/student",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      page_title: "الرئيسية",
       children: undefined
     },
     {
@@ -46,6 +47,7 @@ const SIDEBAR_DATA = {
       path: "calendar",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      page_title: "جدولي",
       children: undefined
     },
   ],
@@ -56,6 +58,7 @@ const SIDEBAR_DATA = {
       path: "/admin",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      page_title: "الرئيسية",
       children: undefined
     },
     {
@@ -63,35 +66,41 @@ const SIDEBAR_DATA = {
       path: "calendar",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      page_title: "جدولي",
       children: [
         {
           title: "دخول الحصة للطالب",
           path: "calendar/join-student",
           icon: <CalendarMiniIcon />,
           phone_icon: <PH_calendarIcon />,
+          page_title: "دخول الحصة",
         },
         {
           title: "دخول الحصة للمدرس",
           path: "join-teacher",
           icon: <CalendarMiniIcon />,
           phone_icon: <PH_calendarIcon />,
+          page_title: "دخول الحصة",
         },
         {
           title: "الدرس كامل",
           path: "all-lesson",
           icon: <Lesson />,
           phone_icon: <PH_calendarIcon />,
+          page_title: "دخول الحصة",
         },
         {
           title: "الطلاب الغير مجدولين",
           path: "calendar/all-unscheduled-list",
           icon: <UnscheduledIcon />,
+          page_title: "الطلاب الغير مجدولين",
         },
         {
           title: "جدولي",
           path: "calendar/classes",
           icon: <CalendarMiniIcon />,
           phone_icon: <PH_calendarIcon />,
+          page_title: "جدولي",
         },
       ],
     },
@@ -100,31 +109,37 @@ const SIDEBAR_DATA = {
       path: "students",
       icon: <StudentIcon />,
       phone_icon: <PH_boyIcon />,
+      page_title: "الطلاب",
       children: [
         {
           title: "الطلاب",
           path: "students/students-list",
           icon: <StudentsIcon />,
+          page_title: "الطلاب",
         },
         {
           title: "العائلات",
           path: "students/families-list",
           icon: <FamiliesIcon />,
+          page_title: "العائلات",
         },
         {
           title: "إضافة عائلة",
           path: "students/add-family",
           icon: <FamiliesIcon />,
+          page_title: "إضافة عائلة",
         },
         {
           title: "إضافة طالب الى عائلة",
           path: "students/add-family-student",
           icon: <AddStdFamilyIcon />,
+          page_title: "إضافة طالب الى عائلة",
         },
         {
           title: "إضافة طالب منفصل",
           path: "students/add-student",
           icon: <AddStdIcon />,
+          page_title: "إضافة طالب منفصل",
         },
       ],
     },
@@ -133,77 +148,91 @@ const SIDEBAR_DATA = {
       path: "employees",
       icon: <TeacherIcon />,
       phone_icon: <PH_teacherIcon />,
+      page_title: "الموظفين",
       children: [
         {
           title: "الموظفين",
           path: "employees/teachers",
           icon: <EmployeesIcon />,
           phone_icon: <PH_teacherIcon />,
+          page_title: "الموظفين",
         },
         {
           title: "ساعات عمل الموظفين",
           path: "employees/work-hours",
           icon: <EmployeeHoursIcon />,
           phone_icon: <PH_teacherIcon />,
+          page_title: "ساعات عمل الموظفين",
         },
         {
           title: "إضافة موظف",
           path: "employees/add-employee",
           icon: <AddEmployeIcon />,
+          page_title: "إضافة موظف",
         },
         {
           title: "مدفوعات الموظفين",
           path: "employees/purchases",
           icon: <EmployePaymentsIcon />,
           phone_icon: <PH_teacherIcon />,
+          page_title: "مدفوعات الموظفين",
         },
         {
           title: "استيراد الموظفين",
           path: "employees/import",
           icon: <UploadIcon />,
           phone_icon: <PH_teacherIcon />,
+          page_title: "استيراد الموظفين",
         },
       ],
     },
     {
-      title: " الفواتير",
+      title: "الفواتير",
       path: "invoices",
       icon: <InvoiceIcon />,
+      page_title: "الفواتير",
       children: [
         {
           title: "أرصدة العملاء",
           path: "invoices/customer-balances",
           icon: <ClientCreditsIcon />,
+          page_title: "أرصدة العملاء",
         },
         {
           title: "أرصدة الاشتراكات",
           path: "invoices/balance-list",
           icon: <ClientSubbsIcon />,
+          page_title: "أرصدة الاشتراكات",
         },
         {
           title: "المدفوعات",
           path: "invoices/payments",
           icon: <ClientpaymentsIcon />,
+          page_title: "المدفوعات",
         },
         {
           title: "الفواتير",
           path: "invoices/invoices-list",
           icon: <ClientInvoicesIcon />,
+          page_title: "الفواتير",
         },
         {
           title: "إنشاء فاتورة واحدة",
           path: "invoices/create-invoice",
           icon: <CreateInvoicesIcon />,
+          page_title: "إنشاء فاتورة واحدة",
         },
         {
           title: "إنشاء فواتير متعددة",
           path: "invoices/create-multiple-invoices",
           icon: <CreateInvoicesIcon_2 />,
+          page_title: "إنشاء فواتير متعددة",
         },
         {
           title: "إصدار مذكرة ائتمان",
           path: "invoices/create-credit-memo",
           icon: <ClientReportIcon />,
+          page_title: "إصدار مذكرة ائتمان",
         },
       ],
     },
@@ -213,6 +242,7 @@ const SIDEBAR_DATA = {
       path: "reports",
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
+      page_title: "التقارير",
       children: undefined
     },
   ],
@@ -223,6 +253,7 @@ const SIDEBAR_DATA = {
       path: "/teacher",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      page_title: "الرئيسية",
       children: undefined
     },
     {
@@ -230,6 +261,7 @@ const SIDEBAR_DATA = {
       path: "classes",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      page_title: "الحصص",
       children: undefined
     },
     {
@@ -237,6 +269,7 @@ const SIDEBAR_DATA = {
       path: "students",
       icon: <StudentIcon />,
       phone_icon: <PH_boyIcon />,
+      page_title: "الطلاب",
       children: undefined
     },
     {
@@ -244,6 +277,7 @@ const SIDEBAR_DATA = {
       path: "reports",
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
+      page_title: "التقارير",
       children: undefined
     },
   ],
@@ -254,6 +288,7 @@ const SIDEBAR_DATA = {
       path: "/family",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
+      page_title: "الرئيسية",
       children: undefined
     },
     {
@@ -261,6 +296,7 @@ const SIDEBAR_DATA = {
       path: "calendar",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      page_title: "الجدول",
       children: undefined
     },
     {
@@ -268,6 +304,7 @@ const SIDEBAR_DATA = {
       path: "notes",
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
+      page_title: "الملاحظات",
       children: undefined
     },
   ],

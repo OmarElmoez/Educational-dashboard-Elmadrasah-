@@ -1,4 +1,5 @@
 import React from "react";
+import { TSubLink } from "@/components/main-sidebar/sub-nav/SubNav.tsx";
 
 type TLoading = "idle" | "pending" | "succeeded" | "failed";
 
@@ -18,12 +19,8 @@ type TPath = {
   path: string;
   icon: React.ReactNode;
   phone_icon?: React.ReactNode;
-  children?: {
-    title: string;
-    path: string;
-    icon: React.ReactNode;
-    phone_icon?: React.ReactNode;
-  }[]
+  page_title: string;
+  children?: TSubLink[]
 };
 
 type TModalRef = {

@@ -8,6 +8,8 @@ type TCalendarContextType = {
   setClickedDate: React.Dispatch<React.SetStateAction<Date>>;
   setStudentId: React.Dispatch<React.SetStateAction<number | null>>;
   role: string | undefined;
+  headerTitle: string;
+  setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const CalendarContext = createContext<TCalendarContextType>({
@@ -17,10 +19,15 @@ export const CalendarContext = createContext<TCalendarContextType>({
   setStudentId: () => {},
   studentId: null,
   role: "",
+  headerTitle: "",
+  setHeaderTitle: () => {},
 });
 
 const CalendarProvider = ({children}: { children: ReactNode }) => {
-  const [clickedDate, setClickedDate] = useState<Date>(new Date());
+
+  const [headerTitle, setHeaderTitle] = useState('الرئيسية');
+
+  const [clickedDate, setClickedDate] = useState(new Date());
 
   const {credintials} = useAppSelector(state => state.auth);
 
@@ -30,13 +37,15 @@ const CalendarProvider = ({children}: { children: ReactNode }) => {
 
   const formattedDate = `${splittingDate[0]}/${splittingDate[2]}`;
 
-  const ctxValue = {
+  const ctxValue: TCalendarContextType = {
     clickedDate,
     formattedDate,
     setClickedDate,
     role: credintials?.role,
     studentId,
     setStudentId,
+    headerTitle,
+    setHeaderTitle,
   }
 
 
