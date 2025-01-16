@@ -7,6 +7,8 @@ import actGetNotifications from "@/store/notifications/act/actGetNotifications";
 import LoadingIndicator from "../loadingIndicator/LoadingIndicator";
 import { useContext } from "react";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
+import { format } from "date-fns";
+import { ar } from 'date-fns/locale';
 
 const {
   header,
@@ -16,7 +18,8 @@ const {
   userPhoto,
   notifications,
   bell,
-  userInfo
+  userInfo,
+  textBox
 } = styles;
 const Header = () => {
 
@@ -38,6 +41,10 @@ const Header = () => {
     });
   };
 
+  const today = new Date();
+  const formattedDate = format(today, "yyyy/M/d");
+  const dayName = format(today, "EEEE", {locale: ar})
+
   return (
     <>
       {loading === "pending" && <div className="loadingBox">
@@ -45,21 +52,21 @@ const Header = () => {
       </div>}
       <header className={header}>
         <section className={wrapper}>
-          <span>{headerTitle}</span>
+          <div className={textBox}>
+            <span>{headerTitle}</span>
+            <span>{dayName} : {formattedDate}</span>
+          </div>
           <div className={box}>
-            <section className={userInfo}>
-              <div className={userPhoto}>
-                {img_url ? (
-                  <img src={img_url} alt="Avatar"/>
-                ) : (
-                  <UserPhoto/>
-                )}
-              </div>
-              <span>{user?.first_name} {user?.last_name}</span>
-            </section>
             <div className={notifications} onClick={getNotificationsHandler}>
               <Bell className={bell}/>
               {user?.new_notification ? <span className={badge}></span> : ""}
+            </div>
+            <div className={userPhoto}>
+              {img_url ? (
+                <img src={img_url} alt="Avatar"/>
+              ) : (
+                <UserPhoto/>
+              )}
             </div>
           </div>
         </section>

@@ -39,7 +39,7 @@ const SIDEBAR_DATA = {
       path: "/student",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
-      page_title: "الرئيسية",
+      page_title: "الجدول",
       children: undefined
     },
     {
@@ -58,7 +58,7 @@ const SIDEBAR_DATA = {
       path: "/admin",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
-      page_title: "الرئيسية",
+      page_title: "الجدول",
       children: undefined
     },
     {
@@ -253,7 +253,7 @@ const SIDEBAR_DATA = {
       path: "/teacher",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
-      page_title: "الرئيسية",
+      page_title: "الجدول",
       children: undefined
     },
     {
@@ -288,7 +288,7 @@ const SIDEBAR_DATA = {
       path: "/family",
       icon: <HomeIcon />,
       phone_icon: <PH_homeIcon />,
-      page_title: "الرئيسية",
+      page_title: "الجدول",
       children: undefined
     },
     {

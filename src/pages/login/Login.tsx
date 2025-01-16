@@ -120,7 +120,7 @@ const Login = () => {
       </form>
       <div className={loginWithBox}>
         <p>
-          <span>أو تسجيل الدخول بواسطة</span>
+          <span>أو</span>
         </p>
         <div className={actionsBox}>
           <div>

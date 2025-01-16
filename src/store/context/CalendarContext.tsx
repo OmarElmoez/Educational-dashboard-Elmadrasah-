@@ -25,7 +25,7 @@ export const CalendarContext = createContext<TCalendarContextType>({
 
 const CalendarProvider = ({children}: { children: ReactNode }) => {
 
-  const [headerTitle, setHeaderTitle] = useState('الرئيسية');
+  const [headerTitle, setHeaderTitle] = useState('الجدول');
 
   const [clickedDate, setClickedDate] = useState(new Date());
 
