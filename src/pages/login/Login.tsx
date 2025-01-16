@@ -131,7 +131,6 @@ const Login = () => {
               onError={() => {
                 openFeedbackModal('failed', "Login Failed")
               }}
-              text="Google"
             />
           </div>
           {/* <button>
