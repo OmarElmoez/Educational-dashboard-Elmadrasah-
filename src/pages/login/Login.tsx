@@ -129,8 +129,9 @@ const Login = () => {
                 googleLoginHandler(credential as string);
               }}
               onError={() => {
-                alert("Login Failed")
+                openFeedbackModal('failed', "Login Failed")
               }}
+              text="Google"
             />
           </div>
           {/* <button>

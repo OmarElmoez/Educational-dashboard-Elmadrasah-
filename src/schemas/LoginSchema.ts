@@ -5,7 +5,7 @@ const LoginSchema = z.object({
     .string()
     .trim()
     .min(1, "برجاء ادخال البريد الالكتروني")
-    .email("برجاء ادخال بريد الكتروني صالح"),
+    .email("البريد الإكتروني غير صحيح"),
   password: z
     .string()
     .trim()

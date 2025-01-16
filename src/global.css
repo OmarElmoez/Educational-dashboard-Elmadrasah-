@@ -140,7 +140,7 @@ menu {
 }
 
 .error {
-  font-weight: 700;
+  font-weight: 500;
   color: red;
   font-size: 1.3rem;
 }
@@ -196,34 +196,28 @@ menu {
   border-radius: 1rem !important;
 }
 
-/* .icon svg,
-.icon svg > path,
-.icon svg > path[fill] {
-  stroke: #fff;
-  fill: #fff;
-}
-
-@media (max-width: 991px) {
-  .icon svg, 
-  .icon svg > path
-  .icon svg > path[fill] {
-    stroke: var(--secondary-color);
-    fill: var(--secondary-color);
-  }
-} */
-
 /* change the font of google button */
+.nsm7Bb-HzV7m-LgbsSe {
+  border-radius: 1rem;
+  color: var(--secondary-color);
+  height: 48px;
+  padding: 1.2rem 3.2rem;
+  width: 478px;
+}
 .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-BPrWId {
-  font-family: "Tajawal", sans-serif !important;
+  font-family: "Expo Arabic", sans-serif !important;
+  flex-grow: 0 !important;
 }
 
 .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb {
   flex-direction: row-reverse !important;
+  justify-content: center !important;
 }
 
 .fc-direction-rtl .fc-timegrid-slot-label-frame {
   text-align: center !important;
 }
+
 
 .loadingBox {
   position: absolute;
