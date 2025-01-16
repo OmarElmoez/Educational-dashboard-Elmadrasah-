@@ -198,15 +198,17 @@ menu {
 
 /* change the font of google button */
 .nsm7Bb-HzV7m-LgbsSe {
-  border-radius: 1rem;
-  color: var(--secondary-color);
-  height: 48px;
-  padding: 1.2rem 3.2rem;
-  width: 478px;
+  border-radius: 1rem !important;
+  color: var(--secondary-color) !important;
+  height: 48px !important;
+  padding: 1.2rem 3.2rem !important;
+  width: 478px !important;
 }
 .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-BPrWId {
   font-family: "Expo Arabic", sans-serif !important;
   flex-grow: 0 !important;
+  font-size: 1.8rem !important;
+  margin-top: 2px;
 }
 
 .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb {
@@ -326,7 +328,7 @@ textarea {
 .inputField::placeholder,
 textarea::placeholder,
 .firstOption {
-  font-family: "Expo Arabic";
+  font-family: "Expo Arabic", sans-serif;
   font-size: 1rem;
   color: #cdcdcd;
   font-weight: 500;
@@ -337,7 +339,7 @@ textarea::placeholder,
 }
 
 .adminFormLabel {
-  font-family: "Expo Arabic";
+  font-family: "Expo Arabic", sans-serif;
   font-size: 1.2rem;
   color: #818181;
 }
