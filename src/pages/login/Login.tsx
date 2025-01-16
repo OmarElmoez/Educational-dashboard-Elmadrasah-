@@ -1,10 +1,11 @@
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {  SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 
 import LoginSchema, { TFormData } from "@/schemas/LoginSchema";
 
 import styles from "./login.module.css";
+import Logo from '@/assets/logo.png'
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actAuthLogin, actGoogleLogin } from "@/store/auth/authSlice";
@@ -16,7 +17,9 @@ import { useFirebaseMessaging } from "@/hooks";
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import actGetLessonsByRange from "@/store/lessons/act/actGetLessonsByRange";
 import {useFeedback} from "@/store/context";
-// Working on testing login process
+
+const { loginBox, loginWithBox, actionsBox, formInput, logo } = styles;
+
 const Login = () => {
   const { loading, error } = useAppSelector((state) => state.auth);
 
@@ -32,12 +35,10 @@ const Login = () => {
   const startDate = startOfMonth(today);
   const endDate = endOfMonth(today);
 
-  const { loginBox, loginWithBox, actionsBox, hide } = styles;
-
   const {
     handleSubmit,
-    control,
     formState: { errors },
+    register
   } = useForm<TFormData>({
     resolver: zodResolver(LoginSchema),
   });
@@ -97,32 +98,14 @@ const Login = () => {
 
   return (
     <article className={loginBox}>
-      <h2>تسجيل الدخول</h2>
+      <div className={logo}>
+        <img src={Logo} alt="Logo" />
+      </div>
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="email"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <label htmlFor="email">
-              <span className={field.value ? hide : ""}>البريد الالكتروني</span>
-              <input type="text" id="email" {...field} />
-            </label>
-          )}
-        />
+        <input type="text" className={formInput} {...register("email")} placeholder="البريد الالكتروني" />
         {errors.email && <p className="error">{errors.email.message}</p>}
 
-        <Controller
-          name="password"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <label htmlFor="password">
-              <span className={field.value ? hide : ""}>كلمة المرور</span>
-              <input type="password" id="password" {...field} />
-            </label>
-          )}
-        />
+        <input type="password" className={formInput} {...register("password")} placeholder="كلمة المرور" />
         {errors.password && <p className="error">{errors.password.message}</p>}
 
         <Link to="#">هل نسيت كلمة المرور؟</Link>
@@ -137,7 +120,7 @@ const Login = () => {
       </form>
       <div className={loginWithBox}>
         <p>
-          <span>أو تسجيل الدخول باستخدام</span>
+          <span>أو تسجيل الدخول بواسطة</span>
         </p>
         <div className={actionsBox}>
           <div>

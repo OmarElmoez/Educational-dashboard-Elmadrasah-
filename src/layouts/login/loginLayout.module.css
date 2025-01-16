@@ -1,0 +1,61 @@
+.wrapper {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  overflow: hidden;
+}
+
+@supports (min-height: 100dvh) {
+  .wrapper {
+    min-height: 100dvh;
+  }
+}
+
+.rightBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.rightBox::before {
+  content: url("../../assets/login-lines.svg");
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.rightBox::after {
+  content: url("../../assets/login-circle.svg");
+  position: absolute;
+  bottom: -1rem;
+  right: 0;
+}
+
+.leftBox {
+  background-color: var(--main-color);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.leftBox::before {
+  content: url("../../assets/top-right-shape.svg");
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.leftBox::after {
+  content: url("../../assets/bottom-left-shape.svg");
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+}
+
+.leftBox svg {
+  position: relative;
+  z-index: 1;
+}
