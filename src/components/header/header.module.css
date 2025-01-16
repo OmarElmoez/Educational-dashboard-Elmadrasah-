@@ -56,16 +56,6 @@
   cursor: pointer;
 }
 
-.userInfo {
-  display: flex;
-  align-items: center;
-  gap: 1.6rem;
-  background-color: #fff;
-  border-radius: 1rem;
-  padding: 0.8rem 1.2rem;
-  width: 212px;
-}
-
 .userPhoto {
   width: 56px;
   height: 56px;

@@ -18,7 +18,6 @@ const {
   userPhoto,
   notifications,
   bell,
-  userInfo,
   textBox
 } = styles;
 const Header = () => {
