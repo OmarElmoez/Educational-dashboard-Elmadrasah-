@@ -86,6 +86,8 @@ const ClassesForDay = () => {
     return clickedDate.setHours(0, 0, 0, 0) === new Date(lesson.from_date).setHours(0, 0, 0, 0);
   })
 
+  console.log('filteredLessons', filteredLessons);
+
   const navigate = useNavigate();
 
   const navigateToJoinPage = (id: number) => {
@@ -122,7 +124,7 @@ const ClassesForDay = () => {
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
 
-              <h4>الأحياء</h4>
+              <h4>{lesson.subject_name}</h4>
 
               <div>
                 <ClockIcon style={{stroke: "#93B59F"}}/>
