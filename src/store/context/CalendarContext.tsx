@@ -8,7 +8,7 @@ type TCalendarContextType = {
   setClickedDate: React.Dispatch<React.SetStateAction<Date>>;
   setStudentId: React.Dispatch<React.SetStateAction<number | null>>;
   role: string | undefined;
-  headerTitle: string;
+  headerTitle: string | undefined;
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
 }
 

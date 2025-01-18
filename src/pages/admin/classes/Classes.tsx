@@ -1,11 +1,8 @@
-import {ClassesForDay, ScheduleForDay, WelcomeSection} from "@/components";
-import CalendarImg from '@/assets/calendar-img.svg?react'
-import styles from './classes.module.css'
+import {ClassesForDay, ScheduleForDay} from "@/components";
+
 import Calendar from "@/components/calendar/Calendar.tsx";
 import {TTab} from "@/components/tabs/Tabs.tsx";
 import {AllHours, CurrentHour, Overview} from "@/components/tabs/sub-components";
-
-const {welcome_paragraph} = styles;
 
 const ADMIN_TABS: TTab[] = [
   {
@@ -29,10 +26,6 @@ const AdminClassesPage = () => {
 
   return (
     <>
-      <WelcomeSection img={<CalendarImg/>}>
-        <p className={welcome_paragraph}>نأمل لك يوم عمل سعيد</p>
-      </WelcomeSection>
-
       <section className='calendar_wrapper'>
         <Calendar />
         <ScheduleForDay tabs={ADMIN_TABS} />

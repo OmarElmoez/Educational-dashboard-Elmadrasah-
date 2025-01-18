@@ -10,7 +10,7 @@ export type TSubLink = {
   path: string;
   icon: ReactNode;
   phone_icon?: ReactNode;
-  page_title: string;
+  page_title?: string;
 }
 
 const SubNav = ({style, subLinks, setIsSubNavOpen}: {
@@ -27,7 +27,7 @@ const SubNav = ({style, subLinks, setIsSubNavOpen}: {
         {subLinks?.map((link) => (
           <NavLink to={link.path} key={link.title} className={sub_nav__link} onClick={() => {
             setIsSubNavOpen(false)
-            setHeaderTitle(link.page_title)
+            link.page_title && setHeaderTitle(link.page_title)
           }}>
             {link.icon}
             <span>{link.title}</span>

@@ -1,5 +1,4 @@
-import {ClassesForDay, ProgressCircle, WelcomeSection} from "@/components";
-import CalendarImg from '@/assets/family-calendar-img.svg?react'
+import {ClassesForDay} from "@/components";
 import ImgPlaceholder from '@/assets/person-placeholder.svg?react'
 import styles from "./classes.module.css";
 import Calendar from "@/components/calendar/Calendar.tsx";
@@ -11,7 +10,7 @@ import {useContext, useEffect, useState} from "react";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 
-const {info, welcome_text, kids_wrapper, kids_names} = styles;
+const {kids_wrapper, kids_names} = styles;
 
 // const FAMILY_TABS: TTab[] = [
 //   {
@@ -57,15 +56,15 @@ const Classes = () => {
 
   return (
     <>
-      <WelcomeSection img={<CalendarImg/>}>
-        <section className={info}>
-          <ProgressCircle/>
-          <div className={welcome_text}>
-            <p>ابنائك يقدموا مستوي</p>
-            <p>رائع 🥳</p>
-          </div>
-        </section>
-      </WelcomeSection>
+      {/*<WelcomeSection img={<CalendarImg/>}>*/}
+      {/*  <section className={info}>*/}
+      {/*    <ProgressCircle/>*/}
+      {/*    <div className={welcome_text}>*/}
+      {/*      <p>ابنائك يقدموا مستوي</p>*/}
+      {/*      <p>رائع 🥳</p>*/}
+      {/*    </div>*/}
+      {/*  </section>*/}
+      {/*</WelcomeSection>*/}
 
       <section className={kids_wrapper}>
         <Heading text="جدول ابنائك"/>

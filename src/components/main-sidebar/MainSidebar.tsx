@@ -96,7 +96,7 @@ const MainSidebar = ({data}: TSidebarProps) => {
                 key={title}
                 onClick={() => {
                   setActiveLinkTitle(title);
-                  setHeaderTitle(page_title);
+                  page_title && setHeaderTitle(page_title);
                   handleToggle();
                 }}
               >
