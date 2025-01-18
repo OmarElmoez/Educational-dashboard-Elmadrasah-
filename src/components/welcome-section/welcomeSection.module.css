@@ -23,3 +23,8 @@
   margin-top: 1.6rem;
   width: 75%;
 }
+
+.welcome_section__img {
+  display: flex;
+  align-self: flex-end;
+}

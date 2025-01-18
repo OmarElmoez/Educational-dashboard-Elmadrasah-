@@ -56,4 +56,24 @@
   border-style: solid;
 }
 
+.kids_names {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  background-color: #F6F6F6;
+  width: fit-content;
+  border-radius: 1rem;
+  border: 1px solid #D2D2D280;
+  padding: 0.4rem 1rem;
+  margin-top: 3.6rem;
+}
+
+.kids_names > div {
+  padding: 1.3rem 3.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+}
+
 

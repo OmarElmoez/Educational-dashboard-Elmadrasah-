@@ -1,6 +1,6 @@
 import styles from './classesForDay.module.css'
-import {useContext} from "react";
-import {useAppSelector} from "@/store/hooks.ts";
+import { useContext, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 
 import {TLesson} from "@/schemas/LessonSchema.ts";
 
@@ -13,8 +13,9 @@ import {LoadingIndicator} from "@/components";
 import {useNavigate} from "react-router-dom";
 import formatDateIntoArabic from "@/utils/formatDateIntoArabic.ts";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
+import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 
-const {title, lessons_cards, card, status_box} = styles;
+const {title, lessons_cards, card, status_box, kids_names} = styles;
 
 const statusInfo = {
   Attended: {
@@ -68,14 +69,17 @@ const statusInfo = {
     },
 };
 
+type TChild =  {   id: number, first_name: string, last_name: string }
+
 const ClassesForDay = () => {
 
   const {today_lessons, loading} = useAppSelector(state => state.lessons);
-  console.log('from classes for day: ', today_lessons);
+  const dispatch = useAppDispatch();
 
   const {credintials} = useAppSelector(state => state.auth);
+  const {statistics} = useAppSelector(state => state.profile);
 
-  const {clickedDate} = useContext(CalendarContext);
+  const {clickedDate, setStudentId} = useContext(CalendarContext);
   const dateInArabic = formatDateIntoArabic(clickedDate)
 
   const filteredLessons = today_lessons.filter(lesson => {
@@ -88,9 +92,28 @@ const ClassesForDay = () => {
     navigate(`/${credintials?.role?.toLowerCase()}/calendar/join-class/${id}`)
   }
 
+  const [activeTab, setActiveTab] = useState({
+    idx: -1,
+    name: "",
+  })
+
+  const onClickHandler = (idx: number, child: TChild) => {
+    setActiveTab({idx, name: child.first_name})
+    setStudentId(child.id)
+    dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`, studentId: child.id}))
+  }
+
   return (
     <>
       <h3 className={title}>حصص اليوم {dateInArabic}</h3>
+      {credintials?.role === 'Family' && <section className={kids_names}>
+        {statistics?.map((child: TChild, idx: number) => (
+          <div key={child.id} onClick={() => onClickHandler(idx, child)}
+               style={{backgroundColor: activeTab.idx === idx ? "#fff" : "transparent", borderRadius: "5px"}}>
+            <span>{child.first_name}</span>
+          </div>
+        ))}
+      </section>}
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
         {filteredLessons.length === 0 && <p className="error">ليس لديك حصص اليوم !</p>}

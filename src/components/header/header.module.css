@@ -56,18 +56,12 @@
   cursor: pointer;
 }
 
-.userPhoto {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
 .userPhoto + span {
   color: #144970;
 }
 
-.notifications {
+.notifications,
+.userPhoto {
   position: relative;
   display: flex;
   align-items: center;
@@ -77,6 +71,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
+  overflow: hidden;
 }
 
 @media (max-width: 991px) {

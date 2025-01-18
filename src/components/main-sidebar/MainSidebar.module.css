@@ -1,6 +1,6 @@
 .sidebar {
   background-color: #EFEFEF;
-  padding: 3.2rem 1.8rem 4.8rem;
+  padding: 3.2rem 0.5rem 4.8rem;
   display: flex;
   flex-direction: column;
   max-width: 80px;
@@ -84,6 +84,7 @@
 .logo {
   display: block;
   margin-inline: auto;
+  width: 7rem;
 }
 
 .sidebar .main_menu {
