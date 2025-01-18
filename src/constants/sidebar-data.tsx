@@ -34,20 +34,19 @@ import UploadIcon from "@/assets/upload_icon.svg?react";
 
 const SIDEBAR_DATA = {
   Student: [
-    {
-      title: "الرئيسية",
-      path: "/student",
-      icon: <HomeIcon />,
-      phone_icon: <PH_homeIcon />,
-      page_title: "الجدول",
-      children: undefined
-    },
+    // {
+    //   title: "الرئيسية",
+    //   path: "/student",
+    //   icon: <HomeIcon />,
+    //   phone_icon: <PH_homeIcon />,
+    //   page_title: "الجدول",
+    //   children: undefined
+    // },
     {
       title: "الجدول",
-      path: "calendar",
+      path: "/student",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
-      page_title: "جدولي",
       children: undefined
     },
   ],
@@ -248,20 +247,19 @@ const SIDEBAR_DATA = {
   ],
 
   Teacher: [
-    {
-      title: "الرئيسية",
-      path: "/teacher",
-      icon: <HomeIcon />,
-      phone_icon: <PH_homeIcon />,
-      page_title: "الجدول",
-      children: undefined
-    },
+    // {
+    //   title: "الرئيسية",
+    //   path: "/teacher",
+    //   icon: <HomeIcon />,
+    //   phone_icon: <PH_homeIcon />,
+    //   page_title: "الجدول",
+    //   children: undefined
+    // },
     {
       title: "الحصص",
-      path: "classes",
+      path: "/teacher",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
-      page_title: "الحصص",
       children: undefined
     },
     {
@@ -272,31 +270,30 @@ const SIDEBAR_DATA = {
       page_title: "الطلاب",
       children: undefined
     },
-    {
-      title: "التقارير",
-      path: "reports",
-      icon: <ReportsIcon />,
-      phone_icon: <PH_reportsIcon />,
-      page_title: "التقارير",
-      children: undefined
-    },
+    // {
+    //   title: "التقارير",
+    //   path: "reports",
+    //   icon: <ReportsIcon />,
+    //   phone_icon: <PH_reportsIcon />,
+    //   page_title: "التقارير",
+    //   children: undefined
+    // },
   ],
 
   Family: [
-    {
-      title: "الرئيسية",
-      path: "/family",
-      icon: <HomeIcon />,
-      phone_icon: <PH_homeIcon />,
-      page_title: "الجدول",
-      children: undefined
-    },
+    // {
+    //   title: "الرئيسية",
+    //   path: "/family",
+    //   icon: <HomeIcon />,
+    //   phone_icon: <PH_homeIcon />,
+    //   page_title: "الجدول",
+    //   children: undefined
+    // },
     {
       title: "الجدول",
-      path: "calendar",
+      path: "/family",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
-      page_title: "الجدول",
       children: undefined
     },
     {

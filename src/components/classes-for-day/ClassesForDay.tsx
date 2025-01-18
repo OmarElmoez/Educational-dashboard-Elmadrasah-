@@ -71,6 +71,7 @@ const statusInfo = {
 const ClassesForDay = () => {
 
   const {today_lessons, loading} = useAppSelector(state => state.lessons);
+  console.log('from classes for day: ', today_lessons);
 
   const {credintials} = useAppSelector(state => state.auth);
 

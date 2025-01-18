@@ -1,6 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {LoginLayout, MainLayout} from "@/layouts";
-import {Classes, StudentHomePage} from "@/pages/student";
+import {Classes} from "@/pages/student";
 import ProdectedRoute from "./ProtectedRoute";
 
 // ==================== Icons ====================
@@ -33,8 +33,8 @@ import {
   StudentsList,
   AdminRolesPage,
 } from "@/pages/admin";
-import {TeacherClassesPage, TeacherHomePage, TeacherStudentsPage,} from "@/pages/teacher";
-import {FamilyHomePage, FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
+import {TeacherClassesPage, TeacherStudentsPage,} from "@/pages/teacher";
+import {FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
 import {Error, HelpPage, JoinClass, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
 import {Login, PhoneNumber, SetPassword} from "@/pages/login";
 import {SIDEBAR_DATA} from "@/constants";
@@ -78,12 +78,12 @@ const router = createBrowserRouter([
       </ProdectedRoute>
     ),
     children: [
+      // {
+      //   index: true,
+      //   element: <PageSuspense><StudentHomePage/></PageSuspense>,
+      // },
       {
         index: true,
-        element: <PageSuspense><StudentHomePage/></PageSuspense>,
-      },
-      {
-        path: 'calendar',
         element: <PageSuspense><Classes /></PageSuspense>
       },
       {
@@ -311,12 +311,12 @@ const router = createBrowserRouter([
       </ProdectedRoute>
     ),
     children: [
+      // {
+      //   index: true,
+      //   element: <PageSuspense><TeacherHomePage/></PageSuspense>,
+      // },
       {
         index: true,
-        element: <PageSuspense><TeacherHomePage/></PageSuspense>,
-      },
-      {
-        path: "classes",
         element: <PageSuspense><TeacherClassesPage/></PageSuspense>,
       },
       {
@@ -365,12 +365,12 @@ const router = createBrowserRouter([
       </ProdectedRoute>
     ),
     children: [
+      // {
+      //   index: true,
+      //   element: <PageSuspense><FamilyHomePage/></PageSuspense>,
+      // },
       {
         index: true,
-        element: <PageSuspense><FamilyHomePage/></PageSuspense>,
-      },
-      {
-        path: "calendar",
         element: <PageSuspense><FamilyClasses /></PageSuspense>,
       },
       {

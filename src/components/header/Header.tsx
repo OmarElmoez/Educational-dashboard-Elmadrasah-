@@ -52,7 +52,7 @@ const Header = () => {
       <header className={header}>
         <section className={wrapper}>
           <div className={textBox}>
-            <span>{headerTitle}</span>
+            <span>{headerTitle || "الجدول"}</span>
             <span>{dayName} : {formattedDate}</span>
           </div>
           <div className={box}>

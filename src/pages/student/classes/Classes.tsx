@@ -1,11 +1,9 @@
-import {ClassesForDay, ProgressCircle, WelcomeSection} from "@/components";
+import {ClassesForDay, WelcomeSection} from "@/components";
 import CalendarImg from '@/assets/student-calendar-img.svg?react'
-import styles from './classes.module.css';
-import Calendar from "@/components/calendar/Calendar.tsx";
+// import Calendar from "@/components/calendar/Calendar.tsx";
 // import {TTab} from "@/components/tabs/Tabs.tsx";
 // import {AllHours, CurrentHour, Teachers} from "@/components/tabs/sub-components";
 
-const {welcome_info, welcome_text} = styles;
 
 // const STUDENT_TABS: TTab[] = [
 //   {
@@ -28,20 +26,7 @@ const {welcome_info, welcome_text} = styles;
 const Classes = () => {
   return (
     <>
-      <WelcomeSection img={<CalendarImg/>}>
-        <section className={welcome_info}>
-          <ProgressCircle/>
-          <div className={welcome_text}>
-            <p>مستواك في تقدم</p>
-            <p>رائع 🥳</p>
-          </div>
-        </section>
-      </WelcomeSection>
-
-      <section className='calendar_wrapper'>
-        <Calendar/>
-        {/*<ScheduleForDay tabs={STUDENT_TABS}/>*/}
-      </section>
+      <WelcomeSection img={<CalendarImg/>} text="لقد افتقدناك، تحقق من كل ما هو جديد ومُحسَّن في لوحة التحكم الخاصة بك" />
 
       <ClassesForDay/>
     </>

@@ -1,24 +1,32 @@
 .calendar_container {
-  padding: 3rem 4.5rem;
-  background-color: var(--main-color);
+  padding: 2.3rem 2.6rem;
+  background-color: #F8F8F8CC;
   border-radius: 2.5rem;
+  border: 1px solid #C6CAC81A;
 }
 
 .months_wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #fff;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0.5rem;
 }
 
 .calendar_btn {
   width: 4rem;
   height: 4rem;
-  background-color: #fff;
+  background-color: var(--main-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 3px 3px  #0000000D;
+}
+
+.calendar_btn svg {
+  color: #fff;
 }
 
 .months_names {
@@ -31,7 +39,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   place-items: center;
-  color: #fff;
+  color: var(--secondary-color);
   font-weight: 500;
   margin-top: 3rem;
 

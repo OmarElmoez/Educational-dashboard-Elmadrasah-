@@ -1,14 +1,7 @@
 import {ClassesForDay, WelcomeSection} from "@/components";
 import CalendarImg from '@/assets/teacher-calendar-img.svg?react'
-import styles from './classes.module.css';
-import Calendar from "@/components/calendar/Calendar.tsx";
 // import {TTab} from "@/components/tabs/Tabs.tsx";
 // import {AllHours, CurrentHour, Students} from "@/components/tabs/sub-components";
-
-const {
-  first_text,
-  second_text
-} = styles;
 
 // const TEACHER_TABS: TTab[] = [
 //   {
@@ -31,15 +24,7 @@ const {
 const TeacherClassesPage = () => {
   return (
     <>
-      <WelcomeSection img={<CalendarImg/>}>
-        <p className={first_text}>لقد قام طلابك بتنفيذ 80% من واجباتهم</p>
-        <p className={second_text}>مجهود رائع 🥳</p>
-      </WelcomeSection>
-
-      <section className='calendar_wrapper'>
-        <Calendar/>
-        {/*<ScheduleForDay tabs={TEACHER_TABS}/>*/}
-      </section>
+      <WelcomeSection img={<CalendarImg/>} text="سعداء بوجودك كمعلم معنا و نقدر مجهودك مع الطلاب." />
 
       <ClassesForDay/>
     </>

@@ -107,7 +107,7 @@ const Calendar = () => {
           ].map((month, index) => (
             <span
               key={`${month}-${index}`}
-              style={{color: index === 1 ? "#fff" : "#bbdcc7"}}
+              style={{color: index === 1 ? "var(--secondary-color)" : "#646464"}}
             >
                       {month}
                     </span>
@@ -142,7 +142,7 @@ const Calendar = () => {
               key={index}
               style={{
                 background: (isToday || isClicked) ? "linear-gradient(90deg, #60D48A 4.01%, #35E93C 98.73%)" : "transparent",
-                color: beforeToday ? "#bbdcc7" : "#fff",
+                color: beforeToday ? "#646464" : "var(--secondary-color)",
                 textDecoration: beforeToday ? 'line-through' : ""
               }}
               onClick={() => setClickedDate(day)}

@@ -19,7 +19,7 @@ type TPath = {
   path: string;
   icon: React.ReactNode;
   phone_icon?: React.ReactNode;
-  page_title: string;
+  page_title?: string;
   children?: TSubLink[]
 };
 
