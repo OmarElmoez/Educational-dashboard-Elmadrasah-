@@ -105,10 +105,22 @@ const ClassesForDay = () => {
     dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`, studentId: child.id}))
   }
 
+  const clickAllHandler = (idx: number) => {
+    setActiveTab({idx, name: ""})
+    dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
+  }
+
   return (
     <>
+      {!statistics && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <h3 className={title}>حصص اليوم {dateInArabic}</h3>
       {credintials?.role === 'Family' && <section className={kids_names}>
+          <div onClick={() => clickAllHandler(-1)}
+               style={{backgroundColor: activeTab.idx === -1 ? "#fff" : "transparent", borderRadius: "5px"}}>
+              <span>الكل</span>
+          </div>
         {statistics?.map((child: TChild, idx: number) => (
           <div key={child.id} onClick={() => onClickHandler(idx, child)}
                style={{backgroundColor: activeTab.idx === idx ? "#fff" : "transparent", borderRadius: "5px"}}>
