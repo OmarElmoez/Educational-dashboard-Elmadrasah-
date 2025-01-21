@@ -14,6 +14,7 @@ import {useNavigate} from "react-router-dom";
 import formatDateIntoArabic from "@/utils/formatDateIntoArabic.ts";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
+import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 
 const {title, lessons_cards, card, status_box, kids_names} = styles;
 
@@ -71,7 +72,7 @@ const statusInfo = {
 
 type TChild =  {   id: number, first_name: string, last_name: string }
 
-const ClassesForDay = () => {
+const ClassesForDay = ({ lessonsForClickedHour }: {lessonsForClickedHour?: THourLesson[]}) => {
 
   const {today_lessons, loading} = useAppSelector(state => state.lessons);
   const dispatch = useAppDispatch();
@@ -130,13 +131,13 @@ const ClassesForDay = () => {
       </section>}
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
-        {filteredLessons.length === 0 && <p className="error">ليس لديك حصص اليوم !</p>}
-        {filteredLessons.length > 0 && filteredLessons.map((lesson: TLesson) => {
+        {(filteredLessons.length === 0 && !lessonsForClickedHour) && <p className="error">ليس لديك حصص اليوم !</p>}
+        {(filteredLessons.length > 0 && !lessonsForClickedHour) && filteredLessons.map((lesson: TLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
 
-              <h4>{lesson.subject_name}</h4>
+              <h4>{lesson.name}</h4>
 
               <div>
                 <ClockIcon style={{stroke: "#93B59F"}}/>
@@ -151,6 +152,43 @@ const ClassesForDay = () => {
               <div>
                 <EmiratesFlag/>
                 <p>الطالب {lesson.participants[0]?.student_name}</p>
+              </div>
+
+              <div>
+                <FileIcon/>
+                <p>رفع الملفات</p>
+              </div>
+
+              <span className={status_box} style={{
+                backgroundColor: statusInfo[lesson.status].colors.inner_bg,
+                color: statusInfo[lesson.status].colors.text
+              }}>
+                {statusInfo[lesson.status].label}
+              </span>
+
+            </article>
+          )
+        })}
+        {lessonsForClickedHour?.map((lesson: THourLesson) => {
+          return (
+            <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
+                     style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
+
+              <h4>{lesson.name}</h4>
+
+              <div>
+                <ClockIcon style={{stroke: "#93B59F"}}/>
+                <p>{formatHoursAndMinutes(lesson.from_datetime)} : {formatHoursAndMinutes(lesson.to_datetime)}</p>
+              </div>
+
+              <div>
+                <EgyptFlag/>
+                <p>المعلم {lesson.employee_name}</p>
+              </div>
+
+              <div>
+                <EmiratesFlag/>
+                <p>الطالب {lesson?.student_name}</p>
               </div>
 
               <div>

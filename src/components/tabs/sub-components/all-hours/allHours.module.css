@@ -19,6 +19,17 @@
   padding-left: 0.5rem;
 }
 
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 98%;
+}
+
+.title svg {
+  cursor: pointer;
+}
+
 .progress {
   display: flex;
   align-items: flex-end;
