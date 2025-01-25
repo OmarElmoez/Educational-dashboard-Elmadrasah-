@@ -122,7 +122,7 @@ const ClassesForDay = ({ lessonsForClickedHour }: {lessonsForClickedHour?: THour
                style={{backgroundColor: activeTab.idx === -1 ? "#fff" : "transparent", borderRadius: "5px"}}>
               <span>الكل</span>
           </div>
-        {statistics?.map((child: TChild, idx: number) => (
+        {statistics && statistics?.map((child: TChild, idx: number) => (
           <div key={child.id} onClick={() => onClickHandler(idx, child)}
                style={{backgroundColor: activeTab.idx === idx ? "#fff" : "transparent", borderRadius: "5px"}}>
             <span>{child.first_name}</span>
