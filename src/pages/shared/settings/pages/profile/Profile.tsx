@@ -13,7 +13,7 @@ import { useCallback, useEffect } from "react";
 const { form, row, content } = styles;
 
 const Profile = () => {
-  const { loading } = useAppSelector((state) => state.profile);
+  const { loading, user } = useAppSelector((state) => state.profile);
 
   const dispatch = useAppDispatch();
 
@@ -61,7 +61,8 @@ const Profile = () => {
               className="inputField"
               id="firstName"
               {...register("first_name")}
-            />{" "}
+              disabled={user?.user_type !== 'Admin'}
+            />
           </div>
 
           <div className="group">
@@ -71,6 +72,7 @@ const Profile = () => {
               className="inputField"
               id="lastName"
               {...register("last_name")}
+              disabled={user?.user_type !== 'Admin'}
             />
           </div>
         </section>
@@ -93,6 +95,7 @@ const Profile = () => {
               className="inputField"
               id="mobile"
               {...register("phone")}
+              disabled={user?.user_type !== 'Admin'}
             />
           </div>
         </section>
@@ -116,13 +119,14 @@ const Profile = () => {
               className="inputField"
               id="birth_date"
               {...register("birth_date")}
+              disabled={user?.user_type !== 'Admin'}
             />
           </div>
         </section>
 
-        <button type="submit" disabled={loading === "pending"}>
+        {user?.user_type === 'Admin' && <button type="submit" disabled={loading === "pending"}>
           {loading === "pending" ? "جاري الحفظ..." : "حفظ"}
-        </button>
+        </button>}
         {/* <input type="submit" value="حفظ" onClick={() => console.log('you click')} /> */}
         {loading === "failed" && (
           <p className="error" style={{ marginTop: "1rem" }}>

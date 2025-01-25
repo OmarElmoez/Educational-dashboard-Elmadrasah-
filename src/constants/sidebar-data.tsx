@@ -47,6 +47,7 @@ const SIDEBAR_DATA = {
       path: "/student",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      page_title: "جدولي",
       children: undefined
     },
   ],
@@ -260,6 +261,7 @@ const SIDEBAR_DATA = {
       path: "/teacher",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      page_title: "جدولي",
       children: undefined
     },
     {
@@ -294,6 +296,7 @@ const SIDEBAR_DATA = {
       path: "/family",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
+      page_title: "الجدول",
       children: undefined
     },
     {
