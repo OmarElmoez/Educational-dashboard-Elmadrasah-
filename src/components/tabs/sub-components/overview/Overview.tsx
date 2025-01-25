@@ -42,9 +42,9 @@ const Overview = () => {
   return (
     <section style={{ position: "relative" }}>
       <TabHeader text="حصص اليوم" onClick={sendRequestToServer} />
-
-      <p className={today_lessons}>عدد حصص اليوم {overViewData?.total_lessons_today} حصة</p>
-
+      <p className={today_lessons}>
+    الحصص الجارية ( {overViewData?.total_lessons_today} حصص )
+      </p>
       <section className={attendance_status}>
         <article>
           <div>

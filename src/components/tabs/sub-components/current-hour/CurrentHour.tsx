@@ -12,7 +12,7 @@ import {useCallback, useContext, useEffect, useState} from "react";
 import {getLessonsStatusForCurrentHour} from "@/services/lessonsStatus.ts";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 
-const {status} = styles;
+const {status, count_lessons} = styles;
 
 export type TLessonForCurrentHour = {
   lesson_count: number;
@@ -52,8 +52,8 @@ const CurrentHour = () => {
     <section>
       <TabHeader text="الحضور للساعة الحالية" onClick={sendRequestToServer}/>
 
-      <article style={{marginTop: "2rem"}}>
-        <p>الحصص الجارية ( {currentHourData?.lesson_count} حصص )</p>
+      <article style={{marginTop: "1.2rem"}}>
+        <p className={count_lessons}>الحصص الجارية ( {currentHourData?.lesson_count} حصص )</p>
 
         <ProgressBar width={`${currentHourData?.attendance_percentage}%`} style={{marginTop: '2.3rem'}}/>
         <div className={status}>

@@ -7,7 +7,7 @@
 .count_lessons {
   margin-top: 1.2rem;
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 .all_hours_info {
@@ -25,6 +25,9 @@
   justify-content: space-between;
   width: 98%;
 }
+.title p {
+  font-size: 1.4rem;
+}
 
 .title svg {
   cursor: pointer;
@@ -32,15 +35,19 @@
 
 .progress {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 1.2rem;
 }
 
 .progress > div {
   width: 100%;
+  display: inline;
 }
 
 .progress span {
   color: var(--main-color);
   font-size: 1.2rem;
+  margin-top: 1.2rem;
 }
+
+
