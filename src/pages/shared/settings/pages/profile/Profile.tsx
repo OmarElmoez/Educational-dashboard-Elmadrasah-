@@ -107,7 +107,6 @@ const Profile = () => {
               type="text"
               className="inputField"
               id="gender"
-              placeholder="ذكر - انثى"
               {...register("gender")}
               disabled
             />
