@@ -1,5 +1,5 @@
 import styles from './classesForDay.module.css'
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 
 import {TLesson} from "@/schemas/LessonSchema.ts";
@@ -72,13 +72,15 @@ const statusInfo = {
 
 type TChild =  {   id: number, first_name: string, last_name: string }
 
-const ClassesForDay = ({ lessonsForClickedHour }: {lessonsForClickedHour?: THourLesson[]}) => {
+const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClickedHour?: THourLesson[], isHourClicked?: boolean}) => {
 
   const {today_lessons, loading} = useAppSelector(state => state.lessons);
+
   const dispatch = useAppDispatch();
 
   const {credintials} = useAppSelector(state => state.auth);
-  const {statistics} = useAppSelector(state => state.profile);
+
+  const {statistics} = useAppSelector(state => state.profile)
 
   const {clickedDate, setStudentId} = useContext(CalendarContext);
   const dateInArabic = formatDateIntoArabic(clickedDate)
@@ -110,6 +112,10 @@ const ClassesForDay = ({ lessonsForClickedHour }: {lessonsForClickedHour?: THour
     setActiveTab({idx, name: ""})
     dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
   }
+  
+  useEffect(() => {
+    dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
+  }, [dispatch])
 
   return (
     <>
@@ -132,7 +138,7 @@ const ClassesForDay = ({ lessonsForClickedHour }: {lessonsForClickedHour?: THour
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
         {(filteredLessons.length === 0 && !lessonsForClickedHour) && <p className="error">ليس لديك حصص اليوم !</p>}
-        {(filteredLessons.length > 0 && !lessonsForClickedHour) && filteredLessons.map((lesson: TLesson) => {
+        {(filteredLessons.length > 0 && !isHourClicked) && filteredLessons.map((lesson: TLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
@@ -169,7 +175,7 @@ const ClassesForDay = ({ lessonsForClickedHour }: {lessonsForClickedHour?: THour
             </article>
           )
         })}
-        {lessonsForClickedHour?.map((lesson: THourLesson) => {
+        {(lessonsForClickedHour && lessonsForClickedHour.length > 0 && isHourClicked) && lessonsForClickedHour?.map((lesson: THourLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>

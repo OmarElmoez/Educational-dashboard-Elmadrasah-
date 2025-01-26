@@ -48,8 +48,10 @@ export type TLessonsForEachHour = {
 
 const AllHours = ({
   setLessonsForClickedHour,
+  setIsHourClicked,
 }: {
   setLessonsForClickedHour: Dispatch<SetStateAction<THourLesson[]>>;
+  setIsHourClicked: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [allHoursLessonsData, setAllHoursLessonsData] =
     useState<TLessonsForEachHour>();
@@ -124,7 +126,10 @@ const AllHours = ({
                   <div className={title}>
                     <p>{convertToArabicTime(key)}</p>
                     <ClickIcon
-                      onClick={() => setLessonsForClickedHour(value.lessons)}
+                      onClick={() => {
+                        setLessonsForClickedHour(value.lessons);
+                        setIsHourClicked(true)
+                      }}
                     />
                   </div>
                   <div className={progress}>

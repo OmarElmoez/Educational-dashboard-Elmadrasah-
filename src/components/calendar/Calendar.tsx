@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import ChevronRight from '@/assets/chevronRight.svg?react';
 import ChevronLeft from '@/assets/chevronLeft.svg?react';
 
@@ -9,7 +9,7 @@ import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 
 const {calendar_container, calendar_btn, months_wrapper, months_names, weekAbbreviations, days_wrapper} = styles;
 
-const Calendar = () => {
+const Calendar = ({setIsHourClicked}: {setIsHourClicked?: Dispatch<SetStateAction<boolean>>}) => {
 
   const {clickedDate, setClickedDate} = useContext(CalendarContext);
 
@@ -145,7 +145,10 @@ const Calendar = () => {
                 color: beforeToday ? "#646464" : "var(--secondary-color)",
                 textDecoration: beforeToday ? 'line-through' : ""
               }}
-              onClick={() => setClickedDate(day)}
+              onClick={() => {
+                setClickedDate(day);
+                setIsHourClicked && setIsHourClicked(false)
+              }}
             >
               {day.getDate()}
             </div>

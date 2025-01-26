@@ -10,6 +10,8 @@ const AdminClassesPage = () => {
 
   const [lessonsForClickedHour, setLessonsForClickedHour] = useState<THourLesson[]>([])
 
+  const [isHourClicked, setIsHourClicked] = useState(false);
+
   const ADMIN_TABS: TTab[] = [
     {
       id: 0,
@@ -27,6 +29,7 @@ const AdminClassesPage = () => {
       content: AllHours,
       contentProps: {
         setLessonsForClickedHour,
+        setIsHourClicked,
       }
     }
   ]
@@ -34,11 +37,11 @@ const AdminClassesPage = () => {
   return (
     <>
       <section className='calendar_wrapper'>
-        <Calendar />
+        <Calendar setIsHourClicked={setIsHourClicked} />
         <ScheduleForDay tabs={ADMIN_TABS} />
       </section>
 
-      <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} />
+      <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} isHourClicked={isHourClicked} />
     </>
   );
 };

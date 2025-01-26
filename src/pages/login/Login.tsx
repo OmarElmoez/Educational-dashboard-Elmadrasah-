@@ -14,8 +14,6 @@ import { actGetUserProfile } from "@/store/profile/ProfileSlice";
 import { actGetReviewQuestions } from "@/store/review-questions/reviewSlice";
 import actFCMLogin from "@/store/FCM/act/actFCMLogin";
 import { useFirebaseMessaging } from "@/hooks";
-import { endOfMonth, format, startOfMonth } from "date-fns";
-import actGetLessonsByRange from "@/store/lessons/act/actGetLessonsByRange";
 import {useFeedback} from "@/store/context";
 
 const { loginBox, loginWithBox, actionsBox, formInput, logo } = styles;
@@ -30,10 +28,6 @@ const Login = () => {
   const { openFeedbackModal } = useFeedback();
 
   const navigate = useNavigate();
-
-  const today = new Date();
-  const startDate = startOfMonth(today);
-  const endDate = endOfMonth(today);
 
   const {
     handleSubmit,
@@ -62,12 +56,6 @@ const Login = () => {
           if (res.user.user_type !== 'Admin') {
           dispatch(actGetReviewQuestions());
           }
-          dispatch(
-            actGetLessonsByRange({
-              start_date: format(startDate, "dd-MM-yyyy"),
-              end_date: format(endDate, "dd-MM-yyyy"),
-            })
-          );
           if (fcmToken) {
             dispatch(
               actFCMLogin({ FCM_token: fcmToken })
