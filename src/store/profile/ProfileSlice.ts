@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import actGetUserProfile from "./act/actGetUserProfile";
 import { isString } from "@/types/gurads";
 import actUpdateUserProfile from "./act/actUpdateUserProfile";
+
 type TProfileState = {
   loading: TLoading,
   statistics: TUserStatistics,
@@ -37,7 +38,9 @@ const profileSlice = createSlice({
     builder.addCase(actGetUserProfile.fulfilled, (state, action) => {
       state.loading = "succeeded"
       state.user = action.payload.user
-      state.statistics = action.payload.statistics
+      if (action.payload.user.user_type === 'Family') {
+        state.statistics = action.payload.statistics
+      }
       state.img_url = action.payload.user.image
 
     })
@@ -68,7 +71,7 @@ const profileSlice = createSlice({
   },
 })
 
-export const { removeProfile } = profileSlice.actions
+export const {removeProfile} = profileSlice.actions
 
 export { actGetUserProfile, actUpdateUserProfile }
 
