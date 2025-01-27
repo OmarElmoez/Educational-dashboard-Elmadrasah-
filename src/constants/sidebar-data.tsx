@@ -1,6 +1,5 @@
 import {
   CalendarIcon,
-  Lesson,
   UnscheduledIcon,
   CalendarMiniIcon,
   HomeIcon,
