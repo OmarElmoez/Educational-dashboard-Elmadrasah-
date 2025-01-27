@@ -29,7 +29,7 @@ export type THourLesson = {
   student_name: string;
   start_time_employee: null | string;
   spaces: null | string;
-  status: "Scheduled" | "Attended" | "Missed" | "Progressing" | "Canceled";
+  status: "Scheduled" | "Attended" | "Missed" | "Progressing" | "Cancelled";
   employee_name: string;
   from_time: string;
   to_time: string;

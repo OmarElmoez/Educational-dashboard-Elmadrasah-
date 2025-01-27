@@ -48,7 +48,7 @@ export const LessonSchema = z.object({
     z.literal('Attended'),
     z.literal('Missed'),
     z.literal('Progressing'),
-    z.literal('Canceled'),
+    z.literal('Cancelled'),
   ]),
   custom_status: z.string().nullable(),
   completed_at: z.string().nullable(),

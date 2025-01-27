@@ -58,7 +58,7 @@ const statusInfo = {
         border: "#1C8A4480",
       }
     },
-  Canceled:
+  Cancelled:
     {
       label: "لم تبدأ بعد",
       colors: {
@@ -116,6 +116,9 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
   useEffect(() => {
     dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
   }, [dispatch])
+
+  const lessonsStatus = lessonsForClickedHour?.map((lesson) => lesson.status);
+  console.log('all status: ', lessonsStatus);
 
   return (
     <>

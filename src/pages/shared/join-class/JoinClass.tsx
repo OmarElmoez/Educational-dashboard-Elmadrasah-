@@ -24,7 +24,7 @@ const STATUS_TEXT = {
   Scheduled: "لم يبدأ الدرس بعد .",
   Missed: "متغيب",
   Progressing: "جارية",
-  Canceled: "تم الالغاء"
+  Cancelled: "تم الالغاء"
 }
 
 export type TPersonInfo = {
