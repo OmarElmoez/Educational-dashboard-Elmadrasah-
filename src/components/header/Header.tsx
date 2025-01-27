@@ -7,8 +7,8 @@ import actGetNotifications from "@/store/notifications/act/actGetNotifications";
 import LoadingIndicator from "../loadingIndicator/LoadingIndicator";
 import { useContext } from "react";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
-import { format } from "date-fns";
-import { ar } from 'date-fns/locale';
+// import { format } from "date-fns";
+// import { ar } from 'date-fns/locale';
 
 const {
   header,

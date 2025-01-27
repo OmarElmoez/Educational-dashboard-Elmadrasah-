@@ -9,7 +9,7 @@ import styles from './overview.module.css'
 import {useEffect, useState} from "react";
 import {getLessonsStatusOverview} from "@/services/lessonsStatus.ts";
 
-const {today_lessons, attendance_status, today_summary} = styles;
+const {today_lessons, attendance_status} = styles;
 
 export type TOverview = {
   total_lessons_today: number;
