@@ -1,10 +1,10 @@
-import {ClassesForDay, ScheduleForDay} from "@/components";
+import { ClassesForDay, ScheduleForDay, WelcomeSection } from "@/components";
 
-import Calendar from "@/components/calendar/Calendar.tsx";
 import {TTab} from "@/components/tabs/Tabs.tsx";
 import {AllHours, CurrentHour, Overview} from "@/components/tabs/sub-components";
 import { useState } from "react";
 import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
+import CalendarImg from '@/assets/admin-calendar-img.svg?react'
 
 const AdminClassesPage = () => {
 
@@ -36,10 +36,8 @@ const AdminClassesPage = () => {
 
   return (
     <>
-      <section className='calendar_wrapper'>
-        <Calendar setIsHourClicked={setIsHourClicked} />
-        <ScheduleForDay tabs={ADMIN_TABS} />
-      </section>
+      <WelcomeSection img={<CalendarImg/>} imgWidth="370" text="نأمل لك يوم عمل سعيد مع المدرسة . كوم" />
+      <ScheduleForDay tabs={ADMIN_TABS} />
 
       <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} isHourClicked={isHourClicked} />
     </>

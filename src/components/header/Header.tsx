@@ -40,10 +40,6 @@ const Header = () => {
     });
   };
 
-  const today = new Date();
-  const formattedDate = format(today, "yyyy/M/d");
-  const dayName = format(today, "EEEE", {locale: ar})
-
   return (
     <>
       {loading === "pending" && <div className="loadingBox">
@@ -53,7 +49,6 @@ const Header = () => {
         <section className={wrapper}>
           <div className={textBox}>
             <span>{headerTitle || "الجدول"}</span>
-            <span>{dayName} : {formattedDate}</span>
           </div>
           <div className={box}>
             <div className={notifications} onClick={getNotificationsHandler}>

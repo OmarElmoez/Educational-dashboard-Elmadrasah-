@@ -1,8 +1,6 @@
 import {ProgressBar, StatusBullet} from "@/components/UI";
 import {
-  StudentSatisfaction,
   TabHeader,
-  TestClasses,
   TimingDetails,
   TStudent,
   TTeacher
@@ -66,9 +64,9 @@ const CurrentHour = () => {
 
       {role === 'Admin' && <TimingDetails students={currentHourData?.students || []} teachers={currentHourData?.teachers || []}/>}
 
-      <TestClasses/>
+      {/*<TestClasses/>*/}
 
-      {role === 'Admin' && <StudentSatisfaction/>}
+      {/*{role === 'Admin' && <StudentSatisfaction/>}*/}
 
     </section>
   )

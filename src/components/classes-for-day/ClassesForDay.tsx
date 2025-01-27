@@ -11,10 +11,11 @@ import EmiratesFlag from '@/assets/flag-united-arab-emirates.svg?react';
 import FileIcon from '@/assets/file-outline.svg?react';
 import {LoadingIndicator} from "@/components";
 import {useNavigate} from "react-router-dom";
-import formatDateIntoArabic from "@/utils/formatDateIntoArabic.ts";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
+import { format } from "date-fns";
+import { ar } from 'date-fns/locale';
 
 const {title, lessons_cards, card, status_box, kids_names} = styles;
 
@@ -45,7 +46,7 @@ const statusInfo = {
         outer_bg: "#FFEEEE",
         inner_bg: "#FBCBD0",
         text: "#F64E60",
-        border: "#CE122580 "
+        border: "#CE122580"
       }
     },
   Progressing:
@@ -60,12 +61,12 @@ const statusInfo = {
     },
   Cancelled:
     {
-      label: "لم تبدأ بعد",
+      label: "ملغاة",
       colors: {
-        outer_bg: "transparent",
-        inner_bg: "#CCCCCC",
-        text: "#828684",
-        border: "#1B84FF33"
+        outer_bg: "#FFEEEE",
+        inner_bg: "#FBCBD0",
+        text: "#F64E60",
+        border: "#CE122580"
       }
     },
 };
@@ -83,7 +84,7 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
   const {statistics} = useAppSelector(state => state.profile)
 
   const {clickedDate, setStudentId} = useContext(CalendarContext);
-  const dateInArabic = formatDateIntoArabic(clickedDate)
+  const arabicDate = format(clickedDate, "d MMMM yyyy", {locale: ar})
 
   const filteredLessons = today_lessons.filter(lesson => {
     return clickedDate.setHours(0, 0, 0, 0) === new Date(lesson.from_date).setHours(0, 0, 0, 0);
@@ -117,15 +118,12 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
     dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
   }, [dispatch])
 
-  const lessonsStatus = lessonsForClickedHour?.map((lesson) => lesson.status);
-  console.log('all status: ', lessonsStatus);
-
   return (
     <>
       {!statistics && <div className="loadingBox">
           <LoadingIndicator/>
       </div>}
-      <h3 className={title}>حصص اليوم {dateInArabic}</h3>
+      <h3 className={title}>حصص اليوم {arabicDate}</h3>
       {credintials?.role === 'Family' && <section className={kids_names}>
           <div onClick={() => clickAllHandler(-1)}
                style={{backgroundColor: activeTab.idx === -1 ? "#fff" : "transparent", borderRadius: "5px"}}>

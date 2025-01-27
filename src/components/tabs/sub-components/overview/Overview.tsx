@@ -1,13 +1,9 @@
 import {
-  StudentSatisfaction,
   TabHeader,
-  TestClasses,
   TimingDetails, TStudent,
   TTeacher
 } from "@/components/tabs/sub-components/Shared.tsx";
 import {ProgressBar} from "@/components/UI";
-
-import EyeIcon from '@/assets/eye.svg?react';
 
 import styles from './overview.module.css'
 import {useEffect, useState} from "react";
@@ -48,7 +44,7 @@ const Overview = () => {
       <section className={attendance_status}>
         <article>
           <div>
-            <p style={{fontSize: '1.3rem;'}}>حضور</p>
+            <p style={{fontSize: '1.3rem'}}>حضور</p>
             <ProgressBar width={`${overViewData?.attendance_percentage}%`}/>
           </div>
           <span>({overViewData?.attended_lessons_count})</span>
@@ -56,7 +52,7 @@ const Overview = () => {
 
         <article>
           <div>
-            <p style={{ fontSize: '1.3rem;' }}>عدم حضور</p>
+            <p style={{ fontSize: '1.3rem' }}>عدم حضور</p>
             <ProgressBar width="60%" color1="#eb5757" color2="#e48b8b" />
           </div>
           <span>({overViewData?.not_attended_lessons_count})</span>
@@ -66,14 +62,14 @@ const Overview = () => {
 
       <TimingDetails teachers={overViewData?.teachers || []} students={overViewData?.students  || []} />
 
-      <TestClasses />
+      {/*<TestClasses />*/}
 
-      <StudentSatisfaction />
+      {/*<StudentSatisfaction />*/}
 
-      <button className={today_summary}>
-        <EyeIcon />
-        <span>عرض ملخص اليوم</span>
-      </button>
+      {/*<button className={today_summary}>*/}
+      {/*  <EyeIcon />*/}
+      {/*  <span>عرض ملخص اليوم</span>*/}
+      {/*</button>*/}
     </section>
   )
 }

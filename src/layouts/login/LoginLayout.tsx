@@ -9,6 +9,7 @@ const LoginLayout = () => {
     wrapper,
     leftBox,
     rightBox,
+    login_imgBox
   } = styles;
 
   return (
@@ -17,7 +18,9 @@ const LoginLayout = () => {
       <Outlet />
     </section>
     <section className={leftBox}>
-      <LoginImg />
+      <div className={login_imgBox}>
+        <LoginImg />
+      </div>
     </section>
   </main>
   )

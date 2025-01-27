@@ -31,21 +31,36 @@
   margin-top: 2.4rem;
 }
 
+.timing_box {
+  display: flex;
+  justify-content: space-between;
+  gap: 10rem;
+  max-height: 51rem;
+  overflow-y: auto;
+}
+
+.timing_box > section {
+  flex: 1;
+}
+
+.titles_box {
+  display: flex;
+  align-self: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8rem
+}
+
 .label {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  flex: 1;
 }
 
 .label span {
   font-weight: 300;
   color: #6F6F6F;
-}
-
-.info_paragraphs {
-  margin-top: 1.2rem;
-  max-height: 144px;
-  overflow-y: auto;
 }
 
 .info_paragraphs p {

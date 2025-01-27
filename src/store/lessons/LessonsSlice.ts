@@ -78,58 +78,61 @@ const lessonsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(actGetLessons.pending, (state) => {
-      state.loading = "pending";
-      state.error = null;
-    });
+    /*
+    // builder.addCase(actGetLessons.pending, (state) => {
+    //   state.loading = "pending";
+    //   state.error = null;
+    // });
+    //
+    // builder.addCase(actGetLessons.fulfilled, (state, action) => {
+    //   state.loading = "succeeded";
+    //   // if (action.meta.arg.from_date) {
+    //   //   console.log('from get today', action.payload);
+    //   //   state.today_lessons = action.payload.results;
+    //   // } else {
+    //   state.all_lessons = action.payload.results;
+    //   // }
+    //   state.next = action.payload.next;
+    //   state.previous = action.payload.previous;
+    //   if ("students" in action.payload) {
+    //     state.students = action.payload.students as Array<{
+    //       student_id: number;
+    //       student_name: string;
+    //       subjects: Record<
+    //         string,
+    //         { missed: number; attended: number; scheduled: number }
+    //       >;
+    //       completion_percentage: number;
+    //     }>;
+    //   }
+    // });
+    //
+    // builder.addCase(actGetLessons.rejected, (state, action) => {
+    //   state.loading = "failed";
+    //   if (isString(action.payload)) {
+    //     state.error = action.payload;
+    //   }
+    // });
+    */
 
-    builder.addCase(actGetLessons.fulfilled, (state, action) => {
-      state.loading = "succeeded";
-      // if (action.meta.arg.from_date) {
-      //   console.log('from get today', action.payload);
-      //   state.today_lessons = action.payload.results;
-      // } else {
-      state.all_lessons = action.payload.results;
-      // }
-      state.next = action.payload.next;
-      state.previous = action.payload.previous;
-      if ("students" in action.payload) {
-        state.students = action.payload.students as Array<{
-          student_id: number;
-          student_name: string;
-          subjects: Record<
-            string,
-            { missed: number; attended: number; scheduled: number }
-          >;
-          completion_percentage: number;
-        }>;
-      }
-    });
-
-    builder.addCase(actGetLessons.rejected, (state, action) => {
-      state.loading = "failed";
-      if (isString(action.payload)) {
-        state.error = action.payload;
-      }
-    });
 
     // Lessons By Range
-    builder.addCase(actGetLessonsByRange.pending, (state) => {
-      state.loading = "pending";
-      state.error = null;
-    });
-
-    builder.addCase(actGetLessonsByRange.fulfilled, (state, action) => {
-      state.loading = "succeeded";
-      state.today_lessons = action.payload;
-    });
-
-    builder.addCase(actGetLessonsByRange.rejected, (state, action) => {
-      state.loading = "failed";
-      if (isString(action.payload)) {
-        state.error = action.payload;
-      }
-    });
+    // builder.addCase(actGetLessonsByRange.pending, (state) => {
+    //   state.loading = "pending";
+    //   state.error = null;
+    // });
+    //
+    // builder.addCase(actGetLessonsByRange.fulfilled, (state, action) => {
+    //   state.loading = "succeeded";
+    //   state.today_lessons = action.payload;
+    // });
+    //
+    // builder.addCase(actGetLessonsByRange.rejected, (state, action) => {
+    //   state.loading = "failed";
+    //   if (isString(action.payload)) {
+    //     state.error = action.payload;
+    //   }
+    // });
 
     // Lessons By Day
     builder.addCase(actGetLessonsByDay.pending, (state) => {
@@ -150,24 +153,24 @@ const lessonsSlice = createSlice({
     });
 
     // Lessons By Status
-    builder.addCase(actGetLessonsByStatus.pending, (state) => {
-      state.loading = "pending";
-      state.error = null;
-    });
-
-    builder.addCase(actGetLessonsByStatus.fulfilled, (state, action) => {
-      state.loading = "succeeded";
-      state.status_lessons = action.payload.results;
-      state.next = action.payload.next;
-      state.previous = action.payload.previous;
-    });
-
-    builder.addCase(actGetLessonsByStatus.rejected, (state, action) => {
-      state.loading = "failed";
-      if (isString(action.payload)) {
-        state.error = action.payload;
-      }
-    }); 
+    // builder.addCase(actGetLessonsByStatus.pending, (state) => {
+    //   state.loading = "pending";
+    //   state.error = null;
+    // });
+    //
+    // builder.addCase(actGetLessonsByStatus.fulfilled, (state, action) => {
+    //   state.loading = "succeeded";
+    //   state.status_lessons = action.payload.results;
+    //   state.next = action.payload.next;
+    //   state.previous = action.payload.previous;
+    // });
+    //
+    // builder.addCase(actGetLessonsByStatus.rejected, (state, action) => {
+    //   state.loading = "failed";
+    //   if (isString(action.payload)) {
+    //     state.error = action.payload;
+    //   }
+    // });
 
     // join lessons
     builder.addCase(actJoinLesson.pending, (state) => {
