@@ -66,29 +66,29 @@ const SIDEBAR_DATA = {
       path: "calendar",
       icon: <CalendarIcon />,
       phone_icon: <PH_calendarIcon />,
-      page_title: "جدولي",
+      page_title: "الجدول",
       children: [
-        {
-          title: "دخول الحصة للطالب",
-          path: "calendar/join-student",
-          icon: <CalendarMiniIcon />,
-          phone_icon: <PH_calendarIcon />,
-          page_title: "دخول الحصة",
-        },
-        {
-          title: "دخول الحصة للمدرس",
-          path: "join-teacher",
-          icon: <CalendarMiniIcon />,
-          phone_icon: <PH_calendarIcon />,
-          page_title: "دخول الحصة",
-        },
-        {
-          title: "الدرس كامل",
-          path: "all-lesson",
-          icon: <Lesson />,
-          phone_icon: <PH_calendarIcon />,
-          page_title: "دخول الحصة",
-        },
+        // {
+        //   title: "دخول الحصة للطالب",
+        //   path: "calendar/join-student",
+        //   icon: <CalendarMiniIcon />,
+        //   phone_icon: <PH_calendarIcon />,
+        //   page_title: "دخول الحصة",
+        // },
+        // {
+        //   title: "دخول الحصة للمدرس",
+        //   path: "join-teacher",
+        //   icon: <CalendarMiniIcon />,
+        //   phone_icon: <PH_calendarIcon />,
+        //   page_title: "دخول الحصة",
+        // },
+        // {
+        //   title: "الدرس كامل",
+        //   path: "all-lesson",
+        //   icon: <Lesson />,
+        //   phone_icon: <PH_calendarIcon />,
+        //   page_title: "دخول الحصة",
+        // },
         {
           title: "الطلاب الغير مجدولين",
           path: "calendar/all-unscheduled-list",
@@ -96,11 +96,11 @@ const SIDEBAR_DATA = {
           page_title: "الطلاب الغير مجدولين",
         },
         {
-          title: "جدولي",
+          title: "الجدول",
           path: "calendar/classes",
           icon: <CalendarMiniIcon />,
           phone_icon: <PH_calendarIcon />,
-          page_title: "جدولي",
+          page_title: "الجدول",
         },
       ],
     },
@@ -264,14 +264,14 @@ const SIDEBAR_DATA = {
       page_title: "جدولي",
       children: undefined
     },
-    {
-      title: "الطلاب",
-      path: "students",
-      icon: <StudentIcon />,
-      phone_icon: <PH_boyIcon />,
-      page_title: "الطلاب",
-      children: undefined
-    },
+    // {
+    //   title: "الطلاب",
+    //   path: "students",
+    //   icon: <StudentIcon />,
+    //   phone_icon: <PH_boyIcon />,
+    //   page_title: "الطلاب",
+    //   children: undefined
+    // },
     // {
     //   title: "التقارير",
     //   path: "reports",
@@ -299,14 +299,14 @@ const SIDEBAR_DATA = {
       page_title: "الجدول",
       children: undefined
     },
-    {
-      title: "الملاحظات",
-      path: "notes",
-      icon: <ReportsIcon />,
-      phone_icon: <PH_reportsIcon />,
-      page_title: "الملاحظات",
-      children: undefined
-    },
+    // {
+    //   title: "الملاحظات",
+    //   path: "notes",
+    //   icon: <ReportsIcon />,
+    //   phone_icon: <PH_reportsIcon />,
+    //   page_title: "الملاحظات",
+    //   children: undefined
+    // },
   ],
 };
 

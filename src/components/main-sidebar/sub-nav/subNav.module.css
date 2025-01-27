@@ -1,11 +1,11 @@
 .sub_nav {
   width: 165px;
   /* 10rem is the height of the header */
-  height: calc(100% - 10rem);
+  height: calc(100% - 7.2rem);
   padding: 2.3rem 0.8rem 0;
   background-color: #F9F9F9;
   position: absolute;
-  top: 10rem;
+  top: 7.2rem;
   right: 0;
   transition: 0.3s;
 }
@@ -24,12 +24,11 @@
 .sub_nav menu a {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.6rem;
   padding: 0.8rem 1.2rem 0.8rem 0;
 }
 
 .sub_nav__link span {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.2rem;
   color: inherit;
 }
