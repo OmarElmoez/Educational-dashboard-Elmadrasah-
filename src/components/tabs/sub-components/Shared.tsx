@@ -102,42 +102,19 @@ export const TimingDetails = ({teachers, students}: {
 
           <div className={info_paragraphs}>
 
-            {/*{teachers.length > 0 && teachers.map((teacher, idx) => (*/}
-            {/*  <p key={`${teacher.teacher_name}_${idx}`} style={{*/}
-            {/*    backgroundColor: `${timeDifferenceStatus(*/}
-            {/*      teacher.from_time,*/}
-            {/*      "13:50:00").bg_color}`*/}
-            {/*  }}>*/}
-            {/*    <span className={dot}></span>*/}
-            {/*    <span>{teacher.teacher_name} : في الساعة {convert24HourToArabic(*/}
-            {/*      teacher.start_time_employee as string)} ( {timeDifferenceStatus(*/}
-            {/*      teacher.from_time,*/}
-            {/*      "13:50:00").text} )</span>*/}
-            {/*  </p>*/}
-            {/*))}*/}
-
-            {Array.from({length: 50}).map((_, outerIdx) => (
-              teachers.length > 0 &&
-              teachers.map((teacher, idx) => (
-                <p
-                  key={`${outerIdx}_${teacher.teacher_name}_${idx}`}
-                  style={{
-                    backgroundColor: `${timeDifferenceStatus(
-                      teacher.from_time,
-                      "13:50:00"
-                    ).bg_color}`,
-                  }}
-                >
-                  <span className={dot}></span>
-                  <span>
-        {teacher.teacher_name} : في الساعة
-                    {convert24HourToArabic(teacher.start_time_employee as string)} (
-                    {timeDifferenceStatus(teacher.from_time, "13:50:00").text} )
-      </span>
-                </p>
-              ))
+            {teachers.length > 0 && teachers.map((teacher, idx) => (
+              <p key={`${teacher.teacher_name}_${idx}`} style={{
+                backgroundColor: `${timeDifferenceStatus(
+                  teacher.from_time,
+                  "13:50:00").bg_color}`
+              }}>
+                <span className={dot}></span>
+                <span>{teacher.teacher_name} : في الساعة {convert24HourToArabic(
+                  teacher.start_time_employee as string)} ( {timeDifferenceStatus(
+                  teacher.from_time,
+                  "13:50:00").text} )</span>
+              </p>
             ))}
-
 
           </div>
         </section>
@@ -146,42 +123,19 @@ export const TimingDetails = ({teachers, students}: {
 
           <div className={info_paragraphs}>
 
-            {/*{students.length > 0 && students.map((student, idx) => (*/}
-            {/*  <p key={`${student.student_name}_${idx}`} style={{*/}
-            {/*    backgroundColor: `${timeDifferenceStatus(*/}
-            {/*      student.lesson__from_time,*/}
-            {/*      "14:00:00").bg_color}`*/}
-            {/*  }}>*/}
-            {/*    <span className={dot}></span>*/}
-            {/*    <span>{student.student_name} : في الساعة {convert24HourToArabic(*/}
-            {/*      student.start_time_student as string)} ( {timeDifferenceStatus(*/}
-            {/*      student.lesson__from_time,*/}
-            {/*      "14:00:00").text} )</span>*/}
-            {/*  </p>*/}
-            {/*))}*/}
-
-            {Array.from({length: 50}).map((_, outerIdx) => (
-              students.length > 0 &&
-              students.map((student, idx) => (
-                <p
-                  key={`${outerIdx}_${student.student_name}_${idx}`}
-                  style={{
-                    backgroundColor: `${timeDifferenceStatus(
-                      student.lesson__from_time,
-                      "14:00:00"
-                    ).bg_color}`,
-                  }}
-                >
-                  <span className={dot}></span>
-                  <span>
-        {student.student_name} : في الساعة
-                    {convert24HourToArabic(student.start_time_student as string)} (
-                    {timeDifferenceStatus(student.lesson__from_time, "14:00:00").text} )
-      </span>
-                </p>
-              ))
+            {students.length > 0 && students.map((student, idx) => (
+              <p key={`${student.student_name}_${idx}`} style={{
+                backgroundColor: `${timeDifferenceStatus(
+                  student.lesson__from_time,
+                  "14:00:00").bg_color}`
+              }}>
+                <span className={dot}></span>
+                <span>{student.student_name} : في الساعة {convert24HourToArabic(
+                  student.start_time_student as string)} ( {timeDifferenceStatus(
+                  student.lesson__from_time,
+                  "14:00:00").text} )</span>
+              </p>
             ))}
-
 
           </div>
         </section>
