@@ -70,10 +70,6 @@ const Login = () => {
     dispatch(actGoogleLogin(credential))
       .unwrap()
       .then((data) => {
-        // if (data.phone === 'None') {
-        //   navigate("/set-phoneNumber");
-        //   return;
-        // }
         if (data.user_type && data.phone) {
           navigate(`/${data.user_type?.toLowerCase()}`, { replace: true });
         } else {

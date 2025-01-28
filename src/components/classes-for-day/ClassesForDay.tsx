@@ -12,10 +12,11 @@ import FileIcon from '@/assets/file-outline.svg?react';
 import {LoadingIndicator} from "@/components";
 import {useNavigate} from "react-router-dom";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
-import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
+import actGetLessonsByMonth from "@/store/lessons/act/actGetLessonsByMonth.ts";
 import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import { format } from "date-fns";
 import { ar } from 'date-fns/locale';
+import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 
 const {title, lessons_cards, card, status_box, kids_names} = styles;
 
@@ -75,7 +76,7 @@ type TChild =  {   id: number, first_name: string, last_name: string }
 
 const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClickedHour?: THourLesson[], isHourClicked?: boolean}) => {
 
-  const {today_lessons, loading} = useAppSelector(state => state.lessons);
+  const {Today_lessons, Month_lessons, loading} = useAppSelector(state => state.lessons);
 
   const dispatch = useAppDispatch();
 
@@ -86,10 +87,10 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
   const {clickedDate, setStudentId} = useContext(CalendarContext);
   const arabicDate = format(clickedDate, "d MMMM yyyy", {locale: ar})
 
-  const filteredLessons = today_lessons.filter(lesson => {
+  const filteredLessons = Month_lessons.filter(lesson => {
     return clickedDate.setHours(0, 0, 0, 0) === new Date(lesson.from_date).setHours(0, 0, 0, 0);
   })
-
+  
   const navigate = useNavigate();
 
   const navigateToJoinPage = (id: number) => {
@@ -104,17 +105,24 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
   const onClickHandler = (idx: number, child: TChild) => {
     setActiveTab({idx, name: child.first_name})
     setStudentId(child.id)
-    dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`, studentId: child.id}))
+    dispatch(actGetLessonsByMonth({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`, studentId: child.id}))
   }
 
   const clickAllHandler = (idx: number) => {
     setActiveTab({idx, name: ""})
-    dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
+    dispatch(actGetLessonsByMonth({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
   }
   
   useEffect(() => {
-    dispatch(actGetLessonsByDay({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
-  }, [dispatch])
+    if (credintials?.role !== "Admin" && Month_lessons.length === 0) {
+      dispatch(actGetLessonsByMonth({date: `${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
+      return ;
+    }
+    if (credintials?.role === "Admin") {
+      dispatch(actGetLessonsByDay({day: `${clickedDate.getDate()}-${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
+      return ;
+    }
+  }, [Month_lessons.length, clickedDate, credintials?.role, dispatch])
 
   return (
     <>
@@ -136,8 +144,45 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
       </section>}
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
-        {(filteredLessons.length === 0 && !lessonsForClickedHour) && <p className="error">ليس لديك حصص اليوم !</p>}
-        {(filteredLessons.length > 0 && !isHourClicked) && filteredLessons.map((lesson: TLesson) => {
+        {(Today_lessons.length === 0 && filteredLessons.length === 0 && !isHourClicked) && <p className="error">ليس لديك حصص اليوم !</p>}
+        {credintials?.role !== "Admin" && (filteredLessons.length > 0 && !isHourClicked) && filteredLessons.map((lesson: TLesson) => {
+          return (
+            <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
+                     style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
+
+              <h4>{lesson.name}</h4>
+
+              <div>
+                <ClockIcon style={{stroke: "#93B59F"}}/>
+                <p>{formatHoursAndMinutes(lesson.from_datetime)} : {formatHoursAndMinutes(lesson.to_datetime)}</p>
+              </div>
+
+              <div>
+                <EgyptFlag/>
+                <p>المعلم {lesson.employee_name}</p>
+              </div>
+
+              <div>
+                <EmiratesFlag/>
+                <p>الطالب {lesson.participants[0]?.student_name}</p>
+              </div>
+
+              <div>
+                <FileIcon/>
+                <p>رفع الملفات</p>
+              </div>
+
+              <span className={status_box} style={{
+                backgroundColor: statusInfo[lesson.status].colors.inner_bg,
+                color: statusInfo[lesson.status].colors.text
+              }}>
+                {statusInfo[lesson.status].label}
+              </span>
+
+            </article>
+          )
+        })}
+        {credintials?.role === "Admin" && (Today_lessons.length > 0 && !isHourClicked) && Today_lessons.map((lesson: TLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>

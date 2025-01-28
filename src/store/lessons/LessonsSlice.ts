@@ -3,10 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TLesson } from "@/schemas/LessonSchema";
 import { TLoading } from "@/types/shared";
 import { isString } from "@/types/gurads";
-import actGetLessonsByDay from "./act/actGetLessonsByDay";
+import actGetLessonsByMonth from "./act/actGetLessonsByMonth.ts";
 import actJoinLesson from "./act/actJoinLesson";
+import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
+// Today_lessons is just used for Admin.
+// Month_lessons is used for the rest users.
 type TLessonsState = {
-  today_lessons: TLesson[];
+  Today_lessons: TLesson[];
+  Month_lessons: TLesson[];
   attendance_link: string;
   end_attendance_link: string;
   count?: number;
@@ -47,7 +51,8 @@ type TLessonsState = {
 };
 
 const initialState: TLessonsState = {
-  today_lessons: [],
+  Month_lessons: [],
+  Today_lessons: [],
   attendance_link: "",
   end_attendance_link: "",
   count: 0,
@@ -70,6 +75,24 @@ const lessonsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
 
+    // Lessons By Month
+    builder.addCase(actGetLessonsByMonth.pending, (state) => {
+      state.loading = "pending";
+      state.error = null;
+    });
+
+    builder.addCase(actGetLessonsByMonth.fulfilled, (state, action) => {
+      state.loading = "succeeded";
+      state.Month_lessons = action.payload;
+    });
+
+    builder.addCase(actGetLessonsByMonth.rejected, (state, action) => {
+      state.loading = "failed";
+      if (isString(action.payload)) {
+        state.error = action.payload;
+      }
+    });
+
     // Lessons By Day
     builder.addCase(actGetLessonsByDay.pending, (state) => {
       state.loading = "pending";
@@ -78,7 +101,7 @@ const lessonsSlice = createSlice({
 
     builder.addCase(actGetLessonsByDay.fulfilled, (state, action) => {
       state.loading = "succeeded";
-      state.today_lessons = action.payload;
+      state.Today_lessons = action.payload;
     });
 
     builder.addCase(actGetLessonsByDay.rejected, (state, action) => {

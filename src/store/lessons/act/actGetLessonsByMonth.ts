@@ -3,26 +3,30 @@ import { TLesson } from "@/schemas/LessonSchema";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "@/utils/axiosInstance.ts";
 
-type TGetLessonsByDayParams = {
-  day: string | undefined;
+type TGetLessonsByMonthParams = {
+  date: string | undefined;
+  studentId?: number;
 };
 
-type TGetLessonsByDayResponse = {
+type TGetLessonsByMonthResponse = {
   results: TLesson[];
 };
 
-const actGetLessonsByDay = createAsyncThunk(
-  "lessons/actGetLessonsByDay",
-  async ({ day }: TGetLessonsByDayParams, thunkAPI) => {
+const actGetLessonsByMonth = createAsyncThunk(
+  "lessons/actGetLessonsByMonth",
+  async ({ date, studentId }: TGetLessonsByMonthParams, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
 
     try {
       let url = "/dashboard/lesson/";
+      if (studentId) {
+        url = `/dashboard/lesson/?student_id=${studentId}`;
+      }
 
 
-      const response = await axiosInstance.get<TGetLessonsByDayResponse>(url, {
+      const response = await axiosInstance.get<TGetLessonsByMonthResponse>(url, {
         params: {
-          day,
+          date,
         },
       });
       return response.data.results;
@@ -32,4 +36,4 @@ const actGetLessonsByDay = createAsyncThunk(
   }
 );
 
-export default actGetLessonsByDay;
+export default actGetLessonsByMonth;

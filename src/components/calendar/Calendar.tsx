@@ -5,7 +5,7 @@ import ChevronLeft from '@/assets/chevronLeft.svg?react';
 import styles from './calendar.module.css'
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 import {useAppDispatch} from "@/store/hooks.ts";
-import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
+import actGetLessonsByMonth from "@/store/lessons/act/actGetLessonsByMonth.ts";
 
 const {calendar_container, calendar_btn, months_wrapper, months_names, weekAbbreviations, days_wrapper} = styles;
 
@@ -84,7 +84,7 @@ const Calendar = ({setIsHourClicked}: {setIsHourClicked?: Dispatch<SetStateActio
        month = monthsNumbers[(currentMonth + 1) % 12];
      }
 
-     dispatch(actGetLessonsByDay({date: `${month}-${currentYear}`}))
+     dispatch(actGetLessonsByMonth({date: `${month}-${currentYear}`}))
   }
 
   return (
