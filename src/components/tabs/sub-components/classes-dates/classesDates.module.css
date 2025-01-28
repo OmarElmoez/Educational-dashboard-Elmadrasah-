@@ -4,6 +4,7 @@
   gap: 2rem;
   max-height: 500px;
   overflow-y: auto;
+  padding-left: 1rem;
 }
 
 .classes_wrapper > article {

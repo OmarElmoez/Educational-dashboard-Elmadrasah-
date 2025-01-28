@@ -534,3 +534,20 @@ input#formatted_number::placeholder {
   color: #A0A1A7;
   margin-top: 1rem;
 }
+
+/* Scroll bar */
+/* Scrollbar Track */
+::-webkit-scrollbar {
+  width: 10px; /* Base width */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1C8A44;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  overflow: hidden;
+}

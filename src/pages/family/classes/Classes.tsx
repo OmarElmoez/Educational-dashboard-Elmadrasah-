@@ -34,7 +34,7 @@ const Classes = () => {
 
   return (
     <>
-      <WelcomeSection img={<CalendarImg/>} imgWidth="600" text="هنا يمكنك متابعة تقدم أطفالك في دراستهم بكل سهولة وفعالية في لوحة تحكم ولي الأمر" />
+      <WelcomeSection img={<CalendarImg/>} imgWidth="400" text="هنا يمكنك متابعة تقدم أطفالك في دراستهم بكل سهولة وفعالية في لوحة تحكم ولي الأمر" />
 
       <ClassesForDay/>
     </>

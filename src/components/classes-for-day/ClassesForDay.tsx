@@ -139,43 +139,83 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
         {(filteredLessons.length === 0 && !lessonsForClickedHour) && <p className="error">ليس لديك حصص اليوم !</p>}
-        {(filteredLessons.length > 0 && !isHourClicked) && filteredLessons.map((lesson: TLesson) => {
-          return (
-            <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
-                     style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
+        {(filteredLessons.length > 0 && !isHourClicked) &&
+          Array(10).fill(null).map((_, index) => ( // Create 10 instances
+            filteredLessons.map((lesson: TLesson) => (
+              <article
+                key={`${lesson.id}-${index}`} // Unique key for repeated elements
+                className={card}
+                onClick={() => navigateToJoinPage(lesson.id)}
+                style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}
+              >
+                {/* Rest of your existing article content */}
+                <h4>{lesson.name}</h4>
+                <div>
+                  <ClockIcon style={{stroke: "#93B59F"}}/>
+                  <p>{formatHoursAndMinutes(lesson.from_datetime)} : {formatHoursAndMinutes(lesson.to_datetime)}</p>
+                </div>
+                <div>
+                  <EgyptFlag/>
+                  <p>المعلم {lesson.employee_name}</p>
+                </div>
+                <div>
+                  <EmiratesFlag/>
+                  <p>الطالب {lesson.participants[0]?.student_name}</p>
+                </div>
+                <div>
+                  <FileIcon/>
+                  <p>رفع الملفات</p>
+                </div>
+                <span
+                  className={status_box}
+                  style={{
+                    backgroundColor: statusInfo[lesson.status].colors.inner_bg,
+                    color: statusInfo[lesson.status].colors.text
+                  }}
+                >
+          {statusInfo[lesson.status].label}
+        </span>
+              </article>
+            ))
+          ))
+        }
+        {/*{(filteredLessons.length > 0 && !isHourClicked) && filteredLessons.map((lesson: TLesson) => {*/}
+        {/*  return (*/}
+        {/*    <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}*/}
+        {/*             style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>*/}
 
-              <h4>{lesson.name}</h4>
+        {/*      <h4>{lesson.name}</h4>*/}
 
-              <div>
-                <ClockIcon style={{stroke: "#93B59F"}}/>
-                <p>{formatHoursAndMinutes(lesson.from_datetime)} : {formatHoursAndMinutes(lesson.to_datetime)}</p>
-              </div>
+        {/*      <div>*/}
+        {/*        <ClockIcon style={{stroke: "#93B59F"}}/>*/}
+        {/*        <p>{formatHoursAndMinutes(lesson.from_datetime)} : {formatHoursAndMinutes(lesson.to_datetime)}</p>*/}
+        {/*      </div>*/}
 
-              <div>
-                <EgyptFlag/>
-                <p>المعلم {lesson.employee_name}</p>
-              </div>
+        {/*      <div>*/}
+        {/*        <EgyptFlag/>*/}
+        {/*        <p>المعلم {lesson.employee_name}</p>*/}
+        {/*      </div>*/}
 
-              <div>
-                <EmiratesFlag/>
-                <p>الطالب {lesson.participants[0]?.student_name}</p>
-              </div>
+        {/*      <div>*/}
+        {/*        <EmiratesFlag/>*/}
+        {/*        <p>الطالب {lesson.participants[0]?.student_name}</p>*/}
+        {/*      </div>*/}
 
-              <div>
-                <FileIcon/>
-                <p>رفع الملفات</p>
-              </div>
+        {/*      <div>*/}
+        {/*        <FileIcon/>*/}
+        {/*        <p>رفع الملفات</p>*/}
+        {/*      </div>*/}
 
-              <span className={status_box} style={{
-                backgroundColor: statusInfo[lesson.status].colors.inner_bg,
-                color: statusInfo[lesson.status].colors.text
-              }}>
-                {statusInfo[lesson.status].label}
-              </span>
+        {/*      <span className={status_box} style={{*/}
+        {/*        backgroundColor: statusInfo[lesson.status].colors.inner_bg,*/}
+        {/*        color: statusInfo[lesson.status].colors.text*/}
+        {/*      }}>*/}
+        {/*        {statusInfo[lesson.status].label}*/}
+        {/*      </span>*/}
 
-            </article>
-          )
-        })}
+        {/*    </article>*/}
+        {/*  )*/}
+        {/*})}*/}
         {(lessonsForClickedHour && lessonsForClickedHour.length > 0 && isHourClicked) && lessonsForClickedHour?.map((lesson: THourLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
