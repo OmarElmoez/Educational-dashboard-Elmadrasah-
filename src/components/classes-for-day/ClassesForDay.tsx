@@ -90,8 +90,6 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
     return clickedDate.setHours(0, 0, 0, 0) === new Date(lesson.from_date).setHours(0, 0, 0, 0);
   })
 
-  console.log('filteredLessons', filteredLessons);
-
   const navigate = useNavigate();
 
   const navigateToJoinPage = (id: number) => {

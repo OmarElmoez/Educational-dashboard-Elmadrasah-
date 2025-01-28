@@ -10,7 +10,6 @@ import Logo from '@/assets/logo.png'
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actAuthLogin, actGoogleLogin } from "@/store/auth/authSlice";
 import { GoogleLogin } from "@react-oauth/google";
-import { actGetUserProfile } from "@/store/profile/ProfileSlice";
 import { actGetReviewQuestions } from "@/store/review-questions/reviewSlice";
 import actFCMLogin from "@/store/FCM/act/actFCMLogin";
 import { useFirebaseMessaging } from "@/hooks";
@@ -52,7 +51,6 @@ const Login = () => {
             navigate("/set-phoneNumber");
             return;
           }
-          dispatch(actGetUserProfile());
           if (res.user.user_type !== 'Admin') {
           dispatch(actGetReviewQuestions());
           }

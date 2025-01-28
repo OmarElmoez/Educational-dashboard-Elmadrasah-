@@ -44,12 +44,6 @@ const authSlice = createSlice({
         role: undefined,
       };
     },
-    // profile: (state) => {
-    //   state.user = null;
-    //   state.error = null;
-    //   state.loading = "idle";
-    //   state.credintials = undefined;
-    // },
   },
   extraReducers: (builder) => {
     // Regular Login

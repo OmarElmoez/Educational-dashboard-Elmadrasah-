@@ -24,11 +24,7 @@ const initialState: TProfileState = {
 const profileSlice = createSlice({
   name: "profile",
   initialState,
-  reducers: {
-    removeProfile: (state) => {
-      state.user = null
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(actGetUserProfile.pending, (state) => {
       state.loading = "pending"
@@ -70,8 +66,6 @@ const profileSlice = createSlice({
     })
   },
 })
-
-export const {removeProfile} = profileSlice.actions
 
 export { actGetUserProfile, actUpdateUserProfile }
 

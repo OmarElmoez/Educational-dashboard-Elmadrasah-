@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useFirebaseMessaging } from "@/hooks";
 import { HelpIcon, SettingsIcon, SignoutIcon, } from "@/assets/nav-icons";
 import { logout } from "@/store/auth/authSlice";
-import { removeProfile } from "@/store/profile/ProfileSlice";
 import actFCMLogout from "@/store/FCM/act/actFCMLogout";
 import SubNav from "@/components/main-sidebar/sub-nav/SubNav.tsx";
 import SIDEBAR_DATA from "../../constants/sidebar-data.tsx";
@@ -48,7 +47,6 @@ const MainSidebar = ({data}: TSidebarProps) => {
   const {fcmToken} = useFirebaseMessaging();
 
   const signoutHandler = () => {
-    dispatch(removeProfile());
     dispatch(logout());
     if (fcmToken) {
       dispatch(
