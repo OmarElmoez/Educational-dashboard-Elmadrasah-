@@ -6,7 +6,7 @@ import {TTrack} from "@/schemas/AddTrackSchema.ts";
 
 const actGetSpecificLessonData = async (classId: string): Promise<TLesson> => {
   try {
-    const response = await axiosInstance.get<TLesson>(`/dashboard/lesson/${classId}`);
+    const response = await axiosInstance.get<TLesson>(`/dashboard/lesson/${classId}/`);
 
     return response.data;
   } catch (error) {
@@ -32,7 +32,7 @@ const actGetLessonFiles = async (classId: string): Promise<TLessonFile[]> => {
 
 const actDeleteLessonFile = async (classId: string, fileId: number): Promise<void> => {
   try {
-    await axiosInstance.delete(`/event/lessons/${classId}/files/${fileId}`);
+    await axiosInstance.delete(`/event/lessons/${classId}/files/${fileId}/`);
   } catch (error) {
     return axiosErrorHandler(error)
   }

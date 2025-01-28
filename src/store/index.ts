@@ -34,7 +34,7 @@ const reviewQuestionsPersistConfig = {
 const lessonsPersistConfig = {
   key: 'lessons',
   storage,
-  whitelist: ["today_lessons"],
+  whitelist: ["Month_lessons, Today_lessons"],
 }
 
 const profilePersistConfig = {

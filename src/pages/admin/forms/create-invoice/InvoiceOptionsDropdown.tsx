@@ -30,7 +30,7 @@ const InvoiceOptionsDropdown: React.FC = () => {
       100000,
       undefined,
       () => {
-    dispatch(actDeleteData({ endpoint: `customer/invoices/${id}` }))
+    dispatch(actDeleteData({ endpoint: `customer/invoices/${id}/` }))
       .then(unwrapResult)
       .then(() => {
         openFeedbackModal("succeeded", "تم حذف الفاتورة بنجاح");

@@ -29,7 +29,7 @@ export const getAllRelatedTeachers = async (student_id?: number): Promise<TRelat
   try {
     let url = "/event/shared-lessons/shared-teachers/";
     if (student_id) {
-      url = `/event/shared-lessons/shared-teachers/?student_id=${student_id}`
+      url = `/event/shared-lessons/shared-teachers/?student_id=${student_id}/`
     }
     const response = await axiosInstance.get<TRelatedTeacher[]>(url);
     return response.data;

@@ -8,7 +8,7 @@ export const getLessonsStatusForEachHour = async (studentId?: number): Promise<T
   try {
     let url = '/event/shared-lessons/lessons-by-hour/';
     if (studentId) {
-      url = `/event/shared-lessons/lessons-by-hour/?student_id=${studentId}`
+      url = `/event/shared-lessons/lessons-by-hour/?student_id=${studentId}/`
     }
     const response = await axiosInstance.get<TLessonsForEachHour>(url);
     return response.data;
@@ -31,7 +31,7 @@ export const getLessonsStatusForCurrentHour = async (studentId?: number): Promis
   try {
     let url = "/event/shared-lessons/current-lesson/"
     if (studentId) {
-      url = `/event/shared-lessons/current-lesson/?student_id=${studentId}`
+      url = `/event/shared-lessons/current-lesson/?student_id=${studentId}/`
     }
     const response = await axiosInstance.get<TLessonForCurrentHour>(url);
     return response.data;
