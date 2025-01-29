@@ -144,7 +144,7 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
       </section>}
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
-        {(Today_lessons.length === 0 && filteredLessons.length === 0 && !isHourClicked) && <p className="error">ليس لديك حصص اليوم !</p>}
+        {(Today_lessons.length === 0 && !isHourClicked) && <p className="error">ليس لديك حصص اليوم !</p>}
         {credintials?.role !== "Admin" && (filteredLessons.length > 0 && !isHourClicked) && filteredLessons.map((lesson: TLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
@@ -182,7 +182,7 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
             </article>
           )
         })}
-        {credintials?.role === "Admin" && (Today_lessons.length > 0 && !isHourClicked) && Today_lessons.map((lesson: TLesson) => {
+        {credintials?.role === "Admin" && (Today_lessons.length > 0 && !isHourClicked && loading !== 'pending') && Today_lessons.map((lesson: TLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
                      style={{backgroundColor: statusInfo[lesson.status].colors.outer_bg}}>
