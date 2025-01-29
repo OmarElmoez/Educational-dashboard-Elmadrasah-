@@ -1,13 +1,15 @@
 import ReactDOM from "react-dom/client";
-import {Provider} from "react-redux";
-import {PersistGate} from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
-import store, {persistor} from "./store";
+import store, { persistor } from "./store";
+import theme from "@/theme.ts";
 import Routes from "./routes/Routes";
 
-import {GoogleOAuthProvider} from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
-import {FeedbackProvider} from "./store/context";
+import { FeedbackProvider } from "./store/context";
+import { ThemeProvider } from "@mui/material";
 import "./global.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -15,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <FeedbackProvider>
-          <Routes/>
+          <ThemeProvider theme={theme}>
+            <Routes/>
+          </ThemeProvider>
         </FeedbackProvider>
       </PersistGate>
     </Provider>

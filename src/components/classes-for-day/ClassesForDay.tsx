@@ -144,7 +144,7 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
       </section>}
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
-        {(Today_lessons.length === 0 && !isHourClicked) && <p className="error">ليس لديك حصص اليوم !</p>}
+        {((Today_lessons.length === 0 || filteredLessons.length === 0) && !isHourClicked) && <p className="error">ليس لديك حصص اليوم !</p>}
         {credintials?.role !== "Admin" && (filteredLessons.length > 0 && !isHourClicked) && filteredLessons.map((lesson: TLesson) => {
           return (
             <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}

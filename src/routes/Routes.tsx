@@ -36,7 +36,7 @@ import {
 import {TeacherClassesPage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
 import {Error, HelpPage, JoinClass, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
-import {Login, PhoneNumber, SetPassword} from "@/pages/login";
+import { Login, PhoneNumber, SetPassword } from "@/pages/login";
 import {SIDEBAR_DATA} from "@/constants";
 import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
 import PageSuspense from "@/components/page-suspense/PageSuspense.tsx";

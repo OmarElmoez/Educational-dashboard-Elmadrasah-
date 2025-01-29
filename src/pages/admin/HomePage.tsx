@@ -1,6 +1,10 @@
+import Typography from '@mui/material/Typography';
+import theme from "@/theme.ts";
 const AdminHomePage = () => {
   return (
-    <h1>for our admin</h1>
+    <>
+      <Typography variant="h1" sx={{ color: theme.palette.primary.main }}>الجدول</Typography>
+    </>
   );
 
 };
