@@ -118,7 +118,7 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
       dispatch(actGetLessonsByMonth({date: `${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
       return ;
     }
-    if (credintials?.role === "Admin") {
+    if (credintials?.role === "Admin" && Today_lessons.length === 0) {
       dispatch(actGetLessonsByDay({day: `${clickedDate.getDate()}-${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
       return ;
     }
