@@ -15,6 +15,7 @@
   justify-content: space-between;
   flex: 1;
   padding-top: 7rem;
+  gap: 2.4rem;
 }
 
 .support {
@@ -93,7 +94,7 @@
 }
 
 .sidebar .main_menu {
-  color: #7AB790;
+  color: var(--main-color);
   display: grid;
   gap: 0.8rem;
 }
