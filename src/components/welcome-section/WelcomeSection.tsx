@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import styles from './welcomeSection.module.css'
 import { useAppSelector } from "@/store/hooks.ts";
 import Calendar from "@/components/calendar/Calendar.tsx";
@@ -9,9 +9,10 @@ type TWelcomeSectionProps = {
   img: ReactNode;
   text: string;
   imgWidth: string;
+  setIsHourClicked?: Dispatch<SetStateAction<boolean>>;
 }
 
-const WelcomeSection = ({img, text, imgWidth}: TWelcomeSectionProps) => {
+const WelcomeSection = ({img, text, imgWidth, setIsHourClicked}: TWelcomeSectionProps) => {
 
   const {user} = useAppSelector(state => state.profile)
 
@@ -28,7 +29,8 @@ const WelcomeSection = ({img, text, imgWidth}: TWelcomeSectionProps) => {
         </div>
       </section>
 
-      <Calendar />
+      {user?.user_type === 'Admin' && <Calendar setIsHourClicked={setIsHourClicked} /> }
+      {user?.user_type !== 'Admin' && <Calendar /> }
 
     </section>
   )

@@ -19,12 +19,6 @@ import location from "./location/LocationSlice";
 import formSubjects from "./form-subjects/FormSubjectsSlice";
 import table from "./table/TableSlice";
 
-// const rootPersistConfig = {
-//   key: 'root',
-//   storage,
-//   whitelist: ["lessons", "auth", 'profile', 'reviewQuestions'],
-// }
-
 const reviewQuestionsPersistConfig = {
   key: 'reviewQuestions',
   storage,
@@ -34,7 +28,7 @@ const reviewQuestionsPersistConfig = {
 const lessonsPersistConfig = {
   key: 'lessons',
   storage,
-  whitelist: ["Month_lessons", "Today_lessons"],
+  whitelist: ["Month_lessons"],
 }
 
 const profilePersistConfig = {

@@ -147,7 +147,7 @@ const Calendar = ({setIsHourClicked}: {setIsHourClicked?: Dispatch<SetStateActio
               }}
               onClick={() => {
                 setClickedDate(day);
-                setIsHourClicked && setIsHourClicked(false)
+                setIsHourClicked && setIsHourClicked(false);
               }}
             >
               {day.getDate()}

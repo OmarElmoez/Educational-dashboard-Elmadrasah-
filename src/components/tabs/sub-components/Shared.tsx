@@ -66,14 +66,14 @@ export const StudentSatisfaction = () => {
 
 
 export type TTeacher = {
-  start_time_employee: string | null,
+  start_time_employee: string,
   status: string,
   from_time: string,
   teacher_name: string,
 }
 
 export type TStudent = {
-  start_time_student: string | null,
+  start_time_student: string,
   lesson__from_time: string;
   student_name: string;
 }
@@ -106,13 +106,13 @@ export const TimingDetails = ({teachers, students}: {
             {teachers.length > 0 && teachers.map((teacher, idx) => (
               <p key={`${teacher.teacher_name}_${idx}`} style={{
                 backgroundColor: `${timeDifferenceStatus(
-                  teacher?.start_time_employee || "",
+                  teacher?.start_time_employee,
                   teacher.from_time).bg_color}`
               }}>
                 <span className={dot}></span>
                 <span>{teacher.teacher_name} : في الساعة {convert24HourToArabic(
-                  teacher.start_time_employee as string)} ( { teacher.start_time_employee === null ? `غير محدد` : timeDifferenceStatus(
-                    teacher.start_time_employee || "",
+                  teacher.start_time_employee)} ( {timeDifferenceStatus(
+                    teacher.start_time_employee,
                   teacher.from_time).text} )</span>
               </p>
             ))}
@@ -127,13 +127,13 @@ export const TimingDetails = ({teachers, students}: {
             {students.length > 0 && students.map((student, idx) => (
               <p key={`${student.student_name}_${idx}`} style={{
                 backgroundColor: `${timeDifferenceStatus(
-                  student.start_time_student || "",
+                  student.start_time_student,
                   student.lesson__from_time).bg_color}`
               }}>
                 <span className={dot}></span>
                 <span>{student.student_name} : في الساعة {convert24HourToArabic(
-                  student.start_time_student as string)} ( { student.start_time_student === null ? `غير محدد` : timeDifferenceStatus(
-                  student.start_time_student || "",
+                  student.start_time_student)} ( {timeDifferenceStatus(
+                  student.start_time_student,
                   student.lesson__from_time).text} )
                   </span>
               </p>
