@@ -33,7 +33,7 @@ const PhoneNumber = () => {
   return (
     <article className={loginBox}>
       <h2>رقم الهاتف</h2>
-      <form action="post" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <PhoneField control={control} error={"رقم الهاتف غير صالح"} name="phoneNumber" />
         <button type="submit">
           {/* {loading === "pending" ? "جاري التسجيل..." : "تسجيل الدخول"} */}

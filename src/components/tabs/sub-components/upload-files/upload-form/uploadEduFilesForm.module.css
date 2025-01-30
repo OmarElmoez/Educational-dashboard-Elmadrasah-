@@ -17,16 +17,20 @@ form {
   flex: 1;
 }
 
-.upload_box {
+.upload_box,
+.upload_box_holds_files {
   margin-top: 2.4rem;
-  padding-block: 2rem;
+  padding: 2rem;
   border: 1px dashed #00000040;
   border-radius: 1rem;
+  cursor: pointer;
+}
+
+.upload_box {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 }
 
 .upload_box h5 {
@@ -49,6 +53,12 @@ form {
   width: 40%;
   text-align: center;
   line-height: 18px;
+}
+
+.upload_box_holds_files {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
 .submit_btn {

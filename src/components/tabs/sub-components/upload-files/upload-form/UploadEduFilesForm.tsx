@@ -13,7 +13,7 @@ import {LoadingIndicator} from "@/components";
 import {TLessonFile} from "@/schemas/LessonSchema.ts";
 import {actEditLessonFileName} from "@/services/lessons.ts";
 
-const {title_box, upload_box, submit_btn, preview_wrapper, preview_icon, preview_img} = styles;
+const {title_box, upload_box, upload_box_holds_files, submit_btn, preview_wrapper, preview_icon, preview_img} = styles;
 
 type TFilePreview = {
   url: string,
@@ -174,7 +174,7 @@ const UploadEduFilesForm = ({
       {loading ?
         <div style={{display: "flex", alignItems: 'center', justifyContent: "center"}}><LoadingIndicator/></div> :
         isEdit ? "" :
-          <div className={upload_box} onClick={() => fileInputRef.current?.click()}>
+          <div className={ previewFiles.length > 0 ? upload_box_holds_files : upload_box} onClick={() => fileInputRef.current?.click()}>
             {previewFiles.length === 0 ?
               <>
                 <UploadIcon/>

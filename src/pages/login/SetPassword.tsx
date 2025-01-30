@@ -1,18 +1,16 @@
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import styles from "./login.module.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import SetPasswordSchema, {
-  TFormValues,
-} from "@/schemas/SetPasswordSchema";
+import SetPasswordSchema, { TFormValues, } from "@/schemas/SetPasswordSchema";
 import { useNavigate } from "react-router-dom";
 import { actSetPassword } from "@/store/auth/authSlice.ts";
 
+const {loginBox, formInput} = styles;
 export type TFormValuesWithEmail = TFormValues & {
   email: string;
 };
 const SetPassword = () => {
-  const { loginBox, hide } = styles;
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -20,14 +18,13 @@ const SetPassword = () => {
   const {modified_email} = useAppSelector((state) => state.auth);
 
   const {
-    control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
+    register,
   } = useForm<TFormValuesWithEmail>({
     mode: "onBlur",
     resolver: zodResolver(SetPasswordSchema),
   });
-
 
 
   const onSubmit: SubmitHandler<TFormValuesWithEmail> = (data) => {
@@ -35,8 +32,8 @@ const SetPassword = () => {
       data["email"] = modified_email;
     }
     dispatch(actSetPassword(data))
-      .unwrap()
-      .then((data) => data.user.user_type &&  navigate(`/${data.user.user_type.toLowerCase()}`));
+    .unwrap()
+    .then((data) => data.user.user_type && navigate(`/${data.user.user_type.toLowerCase()}`));
   };
 
   return (
@@ -44,43 +41,18 @@ const SetPassword = () => {
       <h2>تعيين كلمة المرور</h2>
       <p>من فضلك، قم بإدخال كلمة المرور الجديدة وتأكيدها لضمان أمان حسابك.</p>
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="new_password"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <label htmlFor="new_password">
-              <span className={field.value ? hide : ""}>كلمة المرور</span>
-              <input type="password" id="new_password" {...field} />
-            </label>
-          )}
-        />
-        {errors.new_password && <p className="error">{errors.new_password.message}</p>}
 
-        <Controller
-          name="confirmPassword"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <label htmlFor="confirmPassword">
-              <span className={field.value ? hide : ""}>تاكيد كلمة المرور</span>
-              <input type="password" id="confirmPassword" {...field} />
-            </label>
-          )}
-        />
+        <input type="password" className={formInput} style={{marginTop: 0}} {...register("new_password")} placeholder="كلمة المرور"/>
+        {errors.new_password && <p className="error" style={{marginTop: "0.5rem"}}>{errors.new_password.message}</p>}
+
+        <input type="password" className={formInput} style={{marginTop: "1.6rem"}} {...register("confirmPassword")} placeholder="تاكيد كلمة المرور"/>
         {errors.confirmPassword && (
-          <p className="error">{errors.confirmPassword.message}</p>
+          <p className="error" style={{marginTop: "0.5rem"}}>{errors.confirmPassword.message}</p>
         )}
 
         <button type="submit">
-          {/* {loading === "pending" ? "جاري الحفظ..." : "حفظ كلمة المرور"} */}
           حفظ كلمة المرور
         </button>
-        {/* {error && (
-          <p className="error" style={{ textAlign: "center" }}>
-            {error}
-          </p>
-        )} */}
       </form>
     </article>
   );
