@@ -44,7 +44,7 @@ const CurrentHour = () => {
   useEffect(() => {
     sendRequestToServer()
   }, [sendRequestToServer])
-
+  console.log('teachers start time is null? : ', currentHourData?.teachers[0].start_time_employee);
 
   return (
     <section>

@@ -14,6 +14,8 @@ const timeDifferenceStatus = (time1: string, time2: string): {text: string, bg_c
     }
   }
 
+  console.log('from timeDiff', time1, time2);
+
   const [h1, m1, s1] = time1.split(":").map(Number);
   const [h2, m2, s2] = time2.split(":").map(Number);
 
