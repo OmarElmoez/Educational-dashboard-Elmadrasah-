@@ -49,7 +49,7 @@ const HourlyLessonsAdmin = () => {
 
   return (
     <>
-        {(hourlyLessons.length === 0 )? <div className={error}><p>ليس لديك حصص اليوم !</p></div> :
+        {hourlyLessons?  
         <>
         <section className={title}>
         <HourlyTableTimeIcon className = "hourIcon"/>
@@ -116,7 +116,7 @@ const HourlyLessonsAdmin = () => {
         disableColumnResize = {true}
           />
     </Paper>
-    </>
+    </> :<div className={error}><p>ليس لديك حصص اليوم !</p></div>
 }
     </>
   );
