@@ -24,7 +24,7 @@ const HourlyLessonsAdmin = () => {
     { field: 'start_time_employee', headerName: 'وقت الدخول المدرس', width: 180, headerAlign: 'center', renderCell: (params) => {
       let employeeTime = params.value;
       if (employeeTime === null) {
-        employeeTime = "لا يوجد"
+        employeeTime = "غير محدد"
       }
       return (
           <div>
@@ -35,7 +35,7 @@ const HourlyLessonsAdmin = () => {
     { field: 'start_time_student', headerName: 'وقت الدخول الطالب', width: 180, headerAlign: 'center', renderCell: (params) => {
       let studentTime = params.value;
       if (studentTime === null) {
-        studentTime = "لا يوجد"
+        studentTime = "غير محدد"
       }
       return (
           <div>
