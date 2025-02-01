@@ -41,6 +41,7 @@ import {SIDEBAR_DATA} from "@/constants";
 import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
 import PageSuspense from "@/components/page-suspense/PageSuspense.tsx";
 import CheckAuth from "@/routes/CheckAuth.tsx";
+import HourlyLessonsAdmin from './../pages/admin/tables/hourlyTables/HourlyTable';
 
 const router = createBrowserRouter([
   // Login Routes
@@ -132,6 +133,12 @@ const router = createBrowserRouter([
         path: "calendar/classes",
         element: <PageSuspense>
           <AdminClassesPage/>
+        </PageSuspense>,
+      },
+      {
+        path: "calendar/classes/hourly-lessons",
+        element: <PageSuspense>
+          <HourlyLessonsAdmin/>
         </PageSuspense>,
       },
       {

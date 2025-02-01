@@ -1,0 +1,24 @@
+.MuiDataGrid-columnHeaderTitle {
+    color: #8D8D8D
+}
+.MuiDataGrid-cell {
+    text-align: center !important;
+}
+.MuiToolbar-root{
+    direction: ltr;
+}
+.MuiDataGrid-toolbarContainer {
+    direction: ltr;
+}
+.MuiButtonBase-root{
+    direction: rtl;
+    padding: 1rem;
+    gap:1rem;
+}
+.MuiButton-startIcon {
+    margin:0 !important;
+}
+
+.MuiButton-startIcon {
+    /* display: none !important; */
+}

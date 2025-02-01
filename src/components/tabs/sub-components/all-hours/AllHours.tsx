@@ -7,6 +7,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { getLessonsStatusForEachHour } from "@/services/lessonsStatus.ts";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import ClickIcon from "@/assets/click.svg?react";
+import { useNavigate } from "react-router-dom";
 
 const {status_wrapper, count_lessons, all_hours_info, progress, title} = styles;
 
@@ -53,6 +54,7 @@ const AllHours = ({
   setLessonsForClickedHour: Dispatch<SetStateAction<THourLesson[]>>;
   setIsHourClicked: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const navigate = useNavigate();
   const [allHoursLessonsData, setAllHoursLessonsData] =
     useState<TLessonsForEachHour>();
 
@@ -74,6 +76,12 @@ const AllHours = ({
   useEffect(() => {
     sendRequestToServer();
   }, [sendRequestToServer]);
+
+
+// Navigate To All Hourly Lessons Table
+  const navigateToHourlyTable = (data:THourLesson[]) => {
+    navigate('hourly-lessons', { state: data });
+  }
 
   return (
     <section>
@@ -132,7 +140,9 @@ const AllHours = ({
                       }}
                     />
                   </div>
-                  <div className={progress}>
+                  <div className={progress} onClick={() => {
+                        navigateToHourlyTable(value.lessons);
+                      }} >
                     <ProgressBar width={`${value.attendance_percentage}%`} />
                     <span>({value.lesson_count})</span>
                   </div>
