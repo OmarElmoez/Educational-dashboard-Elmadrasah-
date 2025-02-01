@@ -74,7 +74,7 @@ menu {
 
 .container {
   min-height: 100vh;
-  font-family: 'Expo Arabic', sans-serif;
+  font-family: 'Expo','IBM Plex Sans Arabic', sans-serif;
   font-weight: 400;
   font-size: 1.6rem;
   line-height: 1.5;
@@ -181,7 +181,7 @@ menu {
   width: 478px !important;
 }
 .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-BPrWId {
-  font-family: "Expo Arabic", sans-serif !important;
+  font-family: "Expo",'IBM Plex Sans Arabic', sans-serif !important;
   flex-grow: 0 !important;
   font-size: 1.8rem !important;
   margin-top: 2px;
@@ -213,7 +213,7 @@ menu {
 }
 
 .modal {
-  font-family: "Tajawal", sans-serif;
+  font-family: 'Expo','IBM Plex Sans Arabic', sans-serif;
   margin: auto;
   border: none;
   outline: none;
@@ -309,7 +309,7 @@ textarea {
 .inputField::placeholder,
 textarea::placeholder,
 .firstOption {
-  font-family: "Expo Arabic", sans-serif;
+  font-family: "Expo",'IBM Plex Sans Arabic', sans-serif;
   font-size: 1rem;
   color: #cdcdcd;
   font-weight: 500;
@@ -320,7 +320,7 @@ textarea::placeholder,
 }
 
 .adminFormLabel {
-  font-family: "Expo Arabic", sans-serif;
+  font-family: "Expo",'IBM Plex Sans Arabic', sans-serif;
   font-size: 1.2rem;
   color: #818181;
 }

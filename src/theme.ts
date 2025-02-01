@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Expo, system-ui, sans-serif',
+    fontFamily: 'Expo, IBM Plex Sans Arabic, sans-serif',
     htmlFontSize: 10,
   },
   palette: {
