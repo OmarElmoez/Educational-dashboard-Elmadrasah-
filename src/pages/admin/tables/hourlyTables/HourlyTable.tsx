@@ -13,8 +13,6 @@ import {
     // GridToolbarDensitySelector,
     GridToolbarContainer 
   } from '@mui/x-data-grid';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 
 const { title, error, status_wrapper } = styles;
 
