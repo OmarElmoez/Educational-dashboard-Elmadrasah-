@@ -69,6 +69,7 @@ const AllHours = ({
     }
 
     getLessonsStatusForEachHour().then((res: TLessonsForEachHour) => {
+      console.log(res.hourly_counts);
       setAllHoursLessonsData(res);
     });
   }, [role, studentId]);

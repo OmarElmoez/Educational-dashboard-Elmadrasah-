@@ -5,10 +5,10 @@
     text-align: center !important;
 }
 .MuiToolbar-root{
-    direction: ltr;
+    direction: ltr !important;
 }
 .MuiDataGrid-toolbarContainer {
-    direction: ltr;
+    direction: ltr !important;
 }
 .MuiButtonBase-root{
     direction: rtl;
@@ -18,3 +18,120 @@
 .MuiButton-startIcon {
     margin:0 !important;
 }
+.custom-date-time-picker .MuiOutlinedInput-root {
+    border: none !important; /* Hide the border */
+  }
+  
+  .custom-date-time-picker .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border: none !important; /* Hide the outline */
+  }
+  
+  .custom-date-time-picker .MuiInputBase-input {
+    display: none !important; /* Hide the input text */
+  }
+  
+  .custom-date-time-picker .MuiInputLabel-root {
+    display: none !important; /* Hide the label */
+  }
+  
+  .custom-date-time-picker .MuiInputAdornment-root {
+    visibility: visible !important; /* Ensure the icon is visible */
+  }
+  .MuiPickersArrowSwitcher-root {
+    direction: ltr !important;
+
+  }
+
+  /* Calender Custom Styles */
+  .css-oykygv-MuiPickersLayout-contentWrapper{
+    max-width: 45.6rem !important;
+    max-height: 39.1rem !important;
+    margin:1.6rem !important;
+  }
+  .css-1ya44cv-MuiButtonBase-root-MuiMenuItem-root-MuiMultiSectionDigitalClockSection-item.Mui-selected {
+    border-radius: 0.8rem !important;
+  }
+  .css-c23i54-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+    max-width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .css-c23i54-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected){
+    max-width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .css-78ravj-MuiButtonBase-root-MuiPickersDay-root{
+    max-width: 2.8rem;
+    height: 2.8rem !important;
+    border-radius: 0rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .css-13n9oz1-MuiTypography-root-MuiDayCalendar-weekDayLabel{
+    max-width: 2.8rem;
+    height: 2.8rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .css-1pv2de5-MuiDayCalendar-weekContainer{
+    max-height: 2.8rem;
+  }
+  .css-11yms7-MuiDateCalendar-root{
+    max-width: 20.8rem !important;
+    margin: 0 !important;
+  }
+  .css-1chuxo2-MuiPickersCalendarHeader-label{
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+  }
+  .css-1nxbkmn-MuiPickersCalendarHeader-root{
+    padding: 0 !important;
+  }
+  .css-1ckov0h-MuiSvgIcon-root{
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+  }
+  .css-1ya44cv-MuiButtonBase-root-MuiMenuItem-root-MuiMultiSectionDigitalClockSection-item{
+    font-size: 1.4rem !important;
+  }
+  .css-1g2o9lx-MuiPickersYear-yearButton{
+    font-size: 1.4rem !important;
+  }
+  .css-1g2o9lx-MuiPickersYear-yearButton{
+    max-width: 6rem !important;
+  }
+  .css-th0wnz-MuiYearCalendar-root{
+    max-width: 20.8rem !important;
+  }
+  .css-mz98ku-MuiButtonBase-root-MuiButton-root{
+    width: 10.9rem !important;
+    height: 4.8rem !important;
+    background-color: var(--main-color) !important;
+    color: #FFFFFF !important;
+    font-size: 0 !important;
+    text-align: center !important;
+  }
+  .css-mz98ku-MuiButtonBase-root-MuiButton-root::after {
+    content: "Search";
+    font-size: 1.4rem !important;
+
+  }
+  .css-7c9udw-MuiButtonBase-root-MuiIconButton-root{
+  }
+  .css-v9aqz4-MuiSvgIcon-root{
+    display: none !important;
+
+  }
+  .css-7c9udw-MuiButtonBase-root-MuiIconButton-root::before{
+    content: "";
+    display: inline-block !important;
+    width: 1.5rem !important;
+    height: 0.75rem !important;
+    background-image: url("../../../../assets/calendarArrow.svg") !important;
+    background-size: cover !important;
+   }

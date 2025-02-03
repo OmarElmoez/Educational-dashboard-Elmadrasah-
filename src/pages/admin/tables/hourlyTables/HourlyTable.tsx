@@ -1,77 +1,98 @@
-import "./tableoverride.css"
+import { useState } from "react";
+import "./tableoverride.css";
 import styles from "./HourlyTable.module.css";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import HourlyTableTimeIcon from "@/assets/hourlyTableTimeIcon.svg?react";
 import formatHoursAndMinutes from "@/utils/formatHoursAndMinutes.ts";
 import { StatusBullet } from "@/components/UI";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
-import {  
-    GridToolbarExport, 
-    GridToolbarFilterButton, 
-    GridToolbarColumnsButton, 
-    // GridToolbarDensitySelector,
-    GridToolbarContainer 
-  } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
+import {
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarColumnsButton,
+  // GridToolbarDensitySelector,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 const { title, error, status_wrapper } = styles;
 
 const HourlyLessonsAdmin = () => {
+  const [value, setValue] = useState<Dayjs | null>(dayjs("2025-02-3T17:00"));
   const location = useLocation();
   const hourlyLessons = location.state;
   const columns: GridColDef[] = [
-    { field: 'from_date', headerName: 'التاريخ', width: 180, headerAlign: 'center' },
-    { field: 'start_time_employee', headerName: 'وقت الدخول المدرس', width: 180, headerAlign: 'center', renderCell: (params) => {
-      let employeeTime = params.value;
-      if (employeeTime === null) {
-        employeeTime = "غير محدد"
-      }
-      return (
-          <div>
-              {employeeTime}
-          </div>
-      );
-  }, },
-    { field: 'start_time_student', headerName: 'وقت الدخول الطالب', width: 180, headerAlign: 'center', renderCell: (params) => {
-      let studentTime = params.value;
-      if (studentTime === null) {
-        studentTime = "غير محدد"
-      }
-      return (
-          <div>
-              {studentTime}
-          </div>
-      );
-  }, },
-    { field: 'student_name', headerName: 'اسم الطالب', width: 280, headerAlign: 'center' },
-    { field: 'employee_name', headerName: 'اسم المدرس', width: 280, headerAlign: 'center' },
     {
-        field: 'status',
-        headerName: 'الحالة',
-        width: 180,
-        headerAlign: 'center',
-        renderCell: (params) => {
-            const status = params.value;
-            let color = 'black';
-            if (status === 'Attended') {
-                color = '#0650A7';
-            } else if (status === 'Scheduled') {
-                color = '#1C8A44';
-            } else if (status === 'Progressing') {
-                color = '#828684';
-            } else if (status === 'Missed') {
-                color = '#F64E60';
-            } else if (status === 'Cancelled') {
-                color = '#F64E60';
-            }
-            return (
-                <div style={{ color }}>
-                    {status}
-                </div>
-            );
-        },
+      field: "from_date",
+      headerName: "التاريخ",
+      width: 180,
+      headerAlign: "center",
     },
-];
+    {
+      field: "start_time_employee",
+      headerName: "وقت الدخول المدرس",
+      width: 180,
+      headerAlign: "center",
+      renderCell: (params) => {
+        let employeeTime = params.value;
+        if (employeeTime === null) {
+          employeeTime = "لا يوجد";
+        }
+        return <div>{employeeTime}</div>;
+      },
+    },
+    {
+      field: "start_time_student",
+      headerName: "وقت الدخول الطالب",
+      width: 180,
+      headerAlign: "center",
+      renderCell: (params) => {
+        let studentTime = params.value;
+        if (studentTime === null) {
+          studentTime = "لا يوجد";
+        }
+        return <div>{studentTime}</div>;
+      },
+    },
+    {
+      field: "student_name",
+      headerName: "اسم الطالب",
+      width: 280,
+      headerAlign: "center",
+    },
+    {
+      field: "employee_name",
+      headerName: "اسم المدرس",
+      width: 280,
+      headerAlign: "center",
+    },
+    {
+      field: "status",
+      headerName: "الحالة",
+      width: 180,
+      headerAlign: "center",
+      renderCell: (params) => {
+        const status = params.value;
+        let color = "black";
+        if (status === "Attended") {
+          color = "#0650A7";
+        } else if (status === "Scheduled") {
+          color = "#1C8A44";
+        } else if (status === "Progressing") {
+          color = "#828684";
+        } else if (status === "Missed") {
+          color = "#F64E60";
+        } else if (status === "Cancelled") {
+          color = "#F64E60";
+        }
+        return <div style={{ color }}>{status}</div>;
+      },
+    },
+  ];
 
   const paginationModel = { page: 0, pageSize: 10 };
   const CustomToolbar = () => (
@@ -82,7 +103,6 @@ const HourlyLessonsAdmin = () => {
       {/* <GridToolbarDensitySelector /> */}
     </GridToolbarContainer>
   );
-
 
   const localeToolbarText = {
     toolbarColumns: "",
@@ -98,9 +118,19 @@ const HourlyLessonsAdmin = () => {
           <section className={title}>
             <HourlyTableTimeIcon className="hourIcon" />
             <p>
-              {formatHoursAndMinutes(hourlyLessons[0].from_datetime)} :{" "}
+              {formatHoursAndMinutes(hourlyLessons[0].from_datetime)}-
               {formatHoursAndMinutes(hourlyLessons[0].to_datetime)}
             </p>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <div dir="rtl">
+                <DateTimePicker
+                  label="Controlled picker"
+                  value={value}
+                  onChange={(newValue) => setValue(newValue)}
+                  className="custom-date-time-picker" // Add a custom class
+                />
+              </div>
+            </LocalizationProvider>
           </section>
           <section>
             <div className={status_wrapper}>

@@ -27,7 +27,7 @@ const theme = createTheme({
       default: '#ffffff',
       paper: '#ffffff',
     },
-  }
+  },
 })
 
 export default theme
