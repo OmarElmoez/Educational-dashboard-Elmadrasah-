@@ -22,7 +22,7 @@ const SubNav = ({style, subLinks, setIsSubNavOpen}: {
   const {setHeaderTitle} = useContext(CalendarContext)
 
   return (
-    <nav className={sub_nav} style={style}>
+    <nav className={sub_nav} style={style} onClick={() => setIsSubNavOpen(false)}>
       <menu>
         {subLinks?.map((link) => (
           <NavLink to={link.path} key={link.title} className={sub_nav__link} onClick={() => {

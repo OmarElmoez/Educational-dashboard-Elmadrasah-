@@ -17,8 +17,7 @@ const {title, lessons_cards, kids_names} = styles;
 type TChild =  {   id: number, first_name: string, last_name: string }
 
 const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClickedHour?: THourLesson[], isHourClicked?: boolean}) => {
-
-  console.log('from classesForDay isHourClicked: ', isHourClicked);
+  
   const {Today_lessons, Month_lessons, loading} = useAppSelector(state => state.lessons);
 
   const dispatch = useAppDispatch();

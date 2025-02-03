@@ -7,8 +7,8 @@ import actGetNotifications from "@/store/notifications/act/actGetNotifications";
 import LoadingIndicator from "../loadingIndicator/LoadingIndicator";
 import { useContext } from "react";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
-// import { format } from "date-fns";
-// import { ar } from 'date-fns/locale';
+import {INNER_ROUTES_TITLES} from "@/constants/sidebar-data.tsx";
+import { useLocation } from "react-router-dom";
 
 const {
   header,
@@ -21,6 +21,10 @@ const {
   textBox
 } = styles;
 const Header = () => {
+
+  const location = useLocation();
+
+  const pageRoute = location.pathname;
 
   const {headerTitle} = useContext(CalendarContext);
 
@@ -48,7 +52,7 @@ const Header = () => {
       <header className={header}>
         <section className={wrapper}>
           <div className={textBox}>
-            <span>{headerTitle || "الجدول"}</span>
+            <span>{INNER_ROUTES_TITLES[pageRoute as keyof typeof INNER_ROUTES_TITLES] || headerTitle || "الجدول"}</span>
           </div>
           <div className={box}>
             <div className={notifications} onClick={getNotificationsHandler}>

@@ -308,4 +308,8 @@ const SIDEBAR_DATA = {
   ],
 };
 
+export const INNER_ROUTES_TITLES = {
+  "/admin/calendar/classes/hourly-lessons": "ساعات اليوم"
+}
+
 export default SIDEBAR_DATA;
