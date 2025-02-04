@@ -136,7 +136,7 @@ const AllHours = ({
         الحصص الجارية ( {allHoursLessonsData?.total_lessons_today} حصص )
       </p>
       {loading === 'pending' && <LoadingIndicator/>}
-      <section className={all_hours_info}>
+      {loading === "succeeded" && <section className={all_hours_info}>
         {allHoursLessonsData &&
           Object.entries(allHoursLessonsData.hourly_counts).map(
             ([key, value]) => {
@@ -152,27 +152,27 @@ const AllHours = ({
                     />
                   </div>
                   <div className={progress} onClick={() => {
-                        navigateToHourlyTable(value.lessons);
-                      }} >
-                    <ProgressBar width={`${value.attendance_percentage}%`} />
+                    navigateToHourlyTable(value.lessons);
+                  }}>
+                    <ProgressBar width={`${value.attendance_percentage}%`}/>
                     <span>({value.lesson_count})</span>
                   </div>
 
                   <div
                     className={status_wrapper}
-                    style={{ marginTop: "0.8rem" }}
+                    style={{marginTop: "0.8rem"}}
                   >
-                    <StatusBullet color="var(--main-color)" label="2" />
-                    <StatusBullet color="#E02D2D" label="0" />
-                    <StatusBullet color="#E02D92" label="0" />
-                    <StatusBullet color="#BB84DB" label="1" />
-                    <StatusBullet color="#E4B341" label="0" />
+                    <StatusBullet color="var(--main-color)" label="2"/>
+                    <StatusBullet color="#E02D2D" label="0"/>
+                    <StatusBullet color="#E02D92" label="0"/>
+                    <StatusBullet color="#BB84DB" label="1"/>
+                    <StatusBullet color="#E4B341" label="0"/>
                   </div>
                 </article>
               );
             }
           )}
-      </section>
+      </section>}
     </section>
   );
 };

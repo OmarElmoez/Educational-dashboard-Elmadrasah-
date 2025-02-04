@@ -164,8 +164,16 @@ menu {
 }
 
 /* override MUI styles */
-.css-1i66pj9-MuiInputBase-root-MuiOutlinedInput-root {
+.css-h6abcu-MuiInputBase-root-MuiOutlinedInput-root {
   flex-direction: row-reverse;
+  gap: 1rem;
+}
+
+.css-h6abcu-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.23) !important;
+}
+.css-h6abcu-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--main-color) !important;
 }
 
 .MuiTelInput-IconButton {
