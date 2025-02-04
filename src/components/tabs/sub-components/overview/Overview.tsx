@@ -8,6 +8,7 @@ import {ProgressBar} from "@/components/UI";
 import styles from './overview.module.css'
 import {useEffect, useState} from "react";
 import {getLessonsStatusOverview} from "@/services/lessonsStatus.ts";
+import { TLoading } from "@/types/shared.ts";
 
 const {today_lessons, attendance_status} = styles;
 
@@ -25,12 +26,16 @@ const Overview = () => {
 
   const [overViewData, setOverViewData] = useState<TOverview>()
 
+  const [loading, setLoading] = useState<TLoading>("idle")
+
   useEffect(() => {
     sendRequestToServer()
   }, [])
 
   const sendRequestToServer = () => {
+    setLoading("pending")
     getLessonsStatusOverview().then((res: TOverview) => {
+      setLoading("succeeded")
       setOverViewData(res)
     });
   }
@@ -60,7 +65,7 @@ const Overview = () => {
 
       </section>
 
-      <TimingDetails teachers={overViewData?.teachers || []} students={overViewData?.students  || []} />
+      <TimingDetails teachers={overViewData?.teachers || []} students={overViewData?.students  || []} loading={loading} />
 
       {/*<TestClasses />*/}
 

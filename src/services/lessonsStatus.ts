@@ -4,11 +4,14 @@ import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
 import {TOverview} from "@/components/tabs/sub-components/overview/Overview.tsx";
 import {TLessonForCurrentHour} from "@/components/tabs/sub-components/current-hour/CurrentHour.tsx";
 
-export const getLessonsStatusForEachHour = async (studentId?: number): Promise<TLessonsForEachHour> => {
+export const getLessonsStatusForEachHour = async ({studentId, day}: {studentId?: number, day?: string}): Promise<TLessonsForEachHour> => {
   try {
     let url = '/event/shared-lessons/lessons-by-hour/';
     if (studentId) {
       url = `/event/shared-lessons/lessons-by-hour/?student_id=${studentId}/`
+    }
+    if (day) {
+      url = `/event/shared-lessons/lessons-by-hour/?day=${day}`
     }
     const response = await axiosInstance.get<TLessonsForEachHour>(url);
     return response.data;

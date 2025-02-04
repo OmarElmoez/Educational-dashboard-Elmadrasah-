@@ -1,13 +1,16 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { TabHeader } from "@/components/tabs/sub-components/Shared.tsx";
 import { ProgressBar, StatusBullet } from "@/components/UI";
 import styles from "./allHours.module.css";
 import convertToArabicTime from "@/utils/convertToArabicTime.ts";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { getLessonsStatusForEachHour } from "@/services/lessonsStatus.ts";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import ClickIcon from "@/assets/click.svg?react";
 import { useNavigate } from "react-router-dom";
+import { LoadingIndicator } from "@/components";
+import { TLoading } from "@/types/shared.ts";
+import { format } from "date-fns";
 
 const {status_wrapper, count_lessons, all_hours_info, progress, title} = styles;
 
@@ -58,21 +61,27 @@ const AllHours = ({
   const [allHoursLessonsData, setAllHoursLessonsData] =
     useState<TLessonsForEachHour>();
 
-  const { role, studentId } = useContext(CalendarContext);
+  const { role, studentId, clickedDate } = useContext(CalendarContext);
+
+  const [loading, setLoading] = useState<TLoading>("idle")
 
   const sendRequestToServer = useCallback(() => {
+    setLoading('pending')
     if (role === "Family" && studentId) {
-      getLessonsStatusForEachHour(studentId).then((res) => {
+      getLessonsStatusForEachHour({studentId}).then((res) => {
+        setLoading("succeeded")
         setAllHoursLessonsData(res);
       });
       return;
     }
 
-    getLessonsStatusForEachHour().then((res: TLessonsForEachHour) => {
-      console.log(res.hourly_counts);
+    const formattedDate = format(clickedDate, "yyyy-MM-dd");
+
+    getLessonsStatusForEachHour({day: formattedDate}).then((res: TLessonsForEachHour) => {
+      setLoading("succeeded")
       setAllHoursLessonsData(res);
     });
-  }, [role, studentId]);
+  }, [clickedDate, role, studentId]);
 
   useEffect(() => {
     sendRequestToServer();
@@ -126,6 +135,7 @@ const AllHours = ({
       <p className={count_lessons}>
         الحصص الجارية ( {allHoursLessonsData?.total_lessons_today} حصص )
       </p>
+      {loading === 'pending' && <LoadingIndicator/>}
       <section className={all_hours_info}>
         {allHoursLessonsData &&
           Object.entries(allHoursLessonsData.hourly_counts).map(

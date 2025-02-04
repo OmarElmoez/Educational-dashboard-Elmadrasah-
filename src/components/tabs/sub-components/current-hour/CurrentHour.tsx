@@ -9,6 +9,7 @@ import styles from './currentHour.module.css'
 import {useCallback, useContext, useEffect, useState} from "react";
 import {getLessonsStatusForCurrentHour} from "@/services/lessonsStatus.ts";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
+import { TLoading } from "@/types/shared.ts";
 
 const {status, count_lessons} = styles;
 
@@ -27,15 +28,20 @@ const CurrentHour = () => {
 
   const {role, studentId} = useContext(CalendarContext)
 
+  const [loading, setLoading] = useState<TLoading>("idle")
+
   /* todo: there is a problem, the else block is executed first then if block. that's because studentId at first render is null (see the Calendar Context) */
 
   const sendRequestToServer = useCallback(() => {
+    setLoading("pending")
     if (role === 'Family' && studentId) {
       getLessonsStatusForCurrentHour(studentId).then(res => {
+        setLoading("succeeded")
         setCurrentHourData(res)
       })
     } else {
       getLessonsStatusForCurrentHour().then((res: TLessonForCurrentHour) => {
+        setLoading("succeeded")
         setCurrentHourData(res);
       })
     }
@@ -61,7 +67,7 @@ const CurrentHour = () => {
         </div>
       </article>
 
-      {role === 'Admin' && <TimingDetails students={currentHourData?.students || []} teachers={currentHourData?.teachers || []}/>}
+      {role === 'Admin' && <TimingDetails students={currentHourData?.students || []} teachers={currentHourData?.teachers || []} loading={loading}/>}
 
       {/*<TestClasses/>*/}
 

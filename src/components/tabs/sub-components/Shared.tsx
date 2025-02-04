@@ -8,6 +8,8 @@ import styles from './shared.module.css'
 import { ReactNode } from "react";
 import timeDifferenceStatus from "@/utils/timeDifferenceStatus.ts";
 import convert24HourToArabic from "@/utils/convert24HourToArabic.ts";
+import { TLoading } from "@/types/shared.ts";
+import { LoadingIndicator } from "@/components";
 
 const {
   test_classes,
@@ -78,9 +80,10 @@ export type TStudent = {
   student_name: string;
 }
 
-export const TimingDetails = ({teachers, students}: {
+export const TimingDetails = ({teachers, students, loading}: {
   teachers: TTeacher[],
-  students: TStudent[]
+  students: TStudent[],
+  loading: TLoading,
 }) => {
 
   return (
@@ -97,10 +100,9 @@ export const TimingDetails = ({teachers, students}: {
           <span>الطلاب</span>
         </div>
       </section>
-
+      {loading === 'pending' && <LoadingIndicator/>}
       <div className={timing_box}>
         <section>
-
           <div className={info_paragraphs}>
 
             {teachers.length > 0 && teachers.map((teacher, idx) => (
@@ -121,7 +123,6 @@ export const TimingDetails = ({teachers, students}: {
         </section>
 
         <section>
-
           <div className={info_paragraphs}>
 
             {students.length > 0 && students.map((student, idx) => (
