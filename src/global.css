@@ -164,15 +164,15 @@ menu {
 }
 
 /* override MUI styles */
-.css-h6abcu-MuiInputBase-root-MuiOutlinedInput-root {
+.css-45d4e2 {
   flex-direction: row-reverse;
   gap: 1rem;
 }
 
-.css-h6abcu-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+.css-45d4e2:hover .MuiOutlinedInput-notchedOutline {
   border-color: rgba(0, 0, 0, 0.23) !important;
 }
-.css-h6abcu-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+.css-45d4e2.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: var(--main-color) !important;
 }
 
