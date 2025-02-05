@@ -7,8 +7,8 @@ import HourlyTableTimeIcon from "@/assets/hourlyTableTimeIcon.svg?react";
 import { getLessonsStatusForEachHour } from "@/services/lessonsStatus.ts";
 import { Dayjs } from "dayjs";
 // import { TLoading } from "@/types/shared.ts";
-import { TLessonsForEachHour } from "../../../../components/tabs/sub-components/all-hours/AllHours";
-import { THourLesson } from "../../../../components/tabs/sub-components/all-hours/AllHours";
+import { TLessonsForEachHour } from "@/components/tabs/sub-components/all-hours/AllHours";
+import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours";
 
 const { title } = styles;
 
@@ -21,6 +21,9 @@ const HourlyLessonsAdmin = () => {
   // const [loading, setLoading] = useState<TLoading>("idle");
   // const formattedDate = date ? date.format("YYYY-MM-DD") : null;
   // const formattedTime = time ? time.format("H:00"): null;
+  
+  // TEMP: use date and time to fix deployment
+  console.log(date, time);
 
   const filterLessonsBySelectedHour = useCallback(
     (time: Dayjs | null, res: TLessonsForEachHour) => {
@@ -64,7 +67,7 @@ const HourlyLessonsAdmin = () => {
           console.error("Error fetching hourly lessons:", error);
         });
     },
-    []
+    [filterLessonsBySelectedHour]
   );
 
   return (
