@@ -1,50 +1,5 @@
- /* Table Custom Styles */
-.MuiDataGrid-columnHeaderTitle {
-    color: #8D8D8D
-}
-.MuiDataGrid-cell {
-    text-align: center !important;
-}
-.MuiToolbar-root{
-    direction: ltr !important;
-}
-.MuiDataGrid-toolbarContainer {
-    direction: ltr !important;
-}
-.MuiButtonBase-root{
-    direction: rtl;
-    padding: 1rem;
-    gap:1rem;
-}
-.MuiButton-startIcon {
-    margin:0 !important;
-}
-.custom-date-time-picker .MuiOutlinedInput-root {
-    border: none !important; /* Hide the border */
-  }
-  
-  .custom-date-time-picker .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border: none !important; /* Hide the outline */
-  }
-  
-  .custom-date-time-picker .MuiInputBase-input {
-    display: none !important; /* Hide the input text */
-  }
-  
-  .custom-date-time-picker .MuiInputLabel-root {
-    display: none !important; /* Hide the label */
-  }
-  
-  .custom-date-time-picker .MuiInputAdornment-root {
-    visibility: visible !important; /* Ensure the icon is visible */
-  }
-  .MuiPickersArrowSwitcher-root {
-    direction: ltr !important;
-
-  }
-
-  /* Calender and Time Custom Styles */
-  .css-oykygv-MuiPickersLayout-contentWrapper{
+/* Calender and Time Custom Styles */
+.css-oykygv-MuiPickersLayout-contentWrapper{
     max-width: 45.6rem !important;
     max-height: 39.1rem !important;
     margin:1.6rem !important;
@@ -122,17 +77,14 @@
     font-size: 1.4rem !important;
 
   }
-  .css-7c9udw-MuiButtonBase-root-MuiIconButton-root{
-  }
-  .css-v9aqz4-MuiSvgIcon-root{
+  .custom-date-time-picker .css-v9aqz4-MuiSvgIcon-root{
     display: none !important;
-
   }
   .css-7c9udw-MuiButtonBase-root-MuiIconButton-root::before{
     content: "";
     display: inline-block !important;
     width: 1.5rem !important;
     height: 0.75rem !important;
-    background-image: url("../../../../assets/calendarArrow.svg") !important;
+    background-image: url("../../../assets/calendarArrow.svg") !important;
     background-size: cover !important;
    }

@@ -89,9 +89,14 @@ const AllHours = ({
 
 
 // Navigate To All Hourly Lessons Table
-  const navigateToHourlyTable = (data:THourLesson[]) => {
-    navigate('hourly-lessons', { state: data });
-  }
+const navigateToHourlyTable = (data: THourLesson[]) => {
+  navigate('hourly-lessons', { 
+    state: { 
+      data,
+      date: data[0]?.from_datetime
+    },
+  });
+};
 
   return (
     <section>

@@ -1,204 +1,87 @@
-import { useState } from "react";
-import "./tableoverride.css";
+import { useState, useCallback } from "react";
+import HourlyTable from "../../../../components/table/hourly-table/hourlyTableAdmin";
+import CustomCalendar from "../../../../components/calendar/MUI-Calendar/calendarAdmin";
 import styles from "./HourlyTable.module.css";
-import { useLocation } from "react-router-dom";
 import HourlyTableTimeIcon from "@/assets/hourlyTableTimeIcon.svg?react";
-import formatHoursAndMinutes from "@/utils/formatHoursAndMinutes.ts";
-import { StatusBullet } from "@/components/UI";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Paper from "@mui/material/Paper";
-import {
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarColumnsButton,
-  // GridToolbarDensitySelector,
-  GridToolbarContainer,
-} from "@mui/x-data-grid";
-import dayjs, { Dayjs } from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+// import formatHoursAndMinutes from "@/utils/formatHoursAndMinutes.ts";
+import { getLessonsStatusForEachHour } from "@/services/lessonsStatus.ts";
+import { Dayjs } from "dayjs";
+// import { TLoading } from "@/types/shared.ts";
+import { TLessonsForEachHour } from "../../../../components/tabs/sub-components/all-hours/AllHours";
+import { THourLesson } from "../../../../components/tabs/sub-components/all-hours/AllHours";
 
-const { title, error, status_wrapper } = styles;
+const { title } = styles;
 
 const HourlyLessonsAdmin = () => {
-  const [value, setValue] = useState<Dayjs | null>(dayjs("2025-02-3T17:00"));
-  const location = useLocation();
-  const hourlyLessons = location.state;
-  const columns: GridColDef[] = [
-    {
-      field: "from_date",
-      headerName: "التاريخ",
-      width: 180,
-      headerAlign: "center",
-    },
-    {
-      field: "start_time_employee",
-      headerName: "وقت الدخول المدرس",
-      width: 180,
-      headerAlign: "center",
-      renderCell: (params) => {
-        let employeeTime = params.value;
-        if (employeeTime === null) {
-          employeeTime = "لا يوجد";
-        }
-        return <div>{employeeTime}</div>;
-      },
-    },
-    {
-      field: "start_time_student",
-      headerName: "وقت الدخول الطالب",
-      width: 180,
-      headerAlign: "center",
-      renderCell: (params) => {
-        let studentTime = params.value;
-        if (studentTime === null) {
-          studentTime = "لا يوجد";
-        }
-        return <div>{studentTime}</div>;
-      },
-    },
-    {
-      field: "student_name",
-      headerName: "اسم الطالب",
-      width: 280,
-      headerAlign: "center",
-    },
-    {
-      field: "employee_name",
-      headerName: "اسم المدرس",
-      width: 280,
-      headerAlign: "center",
-    },
-    {
-      field: "status",
-      headerName: "الحالة",
-      width: 180,
-      headerAlign: "center",
-      renderCell: (params) => {
-        const status = params.value;
-        let color = "black";
-        if (status === "Attended") {
-          color = "#0650A7";
-        } else if (status === "Scheduled") {
-          color = "#1C8A44";
-        } else if (status === "Progressing") {
-          color = "#828684";
-        } else if (status === "Missed") {
-          color = "#F64E60";
-        } else if (status === "Cancelled") {
-          color = "#F64E60";
-        }
-        return <div style={{ color }}>{status}</div>;
-      },
-    },
-  ];
+  const [date, setDate] = useState<Dayjs | null>(null);
+  const [time, setTime] = useState<Dayjs | null>(null);
+  // const [hourlyLessonsForAllHours, setHourlyLessonsForAllHours] =
+  //   useState<TLessonsForEachHour>();
+  const [hourlyLessons, setHourlyLessons] = useState<THourLesson[]>([]);
+  // const [loading, setLoading] = useState<TLoading>("idle");
+  // const formattedDate = date ? date.format("YYYY-MM-DD") : null;
+  // const formattedTime = time ? time.format("H:00"): null;
 
-  const paginationModel = { page: 0, pageSize: 10 };
-  const CustomToolbar = () => (
-    <GridToolbarContainer>
-      <GridToolbarExport />
-      <GridToolbarFilterButton />
-      <GridToolbarColumnsButton />
-      {/* <GridToolbarDensitySelector /> */}
-    </GridToolbarContainer>
+  const filterLessonsBySelectedHour = useCallback(
+    (time: Dayjs | null, res: TLessonsForEachHour) => {
+      if (!res || !time) return;
+      const timeToCompare = time.format("H:00");
+      let matchedData = null;
+      // console.log(timeToCompare);
+      // console.log(res);
+      for (const [timeRange, details] of Object.entries(res.hourly_counts)) {
+        const [startTime] = timeRange.split(" - ");
+        if (startTime === timeToCompare) {
+          matchedData = details;
+          break;
+        }
+      }
+
+      if (matchedData) {
+        // console.log("Matched Data:", matchedData);
+        setHourlyLessons(matchedData.lessons);
+      } else {
+        // console.log("No match found for the given time.");
+        setHourlyLessons([]);
+      }
+    },
+    []
   );
 
-  const localeToolbarText = {
-    toolbarColumns: "",
-    toolbarFilters: "",
-    // toolbarDensityLabel:"",
-    toolbarExport: "",
-  };
+  const getHourlyLessonsRequest = useCallback(
+    (date: Dayjs | null, time: Dayjs | null) => {
+      let formattedDate = date ? date.format("YYYY-MM-DD") : null;
+      if (!formattedDate) return;
+      // setLoading("pending");
+      getLessonsStatusForEachHour({ day: formattedDate })
+        .then((res: TLessonsForEachHour) => {
+          // setLoading("succeeded");
+          // setHourlyLessonsForAllHours(res);
+          filterLessonsBySelectedHour(time, res);
+        })
+        .catch((error) => {
+          // setLoading("failed");
+          console.error("Error fetching hourly lessons:", error);
+        });
+    },
+    []
+  );
 
   return (
     <>
-      {hourlyLessons ? (
-        <>
-          <section className={title}>
-            <HourlyTableTimeIcon className="hourIcon" />
-            <p>
-              {formatHoursAndMinutes(hourlyLessons[0].from_datetime)}-
-              {formatHoursAndMinutes(hourlyLessons[0].to_datetime)}
-            </p>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <div dir="rtl">
-                <DateTimePicker
-                  label="Controlled picker"
-                  value={value}
-                  onChange={(newValue) => setValue(newValue)}
-                  className="custom-date-time-picker" // Add a custom class
-                />
-              </div>
-            </LocalizationProvider>
-          </section>
-          <section>
-            <div className={status_wrapper}>
-              <StatusBullet
-                color="#0650A7"
-                label="30 طالب حضر"
-                size={8}
-                fontSize={14}
-              />
-              <StatusBullet
-                color="var(--main-color)"
-                label="30 طالب مجدول"
-                size={8}
-                fontSize={14}
-              />
-              <StatusBullet
-                color="#F64E60"
-                label="30 طالب غائب"
-                size={8}
-                fontSize={14}
-              />
-              <StatusBullet
-                color="#F64E60"
-                label="30 مدرس غائب"
-                size={8}
-                fontSize={14}
-              />
-              <StatusBullet
-                color="#E90A0A"
-                label="30 مدرس ألغى"
-                size={8}
-                fontSize={14}
-              />
-              <StatusBullet
-                color="#E4B341E4"
-                label="10 طالب تأخر"
-                size={8}
-                fontSize={14}
-              />
-              <StatusBullet
-                color="#BB83DB"
-                label="10 مدرس تأخر"
-                size={8}
-                fontSize={14}
-              />
-            </div>
-          </section>
-          <Paper sx={{ height: "auto", width: "100%" }}>
-            <DataGrid
-              rows={hourlyLessons}
-              columns={columns}
-              initialState={{ pagination: { paginationModel } }}
-              pageSizeOptions={[10, 50]}
-              checkboxSelection
-              sx={{ border: 0 }}
-              localeText={localeToolbarText}
-              slots={{
-                toolbar: CustomToolbar,
-              }}
-              // disableColumnResize={true}
-            />
-          </Paper>
-        </>
-      ) : (
-        <div className={error}>
-          <p>ليس لديك حصص اليوم !</p>
-        </div>
-      )}
+      <section className={title}>
+        <HourlyTableTimeIcon className="hourIcon" />
+        <p>
+          {/* {formatHoursAndMinutes(hourlyLessons[0].from_datetime)}-
+              {formatHoursAndMinutes(hourlyLessons[0].to_datetime)} */}
+        </p>
+        <CustomCalendar
+          setDate={setDate}
+          setTime={setTime}
+          dispatchFunction={getHourlyLessonsRequest}
+        />
+      </section>
+      <HourlyTable hourlyLessons={hourlyLessons} />
     </>
   );
 };
