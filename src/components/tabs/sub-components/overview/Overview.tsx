@@ -17,6 +17,7 @@ export type TOverview = {
   attended_lessons_count: number;
   not_attended_lessons_count: number;
   attendance_percentage: number,
+  not_attendance_percentage: number,
   teachers: TTeacher[];
   students: TStudent[];
 };
@@ -58,7 +59,7 @@ const Overview = () => {
         <article>
           <div>
             <p style={{ fontSize: '1.3rem' }}>عدم حضور</p>
-            <ProgressBar width="60%" color1="#eb5757" color2="#e48b8b" />
+            <ProgressBar width={`${overViewData?.not_attendance_percentage}%`} color1="#eb5757" color2="#e48b8b" />
           </div>
           <span>({overViewData?.not_attended_lessons_count})</span>
         </article>

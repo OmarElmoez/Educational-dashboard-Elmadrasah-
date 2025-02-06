@@ -16,11 +16,12 @@ const {status_wrapper, count_lessons, all_hours_info, progress, title} = styles;
 
 type TimeSlotInfo = {
   lesson_count: number;
-  student_attended: number;
-  teacher_attended: number;
+  not_attended_student: number;
+  not_attended_teacher: number;
   late_student_count: number;
   late_teacher_count: number;
   attendance_percentage: number;
+  attendance: number;
   lessons: THourLesson[];
 };
 
@@ -167,11 +168,11 @@ const navigateToHourlyTable = (data: THourLesson[]) => {
                     className={status_wrapper}
                     style={{marginTop: "0.8rem"}}
                   >
-                    <StatusBullet color="var(--main-color)" label="2"/>
-                    <StatusBullet color="#E02D2D" label="0"/>
-                    <StatusBullet color="#E02D92" label="0"/>
-                    <StatusBullet color="#BB84DB" label="1"/>
-                    <StatusBullet color="#E4B341" label="0"/>
+                    <StatusBullet color="var(--main-color)" label={`${value.attendance}`} />
+                    <StatusBullet color="#E02D2D" label={`${value.not_attended_teacher}`}/>
+                    <StatusBullet color="#E02D92" label={`${value.not_attended_student}`}/>
+                    <StatusBullet color="#BB84DB" label={`${value.late_teacher_count}`}/>
+                    <StatusBullet color="#E4B341" label={`${value.late_student_count}`}/>
                   </div>
                 </article>
               );

@@ -63,7 +63,7 @@ const CurrentHour = () => {
           <StatusBullet color="var(--main-color)"
                         label={`${currentHourData?.attended_count === 0 ? "Zero" : currentHourData?.attended_count} حضور`}/>
           <StatusBullet color="#E02D2D"
-                        label={`${currentHourData?.attended_count === 0 ? "Zero" : currentHourData?.attended_count} عدم حضور`}/>
+                        label={`${currentHourData?.not_attended_count === 0 ? "Zero" : currentHourData?.not_attended_count} عدم حضور`}/>
         </div>
       </article>
 
