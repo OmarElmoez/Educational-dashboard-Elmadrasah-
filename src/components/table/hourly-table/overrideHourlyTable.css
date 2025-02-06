@@ -1,5 +1,28 @@
- /* Table Custom Styles */
- .MuiDataGrid-columnHeaderTitle {
+/* Table Custom Styles */
+/* Production Table Styles */
+.css-1rxsvxt {
+  color: #8D8D8D
+}
+.css-14otjcu .MuiDataGrid-cell {
+  text-align: center !important;
+}
+.css-l45izh{
+  direction: ltr !important;
+}
+.css-1yqais2 {
+  direction: ltr !important;
+}
+.css-xj818y{
+  direction: rtl;
+  padding: 1rem;
+  gap:1rem;
+}
+.css-1qfx30c {
+  margin:0 !important;
+}
+
+/* Local Table Styles */
+ /* .MuiDataGrid-columnHeaderTitle {
     color: #8D8D8D
 }
 .MuiDataGrid-cell {
@@ -18,27 +41,4 @@
 }
 .MuiButton-startIcon {
     margin:0 !important;
-}
-.custom-date-time-picker .MuiOutlinedInput-root {
-    border: none !important; /* Hide the border */
-  }
-  
-  .custom-date-time-picker .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border: none !important; /* Hide the outline */
-  }
-  
-  .custom-date-time-picker .MuiInputBase-input {
-    display: none !important; /* Hide the input text */
-  }
-  
-  .custom-date-time-picker .MuiInputLabel-root {
-    display: none !important; /* Hide the label */
-  }
-  
-  .custom-date-time-picker .MuiInputAdornment-root {
-    visibility: visible !important; /* Ensure the icon is visible */
-  }
-  .MuiPickersArrowSwitcher-root {
-    direction: ltr !important;
-
-  }
+} */
