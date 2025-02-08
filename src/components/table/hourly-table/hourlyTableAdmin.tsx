@@ -8,11 +8,8 @@ import {
   GridToolbarColumnsButton,
 } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { StatusBullet } from "@/components/UI";
-import styles from "../../../pages/admin/tables/hourlyTables/HourlyTable.module.css";
-import "./overrideHourlyTable.css"
-
-const { status_wrapper } = styles;
+import convertAppTime from "@/utils/convertAppTime.ts";
+import "./overrideHourlyTable.css";
 
 interface HourlyTableProps {
   hourlyLessons: any[];
@@ -32,10 +29,14 @@ const columns: GridColDef[] = [
     headerAlign: "center",
     renderCell: (params) => {
       let employeeTime = params.value;
+      let formattedEmployeeTime;
       if (employeeTime === null) {
         employeeTime = "لا يوجد";
+        return <div>{employeeTime}</div>;
+      } else {
+        formattedEmployeeTime = convertAppTime(employeeTime);
+        return <div>{formattedEmployeeTime}</div>;
       }
-      return <div>{employeeTime}</div>;
     },
   },
   {
@@ -45,10 +46,14 @@ const columns: GridColDef[] = [
     headerAlign: "center",
     renderCell: (params) => {
       let studentTime = params.value;
+      let formattedStudentTime;
       if (studentTime === null) {
         studentTime = "لا يوجد";
+        return <div>{studentTime}</div>;
+      } else {
+        formattedStudentTime = convertAppTime(studentTime);
+        return <div>{formattedStudentTime}</div>;
       }
-      return <div>{studentTime}</div>;
     },
   },
   {
@@ -106,52 +111,6 @@ const localeToolbarText = {
 const HourlyTableAdmin = ({ hourlyLessons }: HourlyTableProps) => {
   return (
     <>
-      <section>
-        <div className={status_wrapper}>
-          <StatusBullet
-            color="#0650A7"
-            label="30 طالب حضر"
-            size={8}
-            fontSize={14}
-          />
-          <StatusBullet
-            color="var(--main-color)"
-            label="30 طالب مجدول"
-            size={8}
-            fontSize={14}
-          />
-          <StatusBullet
-            color="#F64E60"
-            label="30 طالب غائب"
-            size={8}
-            fontSize={14}
-          />
-          <StatusBullet
-            color="#F64E60"
-            label="30 مدرس غائب"
-            size={8}
-            fontSize={14}
-          />
-          <StatusBullet
-            color="#E90A0A"
-            label="30 مدرس ألغى"
-            size={8}
-            fontSize={14}
-          />
-          <StatusBullet
-            color="#E4B341E4"
-            label="10 طالب تأخر"
-            size={8}
-            fontSize={14}
-          />
-          <StatusBullet
-            color="#BB83DB"
-            label="10 مدرس تأخر"
-            size={8}
-            fontSize={14}
-          />
-        </div>
-      </section>
       <Paper sx={{ height: "auto", width: "100%" }}>
         <DataGrid
           rows={hourlyLessons}

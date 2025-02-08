@@ -64,12 +64,12 @@ const AllHours = ({
 
   const { role, studentId, clickedDate } = useContext(CalendarContext);
 
-  const [loading, setLoading] = useState<TLoading>("idle")
+  const [loading, setLoading] = useState<TLoading>("idle");
 
   const sendRequestToServer = useCallback(() => {
     setLoading('pending')
     if (role === "Family" && studentId) {
-      getLessonsStatusForEachHour({studentId}).then((res) => {
+      getLessonsStatusForEachHour({ studentId }).then((res) => {
         setLoading("succeeded")
         setAllHoursLessonsData(res);
       });
@@ -78,26 +78,27 @@ const AllHours = ({
 
     const formattedDate = format(clickedDate, "yyyy-MM-dd");
 
-    getLessonsStatusForEachHour({day: formattedDate}).then((res: TLessonsForEachHour) => {
-      setLoading("succeeded")
-      setAllHoursLessonsData(res);
-    });
+    getLessonsStatusForEachHour({ day: formattedDate }).then(
+      (res: TLessonsForEachHour) => {
+        setLoading("succeeded");
+        setAllHoursLessonsData(res);
+      }
+    );
   }, [clickedDate, role, studentId]);
 
   useEffect(() => {
     sendRequestToServer();
   }, [sendRequestToServer]);
 
-
-// Navigate To All Hourly Lessons Table
-const navigateToHourlyTable = (data: THourLesson[]) => {
-  navigate('hourly-lessons', { 
-    state: { 
-      data,
-      date: data[0]?.from_datetime
-    },
-  });
-};
+  // Navigate To All Hourly Lessons Table
+  const navigateToHourlyTable = (data: THourLesson[]) => {
+    navigate("hourly-lessons", {
+      state: {
+        data,
+        date: { start: data[0]?.from_datetime, end: data[0]?.to_datetime },
+      },
+    });
+  };
 
   return (
     <section>
@@ -164,20 +165,20 @@ const navigateToHourlyTable = (data: THourLesson[]) => {
                     <span>({value.lesson_count})</span>
                   </div>
 
-                  <div
-                    className={status_wrapper}
-                    style={{marginTop: "0.8rem"}}
-                  >
+                    <div
+                      className={status_wrapper}
+                      style={{ marginTop: "0.8rem" }}
+                    >
                     <StatusBullet color="var(--main-color)" label={`${value.attendance}`} />
                     <StatusBullet color="#E02D2D" label={`${value.not_attended_teacher}`}/>
                     <StatusBullet color="#E02D92" label={`${value.not_attended_student}`}/>
                     <StatusBullet color="#BB84DB" label={`${value.late_teacher_count}`}/>
                     <StatusBullet color="#E4B341" label={`${value.late_student_count}`}/>
-                  </div>
-                </article>
-              );
-            }
-          )}
+                    </div>
+                  </article>
+                );
+              }
+            )}
       </section>}
     </section>
   );

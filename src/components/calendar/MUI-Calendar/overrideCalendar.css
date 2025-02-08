@@ -1,91 +1,97 @@
 /* Calender and Time Custom Styles */
 /* Production Styles */
-.custom-date-time-picker .css-18r5b3s {
+.css-18r5b3s {
   display: none !important;
 }
-.custom-date-time-picker .css-193pdl5 {
+.css-2qa4hw {
+    display: none !important;
+}
+    .css-2qa4hw.Mui-focused {
+    display: none !important;
+    }
+.css-193pdl5 {
   border: none !important;
 }
 
-.custom-date-time-picker .css-193pdl5 .css-5v2ak0 {
+.css-193pdl5 .css-5v2ak0 {
   border: none !important;
 }
 
-.custom-date-time-picker .css-1oft8ii {
+.css-1oft8ii {
   display: none !important;
 }
 
-.custom-date-time-picker .css-yxqbup {
+.css-yxqbup {
   visibility: visible !important;
 }
-.custom-date-time-picker .css-gvoll6 {
+.css-gvoll6 {
   direction: ltr !important;
 
 }
-.custom-date-time-picker .css-1vwesw7 {
+.css-1vwesw7 {
   max-width: 45.6rem !important;
   max-height: 39.1rem !important;
   margin: 1.6rem !important;
 }
-.custom-date-time-picker .css-sejapn.Mui-selected {
+.css-sejapn.Mui-selected {
   border-radius: 0.8rem !important;
 }
-.custom-date-time-picker .css-2xnwap.Mui-selected {
-  max-width: 2.8rem;
-  height: 2.8rem;
+.css-2xnwap.Mui-selected {
+  max-width: 2.8rem !important;
+  height: 2.8rem !important;
   border-radius: 0rem !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-.custom-date-time-picker .css-2xnwap:not(.Mui-selected) {
-  max-width: 2.8rem;
-  height: 2.8rem;
+.css-2xnwap:not(.Mui-selected) {
+  max-width: 2.8rem !important;
+  height: 2.8rem !important;
   border-radius: 0rem !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-.custom-date-time-picker .css-13vxgc9 {
+.css-13vxgc9 {
   width: 2.8rem !important;
   height: 2.8rem !important;
   border-radius: 0rem !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-.custom-date-time-picker .css-1a0k08l {
+.css-1a0k08l {
   width: 2.8rem !important;
   height: 2.8rem !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-.custom-date-time-picker .css-cy45vv {
+.css-cy45vv {
   max-height: 2.8rem !important;
 }
-.custom-date-time-picker .css-16ouyyn {
+.css-16ouyyn {
   max-width: 20.8rem !important;
   margin: 0 !important;
 }
-.custom-date-time-picker .css-8633fn {
+.css-8633fn {
   font-size: 1.2rem !important;
   font-weight: 500 !important;
 }
-.custom-date-time-picker .css-mdccah {
+.css-mdccah {
   padding: 0 !important;
 }
-.custom-date-time-picker .css-1l6e05h {
+.css-1l6e05h {
   width: 1.6rem !important;
   height: 1.6rem !important;
 }
-.custom-date-time-picker .css-sejapn {
+.css-sejapn {
   font-size: 1.4rem !important;
 }
-.custom-date-time-picker .css-1tmk1fv {
+.css-1tmk1fv {
   font-size: 1.4rem !important;
    max-width: 6rem !important;
 }
-.custom-date-time-picker .css-zxk1w2 {
+.css-zxk1w2 {
   max-width: 20.8rem !important;
 }
-.custom-date-time-picker .css-dxkfz1 {
+.css-dxkfz1 {
   width: 10.9rem !important;
   height: 4.8rem !important;
   background-color: var(--main-color) !important;
@@ -93,14 +99,14 @@
   font-size: 0 !important;
   text-align: center !important;
 }
-.custom-date-time-picker .css-dxkfz1::after {
-  content: "Search";
+.css-dxkfz1::after {
+  content: "Search" !important;
   font-size: 1.4rem !important;
 }
-.custom-date-time-picker .css-ofr7jn{
+.css-ofr7jn{
   display: none !important;
 }
-.custom-date-time-picker .css-14d4aat::before {
+.css-14d4aat::before {
   content: "";
   display: inline-block !important;
   width: 1.5rem !important;
@@ -207,7 +213,7 @@
   content: "Search";
   font-size: 1.4rem !important;
 }
-.css-v9aqz4-MuiSvgIcon-root {
+.custom-date-time-picker .css-v9aqz4-MuiSvgIcon-root {
   display: none !important;
 }
 .css-7c9udw-MuiButtonBase-root-MuiIconButton-root::before {
