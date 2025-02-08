@@ -6,6 +6,7 @@
   max-width: 80px;
   position: relative;
   z-index: 5;
+  height: 100vh;
 }
 
 .main_nav_menu {

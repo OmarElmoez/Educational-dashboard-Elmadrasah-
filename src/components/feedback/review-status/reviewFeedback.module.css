@@ -6,6 +6,10 @@
   z-index: 10;
 }
 
+.reviewModal > svg {
+  margin-inline: auto;
+}
+
 .reviewModal h3 {
   font-size: 2rem;
   margin-top: 1.6rem;

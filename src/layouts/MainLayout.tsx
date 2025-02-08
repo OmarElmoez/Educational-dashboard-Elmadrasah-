@@ -28,7 +28,7 @@ const MainLayout = ({sideBarData}: { sideBarData: TPath[] }) => {
   return (
     <main className="container mainContainer">
       <CalendarProvider>
-        <MainSidebar data={sideBarData}/>
+        <MainSidebar data={sideBarData} />
         <div className="contentBox">
           <Header/>
           <section className="content">
