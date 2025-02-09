@@ -1,4 +1,3 @@
-import HeroImg from '@/assets/join-lesson-cover.svg?react';
 import VideoCallIcon from '@/assets/videoCall.svg?react';
 import VideoCamIcon from '@/assets/videoCam.svg?react';
 import PhoneHangUpIcon from '@/assets/phoneHangUp.svg?react';
@@ -17,7 +16,7 @@ import {useFeedback} from "@/store/context";
 import generateTabs from "@/utils/generateTabs.ts";
 import {TModalRef} from "@/types/shared.ts";
 
-const {attendance_box, student_classes, lesson_actions, page_header, lesson_status} = styles;
+const {attendance_box, student_classes, lesson_actions, lesson_status} = styles;
 
 const STATUS_TEXT = {
   Attended: "تم الحضور",
@@ -112,15 +111,12 @@ const JoinClass = () => {
   return (
     <>
       <ReviewForm ref={reviewRef} lesson_id={lessonData?.id}/>
-      <div className={page_header}>
-        <HeroImg/>
-      </div>
       <FlexWrapper>
 
         <PersonalCard cardFor={isTeacher ? "student" : "teacher"} person={person}/>
 
         <Card>
-          <Heading text="الدرس الحالي" style={{fontSize: "3.2rem", marginTop: "0", marginBottom: "0"}}/>
+          <Heading text="الدرس الحالي" style={{fontSize: "2.4rem", marginTop: "0", marginBottom: "0"}}/>
 
           <section className={attendance_box}>
             <div style={{display: "flex", gap: "1.2rem", alignItems: "center"}}>

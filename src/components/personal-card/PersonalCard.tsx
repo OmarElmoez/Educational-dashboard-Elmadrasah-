@@ -30,11 +30,11 @@ const PersonalCard = ({cardFor, person}: TPersonalCardProps) => {
   return (
     <Card>
       <Heading text={forTeacher ? "تفاصيل المعلم" : "تفاصيل الطالب"}
-               style={{fontSize: "3.2rem", margin: '0'}}/>
+               style={{fontSize: "2.4rem", margin: '0'}}/>
 
       <section className={personal_info}>
 
-        <ImgBox size="72px">
+        <ImgBox size="56px">
           {person.image ? <img src={person.image} alt="user image"/> : <ImgPlaceholder/>}
         </ImgBox>
 

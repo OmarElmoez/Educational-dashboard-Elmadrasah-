@@ -1,7 +1,6 @@
 .wrapper {
   display: flex;
   gap: 2.4rem;
-  margin-top: 7.9rem;
 }
 
 .wrapper > article {
