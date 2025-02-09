@@ -1,4 +1,4 @@
-import {Card, Heading, ImgBox} from "@/components/UI";
+import { Card, Heading, ImgBox } from "@/components/UI";
 
 import ImgPlaceholder from '@/assets/person-placeholder.svg?react'
 import GraduationIcon from '@/assets/Graduation_ hat.svg?react';
@@ -9,7 +9,7 @@ import OnlineClassIcon from '@/assets/onlineClass.svg?react'
 import Stars from '@/assets/stars.svg?react';
 
 import styles from './personalCard.module.css'
-import {TPersonInfo} from "@/pages/shared/join-class/JoinClass.tsx";
+import { TPersonInfo } from "@/pages/shared/join-class/JoinClass.tsx";
 
 const {
   personal_info,
@@ -46,21 +46,21 @@ const PersonalCard = ({cardFor, person}: TPersonalCardProps) => {
       </section>
 
       {forTeacher && <section className={rate_box}>
-        <span>التقييم</span>
-        <Stars/>
+          <span>التقييم</span>
+          <Stars/>
       </section>}
 
       {!forTeacher && <section className={goalsAndSubjects}>
 
-        <div>
-          <Heading text="المواد :" style={{fontSize: "2rem", margin: '0'}}/>
-          <span style={{color: "#616161"}}>العربي , القرآن الكريم</span>
-        </div>
+          <div>
+              <Heading text="المواد :" style={{fontSize: "2rem", margin: '0'}}/>
+              <span style={{color: "#616161"}}>العربي , القرآن الكريم</span>
+          </div>
 
-        <div>
-          <Heading text="هدف الطالب :" style={{fontSize: "2rem", margin: '0'}}/>
-          <span style={{color: "#616161"}}>{person.student_goal}</span>
-        </div>
+          <div>
+              <Heading text="هدف الطالب :" style={{fontSize: "2rem", margin: '0'}}/>
+              <span style={{color: "#616161"}}>{person.student_goal}</span>
+          </div>
 
       </section>}
 
@@ -71,13 +71,15 @@ const PersonalCard = ({cardFor, person}: TPersonalCardProps) => {
         </li>}
 
         {!forTeacher && <li>
-            <OnlineClassIcon />
+            <OnlineClassIcon/>
             <span>عدد الحصص: </span>
         </li>}
 
         <li>
-          <LanguageIcon />
-          <span>اللغة : {person.language}</span>
+          <LanguageIcon/>
+          <span>
+   اللغة :          {person.language ? (person.language === "ar" ? "العربية" : "الانجليزية") : "غير محددة"}
+          </span>
         </li>
 
         <li>

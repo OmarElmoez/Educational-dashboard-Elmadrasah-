@@ -129,8 +129,8 @@ const JoinClass = () => {
           <section className={student_classes}>
             <Heading text="حصص الطالب" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
 
-            <ProgressBar width="65%"/>
-            <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم 65%</p>
+            <ProgressBar width={`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}/>
+            <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم {`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}</p>
           </section>
 
           <section className={lesson_actions}>
