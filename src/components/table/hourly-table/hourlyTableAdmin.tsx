@@ -9,11 +9,9 @@ import {
 } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import convertAppTime from "@/utils/convertAppTime.ts";
+import { Typography, Box } from '@mui/material';
+import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours";
 import "./overrideHourlyTable.css";
-
-interface HourlyTableProps {
-  hourlyLessons: any[];
-}
 
 const columns: GridColDef[] = [
   {
@@ -108,11 +106,40 @@ const localeToolbarText = {
   toolbarExport: "",
 };
 
-const HourlyTableAdmin = ({ hourlyLessons }: HourlyTableProps) => {
+const HourlyTableAdmin = ({ hourlyLessons, loading}:{hourlyLessons : THourLesson[], loading: boolean}) => {
+const CustomNoRowsOverlay = () => {
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+    >
+      <Typography variant="h6" color="textSecondary">
+        لا توجد حصص متاحة فى هذا التوقيت
+      </Typography>
+    </Box>
+  );
+};
+const CustomNoResultsOverlay = () => {
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+    >
+      <Typography variant="h6" color="textSecondary">
+        لا توجد نتائج متاحة لهذا التصنيف
+      </Typography>
+    </Box>
+  );
+};
   return (
     <>
       <Paper sx={{ height: "auto", width: "100%" }}>
         <DataGrid
+        className="custom-data-grid"
           rows={hourlyLessons}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
@@ -122,6 +149,15 @@ const HourlyTableAdmin = ({ hourlyLessons }: HourlyTableProps) => {
           localeText={localeToolbarText}
           slots={{
             toolbar: CustomToolbar,
+            noRowsOverlay: CustomNoRowsOverlay,
+            noResultsOverlay: CustomNoResultsOverlay,
+          }}
+          loading= {loading}
+          slotProps={{
+            loadingOverlay: {
+              variant: 'skeleton',
+              noRowsVariant: 'skeleton',
+            },
           }}
         />
       </Paper>

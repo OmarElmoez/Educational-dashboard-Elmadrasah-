@@ -1,43 +1,47 @@
 /* Production Table Styles */
 .css-1rxsvxt {
-  color: #8D8D8D !important;
+  color: #8d8d8d !important;
 }
 .css-14otjcu .MuiDataGrid-cell {
   text-align: center !important;
 }
-.css-l45izh{
+.css-l45izh {
   direction: ltr !important;
 }
 .css-1yqais2 {
+  padding-top: 1rem !important;
   direction: ltr !important;
 }
-.css-xj818y{
+.custom-data-grid .css-gvoll6 {
+  direction: rtl !important;
+}
+.css-xj818y {
   direction: rtl !important;
   padding: 1rem !important;
-  gap:1rem !important;
+  gap: 1rem !important;
 }
 .css-1qfx30c {
-  margin:1rem 0 0 !important;
-} 
+  margin: 1rem 0 0 !important;
+}
 
 /* Local Table Styles */
- /* .MuiDataGrid-columnHeaderTitle {
-    color: #8D8D8D
+/* .MuiDataGrid-columnHeaderTitle {
+  color: #8d8d8d;
 }
 .MuiDataGrid-cell {
-    text-align: center !important;
+  text-align: center !important;
 }
-.MuiToolbar-root{
-    direction: ltr !important;
+.MuiToolbar-root {
+  direction: ltr !important;
 }
 .MuiDataGrid-toolbarContainer {
-    direction: ltr !important;
+  direction: ltr !important;
 }
-.MuiButtonBase-root{
-    direction: rtl;
-    padding: 1rem;
-    gap:1rem;
+.MuiButtonBase-root {
+  direction: rtl;
+  padding: 1rem;
+  gap: 1rem;
 }
 .MuiButton-startIcon {
-    margin:1rem 0 0 !important;
-}*/
+  margin: 1rem 0 0 !important;
+} */

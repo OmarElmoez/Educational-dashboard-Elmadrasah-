@@ -4,11 +4,11 @@
   display: none !important;
 }
 .css-2qa4hw {
-    display: none !important;
+  display: none !important;
 }
-    .css-2qa4hw.Mui-focused {
-    display: none !important;
-    }
+.css-2qa4hw.Mui-focused {
+  display: none !important;
+}
 .css-193pdl5 {
   border: none !important;
 }
@@ -17,16 +17,15 @@
   border: none !important;
 }
 
-.css-1oft8ii {
+.custom-date-time-picker .css-1oft8ii {
   display: none !important;
 }
 
 .css-yxqbup {
   visibility: visible !important;
 }
-.css-gvoll6 {
+.custom-date-time-picker .css-gvoll6 {
   direction: ltr !important;
-
 }
 .css-1vwesw7 {
   max-width: 45.6rem !important;
@@ -86,24 +85,15 @@
 }
 .css-1tmk1fv {
   font-size: 1.4rem !important;
-   max-width: 6rem !important;
+  max-width: 6rem !important;
 }
 .css-zxk1w2 {
   max-width: 20.8rem !important;
 }
-.css-dxkfz1 {
-  width: 10.9rem !important;
-  height: 4.8rem !important;
-  background-color: var(--main-color) !important;
-  color: #ffffff !important;
-  font-size: 0 !important;
-  text-align: center !important;
+.css-fgne9w .MuiPickersLayout-actionBar {
+  display: none !important;
 }
-.css-dxkfz1::after {
-  content: "Search" !important;
-  font-size: 1.4rem !important;
-}
-.css-ofr7jn{
+.custom-date-time-picker .css-ofr7jn {
   display: none !important;
 }
 .css-14d4aat::before {
@@ -124,7 +114,7 @@
   border: none !important;
 }
 
-.MuiInputBase-input {
+.custom-date-time-picker .MuiInputBase-input {
   display: none !important;
 }
 
@@ -201,17 +191,8 @@
 .css-th0wnz-MuiYearCalendar-root {
   max-width: 20.8rem !important;
 }
-.css-mz98ku-MuiButtonBase-root-MuiButton-root {
-  width: 10.9rem !important;
-  height: 4.8rem !important;
-  background-color: var(--main-color) !important;
-  color: #ffffff !important;
-  font-size: 0 !important;
-  text-align: center !important;
-}
-.css-mz98ku-MuiButtonBase-root-MuiButton-root::after {
-  content: "Search";
-  font-size: 1.4rem !important;
+.css-15kkzqw-MuiPickersLayout-root .MuiPickersLayout-actionBar {
+  display: none !important;
 }
 .custom-date-time-picker .css-v9aqz4-MuiSvgIcon-root {
   display: none !important;

@@ -7,27 +7,41 @@ import HourlyTableTimeIcon from "@/assets/hourlyTableTimeIcon.svg?react";
 import formatHoursAndMinutes from "@/utils/formatHoursAndMinutes.ts";
 import { getLessonsStatusForEachHour } from "@/services/lessonsStatus.ts";
 import { Dayjs } from "dayjs";
-// import { TLoading } from "@/types/shared.ts";
 import { TLessonsForEachHour } from "@/components/tabs/sub-components/all-hours/AllHours";
 import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours";
+import { TimeSlotInfo } from "@/components/tabs/sub-components/all-hours/AllHours";
 import { useLocation } from "react-router-dom";
 import convertToArabicTime from '@/utils/convertToArabicTime.ts';
 const { title, status_wrapper} = styles;
+const defaultTimeSlotInfo: TimeSlotInfo = {
+  lesson_count: 0,
+  not_attended_student: 0,
+  not_attended_teacher: 0,
+  late_student_count: 0,
+  late_teacher_count: 0,
+  attendance_percentage: 0,
+  attendance: 0,
+  scheduled_students:0,
+  cancelled_teachers:0,
+  lessons: [],
+};
 const HourlyLessonsAdmin = () => {
   const [displayDate, setDisplayDate] = useState<string>();
   const [date, setDate] = useState<Dayjs | null>(null);
   const [time, setTime] = useState<Dayjs | null>(null);
-  // const [hourlyLessonsForAllHours, setHourlyLessonsForAllHours] =
-  //   useState<TLessonsForEachHour>();
+  const [hourlyLessonsForAllHours, setHourlyLessonsForAllHours] =
+    useState<TimeSlotInfo>(defaultTimeSlotInfo);
   const [hourlyLessons, setHourlyLessons] = useState<THourLesson[]>([]);
-  // const [loading, setLoading] = useState<TLoading>("idle");
+  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
   useEffect(() => {
-    setHourlyLessons(location.state.data);
+    setHourlyLessonsForAllHours(location.state.data)
+    setHourlyLessons(location.state.data.lessons);
     setDate(location.state.date);
     let startTime = formatHoursAndMinutes(location.state.date.start)
     let endTime = formatHoursAndMinutes(location.state.date.end)
     setDisplayDate(`${startTime} - ${endTime}`);
+    setLoading(false);
     console.log(location.state.data);
   }, [location]);
   // TEMP: use date and time to fix deployment
@@ -58,9 +72,11 @@ const HourlyLessonsAdmin = () => {
         }
       }
       if (matchedData) {
+        setHourlyLessonsForAllHours(matchedData)
         setHourlyLessons(matchedData.lessons);
       
       } else {
+        setHourlyLessonsForAllHours(defaultTimeSlotInfo)
         setHourlyLessons([]);
       }
     },
@@ -71,14 +87,14 @@ const HourlyLessonsAdmin = () => {
     (date: Dayjs | null, time: Dayjs | null) => {
       let formattedDate = date ? date.format("YYYY-MM-DD") : null;
       if (!formattedDate) return;
-      // setLoading("pending");
+      setLoading(true);
       getLessonsStatusForEachHour({ day: formattedDate })
         .then((res: TLessonsForEachHour) => {
-          // setLoading("succeeded");
+          setLoading(false);
           filterLessonsBySelectedHour(time, res);
         })
         .catch((error) => {
-          // setLoading("failed");
+          setLoading(false);
           console.error("Error fetching hourly lessons:", error);
         });
     },
@@ -100,49 +116,49 @@ const HourlyLessonsAdmin = () => {
         <div className={status_wrapper}>
           <StatusBullet
             color="#0650A7"
-            label={`30 طالب حضر`}
+            label={`${hourlyLessonsForAllHours?.attendance} طالب حضر`}
             size={8}
             fontSize={14}
           />
           <StatusBullet
             color="var(--main-color)"
-            label="30 طالب مجدول"
+            label={`${hourlyLessonsForAllHours?.scheduled_students} طالب مجدول`}
             size={8}
             fontSize={14}
           />
           <StatusBullet
             color="#F64E60"
-            label="30 طالب غائب"
+            label={`${hourlyLessonsForAllHours?.not_attended_student} طالب غائب`}
             size={8}
             fontSize={14}
           />
           <StatusBullet
             color="#F64E60"
-            label="30 مدرس غائب"
+            label={`${hourlyLessonsForAllHours?.not_attended_teacher} مدرس غائب`}
             size={8}
             fontSize={14}
           />
           <StatusBullet
             color="#E90A0A"
-            label="30 مدرس ألغى"
+            label={`${hourlyLessonsForAllHours?.cancelled_teachers} مدرس ألغى`}
             size={8}
             fontSize={14}
           />
           <StatusBullet
             color="#E4B341E4"
-            label="10 طالب تأخر"
+            label={`${hourlyLessonsForAllHours?.late_student_count} طالب تأخر`}
             size={8}
             fontSize={14}
           />
           <StatusBullet
             color="#BB83DB"
-            label="10 مدرس تأخر"
+            label={`${hourlyLessonsForAllHours?.late_teacher_count} مدرس تأخر`}
             size={8}
             fontSize={14}
           />
         </div>
       </section>
-      <HourlyTable hourlyLessons={hourlyLessons} />
+      <HourlyTable hourlyLessons={hourlyLessons} loading={loading} />
     </>
   );
 };
