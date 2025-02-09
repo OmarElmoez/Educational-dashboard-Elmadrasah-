@@ -98,7 +98,7 @@ const AllHours = ({
     navigate("hourly-lessons", {
       state: {
         data,
-        date: { start: data?.lessons[0]?.from_datetime, end: data?.lessons[0]?.to_datetime },
+        date: { start: data?.lessons[0]?.from_time, end: data?.lessons[0]?.to_time },
       },
     });
   };
