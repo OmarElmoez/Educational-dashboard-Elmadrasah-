@@ -190,4 +190,5 @@ const AllHours = ({
     </section>
   );
 };
+
 export default AllHours;
