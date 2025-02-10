@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, jest: true },
   extends: [
     'eslint:recommended',
     // 'plugin:@typescript-eslint/recommended-type-checked',
@@ -12,8 +12,8 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module',
     project: ['./tsconfig.app.json', './tsconfig.node.json'],
+    sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
   plugins: ['react-refresh'],
@@ -32,4 +32,4 @@ module.exports = {
       },
     },
   ],
-}
+};
