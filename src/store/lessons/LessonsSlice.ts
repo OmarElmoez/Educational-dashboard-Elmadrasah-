@@ -72,7 +72,11 @@ const initialState: TLessonsState = {
 const lessonsSlice = createSlice({
   name: "lessons",
   initialState,
-  reducers: {},
+  reducers: {
+    resetMonthLessons: (state) => {
+      state.Month_lessons = [];
+    }
+  },
   extraReducers: (builder) => {
 
     // Lessons By Month
@@ -126,5 +130,7 @@ const lessonsSlice = createSlice({
     })
   },
 });
+
+export const { resetMonthLessons } = lessonsSlice.actions;
 
 export default lessonsSlice.reducer;
