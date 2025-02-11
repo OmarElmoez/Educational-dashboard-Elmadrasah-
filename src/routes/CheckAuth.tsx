@@ -1,15 +1,20 @@
 import {ReactNode, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
 import {useNavigate} from "react-router-dom";
+import actGetLessonsByMonth from "@/store/lessons/act/actGetLessonsByMonth.ts";
 
 const CheckAuth = ({children}: { children: ReactNode }) => {
   const {credintials} = useAppSelector(state => state.auth);
+  const {Month_lessons} = useAppSelector(state => state.lessons);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (credintials?.role) {
       navigate(`/${credintials?.role?.toLowerCase()}`);
+      if (credintials?.role !== 'Admin' && Month_lessons.length !== 0) {
+        dispatch(actGetLessonsByMonth({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
+      }
     }
   }, [credintials?.role, dispatch, navigate]);
 
