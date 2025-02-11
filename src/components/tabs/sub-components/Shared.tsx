@@ -6,7 +6,6 @@ import ReloadIcon from '@/assets/reload.svg?react';
 
 import styles from './shared.module.css'
 import { ReactNode } from "react";
-import timeDifferenceStatus from "@/utils/timeDifferenceStatus.ts";
 import convert24HourToArabic from "@/utils/convert24HourToArabic.ts";
 import { TLoading } from "@/types/shared.ts";
 import { LoadingIndicator } from "@/components";
@@ -78,6 +77,7 @@ export type TStudent = {
   start_time_student: string,
   lesson__from_time: string;
   student_name: string;
+  status: string;
 }
 
 export const TimingDetails = ({teachers, students, loading}: {
@@ -107,15 +107,12 @@ export const TimingDetails = ({teachers, students, loading}: {
 
             {teachers.length > 0 && teachers.map((teacher, idx) => (
               <p key={`${teacher.teacher_name}_${idx}`} style={{
-                backgroundColor: `${timeDifferenceStatus(
-                  teacher?.start_time_employee,
-                  teacher.from_time).bg_color}`
+                backgroundColor: `${teacher?.status === 'Missed' ? "#f7cece" : "#FF880033"}`
               }}>
                 <span className={dot}></span>
                 <span>{teacher.teacher_name} : في الساعة {convert24HourToArabic(
-                  teacher.start_time_employee)} ( {timeDifferenceStatus(
-                    teacher.start_time_employee,
-                  teacher.from_time).text} )</span>
+                  teacher.from_time)}</span>
+                <span style={{marginRight: "auto"}}>( {teacher?.status === 'Missed' ? "متغيب" : "متأخر"} )</span>
               </p>
             ))}
 
@@ -127,16 +124,13 @@ export const TimingDetails = ({teachers, students, loading}: {
 
             {students.length > 0 && students.map((student, idx) => (
               <p key={`${student.student_name}_${idx}`} style={{
-                backgroundColor: `${timeDifferenceStatus(
-                  student.start_time_student,
-                  student.lesson__from_time).bg_color}`
+                backgroundColor: `${student?.status === 'Missed' ? "#f7cece" : "#FF880033"}`
               }}>
                 <span className={dot}></span>
                 <span>{student.student_name} : في الساعة {convert24HourToArabic(
-                  student.start_time_student)} ( {timeDifferenceStatus(
-                  student.start_time_student,
-                  student.lesson__from_time).text} )
+                  student.lesson__from_time)}
                   </span>
+                <span style={{marginRight: "auto"}}>( {student?.status === 'Missed' ? "متغيب" : "متأخر"} )</span>
               </p>
             ))}
 
