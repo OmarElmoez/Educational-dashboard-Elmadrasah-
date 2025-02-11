@@ -121,4 +121,4 @@ export const { logout } = authSlice.actions;
 
 export { actAuthLogin, actGoogleLogin, actSetPassword };
 
-export default authSlice.reducer || null;
+export default authSlice.reducer;
