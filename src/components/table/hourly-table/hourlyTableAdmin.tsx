@@ -139,13 +139,22 @@ const CustomNoResultsOverlay = () => {
     <>
       <Paper sx={{ height: "auto", width: "100%" }}>
         <DataGrid
-        className="custom-data-grid"
+        // className="custom-data-grid"
           rows={hourlyLessons}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[10, 50]}
           checkboxSelection
-          sx={{ border: 0 }}
+          sx={{
+            border: 0,
+            paddingTop: "1rem",
+            "& .MuiDataGrid-toolbarContainer": {
+              "justify-content": "flex-end"
+            },
+            // "& .MuiPickersArrowSwitcher-root": {
+            //   "direction": "ltr"
+            // }
+        }}
           localeText={localeToolbarText}
           slots={{
             toolbar: CustomToolbar,

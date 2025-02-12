@@ -112,7 +112,7 @@ export const TimingDetails = ({teachers, students, loading}: {
                 <span className={dot}></span>
                 <span>{teacher.teacher_name} : في الساعة {convert24HourToArabic(
                   teacher.from_time)}</span>
-                <span style={{marginRight: "auto"}}>( {teacher?.status === 'Missed' ? "متغيب" : "متأخر"} )</span>
+                <span style={{marginRight: "auto", whiteSpace: "nowrap"}}>( {teacher?.status === 'Missed' ? "متغيب" : "متأخر"} )</span>
               </p>
             ))}
 
@@ -130,7 +130,7 @@ export const TimingDetails = ({teachers, students, loading}: {
                 <span>{student.student_name} : في الساعة {convert24HourToArabic(
                   student.lesson__from_time)}
                   </span>
-                <span style={{marginRight: "auto"}}>( {student?.status === 'Missed' ? "متغيب" : "متأخر"} )</span>
+                <span style={{marginRight: "auto", whiteSpace: "nowrap"}}>( {student?.status === 'Missed' ? "متغيب" : "متأخر"} )</span>
               </p>
             ))}
 

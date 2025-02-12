@@ -1,110 +1,211 @@
+.MuiPickersPopper-root {
+  transform: translate(1114px, 150px) !important;
+}
+
+.MuiPickersPopper-root .MuiPickersArrowSwitcher-root {
+  direction: ltr;
+}
+
+.MuiPickersPopper-root .MuiPickersDay-dayWithMargin {
+  height: 2.8rem ;
+  border-radius: 0;
+}
+
+.MuiPickersPopper-root .MuiPickersLayout-contentWrapper {
+  max-width: 45.6rem;
+  max-height: 39.1rem;
+  margin: 1.6rem;
+}
+
+.MuiPickersPopper-root .MuiDateCalendar-root {
+  max-width: 20.8rem;
+}
+
+.MuiPickersPopper-root .MuiDayCalendar-weekContainer {
+  margin: 0.6rem 0;
+}
+
+.MuiPickersPopper-root .MuiPickersCalendarHeader-label {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.MuiPickersPopper-root .MuiPickersArrowSwitcher-leftArrowIcon,
+.MuiPickersPopper-root .MuiPickersArrowSwitcher-rightArrowIcon{
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.MuiPickersPopper-root .MuiPickersCalendarHeader-root {
+  padding: 0;
+  margin: 0;
+  justify-content: space-between;
+}
+
+.MuiPickersPopper-root .MuiPickersCalendarHeader-labelContainer {
+  margin-right: 0;
+}
+
+.MuiPickersPopper-root .MuiYearCalendar-root {
+  width: auto;
+}
+
+.MuiPickersPopper-root .MuiYearCalendar-root .MuiPickersYear-yearButton {
+  width: 6.2rem;
+  height: 2.5rem;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.MuiPickersPopper-root .MuiYearCalendar-root .MuiPickersYear-yearButton.Mui-selected {
+  border-radius: 0.5rem;
+  background-color: var(--main-color);
+  color: #fff;
+}
+
+.MuiPickersPopper-root .MuiMultiSectionDigitalClockSection-root {
+  width: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.MuiPickersPopper-root .MuiMultiSectionDigitalClockSection-item {
+  width: 6rem;
+}
+
+.MuiPickersPopper-root .MuiMultiSectionDigitalClockSection-item:first-of-type {
+  margin-top: 0;
+}
+
+.MuiPickersPopper-root .MuiMultiSectionDigitalClockSection-item.Mui-selected {
+  background-color: var(--main-color);
+  color: #fff;
+  border-radius: 0.8rem;
+}
+
+.MuiPickersPopper-root .MuiMultiSectionDigitalClockSection-root::after {
+  content: none;
+}
+
+.MuiPickersPopper-root .MuiMultiSectionDigitalClockSection-root:not(:first-of-type) {
+  border: none;
+}
+.MuiPickersPopper-root .MuiDialogActions-root,
+.MuiPickersPopper-root .MuiDivider-root {
+  display: none;
+}
+
+.custom-date-time-picker .MuiSvgIcon-root,
+.custom-date-time-picker .MuiInputBase-input-MuiOutlinedInput-input,
+.custom-date-time-picker .MuiOutlinedInput-notchedOutline,
+.custom-date-time-picker .MuiOutlinedInput-input,
+.custom-date-time-picker .MuiInputLabel-root {
+  display: none;
+}
+
+.custom-date-time-picker .MuiIconButton-root::before {
+  content: "";
+  display: inline-block;
+  width: 1.5rem;
+  height: 0.75rem;
+  background-image: url("../../../assets/calendarArrow.svg");
+  background-size: cover;
+}
 /* Calender and Time Custom Styles */
 /* Production Styles */
-.css-18r5b3s {
-  display: none !important;
-}
-.css-2qa4hw {
-  display: none !important;
-}
-.css-2qa4hw.Mui-focused {
-  display: none !important;
-}
-.css-193pdl5 {
-  border: none !important;
-}
+/*.css-18r5b3s {*/
+/*  display: none !important;*/
+/*}*/
+/*.css-2qa4hw {*/
+/*  display: none !important;*/
+/*}*/
+/*.css-2qa4hw.Mui-focused {*/
+/*  display: none !important;*/
+/*}*/
+/*.css-193pdl5 {*/
+/*  border: none !important;*/
+/*}*/
 
-.css-193pdl5 .css-5v2ak0 {
-  border: none !important;
-}
+/*.css-193pdl5 .css-5v2ak0 {*/
+/*  border: none !important;*/
+/*}*/
 
-.custom-date-time-picker .css-1oft8ii {
-  display: none !important;
-}
+/*.custom-date-time-picker .css-1oft8ii {*/
+/*  display: none !important;*/
+/*}*/
 
-.css-yxqbup {
-  visibility: visible !important;
-}
-.MuiPickersArrowSwitcher-root.css-gvoll6 {
-  direction: ltr !important;
-}
-.css-1vwesw7 {
-  max-width: 45.6rem !important;
-  max-height: 39.1rem !important;
-  margin: 1.6rem !important;
-}
-.css-sejapn.Mui-selected {
-  border-radius: 0.8rem !important;
-}
-.css-2xnwap.Mui-selected {
-  max-width: 2.8rem !important;
-  height: 2.8rem !important;
-  border-radius: 0rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.css-2xnwap:not(.Mui-selected) {
-  max-width: 2.8rem !important;
-  height: 2.8rem !important;
-  border-radius: 0rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.css-13vxgc9 {
-  width: 2.8rem !important;
-  height: 2.8rem !important;
-  border-radius: 0rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.css-1a0k08l {
-  width: 2.8rem !important;
-  height: 2.8rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.css-cy45vv {
-  max-height: 2.8rem !important;
-}
-.css-16ouyyn {
-  max-width: 20.8rem !important;
-  margin: 0 !important;
-}
-.css-8633fn {
-  font-size: 1.2rem !important;
-  font-weight: 500 !important;
-}
-.css-mdccah {
-  padding: 0 !important;
-}
-.css-1l6e05h {
-  width: 1.6rem !important;
-  height: 1.6rem !important;
-}
-.css-sejapn {
-  font-size: 1.4rem !important;
-}
-.css-1tmk1fv {
-  font-size: 1.4rem !important;
-  max-width: 6rem !important;
-}
-.css-zxk1w2 {
-  max-width: 20.8rem !important;
-}
-.css-fgne9w .MuiPickersLayout-actionBar {
-  display: none !important;
-}
-.custom-date-time-picker .css-ofr7jn {
-  display: none !important;
-}
-.css-14d4aat::before {
-  content: "";
-  display: inline-block !important;
-  width: 1.5rem !important;
-  height: 0.75rem !important;
-  background-image: url("../../../assets/calendarArrow.svg") !important;
-  background-size: cover !important;
-}
-
+/*.css-yxqbup {*/
+/*  visibility: visible !important;*/
+/*}*/
+/*.MuiPickersArrowSwitcher-root.css-gvoll6 {*/
+/*  direction: ltr !important;*/
+/*}*/
+/*.css-1vwesw7 {*/
+/*  max-width: 45.6rem !important;*/
+/*  max-height: 39.1rem !important;*/
+/*  margin: 1.6rem !important;*/
+/*}*/
+/*.css-sejapn.Mui-selected {*/
+/*  border-radius: 0.8rem !important;*/
+/*}*/
+/*.css-2xnwap.Mui-selected {*/
+/*  max-width: 2.8rem !important;*/
+/*  height: 2.8rem !important;*/
+/*  border-radius: 0rem !important;*/
+/*  margin: 0 !important;*/
+/*  padding: 0 !important;*/
+/*}*/
+/*.css-2xnwap:not(.Mui-selected) {*/
+/*  max-width: 2.8rem !important;*/
+/*  height: 2.8rem !important;*/
+/*  border-radius: 0rem !important;*/
+/*  margin: 0 !important;*/
+/*  padding: 0 !important;*/
+/*}*/
+/*.css-13vxgc9 {*/
+/*  !*width: 2.8rem !important;*!*/
+/*  !*height: 2.8rem !important;*!*/
+/*  !*border-radius: 0 !important;*!*/
+/*  !*margin: 0 !important;*!*/
+/*  !*padding: 0 !important;*!*/
+/*}*/
+/*.css-1a0k08l {*/
+/*  width: 2.8rem !important;*/
+/*  height: 2.8rem !important;*/
+/*  margin: 0 !important;*/
+/*  padding: 0 !important;*/
+/*}*/
+/*.css-cy45vv {*/
+/*  max-height: 2.8rem !important;*/
+/*}*/
+/*.css-16ouyyn {*/
+/*  max-width: 20.8rem !important;*/
+/*  margin: 0 !important;*/
+/*}*/
+/*.css-8633fn {*/
+/*  font-size: 1.2rem !important;*/
+/*  font-weight: 500 !important;*/
+/*}*/
+/*.css-mdccah {*/
+/*  padding: 0 !important;*/
+/*}*/
+/*.css-1l6e05h {*/
+/*  width: 1.6rem !important;*/
+/*  height: 1.6rem !important;*/
+/*}*/
+/*!*.css-sejapn {*!*/
+/*!*  font-size: 1.4rem !important;*!*/
+/*!*}*!*/
+/*.css-1tmk1fv {*/
+/*  font-size: 1.4rem !important;*/
+/*  max-width: 6rem !important;*/
+/*}*/
+/*.css-zxk1w2 {*/
+/*  max-width: 20.8rem !important;*/
+/*}*/
+/*.css-fgne9w .MuiPickersLayout-actionBar {*/
+/*  display: none !important;*/
+/*}*/
 /* Local Styles */
 /* .MuiOutlinedInput-root {
   border: none !important;

@@ -35,7 +35,7 @@ const CustomCalendar = ({ setDate, setTime, dispatchFunction }: CustomCalendarPr
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div dir="rtl">
+      <div>
         <DateTimePicker
           label="Controlled picker"
           value={value}

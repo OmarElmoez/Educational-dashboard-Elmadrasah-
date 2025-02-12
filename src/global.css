@@ -140,8 +140,9 @@ menu {
 
 .active {
   background-color: var(--main-color);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   color: #fff;
+  height: 3.2rem;
 }
 
 .error {
