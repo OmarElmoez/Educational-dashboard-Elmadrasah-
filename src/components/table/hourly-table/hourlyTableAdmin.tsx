@@ -94,7 +94,10 @@ const paginationModel = { page: 0, pageSize: 10 };
 
 const CustomToolbar = () => (
   <GridToolbarContainer>
-    <GridToolbarExport />
+    <GridToolbarExport   csvOptions={{
+    fileName: 'El Madrasah Dashboard',
+    utf8WithBom: true,
+  }}/>
     <GridToolbarFilterButton />
     <GridToolbarColumnsButton />
   </GridToolbarContainer>

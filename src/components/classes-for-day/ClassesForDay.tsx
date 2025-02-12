@@ -93,7 +93,9 @@ const ClassesForDay = ({ lessonsForClickedHour, isHourClicked }: {lessonsForClic
         })}
         {(lessonsForClickedHour && lessonsForClickedHour.length > 0 && isHourClicked) && lessonsForClickedHour?.map((lesson: THourLesson) => {
           return (
-            <LessonCard lesson={lesson} key={lesson.id} />
+            <div style={{display:"flex"}} key={lesson.id}>
+              <LessonCard lesson={lesson} key={lesson.id} />
+            </div>
           )
         })}
       </section>

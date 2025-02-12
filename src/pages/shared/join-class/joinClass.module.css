@@ -1,16 +1,20 @@
+.heading_button_container{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
 .attendance_box {
   margin-top: 2.5rem;
 }
 
 .student_classes {
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
 }
 
 .lesson_actions {
   display: flex;
   align-items: center;
   gap: 2.4rem;
-  margin-top: 2.5rem;
 }
 
 .lesson_actions button {

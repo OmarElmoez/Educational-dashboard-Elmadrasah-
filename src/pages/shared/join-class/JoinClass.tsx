@@ -16,7 +16,7 @@ import {useFeedback} from "@/store/context";
 import generateTabs from "@/utils/generateTabs.ts";
 import {TModalRef} from "@/types/shared.ts";
 
-const {attendance_box, student_classes, lesson_actions, lesson_status} = styles;
+const {attendance_box, student_classes, lesson_actions, lesson_status, heading_button_container} = styles;
 
 const STATUS_TEXT = {
   Attended: "تم الحضور",
@@ -127,13 +127,9 @@ const JoinClass = () => {
           </section>
 
           <section className={student_classes}>
+            <div className={heading_button_container}>
             <Heading text="حصص الطالب" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
-
-            <ProgressBar width={`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}/>
-            <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم {`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}</p>
-          </section>
-
-          <section className={lesson_actions}>
+            <section className={lesson_actions}>
             {((isTeacher && lessonData?.can_join) || (!isTeacher && lessonData?.participants[0].can_join)) &&
                 <button onClick={() => lessonHandler("start")}
                         style={{backgroundColor: lessonData?.can_join === false ? "var(--gray-color)" : "var(--main-color)"}}>
@@ -145,6 +141,10 @@ const JoinClass = () => {
                 <PhoneHangUpIcon/>
                 <span>إنهاء الدرس</span>
             </button>}
+          </section>
+          </div>
+            <ProgressBar width={`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}/>
+            <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم {`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}</p>
           </section>
         </Card>
 

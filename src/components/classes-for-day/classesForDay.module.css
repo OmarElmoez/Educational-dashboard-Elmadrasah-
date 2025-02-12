@@ -6,6 +6,11 @@
 }
 
 .lessons_cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  column-gap: 0rem;
+  row-gap: 1.6rem;
   margin-top: 2.4rem;
   max-height: 1008px;
   overflow-y: auto;

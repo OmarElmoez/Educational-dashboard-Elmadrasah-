@@ -52,7 +52,7 @@ const UploadPhoto = <T extends FieldValues>({
           )}
         </div>
         <button onClick={handleButtonClick} type="button">
-          <PressedIcon />
+          <PressedIcon width={'35px'} height={'35px'}/>
         </button>
       </div>
       <span>صورة الملف الشخصي</span>

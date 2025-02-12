@@ -277,7 +277,7 @@ menu {
 select,
 .searchDropdownInput,
 textarea {
-  padding: 1.2rem 1.6rem;
+  padding: 0.8rem 1.6rem;
   border-radius: 1rem;
   border: 1px solid #c7c7c7;
   outline: none;

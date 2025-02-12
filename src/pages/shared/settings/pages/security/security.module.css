@@ -9,7 +9,7 @@
 }
 
 .form {
-  margin-top: 3.2rem;
+  margin-top: 2.4rem;
 }
 
 .row {
@@ -39,8 +39,8 @@
 }
 
 .group input {
-  padding: 1.2rem 1.6rem;
-  border-radius: 0.4rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: 1rem;
   border: 1.5px solid #b5b7c0;
   outline: none;
   font-size: 1.6rem;
@@ -66,7 +66,7 @@
 }
 
 .content {
-  margin-block: 3.2rem;
+  margin-block: 2.4rem;
   padding: 3.2rem;
   box-shadow: 0px 4px 20px 0px #0000001A;
   border-radius: 1.6rem;

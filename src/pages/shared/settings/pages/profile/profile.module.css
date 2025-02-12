@@ -20,6 +20,9 @@
 .row input[type="tel"] {
   text-align: right;
 }
+.row input[type="text"] {
+  text-align: right;
+}
 
 .form button[type="submit"] {
   background-color: var(--main-color);
@@ -52,7 +55,7 @@ input:disabled, .disabled {
 }
 
 .content {
-  margin-block: 3.2rem;
+  margin-block: 2.4rem;
   padding: 3.2rem;
   box-shadow: 0px 4px 20px 0px #0000001A;
   border-radius: 1.6rem;

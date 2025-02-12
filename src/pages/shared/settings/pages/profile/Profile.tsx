@@ -61,7 +61,7 @@ const Profile = () => {
               className="inputField"
               id="firstName"
               {...register("first_name")}
-              disabled={user?.user_type !== 'Admin'}
+              disabled={user?.user_type !== "Admin"}
             />
           </div>
 
@@ -72,7 +72,7 @@ const Profile = () => {
               className="inputField"
               id="lastName"
               {...register("last_name")}
-              disabled={user?.user_type !== 'Admin'}
+              disabled={user?.user_type !== "Admin"}
             />
           </div>
         </section>
@@ -95,7 +95,7 @@ const Profile = () => {
               className="inputField"
               id="mobile"
               {...register("phone")}
-              disabled={user?.user_type !== 'Admin'}
+              disabled={user?.user_type !== "Admin"}
             />
           </div>
         </section>
@@ -108,24 +108,28 @@ const Profile = () => {
               className="inputField"
               id="gender"
               {...register("gender")}
+              placeholder="لا يوجد"
               disabled
             />
           </div>
           <div className="group">
             <label htmlFor="birth_date">تاريخ الميلاد</label>
             <input
-              type="date"
+              type="text"
               className="inputField"
               id="birth_date"
               {...register("birth_date")}
-              disabled={user?.user_type !== 'Admin'}
+              placeholder="لا يوجد"
+              disabled={user?.user_type !== "Admin"}
             />
           </div>
         </section>
 
-        {user?.user_type === 'Admin' && <button type="submit" disabled={loading === "pending"}>
-          {loading === "pending" ? "جاري الحفظ..." : "حفظ"}
-        </button>}
+        {user?.user_type === "Admin" && (
+          <button type="submit" disabled={loading === "pending"}>
+            {loading === "pending" ? "جاري الحفظ..." : "حفظ"}
+          </button>
+        )}
         {/* <input type="submit" value="حفظ" onClick={() => console.log('you click')} /> */}
         {loading === "failed" && (
           <p className="error" style={{ marginTop: "1rem" }}>

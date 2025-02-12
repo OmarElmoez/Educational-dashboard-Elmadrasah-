@@ -1,15 +1,15 @@
-import formatHoursAndMinutes from "@/utils/formatHoursAndMinutes.ts";
+import { useState, useEffect } from "react";
 import ClockIcon from "@/assets/clock.svg?react";
 import EgyptFlag from '@/assets/flag-egypt.svg?react';
 import EmiratesFlag from '@/assets/flag-united-arab-emirates.svg?react';
 import FileIcon from '@/assets/file-outline.svg?react';
 import { useNavigate } from "react-router-dom";
-
 import styles from './lessonCard.module.css'
 import { useAppSelector } from "@/store/hooks.ts";
 import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import { TLesson } from "@/schemas/LessonSchema.ts";
 import  STATUS_INFO  from "@/constants/lessons-status.ts";
+import convertToArabicTime from "@/utils/convertToArabicTime";
 
 const { card, status_box } = styles;
 
@@ -18,7 +18,11 @@ type TLessonCardProps<T> = {
 }
 
 const LessonCard = <T extends TLesson | THourLesson>({lesson}: TLessonCardProps<T>) => {
-
+  const [displayTime, setDisplayTime] = useState<string>();
+useEffect(() => {
+  let timeRange = `${lesson.from_time} - ${lesson.to_time}`;
+  setDisplayTime(convertToArabicTime(timeRange))
+},[lesson])
   const navigate = useNavigate();
 
   const {credintials} = useAppSelector(state => state.auth);
@@ -26,7 +30,6 @@ const LessonCard = <T extends TLesson | THourLesson>({lesson}: TLessonCardProps<
   const navigateToJoinPage = (id: number) => {
     navigate(`/${credintials?.role?.toLowerCase()}/calendar/join-class/${id}`)
   }
-
   return (
     <article key={lesson.id} className={card} onClick={() => navigateToJoinPage(lesson.id)}
              style={{backgroundColor: STATUS_INFO[lesson.status].colors.outer_bg}}>
@@ -35,7 +38,7 @@ const LessonCard = <T extends TLesson | THourLesson>({lesson}: TLessonCardProps<
 
       <div>
         <ClockIcon style={{stroke: "#93B59F"}}/>
-        <p>{formatHoursAndMinutes(lesson.from_datetime)} : {formatHoursAndMinutes(lesson.to_datetime)}</p>
+        <p>{displayTime}</p>
       </div>
 
       <div>

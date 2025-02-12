@@ -1,3 +1,7 @@
+.cardContainer{
+  display: flex;
+  column-gap: 15rem;
+}
 .personal_info {
   margin-top: 2rem;
   display: flex;
@@ -21,7 +25,7 @@ menu {
   color: #616161;
   margin-top: 2rem;
   display: grid;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 menu li {
