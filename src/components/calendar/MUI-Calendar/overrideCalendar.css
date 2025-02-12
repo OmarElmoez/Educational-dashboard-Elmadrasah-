@@ -1,7 +1,3 @@
-.MuiPickersPopper-root {
-  transform: translate(1114px, 150px) !important;
-}
-
 .MuiPickersPopper-root .MuiPickersArrowSwitcher-root {
   direction: ltr;
 }
