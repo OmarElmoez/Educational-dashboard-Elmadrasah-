@@ -151,12 +151,6 @@ const CustomNoResultsOverlay = () => {
           sx={{
             border: 0,
             paddingTop: "1rem",
-            "& .MuiDataGrid-toolbarContainer": {
-              "justify-content": "flex-end"
-            },
-            // "& .MuiPickersArrowSwitcher-root": {
-            //   "direction": "ltr"
-            // }
         }}
           localeText={localeToolbarText}
           slots={{
