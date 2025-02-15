@@ -215,4 +215,5 @@ const JoinClass = () => {
   );
 };
 
+
 export default JoinClass;
