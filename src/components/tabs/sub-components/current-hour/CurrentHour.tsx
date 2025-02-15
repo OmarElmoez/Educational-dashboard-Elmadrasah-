@@ -6,10 +6,11 @@ import {
   TTeacher
 } from "@/components/tabs/sub-components/Shared.tsx";
 import styles from './currentHour.module.css'
-import {useCallback, useContext, useEffect, useState} from "react";
+import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from "react";
 import {getLessonsStatusForCurrentHour} from "@/services/lessonsStatus.ts";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 import { TLoading } from "@/types/shared.ts";
+import { TLesson } from "@/schemas/LessonSchema.ts";
 
 const {status, count_lessons} = styles;
 
@@ -20,9 +21,14 @@ export type TLessonForCurrentHour = {
   attendance_percentage: number;
   teachers: TTeacher[];
   students: TStudent[];
+  results: TLesson[]
 }
 
-const CurrentHour = () => {
+type TCurrentHourProps = {
+  setCurrentHourLessons:  Dispatch<SetStateAction<TLesson[]>>;
+}
+
+const CurrentHour = ({setCurrentHourLessons}: TCurrentHourProps) => {
 
   const [currentHourData, setCurrentHourData] = useState<TLessonForCurrentHour>();
 
@@ -38,14 +44,16 @@ const CurrentHour = () => {
       getLessonsStatusForCurrentHour(studentId).then(res => {
         setLoading("succeeded")
         setCurrentHourData(res)
+        setCurrentHourLessons(res.results)
       })
     } else {
       getLessonsStatusForCurrentHour().then((res: TLessonForCurrentHour) => {
         setLoading("succeeded")
         setCurrentHourData(res);
+        setCurrentHourLessons(res.results)
       })
     }
-  }, [role, studentId])
+  }, [role, setCurrentHourLessons, studentId])
 
   useEffect(() => {
     sendRequestToServer()

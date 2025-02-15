@@ -6,10 +6,13 @@ import { useContext, useState } from "react";
 import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import CalendarImg from '@/assets/admin-calendar-img.svg?react'
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
+import { TLesson } from "@/schemas/LessonSchema.ts";
 
 const AdminClassesPage = () => {
 
   const [lessonsForClickedHour, setLessonsForClickedHour] = useState<THourLesson[]>([])
+
+  const [currentHourLessons, setCurrentHourLessons] = useState<TLesson[]>([])
 
   const [isHourClicked, setIsHourClicked] = useState(false);
 
@@ -24,7 +27,10 @@ const AdminClassesPage = () => {
       id: 0,
       label: "الساعة الحالية",
       content: CurrentHour,
-      handleTabClick: resetDate
+      handleTabClick: resetDate,
+      contentProps: {
+        setCurrentHourLessons
+      }
     },
     {
       id: 1,
@@ -47,7 +53,7 @@ const AdminClassesPage = () => {
       <WelcomeSection img={<CalendarImg/>} imgWidth="370" text="نأمل لك يوم عمل سعيد مع المدرسة . كوم" setIsHourClicked={setIsHourClicked} />
       <ScheduleForDay tabs={ADMIN_TABS} />
 
-      <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} isHourClicked={isHourClicked} />
+      <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} isHourClicked={isHourClicked} currentHourLessons={currentHourLessons} />
     </>
   );
 };
