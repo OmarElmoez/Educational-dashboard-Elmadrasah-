@@ -96,28 +96,13 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
             <li>
               <GraduationIcon style={{ minWidth: "24px" }} />
               <span className={teacher_details}>{person.teacher_bio}</span>
-              <span className={teacher_details}>
-                Bachelors degree, Faculty of Science, Computer Department, Minia
-                University,Masters degree, Faculty of Science,
-                Primary/intermediate/secondary grade 1 to grade 12, Emsat and
-                American
-              </span>
             </li>
           )}
 
           {!forTeacher && (
             <li>
               <OnlineClassIcon style={{ minWidth: "24px" }} />
-              <span>عدد الحصص: </span>
-              <span
-                className={teacher_details}
-                title="Bachelors degree, Faculty of Science, Computer Department,"
-              >
-                Bachelors degree, Faculty of Science, Computer Department, Minia
-                University,Masters degree, Faculty of Science,
-                Primary/intermediate/secondary grade 1 to grade 12, Emsat and
-                American
-              </span>
+              <span>عدد الحصص:  لا يوجد</span>
             </li>
           )}
 
