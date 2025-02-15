@@ -51,13 +51,7 @@ const LessonCard = <T extends TLesson | THourLesson>({
       <div>
         <EgyptFlag />
         <span>المعلم</span>
-        {/* <p>المعلم {lesson.employee_name}</p> */}
-        <span
-          className={role_title}
-          title="Test Arabic teacher full name to edit UI styles"
-        >
-        Test Arabic teacher full name to edit UI styles
-        </span>
+        <span className={role_title} title={lesson.employee_name}> {lesson.employee_name}</span>
       </div>
 
       <div>
@@ -65,22 +59,12 @@ const LessonCard = <T extends TLesson | THourLesson>({
         {"student_name" in lesson ? (
           <>
             <span>الطالب</span>
-            {/* <p>الطالب {lesson.student_name}</p> */}
-            <span className={role_title}
-             title="Test full name of student to edit UI styles"
-            >
-            Test full name of student to edit UI styles
-            </span>
+            <span className={role_title}> {lesson.student_name}</span>
           </>
         ) : (
           <>
             <span>الطالب</span>
-            {/* <p>الطالب {lesson.participants[0]?.student_name}</p> */}
-            <span className={role_title}
-            title="Test full name of student to edit UI styles"
-            >
-            Test full name of student to edit UI styles
-            </span>
+            <span className={role_title} title={lesson.participants[0]?.student_name}>{lesson.participants[0]?.student_name}</span>
           </>
         )}
       </div>

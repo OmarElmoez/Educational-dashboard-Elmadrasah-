@@ -95,7 +95,7 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
           {forTeacher && (
             <li>
               <GraduationIcon style={{ minWidth: "24px" }} />
-              <span className={teacher_details}>{person.teacher_bio}</span>
+              <span className={teacher_details} title={person.teacher_bio}>{person.teacher_bio}</span>
             </li>
           )}
 
