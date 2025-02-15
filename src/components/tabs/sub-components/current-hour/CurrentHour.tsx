@@ -69,10 +69,6 @@ const CurrentHour = () => {
 
       {role === 'Admin' && <TimingDetails students={currentHourData?.students || []} teachers={currentHourData?.teachers || []} loading={loading}/>}
 
-      {/*<TestClasses/>*/}
-
-      {/*{role === 'Admin' && <StudentSatisfaction/>}*/}
-
     </section>
   )
 }
