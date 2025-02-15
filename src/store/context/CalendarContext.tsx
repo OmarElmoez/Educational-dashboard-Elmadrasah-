@@ -56,7 +56,6 @@ const CalendarProvider = ({children}: { children: ReactNode }) => {
     setActiveId,
   }
 
-
   return (
     <CalendarContext.Provider value={ctxValue}>
       {children}
