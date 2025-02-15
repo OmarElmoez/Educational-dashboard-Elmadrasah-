@@ -2,9 +2,10 @@ import { ClassesForDay, ScheduleForDay, WelcomeSection } from "@/components";
 
 import {TTab} from "@/components/tabs/Tabs.tsx";
 import {AllHours, CurrentHour, Overview} from "@/components/tabs/sub-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import CalendarImg from '@/assets/admin-calendar-img.svg?react'
+import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 
 const AdminClassesPage = () => {
 
@@ -12,11 +13,18 @@ const AdminClassesPage = () => {
 
   const [isHourClicked, setIsHourClicked] = useState(false);
 
+  const {setClickedDate} = useContext(CalendarContext);
+
+  const resetDate = () => {
+    setClickedDate(new Date());
+  }
+
   const ADMIN_TABS: TTab[] = [
     {
       id: 0,
       label: "الساعة الحالية",
       content: CurrentHour,
+      handleTabClick: resetDate
     },
     {
       id: 1,

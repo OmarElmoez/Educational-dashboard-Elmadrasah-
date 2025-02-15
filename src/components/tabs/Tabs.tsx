@@ -1,5 +1,6 @@
 import styles from './tabs.module.css'
-import {JSX, useState, ComponentType} from "react";
+import { JSX, ComponentType, useContext } from "react";
+import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 
 const {header, header_tab, active} = styles;
 
@@ -8,18 +9,21 @@ export type TTab = {
   label: string,
   content: ComponentType<any> | (() => JSX.Element),
   contentProps?: Record<string, unknown>;
+  handleTabClick?: () => void;
 }
 
 type TTabsPros = {
   tabs: TTab[],
+  customActiveTab?: number,
 }
 
-const Tabs = ({tabs}: TTabsPros) => {
+const Tabs = ({tabs, customActiveTab}: TTabsPros) => {
 
-  const [activeId, setActiveId] = useState(0)
+  const {activeId, setActiveId} = useContext(CalendarContext);
+
 
   const renderContent = () => {
-    const activeTab = tabs[activeId];
+    const activeTab = customActiveTab ? tabs[customActiveTab - 1] : tabs[activeId];
 
     const Component = activeTab.content;
     return activeTab.contentProps
@@ -32,8 +36,11 @@ const Tabs = ({tabs}: TTabsPros) => {
       <header className={header}>
         {tabs.map((tab: TTab) => {
           return (
-            <span key={tab.id} className={`${header_tab} ${activeId === tab.id && active}`}
-                  onClick={() => setActiveId(tab.id)}>{tab.label}</span>
+            <span key={tab.id} className={`${header_tab} ${(customActiveTab ? (customActiveTab - 1) : activeId) === tab.id && active}`}
+                  onClick={() => {
+                    setActiveId(tab.id);
+                    tab.handleTabClick && tab.handleTabClick();
+                  }}>{tab.label}</span>
           )
         })}
       </header>

@@ -10,7 +10,7 @@ import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
 import actJoinLesson from "@/store/lessons/act/actJoinLesson.ts";
 import {TLesson} from "@/schemas/LessonSchema.ts";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import {actGetSpecificLessonData} from "@/services/lessons.ts";
 import {useFeedback} from "@/store/context";
 import generateTabs from "@/utils/generateTabs.ts";
@@ -152,7 +152,7 @@ const JoinClass = () => {
 
       <Heading text="تفاصيل الحصة" style={{fontSize: "3.2rem", marginTop: "4.8rem"}}/>
 
-      <Tabs tabs={generateTabs({lessonData, classId, isTeacher})}/>
+      <Tabs tabs={generateTabs({lessonData, classId, isTeacher})} customActiveTab={1}/>
     </>
   )
 }

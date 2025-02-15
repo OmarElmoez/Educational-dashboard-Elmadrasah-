@@ -9,7 +9,9 @@ type TCalendarContextType = {
   setStudentId: React.Dispatch<React.SetStateAction<number | null>>;
   role: string | undefined;
   headerTitle: string | undefined;
-  setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
+  setHeaderTitle: React.Dispatch<React.SetStateAction<string>>;
+  activeId: number;
+  setActiveId: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const CalendarContext = createContext<TCalendarContextType>({
@@ -21,11 +23,15 @@ export const CalendarContext = createContext<TCalendarContextType>({
   role: "",
   headerTitle: "",
   setHeaderTitle: () => {},
+  activeId: 0,
+  setActiveId: () => {}
 });
 
 const CalendarProvider = ({children}: { children: ReactNode }) => {
 
   const [headerTitle, setHeaderTitle] = useState('');
+
+  const [activeId, setActiveId] = useState(0)
 
   const [clickedDate, setClickedDate] = useState(new Date());
 
@@ -46,6 +52,8 @@ const CalendarProvider = ({children}: { children: ReactNode }) => {
     setStudentId,
     headerTitle,
     setHeaderTitle,
+    activeId,
+    setActiveId,
   }
 
 
