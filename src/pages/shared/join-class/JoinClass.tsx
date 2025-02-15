@@ -1,30 +1,37 @@
-import VideoCallIcon from '@/assets/videoCall.svg?react';
-import VideoCamIcon from '@/assets/videoCam.svg?react';
-import PhoneHangUpIcon from '@/assets/phoneHangUp.svg?react';
-import {Card, FlexWrapper, Heading, ProgressBar} from "@/components/UI";
+import VideoCallIcon from "@/assets/videoCall.svg?react";
+import VideoCamIcon from "@/assets/videoCam.svg?react";
+import PhoneHangUpIcon from "@/assets/phoneHangUp.svg?react";
+import { Card, FlexWrapper, Heading, ProgressBar } from "@/components/UI";
 import PersonalCard from "@/components/personal-card/PersonalCard.tsx";
-import {ReviewForm, Tabs} from "@/components";
+import { ReviewForm, Tabs } from "@/components";
 
-import styles from './joinClass.module.css'
-import {useParams} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "@/store/hooks.ts";
+import styles from "./joinClass.module.css";
+import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import actJoinLesson from "@/store/lessons/act/actJoinLesson.ts";
-import {TLesson} from "@/schemas/LessonSchema.ts";
-import { useEffect, useRef, useState } from "react";
-import {actGetSpecificLessonData} from "@/services/lessons.ts";
-import {useFeedback} from "@/store/context";
+import { TLesson } from "@/schemas/LessonSchema.ts";
+import {  useEffect, useRef, useState  } from "react";
+import { actGetSpecificLessonData } from "@/services/lessons.ts";
+import { useFeedback } from "@/store/context";
 import generateTabs from "@/utils/generateTabs.ts";
-import {TModalRef} from "@/types/shared.ts";
+import { TModalRef } from "@/types/shared.ts";
 
-const {attendance_box, student_classes, lesson_actions, lesson_status, heading_button_container} = styles;
+const {
+  attendance_box,
+  student_classes,
+  lesson_actions,
+  lesson_status,
+  heading_button_container,
+  lesson_indicator,
+} = styles;
 
 const STATUS_TEXT = {
   Attended: "تم الحضور",
   Scheduled: "لم يبدأ الدرس بعد .",
   Missed: "متغيب",
   Progressing: "جارية",
-  Cancelled: "تم الالغاء"
-}
+  Cancelled: "تم الالغاء",
+};
 
 export type TPersonInfo = {
   name: string;
@@ -35,22 +42,20 @@ export type TPersonInfo = {
   language: string | null;
   teacher_bio: string;
   student_goal: string;
-//   todo: waiting for student classes
-}
-
+  //   todo: waiting for student classes
+};
 
 const JoinClass = () => {
-
-  const {classId} = useParams();
+  const { classId } = useParams();
 
   const [lessonData, setLessonData] = useState<TLesson>();
 
   const dispatch = useAppDispatch();
 
-  const {credintials} = useAppSelector(state => state.auth)
+  const { credintials } = useAppSelector((state) => state.auth);
 
   const [person, setPerson] = useState<TPersonInfo>({
-    name: '',
+    name: "",
     subject: null,
     image: null,
     grade: "",
@@ -58,103 +63,156 @@ const JoinClass = () => {
     language: null,
     teacher_bio: "",
     student_goal: "",
-  })
+  });
 
-  const {openFeedbackModal} = useFeedback();
+  const { openFeedbackModal } = useFeedback();
 
-  const isTeacher = credintials?.role === 'Teacher';
+  const isTeacher = credintials?.role === "Teacher";
 
   useEffect(() => {
-      if (classId) {
-        actGetSpecificLessonData(classId).then((res) => {
-          setLessonData(res);
-          setPerson({
-            name: isTeacher ? res.participants[0].student_name : res.employee_name,
-            grade: res.participants[0].grade,
-            image: isTeacher ? res.participants[0].image : res.employee_image,
-            subject: res.subject,
-            country: isTeacher ? res.participants[0].country : res.employee_country,
-            language: isTeacher ? res.participants[0].student_language : res.employee_language,
-            teacher_bio: res.employee_bio,
-            student_goal: res.participants[0].objective,
-          })
-        })
-      }
-    },
-    [classId, isTeacher]);
+    if (classId) {
+      actGetSpecificLessonData(classId).then((res) => {
+        setLessonData(res);
+        setPerson({
+          name: isTeacher
+            ? res.participants[0].student_name
+            : res.employee_name,
+          grade: res.participants[0].grade,
+          image: isTeacher ? res.participants[0].image : res.employee_image,
+          subject: res.subject,
+          country: isTeacher
+            ? res.participants[0].country
+            : res.employee_country,
+          language: isTeacher
+            ? res.participants[0].student_language
+            : res.employee_language,
+          teacher_bio: res.employee_bio,
+          student_goal: res.participants[0].objective,
+        });
+      });
+    }
+  }, [classId, isTeacher]);
 
-  const lessonHandler = (status: 'start' | 'end') => {
-    dispatch(actJoinLesson({
-      attendance_link: (status === 'start' ? lessonData?.attendance_link : lessonData?.end_attendance_link) as string,
-    }))
-    .then((res) => {
-      if (typeof res.payload === 'string') {
-        openFeedbackModal("failed",
-          `${res.payload}`);
+  const lessonHandler = (status: "start" | "end") => {
+    dispatch(
+      actJoinLesson({
+        attendance_link: (status === "start"
+          ? lessonData?.attendance_link
+          : lessonData?.end_attendance_link) as string,
+      })
+    ).then((res) => {
+      if (typeof res.payload === "string") {
+        openFeedbackModal("failed", `${res.payload}`);
         return;
       }
     });
-  }
+  };
 
   const reviewRef = useRef<TModalRef>(null);
   const openReviewForm = () => {
     reviewRef.current?.open();
-  }
+  };
 
   const onEndLesson = () => {
-    lessonHandler('end')
+    lessonHandler("end");
     if (["Teacher", "Student"].includes(credintials?.role as string)) {
-      openReviewForm()
+      openReviewForm();
     }
-  }
+  };
 
   return (
     <>
-      <ReviewForm ref={reviewRef} lesson_id={lessonData?.id}/>
+      <ReviewForm ref={reviewRef} lesson_id={lessonData?.id} />
       <FlexWrapper>
-
-        <PersonalCard cardFor={isTeacher ? "student" : "teacher"} person={person}/>
-
+        <PersonalCard
+          cardFor={isTeacher ? "student" : "teacher"}
+          person={person}
+        />
         <Card>
-          <Heading text="الدرس الحالي" style={{fontSize: "2.4rem", marginTop: "0", marginBottom: "0"}}/>
-
+          <Heading
+            text="الدرس الحالي"
+            style={{ fontSize: "2rem", marginTop: "0", marginBottom: "0" }}
+          />
           <section className={attendance_box}>
-            <div style={{display: "flex", gap: "1.2rem", alignItems: "center"}}>
-              <VideoCallIcon/>
-              <Heading text="حضور الدرس" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
+            <div
+              style={{ display: "flex", gap: "1.2rem", alignItems: "center" }}
+            >
+              <VideoCallIcon />
+              <Heading
+                text="حضور الدرس"
+                style={{ fontSize: "2rem", fontWeight: "400", margin: "0" }}
+              />
             </div>
-            {lessonData?.status && <span className={lesson_status}>{STATUS_TEXT[lessonData.status]}</span>}
+            {lessonData?.status && (
+              <span className={lesson_status}>
+                {STATUS_TEXT[lessonData.status]}
+              </span>
+            )}
           </section>
-
           <section className={student_classes}>
             <div className={heading_button_container}>
-            <Heading text="حصص الطالب" style={{fontSize: "2.4rem", fontWeight: "400", margin: '0'}}/>
-            <section className={lesson_actions}>
-            {((isTeacher && lessonData?.can_join) || (!isTeacher && lessonData?.participants[0].can_join)) &&
-                <button onClick={() => lessonHandler("start")}
-                        style={{backgroundColor: lessonData?.can_join === false ? "var(--gray-color)" : "var(--main-color)"}}>
-                    <VideoCamIcon/>
+              <Heading
+                text="حصص الطالب"
+                style={{ fontSize: "2rem", fontWeight: "400", margin: "0" }}
+              />
+              <section className={lesson_actions}>
+                {((isTeacher && lessonData?.can_join) ||
+                  (!isTeacher && lessonData?.participants[0].can_join)) && (
+                  <button
+                    onClick={() => lessonHandler("start")}
+                    style={{
+                      backgroundColor:
+                        lessonData?.can_join === false
+                          ? "var(--gray-color)"
+                          : "var(--main-color)",
+                    }}
+                  >
+                    <VideoCamIcon />
                     <span>بدأ الدرس</span>
-                </button>}
+                  </button>
+                )}
 
-            {!lessonData?.can_join && <button onClick={onEndLesson}>
-                <PhoneHangUpIcon/>
-                <span>إنهاء الدرس</span>
-            </button>}
-          </section>
-          </div>
-            <ProgressBar width={`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}/>
-            <p style={{textAlign: 'left', marginTop: "1.6rem", color: "var(--main-color)"}}>أتم {`${lessonData?.participants[0].remaining_classes_percentage ?? 0}%`}</p>
+                {!lessonData?.can_join && (
+                  <button onClick={onEndLesson}>
+                    <PhoneHangUpIcon />
+                    <span>إنهاء الدرس</span>
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className={lesson_indicator}>
+              <div style={{width:'90%'}}>
+            <ProgressBar
+            style={{marginTop:'0rem'}}
+              width={`${
+                lessonData?.participants[0].remaining_classes_percentage ?? 0
+                }%`}
+                />
+                </div>
+            <p
+              style={{
+                textAlign: "left",
+                color: "var(--main-color)",
+              }}
+              >
+              أتم{" "}
+              {`${
+                lessonData?.participants[0].remaining_classes_percentage ?? 0
+                }%`}
+            </p>
+                </div>
           </section>
         </Card>
-
       </FlexWrapper>
 
-      <Heading text="تفاصيل الحصة" style={{fontSize: "3.2rem", marginTop: "4.8rem"}}/>
+      <Heading
+        text="تفاصيل الحصة"
+        style={{ fontSize: "3.2rem", marginTop: "4.8rem" }}
+      />
 
-      <Tabs tabs={generateTabs({lessonData, classId, isTeacher})} customActiveTab={1}/>
+      <Tabs tabs={generateTabs({ lessonData, classId, isTeacher })} customActiveTab={1} />
     </>
-  )
-}
+  );
+};
 
-export default JoinClass
+export default JoinClass;

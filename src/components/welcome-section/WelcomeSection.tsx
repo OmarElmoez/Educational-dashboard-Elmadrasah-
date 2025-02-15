@@ -24,14 +24,12 @@ const WelcomeSection = ({img, text, imgWidth, setIsHourClicked}: TWelcomeSection
           <h1 className={welcome_section__title}>أهلاً بك, يا {user?.first_name}</h1>
           <p className={welcome_section__desc}>{text}</p>
         </div>
-        <div className={welcome_section__img} style={{width:`${imgWidth}px`}}>
+        <div className={welcome_section__img} style={{width:`${imgWidth}px`, height:'250px'}}>
           {img}
         </div>
       </section>
-
       {user?.user_type === 'Admin' && <Calendar setIsHourClicked={setIsHourClicked} /> }
       {user?.user_type !== 'Admin' && <Calendar /> }
-
     </section>
   )
 }

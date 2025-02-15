@@ -1,5 +1,4 @@
 import { Card, Heading, ImgBox } from "@/components/UI";
-
 import ImgPlaceholder from "@/assets/person-placeholder.svg?react";
 import GraduationIcon from "@/assets/Graduation_ hat.svg?react";
 import LanguageIcon from "@/assets/Language.svg?react";
@@ -7,11 +6,18 @@ import EgyptFlag from "@/assets/big-flag-egypt.svg?react";
 import EmiratesFlag from "@/assets/flag-united-arab-emirates.svg?react";
 import OnlineClassIcon from "@/assets/onlineClass.svg?react";
 import Stars from "@/assets/stars.svg?react";
-
 import styles from "./personalCard.module.css";
 import { TPersonInfo } from "@/pages/shared/join-class/JoinClass.tsx";
 
-const { personal_info, text_box, rate_box, goalsAndSubjects, cardContainer } = styles;
+const {
+  personal_info,
+  text_box,
+  rate_box,
+  goalsAndSubjects,
+  cardContainer,
+  teacher_details,
+  stu_goals,
+} = styles;
 
 type TPersonalCardProps = {
   cardFor: "student" | "teacher";
@@ -19,101 +25,119 @@ type TPersonalCardProps = {
 };
 
 const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
+  console.log({person})
   const forTeacher = cardFor === "teacher";
   return (
     <Card>
       <Heading
         text={forTeacher ? "تفاصيل المعلم" : "تفاصيل الطالب"}
-        style={{ fontSize: "2.4rem", margin: "0" }}
+        style={{ fontSize: "2rem", margin: "0", fontWeight:"500" }}
       />
       <div className={cardContainer}>
-      <div>
-        <section className={personal_info}>
-          <ImgBox size="56px">
-            {person.image ? (
-              <img src={person.image} alt="user image" />
-            ) : (
-              <ImgPlaceholder />
-            )}
-          </ImgBox>
-
-          <div className={text_box}>
-            <h4>{person?.name}</h4>
-            <p>
-              {forTeacher
-                ? `أستاذ مادة ${person.subject}`
-                : `طالب بالصف ${person.grade}`}
-            </p>
-          </div>
-        </section>
-
-        {forTeacher && (
-          <section className={rate_box}>
-            <span>التقييم</span>
-            <Stars />
-          </section>
-        )}
-
-        {!forTeacher && (
-          <section className={goalsAndSubjects}>
-            <div>
-              <Heading
-                text="المواد :"
-                style={{ fontSize: "2rem", margin: "0" }}
-              />
-              {person.subject ? (
-                <span style={{ color: "#616161" }}>{person.subject}</span>
+        <div>
+          <section className={personal_info}>
+            <ImgBox size="56px">
+              {person.image ? (
+                <img src={person.image} alt="user image"  style={{minWidth:"56px"}} />
               ) : (
-                <span style={{ color: "#616161" }}>لا يوجد</span>
+                <ImgPlaceholder style={{minWidth:"56px"}} />
               )}
-            </div>
+            </ImgBox>
 
-            <div>
-              <Heading
-                text="هدف الطالب :"
-                style={{ fontSize: "2rem", margin: "0" }}
-              />
-              {person.student_goal ? (
-                <span style={{ color: "#616161" }}>{person.student_goal}</span>
-              ) : (
-                <span style={{ color: "#616161" }}>لا يوجد</span>
-              )}
+            <div className={text_box}>
+              <h4 title={person?.name}>{person?.name}</h4>
+              <p>
+                {forTeacher
+                  ? `أستاذ مادة ${person.subject}`
+                  : `طالب بالصف ${person.grade?person.grade:"لا يوجد"}`}
+              </p>
             </div>
           </section>
-        )}
-      </div>
-      <menu>
-        {forTeacher && (
+
+          {forTeacher && (
+            <section className={rate_box}>
+              <span>التقييم</span>
+              <Stars />
+            </section>
+          )}
+
+          {!forTeacher && (
+            <section className={goalsAndSubjects}>
+              <div>
+                <Heading
+                  text="المواد :"
+                  style={{ fontSize: "1.6rem", margin: "0" }}
+                />
+                {person.subject ? (
+                  <span style={{ color: "#616161" }}>{person.subject}</span>
+                ) : (
+                  <span style={{ color: "#616161" }}>لا يوجد</span>
+                )}
+              </div>
+
+              <div>
+                <Heading
+                  text="هدف الطالب :"
+                  style={{ fontSize: "1.6rem", margin: "0" }}
+                />
+                {person.student_goal ? (
+                  <span className={stu_goals} title={person.student_goal}>
+                    {person.student_goal}
+                  </span>
+                ) : (
+                  <span className={stu_goals}>لا يوجد</span>
+                )}
+              </div>
+            </section>
+          )}
+        </div>
+        <menu>
+          {forTeacher && (
+            <li>
+              <GraduationIcon style={{ minWidth: "24px" }} />
+              <span className={teacher_details}>{person.teacher_bio}</span>
+              <span className={teacher_details}>
+                Bachelors degree, Faculty of Science, Computer Department, Minia
+                University,Masters degree, Faculty of Science,
+                Primary/intermediate/secondary grade 1 to grade 12, Emsat and
+                American
+              </span>
+            </li>
+          )}
+
+          {!forTeacher && (
+            <li>
+              <OnlineClassIcon style={{ minWidth: "24px" }} />
+              <span>عدد الحصص: </span>
+              <span
+                className={teacher_details}
+                title="Bachelors degree, Faculty of Science, Computer Department,"
+              >
+                Bachelors degree, Faculty of Science, Computer Department, Minia
+                University,Masters degree, Faculty of Science,
+                Primary/intermediate/secondary grade 1 to grade 12, Emsat and
+                American
+              </span>
+            </li>
+          )}
+
           <li>
-            <GraduationIcon />
-            <span>{person.teacher_bio}</span>
+            <LanguageIcon />
+            <span>
+              اللغة :{" "}
+              {person.language
+                ? person.language === "ar"
+                  ? "العربية"
+                  : "الانجليزية"
+                : "غير محددة"}
+            </span>
           </li>
-        )}
 
-        {!forTeacher && (
           <li>
-            <OnlineClassIcon />
-            <span>عدد الحصص: </span>
+            {person.country === "Egypt" ? <EgyptFlag /> : <EmiratesFlag />}
+            <span>الدولة: {person.country}</span>
           </li>
-        )}
-
-        <li>
-          <LanguageIcon />
-          <span>
-            اللغة :{" "}
-            {person.language
-              ? person.language === "ar"
-                ? "العربية"
-                : "الانجليزية"
-              : "غير محددة"}
-          </span>
-        </li>
-
-        <li>
-          {person.country === "Egypt" ? <EgyptFlag /> : <EmiratesFlag />}
-          <span>الدولة: {person.country}</span>
-        </li>
-      </menu>
+        </menu>
       </div>
     </Card>
   );

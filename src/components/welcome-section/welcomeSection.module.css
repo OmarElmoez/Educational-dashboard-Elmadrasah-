@@ -16,12 +16,12 @@
 .welcome_section__title {
   color: var(--secondary-color);
   font-weight: 700;
-  font-size: 4rem;
+  font-size: 2.8rem;
 }
 
 .welcome_section__desc {
   margin-top: 1.6rem;
-  font-size: 2.4rem;
+  font-size: 2rem;
 }
 
 .welcome_section__img {

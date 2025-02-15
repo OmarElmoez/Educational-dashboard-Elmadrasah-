@@ -1,5 +1,5 @@
 .calendar_container {
-  padding: 2.4rem 2.6rem;
+  padding: 2rem 2rem;
   background-color: #F8F8F8CC;
   border-radius: 1rem;
   border: 1px solid #C6CAC81A;
@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: #fff;
-  padding: 0.8rem 1.4rem;
+  padding: 0.8rem 0.8rem;
   border-radius: 0.5rem;
 }
 
@@ -42,7 +42,7 @@
   grid-template-columns: repeat(7, 1fr);
   place-items: center;
   color: var(--secondary-color);
-  margin-top: 3rem;
+  margin-top: 2.4rem;
   font-size: 1.2rem;
 }
 
@@ -50,7 +50,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   place-items: center;
-  margin-top: 2rem;
+  margin-top: 1.6rem;
 }
 
 .days_wrapper > div {
@@ -58,8 +58,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4rem;
-  height: 4rem;
+  width: 3.2rem;
+  height: 3.2rem;
   cursor: pointer;
   font-size: 1.2rem;
 }

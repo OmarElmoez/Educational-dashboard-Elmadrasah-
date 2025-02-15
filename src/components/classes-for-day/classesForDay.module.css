@@ -8,14 +8,14 @@
 .lessons_cards {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  /* justify-content: space-between; */
   column-gap: 0rem;
   row-gap: 1.6rem;
   margin-top: 2.4rem;
   max-height: 1008px;
   overflow-y: auto;
-  padding-left: 1rem;
   overscroll-behavior: contain;
+  gap:2.2rem;
 }
 
 .card {

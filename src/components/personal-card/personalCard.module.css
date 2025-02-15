@@ -1,7 +1,8 @@
 .cardContainer{
   display: flex;
-  column-gap: 15rem;
+  justify-content: space-between;
 }
+
 .personal_info {
   margin-top: 2rem;
   display: flex;
@@ -11,13 +12,17 @@
 
 .text_box h4 {
   font-weight: 500;
-  font-size: 2rem;
+  font-size: 1.6rem;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 25rem;
   color: var(--secondary-color);
 }
 
 .text_box p {
   margin-top: 1.2rem;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: #ACACAC;
 }
 
@@ -57,4 +62,18 @@ menu li {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+}
+.teacher_details {
+  width:15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: ltr;
+}
+.stu_goals{
+  color: #616161;
+  width:20rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
