@@ -18,6 +18,7 @@ import notifications from "./notifications/NotificationsSlice";
 import location from "./location/LocationSlice";
 import formSubjects from "./form-subjects/FormSubjectsSlice";
 import table from "./table/TableSlice";
+import tabs from "./tabs/TabsSlice";
 
 const reviewQuestionsPersistConfig = {
   key: 'reviewQuestions',
@@ -49,6 +50,12 @@ const locationPersistConfig = {
   whitelist: ["countries"],
 }
 
+const tabsPersistConfig = {
+  key: 'tabs',
+  storage,
+  whitelist: ["allHoursData", "currentHourData"],
+}
+
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, auth),
   lessons: persistReducer(lessonsPersistConfig, lessons),
@@ -58,6 +65,7 @@ const rootReducer = combineReducers({
   location: persistReducer(locationPersistConfig, location),
   formSubjects,
   table,
+  tabs: persistReducer(tabsPersistConfig, tabs),
 })
 
 // const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

@@ -2,63 +2,48 @@ import {ProgressBar, StatusBullet} from "@/components/UI";
 import {
   TabHeader,
   TimingDetails,
-  TStudent,
-  TTeacher
 } from "@/components/tabs/sub-components/Shared.tsx";
 import styles from './currentHour.module.css'
-import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from "react";
-import {getLessonsStatusForCurrentHour} from "@/services/lessonsStatus.ts";
+import { useCallback, useContext, useEffect } from "react";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
-import { TLoading } from "@/types/shared.ts";
-import { TLesson } from "@/schemas/LessonSchema.ts";
+import { actGetCurrentHourData } from "@/store/tabs/TabsSlice.ts";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 
 const {status, count_lessons} = styles;
 
-export type TLessonForCurrentHour = {
-  lesson_count: number;
-  attended_count: number;
-  not_attended_count: number;
-  attendance_percentage: number;
-  teachers: TTeacher[];
-  students: TStudent[];
-  results: TLesson[]
-}
 
-type TCurrentHourProps = {
-  setCurrentHourLessons:  Dispatch<SetStateAction<TLesson[]>>;
-}
-
-const CurrentHour = ({setCurrentHourLessons}: TCurrentHourProps) => {
-
-  const [currentHourData, setCurrentHourData] = useState<TLessonForCurrentHour>();
+const CurrentHour = () => {
+  
+  const {currentHourData, loading} = useAppSelector(state => state.tabs);
+  
+  const dispatch = useAppDispatch();
 
   const {role, studentId} = useContext(CalendarContext)
-
-  const [loading, setLoading] = useState<TLoading>("idle")
 
   /* todo: there is a problem, the else block is executed first then if block. that's because studentId at first render is null (see the Calendar Context) */
 
   const sendRequestToServer = useCallback(() => {
-    setLoading("pending")
     if (role === 'Family' && studentId) {
-      getLessonsStatusForCurrentHour(studentId).then(res => {
-        setLoading("succeeded")
-        setCurrentHourData(res)
-        setCurrentHourLessons(res.results)
-      })
+      dispatch(actGetCurrentHourData({studentId}))
     } else {
-      getLessonsStatusForCurrentHour().then((res: TLessonForCurrentHour) => {
-        setLoading("succeeded")
-        setCurrentHourData(res);
-        setCurrentHourLessons(res.results)
-      })
+      dispatch(actGetCurrentHourData({}))
     }
-  }, [role, setCurrentHourLessons, studentId])
+  }, [dispatch, role, studentId])
 
   useEffect(() => {
-    sendRequestToServer()
-  }, [sendRequestToServer])
+    if (Object.keys(currentHourData.results).length === 0 ) {
+      sendRequestToServer()
+    }
 
+    const interval = setInterval(() => {
+      sendRequestToServer()
+
+      // One hour in milliseconds: 3600000
+    }, 3600000)
+
+    return () => clearInterval(interval)
+  }, [currentHourData.results, sendRequestToServer])
+  
   return (
     <section>
       <TabHeader text="الحضور للساعة الحالية" onClick={sendRequestToServer}/>

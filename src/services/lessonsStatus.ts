@@ -1,8 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance.ts";
-import {TLessonsForEachHour} from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
 import {TOverview} from "@/components/tabs/sub-components/overview/Overview.tsx";
-import {TLessonForCurrentHour} from "@/components/tabs/sub-components/current-hour/CurrentHour.tsx";
+import { TLessonForCurrentHour, TLessonsForEachHour } from "@/store/tabs/TabsSlice.ts";
 
 export const getLessonsStatusForEachHour = async ({studentId, day}: {studentId?: number, day?: string}): Promise<TLessonsForEachHour> => {
   try {

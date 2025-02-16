@@ -31,3 +31,7 @@ vi.mock('@/store/form-subjects/FormSubjectsSlice', () => ({
 vi.mock('@/store/table/TableSlice', () => ({
   default: (state = {}) => state,
 }));
+
+vi.mock('@/store/tabs/TabsSlice', () => ({
+  default: (state = {}) => state,
+}));

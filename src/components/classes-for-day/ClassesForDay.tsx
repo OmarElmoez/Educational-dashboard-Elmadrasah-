@@ -7,22 +7,23 @@ import { TLesson } from "@/schemas/LessonSchema.ts";
 import { LessonCard, LoadingIndicator } from "@/components";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import actGetLessonsByMonth from "@/store/lessons/act/actGetLessonsByMonth.ts";
-import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
+// import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import { format } from "date-fns";
 import { ar } from 'date-fns/locale';
 import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
+import { THourLesson } from "@/store/tabs/TabsSlice.ts";
 
 const {title, lessons_cards, kids_names} = styles;
 
 type TChild = { id: number, first_name: string, last_name: string }
 
-const ClassesForDay = ({lessonsForClickedHour, isHourClicked, currentHourLessons}: {
+const ClassesForDay = ({lessonsForClickedHour, isHourClicked}: {
   lessonsForClickedHour?: THourLesson[],
   isHourClicked?: boolean,
-  currentHourLessons?: TLesson[]
 }) => {
 
   const {Today_lessons, Month_lessons, loading} = useAppSelector(state => state.lessons);
+  const {currentHourData} = useAppSelector(state => state.tabs)
 
   const dispatch = useAppDispatch();
 
@@ -88,14 +89,14 @@ const ClassesForDay = ({lessonsForClickedHour, isHourClicked, currentHourLessons
         {loading === 'pending' && <LoadingIndicator/>}
         {((credintials?.role === "Admin" ? Today_lessons.length === 0 : filteredLessons.length === 0) && !isHourClicked && loading !== "pending") &&
             <p className="error">ليس لديك حصص اليوم !</p>}
-        {((credintials?.role === "Admin" && currentHourLessons && currentHourLessons.length === 0 && activeId === 0) && !isHourClicked && loading !== "pending") &&
+        {((credintials?.role === "Admin" && currentHourData.results.length === 0 && activeId === 0) && !isHourClicked && loading !== "pending") &&
             <p className="error">ليس لديك حصص هذه الساعة !</p>}
         {credintials?.role !== "Admin" && (filteredLessons.length > 0) && filteredLessons.map((lesson: TLesson) => {
           return (
             <LessonCard lesson={lesson} key={lesson.id}/>
           )
         })}
-        {credintials?.role === "Admin" && ((Today_lessons.length > 0) && !isHourClicked && loading !== 'pending') && ((activeId === 0 && currentHourLessons) ? currentHourLessons : Today_lessons).map(
+        {credintials?.role === "Admin" && ((Today_lessons.length > 0) && !isHourClicked && loading !== 'pending') && ((activeId === 0 ) ? currentHourData.results : Today_lessons).map(
           (lesson: TLesson) => {
             return (
               <LessonCard lesson={lesson} key={lesson.id}/>

@@ -1,58 +1,19 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { TabHeader } from "@/components/tabs/sub-components/Shared.tsx";
 import { ProgressBar, StatusBullet } from "@/components/UI";
 import styles from "./allHours.module.css";
 import convertToArabicTime from "@/utils/convertToArabicTime.ts";
 import { useCallback, useContext, useEffect } from "react";
-import { getLessonsStatusForEachHour } from "@/services/lessonsStatus.ts";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import ClickIcon from "@/assets/click.svg?react";
 import { useNavigate } from "react-router-dom";
 import { LoadingIndicator } from "@/components";
-import { TLoading } from "@/types/shared.ts";
 import { format } from "date-fns";
+import { actGetAllHoursData, THourLesson, TimeSlotInfo } from "@/store/tabs/TabsSlice.ts";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 
 const { status_wrapper, count_lessons, all_hours_info, progress, title } =
   styles;
-
-export type TimeSlotInfo = {
-  lesson_count: number;
-  not_attended_student: number;
-  not_attended_teacher: number;
-  late_student_count: number;
-  late_teacher_count: number;
-  attendance_percentage: number;
-  attendance: number;
-  scheduled_students:number;
-  cancelled_teachers:number;
-  lessons: THourLesson[];
-};
-
-type HourlyCounts = {
-  [timeSlot: string]: TimeSlotInfo;
-};
-
-export type THourLesson = {
-  start_time_student: null | string;
-  student_name: string;
-  start_time_employee: null | string;
-  spaces: null | string;
-  status: "Scheduled" | "Attended" | "Missed" | "Progressing" | "Cancelled";
-  employee_name: string;
-  from_time: string;
-  to_time: string;
-  from_date: string;
-  name: string;
-  from_datetime: string;
-  to_datetime: string;
-  id: number;
-};
-
-// Define the main type
-export type TLessonsForEachHour = {
-  total_lessons_today: number;
-  hourly_counts: HourlyCounts;
-};
 
 const AllHours = ({
   setLessonsForClickedHour,
@@ -62,36 +23,28 @@ const AllHours = ({
   setIsHourClicked: Dispatch<SetStateAction<boolean>>;
 }) => {
   const navigate = useNavigate();
-  const [allHoursLessonsData, setAllHoursLessonsData] =
-    useState<TLessonsForEachHour>();
+
+  const {loading, allHoursData} = useAppSelector(state => state.tabs);
+  
+  const dispatch = useAppDispatch();
 
   const { role, studentId, clickedDate } = useContext(CalendarContext);
 
-  const [loading, setLoading] = useState<TLoading>("idle");
-
   const sendRequestToServer = useCallback(() => {
-    setLoading("pending");
     if (role === "Family" && studentId) {
-      getLessonsStatusForEachHour({ studentId }).then((res) => {
-        setLoading("succeeded");
-        setAllHoursLessonsData(res);
-      });
+      dispatch(actGetAllHoursData({studentId}))
       return;
     }
 
     const formattedDate = format(clickedDate, "yyyy-MM-dd");
-
-    getLessonsStatusForEachHour({ day: formattedDate }).then(
-      (res: TLessonsForEachHour) => {
-        setLoading("succeeded");
-        setAllHoursLessonsData(res);
-      }
-    );
-  }, [clickedDate, role, studentId]);
+    dispatch(actGetAllHoursData({ day: formattedDate }))
+  }, [clickedDate, dispatch, role, studentId]);
 
   useEffect(() => {
-    sendRequestToServer();
-  }, [sendRequestToServer]);
+    if (Object.keys(allHoursData.hourly_counts).length === 0) {
+      sendRequestToServer();
+    }
+  }, [allHoursData.hourly_counts, sendRequestToServer]);
 
   // Navigate To All Hourly Lessons Table
   const navigateToHourlyTable = (data: TimeSlotInfo) => {
@@ -143,13 +96,13 @@ const AllHours = ({
         </div>
       </TabHeader>
       <p className={count_lessons}>
-        الحصص الجارية ( {allHoursLessonsData?.total_lessons_today} حصص )
+        الحصص الجارية ( {allHoursData?.total_lessons_today} حصص )
       </p>
       {loading === "pending" && <LoadingIndicator />}
       {loading === "succeeded" &&
         <section className={all_hours_info}>
-          {allHoursLessonsData &&
-            Object.entries(allHoursLessonsData.hourly_counts).map(
+          {allHoursData &&
+            Object.entries(allHoursData.hourly_counts).map(
               ([key, value]) => {
                 return (
                   <article key={key}>

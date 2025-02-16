@@ -3,18 +3,18 @@ import { ClassesForDay, ScheduleForDay, WelcomeSection } from "@/components";
 import {TTab} from "@/components/tabs/Tabs.tsx";
 import {AllHours, CurrentHour, Overview} from "@/components/tabs/sub-components";
 import { useContext, useState } from "react";
-import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import CalendarImg from '@/assets/admin-calendar-img.svg?react'
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
-import { TLesson } from "@/schemas/LessonSchema.ts";
+// import { TLesson } from "@/schemas/LessonSchema.ts";
 import { useAppDispatch } from "@/store/hooks.ts";
 import { resetTodayLessons } from "@/store/lessons/LessonsSlice.ts";
+import { clearAllHoursData, THourLesson } from "@/store/tabs/TabsSlice.ts";
 
 const AdminClassesPage = () => {
 
   const [lessonsForClickedHour, setLessonsForClickedHour] = useState<THourLesson[]>([])
 
-  const [currentHourLessons, setCurrentHourLessons] = useState<TLesson[]>([])
+  // const [currentHourLessons, setCurrentHourLessons] = useState<TLesson[]>([])
 
   const dispatch = useAppDispatch();
 
@@ -24,7 +24,8 @@ const AdminClassesPage = () => {
 
   const resetDateAndLessons = () => {
     setClickedDate(new Date());
-    dispatch(resetTodayLessons())
+    dispatch(resetTodayLessons());
+    dispatch(clearAllHoursData());
   }
 
   const ADMIN_TABS: TTab[] = [
@@ -33,9 +34,6 @@ const AdminClassesPage = () => {
       label: "الساعة الحالية",
       content: CurrentHour,
       handleTabClick: resetDateAndLessons,
-      contentProps: {
-        setCurrentHourLessons
-      }
     },
     {
       id: 1,
@@ -58,7 +56,7 @@ const AdminClassesPage = () => {
       <WelcomeSection img={<CalendarImg/>} imgWidth="370" text="نأمل لك يوم عمل سعيد مع المدرسة . كوم" setIsHourClicked={setIsHourClicked} />
       <ScheduleForDay tabs={ADMIN_TABS} />
 
-      <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} isHourClicked={isHourClicked} currentHourLessons={currentHourLessons} />
+      <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} isHourClicked={isHourClicked} />
     </>
   );
 };

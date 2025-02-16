@@ -6,11 +6,9 @@ import styles from "./HourlyTable.module.css";
 import HourlyTableTimeIcon from "@/assets/hourlyTableTimeIcon.svg?react";
 import { getLessonsStatusForEachHour } from "@/services/lessonsStatus.ts";
 import { Dayjs } from "dayjs";
-import { TLessonsForEachHour } from "@/components/tabs/sub-components/all-hours/AllHours";
-import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours";
-import { TimeSlotInfo } from "@/components/tabs/sub-components/all-hours/AllHours";
 import { useLocation } from "react-router-dom";
 import convertToArabicTime from "@/utils/convertToArabicTime.ts";
+import { THourLesson, TimeSlotInfo, TLessonsForEachHour } from "@/store/tabs/TabsSlice.ts";
 const { title, status_wrapper } = styles;
 const defaultTimeSlotInfo: TimeSlotInfo = {
   lesson_count: 0,

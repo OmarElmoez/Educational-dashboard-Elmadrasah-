@@ -3,8 +3,6 @@ import { TSubLink } from "@/components/main-sidebar/sub-nav/SubNav.tsx";
 
 type TLoading = "idle" | "pending" | "succeeded" | "failed";
 
-type TFirstDayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
 type TUserRole = "Admin" | "Student" | "Teacher" | "Family" | undefined;
 
 type TLessonStatus =
@@ -40,7 +38,6 @@ type TTax_Treatment = "Tax Exclusive" | "Tax Inclusive" | "Tax Exempt";
 
 export type {
   TLoading,
-  TFirstDayOfWeek,
   TUserRole,
   TPath,
   TLessonStatus,

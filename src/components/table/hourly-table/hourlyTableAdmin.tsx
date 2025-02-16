@@ -10,8 +10,8 @@ import {
 import Paper from "@mui/material/Paper";
 import convertAppTime from "@/utils/convertAppTime.ts";
 import { Typography, Box } from '@mui/material';
-import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours";
 import "./overrideHourlyTable.css";
+import { THourLesson } from "@/store/tabs/TabsSlice.ts";
 
 const columns: GridColDef[] = [
   {

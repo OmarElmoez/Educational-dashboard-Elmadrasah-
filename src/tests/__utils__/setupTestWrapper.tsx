@@ -6,6 +6,7 @@ import notifications from "@/store/notifications/NotificationsSlice.ts";
 import location from "@/store/location/LocationSlice.ts";
 import formSubjects from "@/store/form-subjects/FormSubjectsSlice.ts";
 import table from "@/store/table/TableSlice.ts";
+import tabs from "@/store/tabs/TabsSlice.ts"
 
 import { RootState } from "@/store";
 import { configureStore } from "@reduxjs/toolkit";
@@ -65,6 +66,10 @@ export const setupTestWrapper = (
     },
     table: {
       ...table(undefined, { type: 'INIT' }),
+      ...defaultPersist
+    },
+    tabs: {
+      ...tabs(undefined, { type: 'INIT' }),
       ...defaultPersist
     }
   };
