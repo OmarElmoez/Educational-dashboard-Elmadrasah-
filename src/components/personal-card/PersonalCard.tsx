@@ -25,7 +25,6 @@ type TPersonalCardProps = {
 };
 
 const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
-  console.log({person})
   const forTeacher = cardFor === "teacher";
   return (
     <Card>

@@ -18,6 +18,7 @@
   text-overflow: ellipsis;
   width: 25rem;
   color: var(--secondary-color);
+  direction: ltr;
 }
 
 .text_box p {
