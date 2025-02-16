@@ -12,7 +12,7 @@ import actFCMLogout from "@/store/FCM/act/actFCMLogout";
 import SubNav from "@/components/main-sidebar/sub-nav/SubNav.tsx";
 import SIDEBAR_DATA from "../../constants/sidebar-data.tsx";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
-import { resetMonthLessons } from "@/store/lessons/LessonsSlice.ts";
+import { resetMonthLessons, resetTodayLessons } from "@/store/lessons/LessonsSlice.ts";
 
 type TSidebarProps = {
   data: TPath[];
@@ -50,6 +50,7 @@ const MainSidebar = ({data}: TSidebarProps) => {
   const signoutHandler = () => {
     dispatch(logout());
     dispatch(resetMonthLessons())
+    dispatch(resetTodayLessons())
     if (fcmToken) {
       dispatch(
         actFCMLogout({token: credintials?.token, FCM_token: fcmToken})

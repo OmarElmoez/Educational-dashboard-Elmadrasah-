@@ -59,12 +59,12 @@ const ClassesForDay = ({lessonsForClickedHour, isHourClicked, currentHourLessons
       dispatch(actGetLessonsByMonth({date: `${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
       return;
     }
-    if (credintials?.role === "Admin") {
+    if (credintials?.role === "Admin" && Today_lessons.length === 0) {
       dispatch(actGetLessonsByDay(
         {day: `${clickedDate.getDate()}-${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
       return;
     }
-  }, [Month_lessons.length, clickedDate, credintials?.role, dispatch])
+  }, [Month_lessons.length, Today_lessons.length, clickedDate, credintials?.role, dispatch])
 
   return (
     <>

@@ -6,6 +6,7 @@ import styles from './calendar.module.css'
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 import {useAppDispatch} from "@/store/hooks.ts";
 import actGetLessonsByMonth from "@/store/lessons/act/actGetLessonsByMonth.ts";
+import { resetTodayLessons } from "@/store/lessons/LessonsSlice.ts";
 
 const {calendar_container, calendar_btn, months_wrapper, months_names, weekAbbreviations, days_wrapper} = styles;
 
@@ -147,6 +148,7 @@ const Calendar = ({setIsHourClicked}: {setIsHourClicked?: Dispatch<SetStateActio
               }}
               onClick={() => {
                 setClickedDate(day);
+                dispatch(resetTodayLessons())
                 setIsHourClicked && setIsHourClicked(false);
                 setActiveId(2)
               }}

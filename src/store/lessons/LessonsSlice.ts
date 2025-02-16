@@ -75,6 +75,9 @@ const lessonsSlice = createSlice({
   reducers: {
     resetMonthLessons: (state) => {
       state.Month_lessons = [];
+    },
+    resetTodayLessons: (state) => {
+      state.Today_lessons = [];
     }
   },
   extraReducers: (builder) => {
@@ -131,6 +134,6 @@ const lessonsSlice = createSlice({
   },
 });
 
-export const { resetMonthLessons } = lessonsSlice.actions;
+export const { resetMonthLessons, resetTodayLessons } = lessonsSlice.actions;
 
 export default lessonsSlice.reducer;

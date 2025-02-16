@@ -7,6 +7,8 @@ import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours
 import CalendarImg from '@/assets/admin-calendar-img.svg?react'
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import { TLesson } from "@/schemas/LessonSchema.ts";
+import { useAppDispatch } from "@/store/hooks.ts";
+import { resetTodayLessons } from "@/store/lessons/LessonsSlice.ts";
 
 const AdminClassesPage = () => {
 
@@ -14,12 +16,15 @@ const AdminClassesPage = () => {
 
   const [currentHourLessons, setCurrentHourLessons] = useState<TLesson[]>([])
 
+  const dispatch = useAppDispatch();
+
   const [isHourClicked, setIsHourClicked] = useState(false);
 
   const {setClickedDate} = useContext(CalendarContext);
 
-  const resetDate = () => {
+  const resetDateAndLessons = () => {
     setClickedDate(new Date());
+    dispatch(resetTodayLessons())
   }
 
   const ADMIN_TABS: TTab[] = [
@@ -27,7 +32,7 @@ const AdminClassesPage = () => {
       id: 0,
       label: "الساعة الحالية",
       content: CurrentHour,
-      handleTabClick: resetDate,
+      handleTabClick: resetDateAndLessons,
       contentProps: {
         setCurrentHourLessons
       }
