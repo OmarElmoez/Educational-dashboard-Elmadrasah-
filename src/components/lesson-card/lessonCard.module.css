@@ -1,5 +1,5 @@
 .card {
-  width: 43.1rem;
+  width: calc((100% / 3) - 2.2rem);
   padding: 1.6rem 1.6rem;
   border-radius: 2.5rem;
   color: #6F6F6F;
