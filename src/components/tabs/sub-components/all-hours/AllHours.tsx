@@ -9,7 +9,7 @@ import ClickIcon from "@/assets/click.svg?react";
 import { useNavigate } from "react-router-dom";
 import { LoadingIndicator } from "@/components";
 import { format } from "date-fns";
-import { actGetAllHoursData, THourLesson, TimeSlotInfo } from "@/store/tabs/TabsSlice.ts";
+import { actGetAllHoursData } from "@/store/tabs/TabsSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 
 const { status_wrapper, count_lessons, all_hours_info, progress, title } =

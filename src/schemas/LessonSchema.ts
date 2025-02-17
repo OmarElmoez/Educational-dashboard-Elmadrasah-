@@ -22,6 +22,8 @@ export const LessonSchema = z.object({
   subject: z.string().nullable(),
   subject_name: z.string().nullable(),
   employee_image: z.string().url().nullable(),
+  start_time_employee: z.string().nullable(),
+  end_time_employee: z.string().nullable(),
   employee_average_rating: z.number(),
   lesson_files: z.array(lessonFileSchema),
   attendance_link: z.string(),
