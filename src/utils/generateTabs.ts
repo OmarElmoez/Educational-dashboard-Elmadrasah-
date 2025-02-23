@@ -14,23 +14,27 @@ const generateTabs = ({lessonData, classId, isTeacher}: TGenerateTabsProps) => {
       id: 0,
       label: "ملخص",
       content: Summary,
+      page: "join-class",
       contentProps: {classId}
     },
     {
       id: 1,
       label: "تواريخ الحصص",
       content: ClassesDates,
+      page: "join-class",
       contentProps: {classId}
     },
     {
       id: 2,
       label: "ملفات",
       content: UploadFiles,
+      page: "join-class",
       contentProps: {classId}
     },
     {
       id: 3,
       label: "ملاحظات الإدارة",
+      page: "join-class",
       content: Notes
     },
   ]
@@ -40,6 +44,7 @@ const generateTabs = ({lessonData, classId, isTeacher}: TGenerateTabsProps) => {
       id: 4,
       label: 'ملاحظات عن الطالب',
       content: NotesAboutStudent,
+      page: "join-class",
       contentProps: {desc: lessonData?.description}
     })
   }

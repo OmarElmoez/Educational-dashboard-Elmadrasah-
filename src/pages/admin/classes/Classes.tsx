@@ -33,17 +33,20 @@ const AdminClassesPage = () => {
       id: 0,
       label: "الساعة الحالية",
       content: CurrentHour,
+      page: "classes",
       handleTabClick: resetDateAndLessons,
     },
     {
       id: 1,
       label: "نظرة عامة",
+      page: "classes",
       content: Overview,
     },
     {
       id: 2,
       label: "جميع الساعات",
       content: AllHours,
+      page: "classes",
       contentProps: {
         setLessonsForClickedHour,
         setIsHourClicked,

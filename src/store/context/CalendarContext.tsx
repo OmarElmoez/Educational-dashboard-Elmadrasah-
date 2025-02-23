@@ -10,8 +10,10 @@ type TCalendarContextType = {
   role: string | undefined;
   headerTitle: string | undefined;
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>;
-  activeId: number;
-  setActiveId: React.Dispatch<React.SetStateAction<number>>;
+  classesPageActiveId: number;
+  setClassesPageActiveId: React.Dispatch<React.SetStateAction<number>>;
+  setJoinClassPageActiveId: React.Dispatch<React.SetStateAction<number>>;
+  joinClassPageActiveId: number;
 }
 
 export const CalendarContext = createContext<TCalendarContextType>({
@@ -23,15 +25,18 @@ export const CalendarContext = createContext<TCalendarContextType>({
   role: "",
   headerTitle: "",
   setHeaderTitle: () => {},
-  activeId: 0,
-  setActiveId: () => {}
+  classesPageActiveId: 0,
+  joinClassPageActiveId: 0,
+  setClassesPageActiveId: () => {},
+  setJoinClassPageActiveId: () => {}
 });
 
 const CalendarProvider = ({children}: { children: ReactNode }) => {
 
   const [headerTitle, setHeaderTitle] = useState('');
 
-  const [activeId, setActiveId] = useState(0)
+  const [classesPageActiveId, setClassesPageActiveId] = useState(0)
+  const [joinClassPageActiveId, setJoinClassPageActiveId] = useState(0)
 
   const [clickedDate, setClickedDate] = useState(new Date());
 
@@ -52,8 +57,10 @@ const CalendarProvider = ({children}: { children: ReactNode }) => {
     setStudentId,
     headerTitle,
     setHeaderTitle,
-    activeId,
-    setActiveId,
+    classesPageActiveId,
+    setClassesPageActiveId,
+    joinClassPageActiveId,
+    setJoinClassPageActiveId,
   }
 
   return (

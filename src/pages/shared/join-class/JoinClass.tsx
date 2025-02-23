@@ -210,7 +210,7 @@ const JoinClass = () => {
         style={{ fontSize: "3.2rem", marginTop: "4.8rem" }}
       />
 
-      <Tabs tabs={generateTabs({ lessonData, classId, isTeacher })} customActiveTab={1} />
+      <Tabs tabs={generateTabs({ lessonData, classId, isTeacher })} />
     </>
   );
 };

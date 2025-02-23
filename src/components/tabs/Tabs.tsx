@@ -1,6 +1,7 @@
 import styles from './tabs.module.css'
-import { JSX, ComponentType, useContext } from "react";
+import { ComponentType, JSX, useContext } from "react";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
+import { useLocation } from "react-router-dom";
 
 const {header, header_tab, active} = styles;
 
@@ -10,20 +11,23 @@ export type TTab = {
   content: ComponentType<any> | (() => JSX.Element),
   contentProps?: Record<string, unknown>;
   handleTabClick?: () => void;
+  page: "classes" | "join-class";
 }
 
 type TTabsPros = {
   tabs: TTab[],
-  customActiveTab?: number,
 }
 
-const Tabs = ({tabs, customActiveTab}: TTabsPros) => {
+const Tabs = ({tabs}: TTabsPros) => {
 
-  const {activeId, setActiveId} = useContext(CalendarContext);
+  const {classesPageActiveId, setClassesPageActiveId, setJoinClassPageActiveId, joinClassPageActiveId} = useContext(
+    CalendarContext);
 
+  const {pathname} = useLocation();
+
+  const activeTab = pathname.includes('classes') ? tabs[classesPageActiveId] : tabs[joinClassPageActiveId];
 
   const renderContent = () => {
-    const activeTab = customActiveTab ? tabs[customActiveTab - 1] : tabs[activeId];
 
     const Component = activeTab.content;
     return activeTab.contentProps
@@ -36,9 +40,9 @@ const Tabs = ({tabs, customActiveTab}: TTabsPros) => {
       <header className={header}>
         {tabs.map((tab: TTab) => {
           return (
-            <span key={tab.id} className={`${header_tab} ${(customActiveTab ? (customActiveTab - 1) : activeId) === tab.id && active}`}
+            <span key={tab.id} className={`${header_tab} ${activeTab.id === tab.id && active}`}
                   onClick={() => {
-                    setActiveId(tab.id);
+                    tab.page === 'classes' ? setClassesPageActiveId(tab.id) : setJoinClassPageActiveId(tab.id)
                     tab.handleTabClick && tab.handleTabClick();
                   }}>{tab.label}</span>
           )
