@@ -60,7 +60,8 @@ const EditStudent = () => {
   const { openFeedbackModal } = useFeedback();
 
   const onSubmit = (data: TEditStudentSchema) => {
-    console.log(data)
+    data['subject_choices'] = data['subject_choices'].map(subjectId => Number(subjectId));
+    data['initial_services'] = data['initial_services'].map(serviceId => Number(serviceId));
     dispatch(
       actSendDataToServer({
         purpose: "add_individual_student",
