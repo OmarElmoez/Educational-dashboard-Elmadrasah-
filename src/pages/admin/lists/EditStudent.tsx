@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { getSpecificStudent } from "@/services/studentsAndTeachers.ts";
-import { TAddStudentFormDataForServer } from "@/schemas/AddStudentSchema.ts";
+import { TDataForSpecificStudent } from "@/schemas/AddStudentSchema.ts";
 import {
   CircleLoadingIndecator,
   Dropdown,
@@ -24,21 +24,21 @@ const EditStudent = () => {
 
   const {id} = useParams();
 
-  const [specificStudentData, setSpecificStudentData] = useState<TAddStudentFormDataForServer>()
+  const [specificStudentData, setSpecificStudentData] = useState<TDataForSpecificStudent>()
 
   const {
     handleSubmit,
     register,
     control,
     reset,
-    formState: {isSubmitting},
+    formState: {isSubmitting, errors},
     setValue
   } = useForm<TEditStudentSchema>({
     mode: "onBlur",
     resolver: zodResolver(EditStudentSchema),
   })
 
-  const setPreviousData = useCallback((response: TAddStudentFormDataForServer) => {
+  const setPreviousData = useCallback((response: TDataForSpecificStudent) => {
     setValue('billing_method', response.students_attributes[0].billing_method);
     setValue('subject_choices', response.students_attributes[0].subject_choices as number[]);
     setValue('initial_services', response.students_attributes[0].initial_services as number[]);
@@ -60,12 +60,24 @@ const EditStudent = () => {
   const { openFeedbackModal } = useFeedback();
 
   const onSubmit = (data: TEditStudentSchema) => {
-    data['subject_choices'] = data['subject_choices'].map(subjectId => Number(subjectId));
-    data['initial_services'] = data['initial_services'].map(serviceId => Number(serviceId));
+
+    const formattedServerData = {
+      ...data,
+      students_attributes: {
+        subject_choices: data['subject_choices'].map(subjectId => Number(subjectId)),
+        initial_services: data['initial_services'].map(serviceId => Number(serviceId)),
+        student_cost: data['student_cost'],
+        billing_method: data['billing_method'],
+        first_name: data['first_name'],
+        last_name: data['last_name'],
+        full_name: data['full_name'],
+        email: data['email'],
+      }
+    }
     dispatch(
       actSendDataToServer({
         purpose: "add_individual_student",
-        formData: data,
+        formData: formattedServerData,
         isEdit: true,
         id
       })
@@ -208,6 +220,15 @@ const EditStudent = () => {
           ) : (
             "تعديل"
           )}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            console.log(errors);
+          }}
+          className="btn cancel-btn"
+        >
+          يلغى
         </button>
       </form>
     </>

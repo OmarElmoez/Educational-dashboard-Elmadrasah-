@@ -69,7 +69,7 @@ const AddStudentForm = () => {
       ...data,
       is_superuser: false,
       customer_type: "individual",
-      students_attributes: [{
+      students_attributes: {
         student_type: "individual",
         student_curriculum: Number(data.student_curriculum),
         first_name: data.first_name,
@@ -92,7 +92,7 @@ const AddStudentForm = () => {
           parseInt(student)
         ),
         initial_location: Number(data["initial_location"]),
-      }],
+      },
     };
 
     dispatch(

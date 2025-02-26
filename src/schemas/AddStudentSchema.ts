@@ -87,5 +87,29 @@ export type TAddStudentFormDataForServer = Omit<
     subject_choices?: number[];
     student_type: string;
     student_curriculum: number;
-  }[];
+  };
 };
+
+export type TDataForSpecificStudent = Omit<TAddStudentFormDataForServer, 'students_attributes'> & {
+  students_attributes: {
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    mobile_phone?: string;
+    birth_date?: string | null;
+    start_date: string | null;
+    school?: string | null;
+    grade?: string | null;
+    additional_notes?: string | null;
+    calendar_color?: string;
+    status: boolean;
+    billing_method: string;
+    student_cost?: string;
+    initial_services?: number[];
+    initial_teachers?: number[];
+    initial_location?: number;
+    subject_choices?: number[];
+    student_type: string;
+    student_curriculum: number;
+  }[];
+}
