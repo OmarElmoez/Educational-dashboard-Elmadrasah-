@@ -19,8 +19,9 @@ const CopyInvoicesForm = lazy(() => import('./forms/create-invoice/CopyInvoicesF
 const ScheduleLesson = lazy(() => import('./forms/scheduling/ScheduleLesson'));
 const RescheduleLesson = lazy(() => import('./forms/scheduling/RescheduleLesson'));
 // LIST:
-const StudentsList = lazy(() => import('./lists/NewStudentsList'));
-const EditStudent = lazy(() => import('./lists/EditStudent'));
+const StudentsList = lazy(() => import('./students/list/NewStudentsList.tsx'));
+const EditStudent = lazy(() => import('./students/edit/EditStudent.tsx'));
+const StudentProfile = lazy(() => import('./students/profile/StudentProfile'));
 const InvoicesList = lazy(() => import('./lists/InvoicesList'));
 const PackageBalanceList = lazy(() => import('./lists/balance/PackageBalanceList'));
 const InvoiceDetails = lazy(() => import('./lists/invoice/InvoiceDetails'));
@@ -57,5 +58,6 @@ export {
   GeneralScheduledEmployeesLists,
   SchedulingErrorsTableList,
   AdminRolesPage,
-  EditStudent
+  EditStudent,
+  StudentProfile,
 };

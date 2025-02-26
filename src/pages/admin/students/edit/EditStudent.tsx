@@ -1,6 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
-import { getSpecificStudent } from "@/services/studentsAndTeachers.ts";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect } from "react";
 import { TDataForSpecificStudent } from "@/schemas/AddStudentSchema.ts";
 import {
   CircleLoadingIndecator,
@@ -24,14 +23,15 @@ const EditStudent = () => {
 
   const {id} = useParams();
 
-  const [specificStudentData, setSpecificStudentData] = useState<TDataForSpecificStudent>()
+  const location = useLocation();
+  const specificStudentData: TDataForSpecificStudent = location.state;
 
   const {
     handleSubmit,
     register,
     control,
     reset,
-    formState: {isSubmitting, errors},
+    formState: {isSubmitting},
     setValue
   } = useForm<TEditStudentSchema>({
     mode: "onBlur",
@@ -45,19 +45,15 @@ const EditStudent = () => {
   }, [setValue])
 
   useEffect(() => {
-    if (!id) return;
-    getSpecificStudent({id}).then((data) => {
-      setSpecificStudentData(data)
-      reset(data)
-      setPreviousData(data)
-    })
-  }, [id, reset, setPreviousData]);
+    reset(specificStudentData)
+    setPreviousData(specificStudentData)
+  }, [reset, setPreviousData, specificStudentData]);
 
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate();
 
-  const { openFeedbackModal } = useFeedback();
+  const {openFeedbackModal} = useFeedback();
 
   const onSubmit = (data: TEditStudentSchema) => {
 
@@ -220,15 +216,6 @@ const EditStudent = () => {
           ) : (
             "تعديل"
           )}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            console.log(errors);
-          }}
-          className="btn cancel-btn"
-        >
-          يلغى
         </button>
       </form>
     </>

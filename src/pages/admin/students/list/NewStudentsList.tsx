@@ -83,7 +83,7 @@ const NewStudentsList = () => {
       headerName: 'أكشن',
       width: 100,
       renderCell: (params) => <button style={{cursor: params.row.customer ? "pointer" : "not-allowed"}} disabled={!params.row.customer}
-                                      onClick={() => navigate(`/admin/students/edit/${params.row.customer}`)}>
+                                      onClick={() => navigate(`/admin/students/profile/${params.row.customer}`)}>
         <EditPenIcon/>
       </button>,
       cellClassName: 'edit-cell'
