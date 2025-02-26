@@ -71,6 +71,8 @@
   color: #8A8A8A;
   font-size: 1rem;
   padding: 1rem;
+  margin-left: 0.5rem;
+  display: inline-block;
 }
 
 .loadingIndicator {
@@ -88,10 +90,10 @@
 }
 
 
-.select_box_flex {
-  display: flex;
-  gap: .5rem;
-}
+/*.select_box_flex {*/
+/*  display: flex;*/
+/*  gap: .5rem;*/
+/*}*/
 
 .close_btn {
   position: absolute;

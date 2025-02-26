@@ -23,10 +23,6 @@ const Dropdown = <T extends FieldValues, U extends string>({
                                                            }: TDropdownProps<T, U>) => {
   const chosenValue = options?.find((option) => option.value === chosen)?.value;
 
-  if (name === "default_subject") {
-    console.log('options for subjects from dropdown: ', options);
-  }
-
   const dispatch = useAppDispatch();
 
   const handleChosenState = (event: React.MouseEvent<HTMLSelectElement>) => {

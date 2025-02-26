@@ -150,7 +150,6 @@ const AddStudentToFamilyForm = () => {
       </BasicModal>
 
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
-        <Heading text="إضافة طالب جديد للعائلة " />
         <Heading text="تفاصيل العائلة " />
 
         {/* ********************* Add Family upd options ************************* */}

@@ -1,5 +1,6 @@
 import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
 import axiosInstance from "@/utils/axiosInstance.ts";
+import { TAddStudentFormDataForServer } from "@/schemas/AddStudentSchema.ts";
 
 export type TRelatedStudent = {
   id: number,
@@ -14,6 +15,15 @@ export type TRelatedTeacher = {
   image: string,
   subject: string,
   average_rating: number,
+}
+
+export const getSpecificStudent = async ({id}: {id: string}): Promise<TAddStudentFormDataForServer> => {
+  try {
+    const response = await axiosInstance.get<TAddStudentFormDataForServer>(`/customer/individual/${id}`);
+    return response.data;
+  } catch (error) {
+    return axiosErrorHandler(error);
+  }
 }
 
 export const getAllRelatedStudents = async (): Promise<TRelatedStudent[]> => {

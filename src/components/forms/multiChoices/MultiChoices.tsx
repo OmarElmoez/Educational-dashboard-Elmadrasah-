@@ -1,11 +1,11 @@
-import {useAppDispatch} from "@/store/hooks";
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {FieldValues, Path, UseFormRegister} from "react-hook-form";
+import { useAppDispatch } from "@/store/hooks";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 import styles from "./multiChoices.module.css";
-import {END_POINTS} from "@/constants";
-import actGetChoices, {TResponse} from "@/store/single-actions/actGetChoices";
-import {useDebounce} from "@/hooks";
+import { END_POINTS } from "@/constants";
+import actGetChoices, { TResponse } from "@/store/single-actions/actGetChoices";
+import { useDebounce } from "@/hooks";
 
 const {
   checkboxInput,
@@ -45,9 +45,9 @@ const MultiChoices = <T extends FieldValues>({
                                                isRequired,
                                                disabled = false,
                                                fields,
-                                               predefinedDays,
+                                               predefinedChoices,
                                                removePreviewChoices,
-  position = "absolute",
+                                               position = "absolute",
                                              }: {
   register: UseFormRegister<T>;
   name: Path<T>;
@@ -55,7 +55,7 @@ const MultiChoices = <T extends FieldValues>({
   isRequired?: boolean;
   disabled?: boolean;
   fields?: TResponse;
-  predefinedDays?: number[];
+  predefinedChoices?: number[];
   removePreviewChoices?: boolean;
   position?: "absolute" | 'relative';
 }) => {
@@ -63,7 +63,12 @@ const MultiChoices = <T extends FieldValues>({
   const [data, setData] = useState<TResponse>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedQuery = useDebounce(searchQuery);
-  const [selectedChoices, setSelectedChoices] = useState<number[]>(predefinedDays || []);
+  const [selectedChoices, setSelectedChoices] = useState<number[]>([]);
+  useEffect(() => {
+    if (predefinedChoices) {
+      setSelectedChoices(predefinedChoices);
+    }
+  }, [predefinedChoices]);
   // const [loadingProgress, setLoadingProgress] = useState(0);
   const intervalRef = useRef<number | null>(null);
   useEffect(() => {
@@ -209,7 +214,7 @@ const MultiChoices = <T extends FieldValues>({
       </section>
       {error && <span className="error">{error}</span>}
       {isWrapperClicked && (
-        <section className={options} style={{ position: position === 'absolute' ? 'absolute' : 'relative' }}>
+        <section className={options} style={{position: position === 'absolute' ? 'absolute' : 'relative'}}>
           <input
             type="search"
             className={`inputField ${search_box}`}

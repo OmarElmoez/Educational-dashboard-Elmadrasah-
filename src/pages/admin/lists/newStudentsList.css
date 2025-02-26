@@ -1,0 +1,23 @@
+.MuiDataGrid-root .MuiDataGrid-columnHeaderTitleContainer {
+  justify-content: center;
+}
+
+/*.MuiDataGrid-root .MuiDataGrid-columnHeader,*/
+/*.MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-cell {*/
+/*  flex: 1;*/
+/*}*/
+
+.MuiDataGrid-filler,
+.MuiDataGrid-cellEmpty {
+  display: none;
+}
+
+.phone-cell {
+  direction: ltr;
+}
+
+.MuiDataGrid-root .edit-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center !important;
+}

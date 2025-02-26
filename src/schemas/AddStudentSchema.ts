@@ -54,6 +54,7 @@ export const AddStudentSchema = z.object({
   web_reminders: z.boolean().optional(),
   // send_welcome_email: z.boolean(),
   user_account: z.boolean(),
+  customer_type: z.string().optional(),
 });
 
 export type TAddStudentFormData = z.infer<typeof AddStudentSchema>;
@@ -86,5 +87,5 @@ export type TAddStudentFormDataForServer = Omit<
     subject_choices?: number[];
     student_type: string;
     student_curriculum: number;
-  };
+  }[];
 };
