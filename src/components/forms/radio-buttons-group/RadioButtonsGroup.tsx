@@ -32,7 +32,7 @@ const RadioButtonsGroup = <T extends FieldValues>({
   return (
     <div className={radioOptions} style={style}>
       {options.map((option) => (
-        <label key={option.value} className={customRadioLabel}>
+        <label key={option.value} className={customRadioLabel} style={{cursor: disabled ? 'not-allowed' : 'pointer'}} >
           <input
             type="radio"
             value={option.value}

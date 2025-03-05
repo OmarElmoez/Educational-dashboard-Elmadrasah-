@@ -13,7 +13,7 @@ export const EditStudentSchema = z.object({
   mobile_phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
-  address: z.string().min(1, "برجاء ادخال العنوان"),
+  address: z.string().optional(),
   subject_choices: z.array(z.union([z.string(), z.number()])),
   initial_services: z.array(z.union([z.string(), z.number()])),
   billing_method: z.string().min(1, "برجاء اختيار طريقة الدفع"),

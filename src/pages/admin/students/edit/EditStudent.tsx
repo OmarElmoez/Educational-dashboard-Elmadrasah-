@@ -39,9 +39,9 @@ const EditStudent = () => {
   })
 
   const setPreviousData = useCallback((response: TDataForSpecificStudent) => {
-    setValue('billing_method', response.students_attributes[0].billing_method);
-    setValue('subject_choices', response.students_attributes[0].subject_choices as number[]);
-    setValue('initial_services', response.students_attributes[0].initial_services as number[]);
+    setValue('billing_method', response.billing_method);
+    setValue('subject_choices', response.subject_choices as number[]);
+    setValue('initial_services', response.initial_services as number[]);
   }, [setValue])
 
   useEffect(() => {
@@ -59,20 +59,19 @@ const EditStudent = () => {
 
     const formattedServerData = {
       ...data,
-      students_attributes: {
-        subject_choices: data['subject_choices'].map(subjectId => Number(subjectId)),
-        initial_services: data['initial_services'].map(serviceId => Number(serviceId)),
-        student_cost: data['student_cost'],
-        billing_method: data['billing_method'],
-        first_name: data['first_name'],
-        last_name: data['last_name'],
-        full_name: data['full_name'],
-        email: data['email'],
-      }
+      subject_choices: data['subject_choices'].map(subjectId => Number(subjectId)),
+      initial_services: data['initial_services'].map(serviceId => Number(serviceId)),
+      student_cost: data['student_cost'],
+      billing_method: data['billing_method'],
+      first_name: data['first_name'],
+      last_name: data['last_name'],
+      full_name: data['full_name'],
+      email: data['email'],
+      time_zone: data['time_zone'],
     }
     dispatch(
       actSendDataToServer({
-        purpose: "add_individual_student",
+        purpose: "edit_student",
         formData: formattedServerData,
         isEdit: true,
         id
@@ -179,14 +178,14 @@ const EditStudent = () => {
             register={register}
             name="subject_choices"
             error=""
-            predefinedChoices={specificStudentData && specificStudentData?.students_attributes[0].subject_choices}
+            predefinedChoices={specificStudentData && specificStudentData?.subject_choices}
           />
 
           <MultiChoices
             register={register}
             name="initial_services"
             error=""
-            predefinedChoices={specificStudentData && specificStudentData?.students_attributes[0].initial_services}
+            predefinedChoices={specificStudentData && specificStudentData?.initial_services}
           />
         </Row>
         <hr className="hr"/>
@@ -206,7 +205,7 @@ const EditStudent = () => {
             register={register}
             name="student_cost"
             error=""
-            value={specificStudentData && specificStudentData?.students_attributes[0].student_cost}
+            value={specificStudentData && specificStudentData?.student_cost}
           />
         </Row>
 

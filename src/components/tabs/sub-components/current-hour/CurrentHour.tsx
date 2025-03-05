@@ -4,7 +4,7 @@ import {
   TimingDetails,
 } from "@/components/tabs/sub-components/Shared.tsx";
 import styles from './currentHour.module.css'
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import {CalendarContext} from "@/store/context/CalendarContext.tsx";
 import { actGetCurrentHourData } from "@/store/tabs/TabsSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
@@ -30,8 +30,11 @@ const CurrentHour = () => {
     }
   }, [dispatch, role, studentId])
 
+  const requestSentRef = useRef(false);
+
   useEffect(() => {
-    if (Object.keys(currentHourData.results).length === 0 ) {
+    if (Object.keys(currentHourData.results).length === 0 && !requestSentRef.current) {
+      requestSentRef.current = true;
       sendRequestToServer()
     }
 

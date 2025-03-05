@@ -87,6 +87,16 @@
   align-items: center;
 }
 
+.includeAsATeacher {
+  color: #818181;
+  font-size: 1.2rem;
+}
+
+.includeAsATeacher .checkmark {
+  width: 2rem;
+  height: 2rem;
+}
+
 .checkboxInput {
   position: absolute;
   opacity: 0;
@@ -110,4 +120,8 @@
   border-width: 0 2px 2px 0;
   border-style: solid;
   transform: rotate(45deg);
+}
+
+.includeAsATeacher .checkboxItem:has(.checkboxInput:checked) .checkmark::after {
+  top: 0.2rem;
 }

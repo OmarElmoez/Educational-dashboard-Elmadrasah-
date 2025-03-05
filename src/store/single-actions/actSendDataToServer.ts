@@ -29,13 +29,13 @@ const actSendDataToServer = createAsyncThunk(
           value !== null &&
           !(value[0] instanceof File)
         ) {
-          validatedFormData.append(key, JSON.stringify(value));
+          Array.from(value).length !== 0 ? validatedFormData.append(key, JSON.stringify(value)) : [];
         } else if (Array.isArray(value) && value[0] instanceof File) {
           value.forEach((file, index) => {
             validatedFormData.append(`${key}[${index}]`, file);
           });
         } else {
-          validatedFormData.append(key, String(value));
+          value !== null ? validatedFormData.append(key, String(value)) : null;
         }
       });
       formData = validatedFormData;
@@ -47,11 +47,19 @@ const actSendDataToServer = createAsyncThunk(
       let response; 
 
       if (isEdit) {
+        if (purpose === 'edit_student') {
+          response = await axiosInstance.patch(url + id + '/' + 'update/', formData, {
+            headers: {
+              "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
+            },
+          });
+        } else {
          response = await axiosInstance.patch(url + id + '/', formData, {
           headers: {
             "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
           },
          });
+        }
       } else {
          response = await axiosInstance.post(url, formData, {
           headers: {

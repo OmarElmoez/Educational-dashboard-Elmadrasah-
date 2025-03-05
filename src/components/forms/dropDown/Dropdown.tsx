@@ -70,7 +70,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
       </div>
       <div className={feedback}>
         {error ? <p className="error">{error}</p> : <p></p>}
-        {isWithPopup && (
+        {(isWithPopup && !disabled) && (
           <p
             className="add-action-btn"
             onClick={() => subjectRef?.current?.open()}

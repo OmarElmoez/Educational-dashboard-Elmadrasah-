@@ -19,7 +19,7 @@ export type TRelatedTeacher = {
 
 export const getSpecificStudent = async ({id}: {id: string}): Promise<TDataForSpecificStudent> => {
   try {
-    const response = await axiosInstance.get<TDataForSpecificStudent>(`/customer/individual/${id}`);
+    const response = await axiosInstance.get<TDataForSpecificStudent>(`/customer/students/${id}`);
     return response.data;
   } catch (error) {
     return axiosErrorHandler(error);

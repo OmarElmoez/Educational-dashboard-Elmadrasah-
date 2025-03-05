@@ -87,10 +87,12 @@ const ClassesForDay = ({lessonsForClickedHour, isHourClicked}: {
       </section>}
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}
+        {/*{((credintials?.role === "Admin" ? Today_lessons.length === 0 : filteredLessons.length === 0) && !isHourClicked && loading !== "pending") &&*/}
+        {/*    <p className="error">ليس لديك حصص اليوم !</p>}*/}
         {((credintials?.role === "Admin" ? Today_lessons.length === 0 : filteredLessons.length === 0) && !isHourClicked && loading !== "pending") &&
-            <p className="error">ليس لديك حصص اليوم !</p>}
-        {((credintials?.role === "Admin" && currentHourData.results.length === 0 && classesPageActiveId === 0) && !isHourClicked && loading !== "pending") &&
-            <p className="error">ليس لديك حصص هذه الساعة !</p>}
+            <p className="error">لا توجد حصص !</p>}
+        {/*{((credintials?.role === "Admin" && currentHourData.results.length === 0 && classesPageActiveId === 0) && !isHourClicked && loading !== "pending") &&*/}
+        {/*    <p className="error">ليس لديك حصص هذه الساعة !</p>}*/}
         {credintials?.role !== "Admin" && (filteredLessons.length > 0) && filteredLessons.map((lesson: TLesson) => {
           return (
             <LessonCard lesson={lesson} key={lesson.id}/>

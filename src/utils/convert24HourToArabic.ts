@@ -1,6 +1,6 @@
 /**
  * Converts 24-hour time format to 12-hour Arabic format
- * @param time24 Time in 24-hour format (HH:MM:SS)
+ * @param time24 Time in 24-hour format (HH:MM:SS) like "15:00:00"
  * @returns Time in 12-hour Arabic format (HH:MM ص/م)
  */
 const convert24HourToArabic = (time24: string): string => {

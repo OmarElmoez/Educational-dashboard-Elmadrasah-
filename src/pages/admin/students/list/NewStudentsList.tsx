@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 const NewStudentsList = () => {
 
-  const {students} = useAppSelector((state) => state.table);
+  const {students, loading} = useAppSelector((state) => state.table);
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const NewStudentsList = () => {
 
   const columns: GridColDef[] = [
     {
-      field: 'customer',
+      field: 'id',
       headerName: 'ID',
       width: 80,
     },
@@ -82,8 +82,8 @@ const NewStudentsList = () => {
       field: 'action',
       headerName: 'أكشن',
       width: 100,
-      renderCell: (params) => <button style={{cursor: params.row.customer ? "pointer" : "not-allowed"}} disabled={!params.row.customer}
-                                      onClick={() => navigate(`/admin/students/profile/${params.row.customer}`)}>
+      renderCell: (params) => <button style={{cursor: params.row.id ? "pointer" : "not-allowed"}} disabled={!params.row.id}
+                                      onClick={() => navigate(`/admin/students/profile/${params.row.id}`)}>
         <EditPenIcon/>
       </button>,
       cellClassName: 'edit-cell'
@@ -115,12 +115,20 @@ const NewStudentsList = () => {
         }}
         rows={students.data}
         columns={columns}
-        initialState={{pagination: {paginationModel: {page: 0, pageSize: 10}}}}
-        pageSizeOptions={[10, 50]}
+        initialState={{pagination: {paginationModel: {page: 0, pageSize: 20}}}}
+        onPaginationModelChange={() => console.log("paginationModelChange")}
+        pageSizeOptions={[10, 20, 50]}
         checkboxSelection
         disableRowSelectionOnClick
         slots={{toolbar: CustomToolbar}}
         localeText={localeToolbarText}
+        loading={loading === 'pending'}
+        slotProps={{
+          loadingOverlay: {
+            variant: 'skeleton',
+            noRowsVariant: 'skeleton',
+          },
+        }}
       />
     </Box>
   )

@@ -231,7 +231,7 @@ const router = createBrowserRouter([
         </PageSuspense>,
       },
       {
-        path: 'students/profile/edit/:id',
+        path: 'students/profile/:id/edit',
         element: <PageSuspense>
           <EditStudent/>
         </PageSuspense>,

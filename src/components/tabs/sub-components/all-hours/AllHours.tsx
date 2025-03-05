@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { TabHeader } from "@/components/tabs/sub-components/Shared.tsx";
 import { ProgressBar, StatusBullet } from "@/components/UI";
 import styles from "./allHours.module.css";
@@ -40,8 +40,11 @@ const AllHours = ({
     dispatch(actGetAllHoursData({ day: formattedDate }))
   }, [clickedDate, dispatch, role, studentId]);
 
+  const requestSentRef = useRef(false);
+
   useEffect(() => {
-    if (Object.keys(allHoursData.hourly_counts).length === 0) {
+    if (Object.keys(allHoursData.hourly_counts).length === 0 && !requestSentRef.current) {
+      requestSentRef.current = true;
       sendRequestToServer();
     }
   }, [allHoursData.hourly_counts, sendRequestToServer]);

@@ -78,6 +78,10 @@ const POST_END_POINTS = {
     url: `/customer/individual/`,
     dataType: {} as TAddStudentFormDataForServer,
   },
+  edit_student: {
+    url: "/customer/students/",
+    dataType: {} as TAddStudentFormDataForServer
+  },
   add_family_student: {
     url: `/customer/family-student/`,
     dataType: {} as TAddStudentToFamilyFormDataForServer,

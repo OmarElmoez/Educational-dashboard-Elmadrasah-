@@ -41,7 +41,7 @@ export const getUnscheduledList = async (
   searchTerm: FilterFormData | null
 ): Promise<TUnscheduledResponse> => {
   const response = await axiosInstance.get<TUnscheduledResponse>(
-    "/event/unscheduled-students/?type=individual/",
+    "/event/unscheduled-students/?type=individual",
     {
       params: {
         page: page,
@@ -57,7 +57,7 @@ export const getUnscheduledFamilyList = async (
   page: number,
   searchTerm: FilterFormData | null
 ): Promise<TUnscheduledResponse> => {
-  const response = await axiosInstance.get<TUnscheduledResponse>("/event/unscheduled-students/?type=family/",
+  const response = await axiosInstance.get<TUnscheduledResponse>("/event/unscheduled-students/?type=family",
     {
       params: {
         page: page,

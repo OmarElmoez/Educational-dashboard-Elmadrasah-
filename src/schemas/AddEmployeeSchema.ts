@@ -67,9 +67,9 @@ export const AddEmployeeSchema = z.object({
   // calendar_setting: z.enum(["Day", "Month", "Week"], {
   //   errorMap: () => ({ message: "برجاء اختيار اعدادات التقويم" }),
   // }),
-  calendar_setting: z.enum(["Day", "Month", "Week", ""]).optional(),
+  calendar_setting: z.enum(["Day", "Month", "Week", ""]).optional().nullable(),
   availabilities: z.array(TimeEntrySchema),
-  calendar_color_by: z.enum(["Student", "Website", "Lesson",""]).optional(),
+  calendar_color_by: z.enum(["Student", "Website", "Lesson",""]).optional().nullable(),
   sms_lesson_reminders: z.boolean().optional(),
   email_lesson_reminders: z.boolean().optional(),
   whatsapp_reminders: z.boolean().optional(),

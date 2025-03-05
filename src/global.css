@@ -22,8 +22,8 @@
 }
 
 * {
-  margin: 0;
-  padding: 0;
+  /*margin: 0;*/
+  /*padding: 0;*/
   box-sizing: border-box;
 }
 
@@ -253,7 +253,6 @@ menu {
   position: relative;
   padding-bottom: 2.4rem;
   align-self: start;
-
 }
 
 @media (max-width: 991px) {
