@@ -62,7 +62,7 @@ const TeacherDataTable = ({
 }) => {
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
-    pageSize: 20,
+    pageSize: rowCount,
   });
   const navigate = useNavigate();
   const editEmployee = (id:number) => {
