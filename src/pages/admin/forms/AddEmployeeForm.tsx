@@ -9,7 +9,7 @@ import {
   PhoneField,
   Row,
   SingleCheckbox,
-  UploadFile
+  UploadFile,
 } from "@/components";
 import { Heading } from "@/components/UI";
 import {
@@ -37,22 +37,22 @@ import { useFeedback } from "@/store/context";
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
-  const {user} = useAppSelector((state) => state.auth);
-  const {countries, cities, states, chosenState, chosenRegion} =
+  const { user } = useAppSelector((state) => state.auth);
+  const { countries, cities, states, chosenState, chosenRegion } =
     useAppSelector((state) => state.location);
 
-  const {openFeedbackModal} = useFeedback();
+
+  const { openFeedbackModal } = useFeedback();
 
   // const [choices, setChoices] = useState<TOption[]>([]);
-  const {subjects} = useAppSelector((state) => state.formSubjects);
-
-  const [removePreviewChoices, setRemovePreviewChoices] = useState(false)
+  const { subjects } = useAppSelector((state) => state.formSubjects);
+  const [removePreviewChoices, setRemovePreviewChoices] = useState(false);
 
   const {
     register,
     handleSubmit,
     control,
-    formState: {errors, isSubmitting},
+    formState: { errors, isSubmitting },
     setValue,
     reset,
     watch,
@@ -61,7 +61,7 @@ const AddEmployeeForm = () => {
     resolver: zodResolver(AddEmployeeSchema),
     defaultValues: {
       availabilities: [
-        {day: "", start_time: "", end_time: "", description: ""},
+        { day: "", start_time: "", end_time: "", description: "" },
       ], // Start with one entry
       calendar_color: INITIAL_CALENDAR_COLOR,
       subject_choices: [],
@@ -88,13 +88,13 @@ const AddEmployeeForm = () => {
 
   const ONLY_STAFF = !isTeacher && employeeType === "Staff"
 
-  const {fields, append, remove} = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "availabilities",
   });
 
   const handleAdd = () => {
-    append({start_time: "", end_time: "", description: ""});
+    append({ start_time: "", end_time: "", description: "" });
   };
   const handleRemove = (index: number) => {
     remove(index);
@@ -105,7 +105,6 @@ const AddEmployeeForm = () => {
       (isTeacher || data.employee_type === "Teacher") &&
       (data.initial_students.length === 0 || data.subject_choices.length === 0)
     ) {
-
       return openFeedbackModal(
         "warning",
         "اذا كان الموظف معلم يجب اختيار المواد والطلاب المعنيين"
@@ -150,11 +149,14 @@ const AddEmployeeForm = () => {
         parseInt(student)
       ) : [],
       is_active: data["is_active"] === "true",
-      user_permissions_id: data['user_permissions_id'] ? data['user_permissions_id'].map(item => Number(item)) : [],
-      groups_id: data['groups_id'] ? data['groups_id'].map(item => Number(item)) : []
+      user_permissions_id: data["user_permissions_id"]
+        ? data["user_permissions_id"].map((item) => Number(item))
+        : [],
+      groups_id: data["groups_id"]
+        ? data["groups_id"].map((item) => Number(item))
+        : [],
     };
-
-    dispatch(
+    dispatch( 
       actSendDataToServer({
         formData: serverData,
         hasFiles: true,
@@ -182,9 +184,7 @@ const AddEmployeeForm = () => {
   }, [dispatch, countries]);
 
   useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({optionsFor: "subjects"})
-    );
+    dispatch(actGetDropdownOptions({ optionsFor: "subjects" }));
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
@@ -194,9 +194,9 @@ const AddEmployeeForm = () => {
 
   return (
     <>
-      <AddNewSubjectModal ref={addNewSubjectRef}/>
+      <AddNewSubjectModal ref={addNewSubjectRef} />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Heading text="نوع الموظف"/>
+        <Heading text="نوع الموظف" />
 
         <Row>
           <Dropdown
@@ -286,7 +286,6 @@ const AddEmployeeForm = () => {
             error={errors.phone?.message as string}
             label="الهاتف المحمول"
           />
-
           <InputField
             label="هاتف المنزل"
             type="tel"
@@ -390,13 +389,13 @@ const AddEmployeeForm = () => {
           />
         </Row>
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
         <span className="mainContainer">
-          <Heading text="المرفقات"/>{" "}
+          <Heading text="المرفقات" />{" "}
           <span
             className="required"
-            style={{position: "relative", top: "0px"}}
+            style={{ position: "relative", top: "0px" }}
           ></span>
         </span>
 
@@ -464,9 +463,9 @@ const AddEmployeeForm = () => {
           />
         </Row>
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
-        <Heading text="المواد"/>
+        <Heading text="المواد" />
 
         <Row>
           <MultiChoices
@@ -481,9 +480,9 @@ const AddEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
-        <Heading text="تفاصيل التوظيف"/>
+        <Heading text="تفاصيل التوظيف" />
 
         <Row>
           <InputField
@@ -584,11 +583,11 @@ const AddEmployeeForm = () => {
           />
         </Row>
 
-        <hr className="hr"/>
-        <Heading text="مواقيت العمل"/>
+        <hr className="hr" />
+        <Heading text="مواقيت العمل" />
         <>
           {fields.map((field, index) => (
-            <Row key={field.id} style={{alignItems: "center"}}>
+            <Row key={field.id} style={{ alignItems: "center" }}>
               <Dropdown
                 label="حدد اليوم"
                 isRequired
@@ -639,7 +638,7 @@ const AddEmployeeForm = () => {
               {index > 0 ? (
                 <div className="mainContainer">
                   <button type="button" onClick={() => handleRemove(index)}>
-                    <CloseButton/>
+                    <CloseButton />
                   </button>
                   <button
                     className="add-action-btn mr-1"
@@ -663,7 +662,7 @@ const AddEmployeeForm = () => {
             </Row>
           ))}
 
-          <br/>
+          <br />
           <span className="helper-text">
             * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
             بشكل عام هنا.
@@ -674,8 +673,8 @@ const AddEmployeeForm = () => {
           </span>
         </>
 
-        <hr className="hr"/>
-        <Heading text="رابط موقع المعلم"/>
+        <hr className="hr" />
+        <Heading text="رابط موقع المعلم" />
         <Row>
           {/*<InputField*/}
           {/*  label="رابط الموقع URL"*/}
@@ -694,9 +693,9 @@ const AddEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
-        <Heading text="الطلاب المعينون"/>
+        <Heading text="الطلاب المعينون" />
 
         <Row>
           <MultiChoices
@@ -710,7 +709,7 @@ const AddEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
         <CalendarSettingsForm
           register={register}
@@ -720,11 +719,11 @@ const AddEmployeeForm = () => {
           fields={RADIO_FIELDS_FOR_CALENDAR}
         />
 
-        <NotificationForm register={register}/>
+        <NotificationForm register={register} />
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
-        <Heading text="إضافة صلاحيات"/>
+        <Heading text="إضافة صلاحيات" />
         <Row>
           <MultiChoices
             register={register}
@@ -737,9 +736,9 @@ const AddEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
-        <Heading text="إضافة صلاحيات خاصة"/>
+        <Heading text="إضافة صلاحيات خاصة" />
         <Row>
           <MultiChoices
             register={register}
@@ -755,7 +754,7 @@ const AddEmployeeForm = () => {
         <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
             {isSubmitting ? (
-              <CircleLoadingIndecator size={16} color="#fff"/>
+              <CircleLoadingIndecator size={16} color="#fff" />
             ) : (
               " حفظ"
             )}

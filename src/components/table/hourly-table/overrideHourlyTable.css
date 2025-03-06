@@ -20,3 +20,7 @@
 .MuiDataGrid-root .MuiTablePagination-displayedRows {
   direction: ltr;
 }
+
+.MuiDataGrid-columnHeaderTitle {
+  color: #8D8D8D;
+}

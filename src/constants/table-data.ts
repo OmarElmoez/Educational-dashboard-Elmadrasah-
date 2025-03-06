@@ -98,10 +98,9 @@ const TABLE_HEAD_DATA = {
 };
 
 const TABLE_SEARCH_END_POINTS = {
-  students:
-    "customer/students/?first_name=",
-  balances:
-    "customer/balance/?name=",
+  students: "customer/students/?first_name=",
+  balances: "customer/balance/?name=",
+  employees: "employee/modify/",
 };
 
 export { TABLE_HEAD_DATA, TABLE_SEARCH_END_POINTS };

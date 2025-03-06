@@ -1,0 +1,71 @@
+.MuiDrawer-root .MuiDrawer-paper {
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+  padding: 2.4rem 1.6rem;
+}
+.MuiTextField-root .MuiOutlinedInput-root {
+  width: 25rem;
+  height: 4rem;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  direction: rtl;
+}
+.MuiTextField-root .MuiOutlinedInput-root .MuiOutlinedInput-input {
+  font-size: 1rem;
+  padding: 0rem;
+}
+.MuiDrawer-paper .MuiSelect-root {
+  width: 25rem;
+  height: 4rem;
+  padding: 1.2rem;
+  border-radius: 1rem;
+}
+.MuiSelect-root .MuiOutlinedInput-input {
+  padding: 0rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+}
+.MuiSelect-select {
+  padding: 0rem !important;
+}
+.MuiDrawer-paper .MuiSelect-root .MuiSelect-icon {
+  right: 88%;
+  left: 0.7rem;
+}
+.MuiMenu-list .MuiMenuItem-root {
+  font-size: 1rem;
+}
+.search-button-container {
+  display: flex;
+  gap: 1.6rem;
+}
+.search-button-container .MuiButton-root {
+  width: 10.9rem;
+  height: 4.8rem;
+  border-radius: 1rem;
+}
+.search-button {
+  display: flex;
+  justify-content: end;
+}
+.date-range-container {
+  width: 98%;
+}
+.date-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+}
+.date-container .MuiTextField-root .MuiOutlinedInput-root {
+  width: 10rem;
+}
+.date-range-container .MuiTypography-root {
+  width: 100%;
+  font-size: 1.4rem !important;
+  color: #b6b6b6;
+  margin-bottom: 1rem !important;
+}

@@ -3,8 +3,12 @@ import { TCustomer, TInvoice } from "@/types/table";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetStudents from "./act/actGetStudents";
 import actGetInvoices from "./act/actGetInvoices";
+import actGetAllEmployees from "./act/actGetAllEmployeesData";
+import { TEmployeesData } from "@/types/table";
 import { isString } from "@/types/gurads";
 import actSearchForTableData from "./act/actSearchForTableData";
+import actGetSpecificEmployees from "./act/actGetSpecificEmployee";
+import { TAddEmployeeFormData } from '@/schemas/AddEmployeeSchema';
 // ----------------------------------------------------------
 // const getBalanceData = actGetTableData<TBalanceResponse>();
 
@@ -27,6 +31,16 @@ type TTableState = {
   //   next: string | null;
   //   previous: string | null;
   // };
+  employees: {
+    data: TEmployeesData[];
+    page: number;
+    next: string | null;
+    previous: string | null;
+    count: number;
+  };
+  specificEmployeeData: {
+    data: TAddEmployeeFormData;
+  }
   loading: TLoading;
   error: string | null;
 };
@@ -51,6 +65,16 @@ const initialState: TTableState = {
   // },
   // Employees: [],
   // Parents: [],
+  employees: {
+    data: [],
+    page: 1,
+    next: null,
+    previous: null,
+    count: 0,
+  },
+  specificEmployeeData: {
+    data:{} as TAddEmployeeFormData,
+  },
   loading: "idle",
   error: null,
 };
@@ -97,13 +121,47 @@ const TableSlice = createSlice({
 
       .addCase(actGetStudents.fulfilled, (state, action) => {
         state.loading = "succeeded";
-
-        state.students.data = action.payload.results;
+        state.students.data = action.payload.results as TCustomer[];
         state.students.next = action.payload.next;
         state.students.previous = action.payload.previous;
       })
 
       .addCase(actGetStudents.rejected, (state, action) => {
+        state.loading = "failed";
+        if (isString(action.payload)) {
+          state.error = action.payload;
+        }
+      })
+      .addCase(actGetAllEmployees.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
+
+      .addCase(actGetAllEmployees.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.employees.data = action.payload.results;
+        state.employees.next = action.payload.next;
+        state.employees.previous = action.payload.previous;
+        state.employees.count = action.payload.count;
+      })
+
+      .addCase(actGetAllEmployees.rejected, (state, action) => {
+        state.loading = "failed";
+        if (isString(action.payload)) {
+          state.error = action.payload;
+        }
+      })
+      .addCase(actGetSpecificEmployees.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
+
+      .addCase(actGetSpecificEmployees.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.specificEmployeeData.data = action.payload;
+      })
+
+      .addCase(actGetSpecificEmployees.rejected, (state, action) => {
         state.loading = "failed";
         if (isString(action.payload)) {
           state.error = action.payload;
@@ -115,15 +173,20 @@ const TableSlice = createSlice({
         state.loading = "pending";
         state.error = null;
       })
-
       .addCase(actSearchForTableData.fulfilled, (state, action) => {
         state.loading = "succeeded";
-
-        state.students.data = action.payload.results;
-        state.students.next = action.payload.next;
-        state.students.previous = action.payload.previous;
+        const { searchFor, results } = action.payload;
+        if (searchFor === "employees") {
+          state.employees.data = results.results as TEmployeesData[];
+          state.employees.next = results.next;
+          state.employees.previous = results.previous;
+          state.employees.count = results.count;
+        } else if (searchFor === "students") {
+          state.students.data = results.results as TCustomer[];
+          state.students.next = results.next;
+          state.students.previous = results.previous;
+        }
       })
-
       .addCase(actSearchForTableData.rejected, (state, action) => {
         state.loading = "failed";
         if (isString(action.payload)) {
@@ -174,9 +237,11 @@ const TableSlice = createSlice({
   },
 });
 
-export { actGetStudents, actGetInvoices, 
+export {
+  actGetStudents,
+  actGetInvoices,
   // getBalanceData
- };
+};
 export const {
   incrementPage,
   decrementPage,

@@ -75,7 +75,7 @@ const MainSidebar = ({data}: TSidebarProps) => {
       <SubNav
         style={(isSubNavOpen && activeTitleSubLinks?.length !== undefined) ? {
           transform: "translateX(-80px)",
-          zIndex: 4
+          zIndex: 7
         } : {
           transform: "translateX(100%)",
           zIndex: -1

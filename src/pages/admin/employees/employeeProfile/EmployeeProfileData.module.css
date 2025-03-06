@@ -1,0 +1,47 @@
+.headerContainer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 4rem;
+  gap: 2rem;
+}
+.headerContainer p {
+  font-weight: 500;
+  font-size: 2.4rem;
+}
+.iconButton {
+  cursor: pointer;
+}
+.sectionContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+}
+.sectionContainer p {
+  width: 100%;
+  font-weight: 500;
+  font-size: 2.4rem;
+  margin-bottom: 2.4rem;
+}
+.infoContainer {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2.4rem;
+}
+.infoContainer h2 {
+  font-size: 1.6rem;
+}
+.infoContainer span {
+  font-size: 1.4rem;
+  color: #818181;
+  direction: ltr;
+  margin-left: -1rem;
+}
+.infoContainer a {
+  color: #1C8A44;
+  text-decoration: underline;
+}
+

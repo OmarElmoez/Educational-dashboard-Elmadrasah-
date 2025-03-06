@@ -58,7 +58,9 @@ export const AddEmployeeSchema = z.object({
   position: z.string().min(1, "برجاء ادخال المسمى"),
   bio: z.string().optional(),
   hire_date: z.string().optional(),
-
+  updated_at: z.string().optional(),
+  created_at: z.string().optional(),
+  link: z.string().optional(),
   initial_students: z.array(z.string()),
   initial_location: z.string().optional(),
   employee_wage: z.string().optional(),
@@ -80,6 +82,11 @@ export const AddEmployeeSchema = z.object({
   is_superuser: z.boolean().optional(),
   user_permissions_id: z.array(z.string()).optional(),
   groups_id: z.array(z.string()).optional(),
+  subject_choices_response:z.array(z.object({
+    id: z.number(),
+    name_ar: z.string(),
+    name_en: z.string()
+  })).optional(),
 })
   .transform(data => ({
     ...data,

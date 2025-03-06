@@ -19,7 +19,7 @@ const {
   // circularProgress,
   select_box_flex,
   close_btn,
-  search_box
+  search_box,
 } = styles;
 
 // const LoadingIndicator = ({ progress }: { progress: number }) => (
@@ -57,7 +57,7 @@ const MultiChoices = <T extends FieldValues>({
   fields?: TResponse;
   predefinedChoices?: number[];
   removePreviewChoices?: boolean;
-  position?: "absolute" | 'relative';
+  position?: "absolute" | "relative";
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
@@ -76,7 +76,11 @@ const MultiChoices = <T extends FieldValues>({
       setSelectedChoices([]);
     }
   }, [removePreviewChoices]);
-
+  useEffect(() => {
+    if (predefinedChoices) {
+      setSelectedChoices(predefinedChoices);
+    }
+  }, [predefinedChoices]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -87,10 +91,10 @@ const MultiChoices = <T extends FieldValues>({
           url: END_POINTS[name as keyof typeof END_POINTS].url,
         })
       )
-      .unwrap()
-      .then((data) => {
-        setData(data)
-      });
+        .unwrap()
+        .then((data) => {
+          setData(data);
+        });
     }
   }, [dispatch, name, fields]);
 
@@ -100,7 +104,7 @@ const MultiChoices = <T extends FieldValues>({
         clearInterval(intervalRef.current);
       }
 
-      const {value} = e.currentTarget;
+      const { value } = e.currentTarget;
       const isSelected = selectedChoices.includes(Number(value));
       if (isSelected) {
         setSelectedChoices(
@@ -156,7 +160,7 @@ const MultiChoices = <T extends FieldValues>({
       <span
         key={choice}
         className={preview}
-        style={{position: "relative", paddingLeft: "2rem"}}
+        style={{ position: "relative", paddingLeft: "2rem" }}
       >
         {
           (fields ? fields : data).find((dataItem) => dataItem.id === choice)
@@ -184,8 +188,11 @@ const MultiChoices = <T extends FieldValues>({
     ));
   };
 
-  const filteredData = data?.filter((item) => item.codename ? item.codename.toLowerCase().includes(
-    debouncedQuery.toLowerCase()) : item.name.toLowerCase().includes(debouncedQuery.toLowerCase()));
+  const filteredData = data?.filter((item) =>
+    item.codename
+      ? item.codename.toLowerCase().includes(debouncedQuery.toLowerCase())
+      : item.name.toLowerCase().includes(debouncedQuery.toLowerCase())
+  );
 
   return (
     <article className="group">
@@ -197,8 +204,8 @@ const MultiChoices = <T extends FieldValues>({
         {fields
           ? `${END_POINTS[name as keyof typeof END_POINTS].placeholder}`
           : ` يرجي اختيار ${
-            END_POINTS[name as keyof typeof END_POINTS].placeholder
-          }`}
+              END_POINTS[name as keyof typeof END_POINTS].placeholder
+            }`}
       </label>
       <section
         className={`select_wrapper inputField ${select_box_flex} ${
@@ -222,15 +229,17 @@ const MultiChoices = <T extends FieldValues>({
             value={searchQuery}
             placeholder="ابحث"
           />
-          <div style={{marginTop: "1rem"}}>
+          <div style={{ marginTop: "1rem" }}>
             {/*<LoadingIndicator progress={loadingProgress} />*/}
             {(filteredData ? filteredData : data).map((item) => (
               <label key={item.id} className={checkboxItem}>
-              <span
-                className={`${checkmark}  ${
-                  !disabled && selectedChoices.includes(item.id) ? checked : ""
-                } `}
-              ></span>
+                <span
+                  className={`${checkmark}  ${
+                    !disabled && selectedChoices.includes(item.id)
+                      ? checked
+                      : ""
+                  } `}
+                ></span>
                 <input
                   type="checkbox"
                   className={checkboxInput}
@@ -240,7 +249,9 @@ const MultiChoices = <T extends FieldValues>({
                   checked={selectedChoices.includes(item.id)}
                   disabled={disabled}
                 />
-                <span className={checkboxLabel}>{item.codename ? item.codename : item.name}</span>
+                <span className={checkboxLabel}>
+                  {item.codename ? item.codename : item.name}
+                </span>
               </label>
             ))}
           </div>

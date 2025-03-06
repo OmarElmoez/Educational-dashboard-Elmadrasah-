@@ -1,26 +1,26 @@
-import {FieldValues} from "react-hook-form";
-import {TDropdownProps} from "@/types/Dropdown";
+import { FieldValues } from "react-hook-form";
+import { TDropdownProps } from "@/types/Dropdown";
 import React from "react";
-import {useAppDispatch} from "@/store/hooks";
-import {setChosenState} from "@/store/location/LocationSlice";
+import { useAppDispatch } from "@/store/hooks";
+import { setChosenState } from "@/store/location/LocationSlice";
 import styles from "./dropDown.module.css";
 
-const {feedback} = styles;
+const { feedback } = styles;
 
 const Dropdown = <T extends FieldValues, U extends string>({
-                                                             name,
-                                                             options,
-                                                             chosen,
-                                                             register,
-                                                             label,
-                                                             error,
-                                                             isRequired,
-                                                             subjectRef,
-                                                             isWithPopup = false,
-                                                             disabled = false,
-                                                             children = null,
-                                                             handleChange,
-                                                           }: TDropdownProps<T, U>) => {
+  name,
+  options,
+  chosen,
+  register,
+  label,
+  error,
+  isRequired,
+  subjectRef,
+  isWithPopup = false,
+  disabled = false,
+  children = null,
+  handleChange,
+}: TDropdownProps<T, U>) => {
   const chosenValue = options?.find((option) => option.value === chosen)?.value;
 
   const dispatch = useAppDispatch();
@@ -49,7 +49,9 @@ const Dropdown = <T extends FieldValues, U extends string>({
           onClick={handleChosenState}
           disabled={disabled || false}
           className={`${disabled && "disabled_btn"}`}
-          onChange={(e) => handleChange && handleChange(e.currentTarget.value as U)}
+          onChange={(e) =>
+            handleChange && handleChange(e.currentTarget.value as U)
+          }
           // onChange={(e) =>
           //   setTreatmentType &&
           //   setTreatmentType(

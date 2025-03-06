@@ -15,7 +15,8 @@ type TTableResponse = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: TCustomer[];
+  searchFor: string | null;
+  results: TCustomer[] | TEmployeesData[];
 };
 
 type TPayment = {
@@ -92,6 +93,125 @@ type TBalanceResponse = {
   previous: string | null;
   results: TBalance[];
 };
+type TEmployeesData = {
+  id: number;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  phone: string | null;
+  image: string | null;
+  is_active: boolean;
+  is_superuser: boolean;
+  gender: string | null;
+  employee_type: string | null;
+  include_as_teacher: boolean | null;
+  title: string | null;
+  home_phone: string | null;
+  address: string | null;
+  address_2: string | null;
+  city: string | null;
+  state: string | null;
+  country: string | null;
+  zip: string | "";
+  time_zone: string | null;
+  additional_notes: string | "";
+  birth_date: string | null;
+  place_of_birth: string | "";
+  personal_photo: [
+    {
+      id: number;
+      image: string | null;
+      uploaded_at: string | null;
+    }
+  ];
+  national_id: [
+    {
+      id: number;
+      image: string | null;
+      uploaded_at: string | null;
+    }
+  ];
+  national_id_expiration_date: string | null;
+  passport: [
+    {
+      id: number;
+      image: string | null;
+      uploaded_at: string | null;
+    }
+  ];
+  passport_expiration_date: string | null;
+  cv: [
+    {
+      id: number;
+      file: string | null;
+      uploaded_at: string | null;
+    }
+  ];
+  subject_choices_response: [
+    {
+      id: number;
+      name_ar: string | null;
+      name_en: string | null;
+    }
+  ];
+  availabilities: [
+    {
+      id: number;
+      day: string | null;
+      start_time: string | null;
+      end_time: string | null;
+      description: string | null;
+    }
+  ];
+  position: string | null;
+  hire_date: string | null;
+  wage_type: string | null;
+  employee_wage: string | null;
+  work_wage_type: string | null;
+  work_wage: string | null;
+  default_subject: number;
+  school: string | null;
+  grade_year: string | null;
+  teacher_language: string | null;
+  bio: string | "";
+  initial_location: number;
+  initial_students_response: number[];
+  calendar_setting: string | null;
+  calendar_color_by: string | null;
+  calendar_color: string | null;
+  email_lesson_reminders: boolean;
+  sms_lesson_reminders: boolean;
+  app_reminders: boolean;
+  web_reminders: boolean;
+  whatsapp_reminders: boolean;
+  user_account: boolean;
+  created_at: string | null;
+  updated_at: string | null;
+  user_permissions: string[];
+  groups: string[];
+};
+type TAllEmployeesData = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: TEmployeesData[];
+};
+type TFamilyData = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_phone: string;
+  home_phone: string;
+  customer_type: string;
+  name: string;
+};
+type TAllFamiliesData = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: TFamilyData[];
+};
 export type {
   TCustomer,
   TTableResponse,
@@ -100,5 +220,9 @@ export type {
   TPayment,
   TPaymentResponse,
   TBalance,
-  TBalanceResponse
+  TBalanceResponse,
+  TAllEmployeesData,
+  TEmployeesData,
+  TFamilyData,
+  TAllFamiliesData,
 };

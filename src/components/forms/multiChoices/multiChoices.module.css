@@ -1,6 +1,6 @@
 .options {
   border-radius: 1rem;
-  box-shadow: 0 4px 40px #0000001A;
+  box-shadow: 0 4px 40px #0000001a;
   top: 100%;
   width: 100%;
   z-index: 5;
@@ -24,7 +24,7 @@
 }
 
 .checkboxItem:not(:last-of-type) {
-  border-bottom: 1px dashed #C0C0C0;
+  border-bottom: 1px dashed #c0c0c0;
 }
 
 .checkmark {
@@ -48,7 +48,7 @@
 .checkmark.checked {
   background-color: var(--main-color);
   color: #fff;
-  border-color: var(--main-color)
+  border-color: var(--main-color);
 }
 
 .checkmark.checked::after {
@@ -65,10 +65,12 @@
 }
 
 .preview {
-  border: 1px dashed #7AB790;
+  margin-left: 0.5rem;
+  display: inline-block;
+  border: 1px dashed #7ab790;
   border-radius: 0.6rem;
-  background-color: #F1F1F1;
-  color: #8A8A8A;
+  background-color: #f1f1f1;
+  color: #8a8a8a;
   font-size: 1rem;
   padding: 1rem;
   margin-left: 0.5rem;
@@ -89,7 +91,6 @@
   transition: stroke-dasharray 0.05s;
 }
 
-
 /*.select_box_flex {*/
 /*  display: flex;*/
 /*  gap: .5rem;*/
@@ -106,7 +107,7 @@
   justify-content: center;
   background: none;
   border: none;
-  cursor: pointer
+  cursor: pointer;
 }
 
 /* .disabled_btn{

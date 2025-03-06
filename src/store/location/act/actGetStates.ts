@@ -11,7 +11,7 @@ type TResponse = {
 
 const actGetStates = createAsyncThunk('location/actGetStates', async ({country}: {country: string}, thunkAPI) => {
   const { rejectWithValue } = thunkAPI;
-
+console.log(country);
   try {
     const url = 'https://countriesnow.space/api/v0.1/countries/states';
     const data = {

@@ -1,0 +1,25 @@
+.cell-phone {
+  direction: ltr;
+}
+.MuiDataGrid-cell {
+  font-size: 1.1rem;
+}
+.MuiDataGrid-cell .image-container{
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cell-profile-image {
+width:4rem;
+height: 4rem;
+border-radius: 1rem;
+}
+.cell-profile-icon {
+width:4rem;
+height: 4rem;
+border-radius: 1rem;
+}
+.MuiDataGrid-columnHeaderTitle {
+  font-size: 1.3rem;
+}

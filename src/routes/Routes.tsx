@@ -42,6 +42,8 @@ import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesList
 import PageSuspense from "@/components/page-suspense/PageSuspense.tsx";
 import CheckAuth from "@/routes/CheckAuth.tsx";
 import HourlyLessonsAdmin from './../pages/admin/tables/hourlyTables/HourlyTable';
+import EditEmployeeForm from '../pages/admin/forms/edit/EditEmpolyeeForm';
+import EmployeeProfileData from '../pages/admin/employees/employeeProfile/EmployeeProfileData';
 
 const router = createBrowserRouter([
   // Login Routes
@@ -203,6 +205,20 @@ const router = createBrowserRouter([
         path: 'employees/add-employee',
         element: <PageSuspense>
           <AddEmployeeForm/>
+        </PageSuspense>
+        ,
+      },
+      {
+        path: 'employees/employee-profile/:id',
+        element: <PageSuspense>
+          <EmployeeProfileData/>
+        </PageSuspense>
+        ,
+      },
+      {
+        path: 'employees/edit-employee/:id',
+        element: <PageSuspense>
+          <EditEmployeeForm/>
         </PageSuspense>
         ,
       },

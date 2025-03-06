@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 
-const convertAppTime = (timeStr: string): string | null => {
+const convertAppTime = (timeStr: string): string | null| undefined => {
+  console.log(timeStr);
   if (timeStr === "") {
     return null;
   }

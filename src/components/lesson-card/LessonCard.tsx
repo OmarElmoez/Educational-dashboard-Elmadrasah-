@@ -6,11 +6,11 @@ import FileIcon from "@/assets/file-outline.svg?react";
 import { useNavigate } from "react-router-dom";
 import styles from "./lessonCard.module.css";
 import { useAppSelector } from "@/store/hooks.ts";
+import { THourLesson } from "@/store/tabs/TabsSlice.ts";
 import { TLesson } from "@/schemas/LessonSchema.ts";
 import STATUS_INFO from "@/constants/lessons-status.ts";
 import convertToArabicTime from "@/utils/convertToArabicTime";
 import convertAppTime from "@/utils/convertAppTime";
-import { THourLesson } from "@/store/tabs/TabsSlice.ts";
 
 const { card, status_box, role_title, status_data } = styles;
 
