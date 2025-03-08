@@ -9,6 +9,16 @@ const TimeEntrySchema = z.object({
   description: z.string().optional(),
 });
 
+const InitialStudentSchema = z.object({
+  id: z.number(),
+  student_name: z.string(),
+  email: z.string(),
+  mobile_phone: z.string(),
+  status: z.string(),
+})
+
+export type TInitialStudent = z.infer<typeof InitialStudentSchema>
+
 export const AddEmployeeSchema = z.object({
   employee_type: z.string().min(1, "برجاء اختيار نوع الموظف"),
   include_as_teacher: z.boolean().optional(),
@@ -18,9 +28,9 @@ export const AddEmployeeSchema = z.object({
   full_name: z.string().min(1, "برجاء ادخال الاسم الكامل"),
   title: z.string().min(1, "برجاء اختيار اللقب"),
   email: z
-    .string()
-    .min(1, "برجاء ادخال البريد الإلكتروني")
-    .email("برجاء ادخال بريد إلكتروني صحيح"),
+  .string()
+  .min(1, "برجاء ادخال البريد الإلكتروني")
+  .email("برجاء ادخال بريد إلكتروني صحيح"),
 
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
@@ -48,11 +58,11 @@ export const AddEmployeeSchema = z.object({
   uploaded_passport: z.array(z.instanceof(File)),
 
   national_id_expiration_date: z
-    .string()
-    .min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
+  .string()
+  .min(1, "برجاء ادخال تاريخ انتهاء الهوية"),
   passport_expiration_date: z
-    .string()
-    .min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
+  .string()
+  .min(1, "برجاء ادخال تاريخ انتهاء جواز السفر"),
 
   subject_choices: z.array(z.string()),
   position: z.string().min(1, "برجاء ادخال المسمى"),
@@ -71,7 +81,7 @@ export const AddEmployeeSchema = z.object({
   // }),
   calendar_setting: z.enum(["Day", "Month", "Week", ""]).optional().nullable(),
   availabilities: z.array(TimeEntrySchema),
-  calendar_color_by: z.enum(["Student", "Website", "Lesson",""]).optional().nullable(),
+  calendar_color_by: z.enum(["Student", "Website", "Lesson", ""]).optional().nullable(),
   sms_lesson_reminders: z.boolean().optional(),
   email_lesson_reminders: z.boolean().optional(),
   whatsapp_reminders: z.boolean().optional(),
@@ -82,16 +92,11 @@ export const AddEmployeeSchema = z.object({
   is_superuser: z.boolean().optional(),
   user_permissions_id: z.array(z.string()).optional(),
   groups_id: z.array(z.string()).optional(),
-  subject_choices_response:z.array(z.object({
-    id: z.number(),
-    name_ar: z.string(),
-    name_en: z.string()
-  })).optional(),
 })
-  .transform(data => ({
-    ...data,
-    gender: data.title === 'Mr' ? 'Male' : 'Female',
-  }))
+.transform(data => ({
+  ...data,
+  gender: data.title === 'Mr' ? 'Male' : 'Female',
+}))
 
 export type TAddEmployeeFormData = z.infer<typeof AddEmployeeSchema>;
 
@@ -108,9 +113,24 @@ export type TAddEmployeeFormDataForServer = Omit<
   TKeysToOmit
 > & {
   default_subject: number | null;
-  subject_choices: Array<number>;
+  subject_choices: number[];
   initial_students: number[];
   is_active: boolean;
   user_permissions_id?: number[];
   groups_id?: number[];
 };
+
+export type TDataForSpecificEmployee = Omit<TAddEmployeeFormData, TKeysToOmit> & {
+  groups: { id: number; name: string }[];
+  user_permissions: { id: number; codename: string }[];
+  is_active: boolean;
+  subject_choices_response: { id: number; name_ar: string, name_en: string }[];
+  initial_students_response: {
+    id: number;
+    student_name: string,
+    email: string,
+    mobile_phone: string,
+    status: string
+  }[];
+}
+

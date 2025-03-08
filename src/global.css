@@ -148,9 +148,12 @@ menu {
 .preview {
   display: flex;
   flex-direction: column;
-  width: fit-content;
   gap: 0.5rem;
   position: relative;
+  width: 10rem;
+  height: 10rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .preview .closeIcon {

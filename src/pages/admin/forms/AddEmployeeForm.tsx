@@ -38,7 +38,7 @@ import { useFeedback } from "@/store/context";
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const { countries, cities, states, chosenState, chosenRegion } =
+  const { countries, cities, states, chosenState } =
     useAppSelector((state) => state.location);
 
 
@@ -135,7 +135,7 @@ const AddEmployeeForm = () => {
     data["is_superuser"] = false;
 
     // Add region to timezone value
-    data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
+    // data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
 
     const serverData: TAddEmployeeFormDataForServer = {
       ...data,
@@ -166,7 +166,7 @@ const AddEmployeeForm = () => {
     .unwrap()
     .then((res) => {
       if (typeof res === 'string') {
-        openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
+        openFeedbackModal('failed', res);
         return;
       }
       openFeedbackModal("succeeded", "تم اضافة الموظف بنجاح!");
@@ -280,7 +280,7 @@ const AddEmployeeForm = () => {
 
         <Row>
           <PhoneField
-            control={control as any}
+            control={control}
             name="phone"
             isRequired
             error={errors.phone?.message as string}
@@ -439,6 +439,7 @@ const AddEmployeeForm = () => {
             register={register}
             name="national_id_expiration_date"
             error={errors.national_id_expiration_date?.message as string}
+            style={{alignSelf: 'flex-end'}}
           />
         </Row>
 
@@ -460,6 +461,7 @@ const AddEmployeeForm = () => {
             register={register}
             name="passport_expiration_date"
             error={errors.passport_expiration_date?.message as string}
+            style={{alignSelf: 'flex-end'}}
           />
         </Row>
 

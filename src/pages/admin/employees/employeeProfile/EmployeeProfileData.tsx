@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
-import { TAddEmployeeFormData } from "@/schemas/AddEmployeeSchema";
+import { TDataForSpecificEmployee } from "@/schemas/AddEmployeeSchema";
 import actGetSpecificEmployees from "@/store/table/act/actGetSpecificEmployee";
 import Styles from "./EmployeeProfileData.module.css";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
-import actGetAllFamilies from '../../../../store/families/act/actGetAllFamilies';
+import { SimpleTable } from "@/pages/admin/students/profile/components";
 
 const { headerContainer, sectionContainer, infoContainer, iconButton } = Styles;
 const EmployeeProfileData = () => {
   const [specificEmployeeData, setSpecificEmployeeData] =
-    useState<TAddEmployeeFormData>();
+    useState<TDataForSpecificEmployee>();
   const dispatch = useAppDispatch();
   const params = useParams();
   const employeeId = Number(params.id);
@@ -24,7 +24,8 @@ const EmployeeProfileData = () => {
   useEffect(() => {
     dispatch(actGetSpecificEmployees({ employeeID: employeeId })).then(
       (res) => {
-        setSpecificEmployeeData(res.payload as TAddEmployeeFormData);
+        setSpecificEmployeeData(res.payload as TDataForSpecificEmployee);
+
       }
     );  
     // eslint-disable-next-line
@@ -202,6 +203,7 @@ const EmployeeProfileData = () => {
       {/* Section Six Students */}
       <section className={sectionContainer}>
         <p>الطلاب المعينون</p>
+        <SimpleTable tableHead={["الاسم", "البريد الإلكتروني", "رقم الهاتف", "حالة"]} rows={specificEmployeeData?.initial_students_response || []} noDataMsg="لا يوجد طلاب !" />
       </section>
       <hr className="hr" />
       {/* Section Seven Notifications */}

@@ -13,10 +13,11 @@ const InputField = <T extends FieldValues>({
   disabled = false,
   isRequired = false,
   value,
+  style,
   onChange, // Add onChange as a prop
 }: TInputField<T> & { onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void }) => {
   return (
-    <article className="group">
+    <article className="group" style={style}>
       <label
         htmlFor={name}
         className={`adminFormLabel ${isRequired && "required"}`}

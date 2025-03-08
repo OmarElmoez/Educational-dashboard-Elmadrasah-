@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/store/hooks";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 import styles from "./multiChoices.module.css";
@@ -48,6 +48,7 @@ const MultiChoices = <T extends FieldValues>({
                                                predefinedChoices,
                                                removePreviewChoices,
                                                position = "absolute",
+  setValue,
                                              }: {
   register: UseFormRegister<T>;
   name: Path<T>;
@@ -58,6 +59,7 @@ const MultiChoices = <T extends FieldValues>({
   predefinedChoices?: number[];
   removePreviewChoices?: boolean;
   position?: "absolute" | "relative";
+  setValue?: (name: Path<T>, value: number[]) => void;
 }) => {
   const [isWrapperClicked, setIsWrapperClicked] = useState(false);
   const [data, setData] = useState<TResponse>([]);
@@ -70,17 +72,13 @@ const MultiChoices = <T extends FieldValues>({
     }
   }, [predefinedChoices]);
   // const [loadingProgress, setLoadingProgress] = useState(0);
-  const intervalRef = useRef<number | null>(null);
+  // const intervalRef = useRef<number | null>(null);
   useEffect(() => {
     if (removePreviewChoices) {
       setSelectedChoices([]);
     }
   }, [removePreviewChoices]);
-  useEffect(() => {
-    if (predefinedChoices) {
-      setSelectedChoices(predefinedChoices);
-    }
-  }, [predefinedChoices]);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -100,9 +98,9 @@ const MultiChoices = <T extends FieldValues>({
 
   const onClickHandler = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
-      if (intervalRef.current !== null) {
-        clearInterval(intervalRef.current);
-      }
+      // if (intervalRef.current !== null) {
+      //   clearInterval(intervalRef.current);
+      // }
 
       const { value } = e.currentTarget;
       const isSelected = selectedChoices.includes(Number(value));
@@ -146,6 +144,8 @@ const MultiChoices = <T extends FieldValues>({
     },
     [selectedChoices]
   );
+
+  setValue && setValue(name, selectedChoices)
 
   const renderPreview = () => {
     if (disabled || selectedChoices.length === 0) {

@@ -5,8 +5,9 @@ import {
   TSubscriptionCredit
 } from "@/schemas/AddStudentSchema.ts";
 import convert24HourToArabic from "@/utils/convert24HourToArabic.ts";
+import { TInitialStudent } from "@/schemas/AddEmployeeSchema.ts";
 
-type TTableRow = TSubscriptionCredit | TSpecificStudentLesson | TStudentInvoice | TStudentPayment
+type TTableRow = TSubscriptionCredit | TSpecificStudentLesson | TStudentInvoice | TStudentPayment | TInitialStudent
 
 type TSimpleTableProps<T extends TTableRow> = {
   tableHead: string[],
@@ -16,9 +17,9 @@ type TSimpleTableProps<T extends TTableRow> = {
 
 const SimpleTable = <T extends TTableRow>({tableHead, rows, noDataMsg}: TSimpleTableProps<T>) => {
   return (
-    <section>
+    <section className="w-full">
 
-      <div className="flex items-center gap-[7.2rem] pb-[2rem] border-b border-[#EBEBEB]">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] justify-items-start pb-[2rem] border-b border-[#EBEBEB]">
         {tableHead.map((col, idx) => (
           <span key={col}
                 className={`text-[#000000CC] font-medium ${idx === 0 ? 'min-w-[15rem]' : 'min-w-[9.2rem]'} text-center`}>{col}</span>
@@ -29,10 +30,10 @@ const SimpleTable = <T extends TTableRow>({tableHead, rows, noDataMsg}: TSimpleT
 
       {rows.length > 0 && rows.map(({id, ...rest}) => (
         <div key={id}
-             className={`flex items-center gap-[7.2rem] py-[1.6rem] ${id === 1 && 'pt-[2rem]'} border-b border-[#EBEBEB]`}>
+             className={`grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] justify-items-start py-[1.6rem] ${id === 1 && 'pt-[2rem]'} border-b border-[#EBEBEB]`}>
           {Object.entries(rest).map(([key, value], idx) => (
             <span key={key}
-                  className={`${idx === 0 ? 'min-w-[15rem]' : 'min-w-[9.2rem]'} text-center ${key === 'status' && 'text-[var(--main-color)]'}`}>
+                  className={`${idx === 0 ? 'min-w-[15rem]' : 'min-w-[9.2rem]'} text-center ${key === 'status' && 'text-[var(--main-color)]'} ${key.includes('phone') && "[direction:ltr]"}`}>
               {(key === 'from_time' || key === 'to_time') ? (convert24HourToArabic(value as string)) : value as string}
             </span>
           ))}

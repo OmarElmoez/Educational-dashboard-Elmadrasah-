@@ -1,8 +1,4 @@
-import {
-  POST_END_POINTS,
-  TPostEndPoints,
-  TPurpose,
-} from "@/constants/end-points";
+import { POST_END_POINTS, TPostEndPoints, TPurpose, } from "@/constants/end-points";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -11,14 +7,14 @@ type TProps = {
   hasFiles?: boolean;
   purpose: TPurpose;
   formData: TPostEndPoints[TPurpose]["dataType"] | FormData;
-  isEdit?:boolean;
-  id?:number | string;
+  isEdit?: boolean;
+  id?: number | string;
 };
 
 const actSendDataToServer = createAsyncThunk(
   "single-actions/actSendDataToServer",
-  async ({  hasFiles = false, purpose, formData, isEdit, id }: TProps, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+  async ({hasFiles = false, purpose, formData, isEdit, id}: TProps, thunkAPI) => {
+    const {rejectWithValue} = thunkAPI;
 
     if (hasFiles) {
       const validatedFormData = new FormData();
@@ -29,7 +25,8 @@ const actSendDataToServer = createAsyncThunk(
           value !== null &&
           !(value[0] instanceof File)
         ) {
-          Array.from(value).length !== 0 ? validatedFormData.append(key, JSON.stringify(value)) : [];
+          value.length !== 0 ? validatedFormData.append(key, JSON.stringify(value)) : validatedFormData.append(key,
+            "[]");
         } else if (Array.isArray(value) && value[0] instanceof File) {
           value.forEach((file, index) => {
             validatedFormData.append(`${key}[${index}]`, file);
@@ -44,7 +41,7 @@ const actSendDataToServer = createAsyncThunk(
     try {
       const url = POST_END_POINTS[purpose].url;
 
-      let response; 
+      let response;
 
       if (isEdit) {
         if (purpose === 'edit_student') {
@@ -54,18 +51,18 @@ const actSendDataToServer = createAsyncThunk(
             },
           });
         } else {
-         response = await axiosInstance.patch(url + id + '/', formData, {
-          headers: {
-            "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
-          },
-         });
+          response = await axiosInstance.patch(url + id + '/', formData, {
+            headers: {
+              "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
+            },
+          });
         }
       } else {
-         response = await axiosInstance.post(url, formData, {
+        response = await axiosInstance.post(url, formData, {
           headers: {
             "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
           },
-         });
+        });
       }
 
       return response.data || response;

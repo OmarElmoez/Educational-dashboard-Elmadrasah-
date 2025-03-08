@@ -1,70 +1,115 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
+  CircleLoadingIndecator,
   Dropdown,
   InputField,
+  LoadingIndicator,
   MultiChoices,
   PhoneField,
   Row,
   UploadFile,
-  CircleLoadingIndecator,
 } from "@/components";
 import { STATUS_OPTIONS, TIMEZONES_OPTIONS } from "@/constants";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
-import { actGetDropdownOptions } from "@/store/single-actions";
-import actGetSpecificEmployees from "@/store/table/act/actGetSpecificEmployee";
+import { actGetDropdownOptions, actSendDataToServer } from "@/store/single-actions";
 import { Heading } from "@/components/UI";
 import { useForm } from "react-hook-form";
-import Styles from "./EditEmployeeForm.module.css";
-import { AddEmployeeSchema } from "../../../../schemas/AddEmployeeSchema";
+import { TDataForSpecificEmployee } from "@/schemas/AddEmployeeSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TAddEmployeeFormDataForServer } from '@/schemas/AddEmployeeSchema';
-import { TEditEmployeeForm, EditEmployeeSchema } from '../../../../schemas/EditEmployeeSchema';
-import {
-  DAYS_OPTIONS,
-  WAGE_TYPES,
-  WORK_WAGE_TYPES,
-} from "@/constants/dropdown-options";
+import { EditEmployeeSchema, TEditEmployeeForm } from '@/schemas/EditEmployeeSchema.ts';
+import { WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
+import createListOfIds from "./utils/createListOfIds.ts";
+import { useFeedback } from "@/store/context";
+import usePredefinedChoices from "./hooks/usePredefinedChoices.ts";
 
-const { elementContainer } = Styles;
 const EditEmployeeForm = () => {
+  const {id} = useParams();
   const location = useLocation();
-  const specificEmployeeData :  TAddEmployeeFormDataForServer = location.state;
+  const specificEmployeeData: TDataForSpecificEmployee = location.state;
   const dispatch = useAppDispatch();
-  console.log(specificEmployeeData);
+  const {openFeedbackModal} = useFeedback();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
     setValue,
     reset,
-    watch,
   } = useForm<TEditEmployeeForm>({
     mode: "onBlur",
     resolver: zodResolver(EditEmployeeSchema),
   });
-  const setPreviousData = useCallback((response: TAddEmployeeFormDataForServer) => {
-    console.log({response})
-    setValue('is_active', response.is_active=== true? "true":"false");
-    setValue('subject_choices', response.subject_choices as number[]);
+  const setPreviousData = useCallback((response: TDataForSpecificEmployee) => {
+    setValue('is_active', response.is_active ? "true" : "false");
+    setValue('subject_choices', createListOfIds(response?.subject_choices_response || []));
+    setValue('initial_students', createListOfIds(response?.initial_students_response || []));
+    setValue('groups_id', createListOfIds(response?.groups || []));
+    setValue('user_permissions_id', createListOfIds(response?.user_permissions || []));
+    setValue('employee_wage', response?.employee_wage || '')
+    setValue('work_wage', response?.work_wage || '')
   }, [setValue])
+
   useEffect(() => {
-    dispatch(actGetDropdownOptions({ optionsFor: "subjects" }));
+    dispatch(actGetDropdownOptions({optionsFor: "subjects"}));
+    // @ts-ignore
     reset(specificEmployeeData);
     setPreviousData(specificEmployeeData);
-  }, [dispatch, reset, specificEmployeeData]);
+  }, [dispatch, reset, setPreviousData, specificEmployeeData]);
 
-  const isTeacher = watch("include_as_teacher");
-  const employType = watch("employee_type");
+  const isTeacher = specificEmployeeData?.include_as_teacher === true;
+  const isStaff = specificEmployeeData?.employee_type === 'Staff';
+
+  const [wage, setWage] = useState({
+    wage_type: specificEmployeeData?.wage_type,
+    work_wage_type: specificEmployeeData?.work_wage_type,
+  })
+
   const onSubmit = (data: TEditEmployeeForm) => {
-    console.log(data);
+    data['groups_id'] = data['groups_id']?.map(item => Number(item));
+    data['user_permissions_id'] = data['user_permissions_id']?.map(item => Number(item));
+    data['subject_choices'] = data['subject_choices']?.map(item => Number(item));
+    data['initial_students'] = data['initial_students']?.map(item => Number(item));
+    data["is_active"] = data["is_active"] === "true" ? 'True' : 'False';
+
+    dispatch(
+      actSendDataToServer({
+        purpose: "add_employee",
+        formData: data,
+        hasFiles: true,
+        isEdit: true,
+        id
+      })
+    )
+    .unwrap()
+    .then((res) => {
+      if (typeof res === 'string') {
+        openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
+        return;
+      }
+      openFeedbackModal("succeeded", "تم تعديل بيانات الموظف بنجاح!");
+      navigate(-1);
+    })
+    .catch((error) => {
+      openFeedbackModal("failed", error);
+    });
   };
+
+  const subjectChoices = usePredefinedChoices(specificEmployeeData, 'subject_choices_response');
+  const initialStudentsChoices = usePredefinedChoices(specificEmployeeData, 'initial_students_response');
+  const groupsIdsChoices = usePredefinedChoices(specificEmployeeData, 'groups');
+  const userPermissionsChoices = usePredefinedChoices(specificEmployeeData, 'user_permissions');
+
   return (
     <>
+      {!specificEmployeeData && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Heading text="نوع الموظف" />
-        <div className={elementContainer}>
+        <Heading text="نوع الموظف"/>
+        <Row>
           <Dropdown
             label="الحالة"
             name="is_active"
@@ -72,12 +117,12 @@ const EditEmployeeForm = () => {
             options={STATUS_OPTIONS}
             error={errors.is_active?.message as string}
           />
-        </div>
+          <article className="group"></article>
+        </Row>
         <Row>
           <InputField
             label="الأسم الأول"
             placeholder="الأسم الأول"
-            // isRequired
             register={register}
             name="first_name"
             error={errors.first_name?.message as string}
@@ -85,7 +130,6 @@ const EditEmployeeForm = () => {
           <InputField
             label="الأسم الأخير"
             placeholder="الأسم الأخير"
-            // isRequired
             register={register}
             name="last_name"
             error={errors.last_name?.message as string}
@@ -96,14 +140,12 @@ const EditEmployeeForm = () => {
             label="الأسم بالكامل"
             placeholder="الأسم بالكامل"
             register={register}
-            // isRequired
             name="full_name"
             error={errors.full_name?.message as string}
           />
           <InputField
             label="البريد الإلكتروني"
             placeholder="البريد الإلكتروني"
-            // isRequired
             register={register}
             name="email"
             error={errors.email?.message as string}
@@ -113,26 +155,20 @@ const EditEmployeeForm = () => {
           <Dropdown
             label="التوقيت الزمني"
             name="time_zone"
-            // isRequired
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors.time_zone?.message as string}
           />
           <PhoneField
-            control={control as any}
+            control={control}
             name="phone"
-            // isRequired
             error={errors.phone?.message as string}
             label="الهاتف المحمول"
           />
         </Row>
-        <hr className="hr" />
+        <hr className="hr"/>
         <span className="mainContainer">
-          <Heading text="المرفقات" />{" "}
-          <span
-            className="required"
-            style={{ position: "relative", top: "0px" }}
-          ></span>
+          <Heading text="المرفقات"/>
         </span>
 
         <Row>
@@ -174,6 +210,7 @@ const EditEmployeeForm = () => {
             register={register}
             name="national_id_expiration_date"
             error={errors.national_id_expiration_date?.message as string}
+            style={{alignSelf: 'flex-end'}}
           />
         </Row>
 
@@ -195,27 +232,26 @@ const EditEmployeeForm = () => {
             register={register}
             name="passport_expiration_date"
             error={errors.passport_expiration_date?.message as string}
+            style={{alignSelf: 'flex-end'}}
           />
         </Row>
-        <hr className="hr" />
-        <Heading text="المواد" />
+        <hr className="hr"/>
+        <Heading text="المواد"/>
         <Row>
           <MultiChoices
             register={register}
             name="subject_choices"
-            // isRequired
-            disabled={!isTeacher && employType === "Staff"}
+            disabled={!isTeacher && isStaff}
             error={errors.subject_choices?.message as string}
-            predefinedChoices={
-              specificEmployeeData && specificEmployeeData?.subject_choices
-            }
+            predefinedChoices={subjectChoices}
+            setValue={setValue}
           />
           <article className="group"></article>
         </Row>
-        <hr className="hr" />
-        <Heading text="تفاصيل التوظيف" />
+        <hr className="hr"/>
+        <Heading text="تفاصيل التوظيف"/>
 
-        <div className={elementContainer}>
+        <Row>
           <InputField
             label="مُسمي"
             placeholder="مُعلم العلوم"
@@ -223,108 +259,112 @@ const EditEmployeeForm = () => {
             name="position"
             error={errors.position?.message as string}
           />
-        </div>
+          <article className="group"></article>
+        </Row>
 
-        <div className={elementContainer}>
+        <Row>
           <Dropdown
             label="نوع أجر الدرس"
             name="wage_type"
             register={register}
             options={WAGE_TYPES}
-            disabled={!isTeacher && employType === "Staff"}
+            disabled={!isTeacher && isStaff}
+            handleChange={(val) => setWage((prev) => ({
+              ...prev,
+              wage_type: val,
+            }))}
             error={errors.wage_type?.message as string}
           />
 
-          {watch("work_wage_type") === "wage" ? (
+          {wage.wage_type === "wage" ? (
             <InputField
               label="معدل الأجر"
               placeholder="معدل الأجر"
               register={register}
               name="employee_wage"
-              disabled={!isTeacher && employType === "Staff"}
+              disabled={!isTeacher && isStaff}
               error={errors.employee_wage?.message as string}
             />
           ) : (
             <article className="group"></article>
           )}
-        </div>
-        <div className={elementContainer}>
+        </Row>
+        <Row>
           <Dropdown
             label="نوع الأجر غير التدريسي"
             name="work_wage_type"
             register={register}
             options={WORK_WAGE_TYPES}
-            disabled={!isTeacher && employType === "Staff"}
+            disabled={!isTeacher && isStaff}
             error={errors.work_wage_type?.message as string}
+            handleChange={(val) => setWage((prev) => ({
+              ...prev,
+              work_wage_type: val,
+            }))}
           />
 
-          {watch("work_wage_type") === "wage" ? (
+          {wage.work_wage_type === "wage" ? (
             <InputField
               label="معدل الأجر"
               placeholder="معدل الأجر"
               register={register}
               name="work_wage"
-              disabled={!isTeacher && employType === "Staff"}
+              disabled={!isTeacher && isStaff}
               error={errors.work_wage?.message as string}
             />
           ) : (
             <article className="group"></article>
           )}
-        </div>
-        <hr className="hr" />
+        </Row>
+        <hr className="hr"/>
 
-        <Heading text="الطلاب المعينون" />
+        <Heading text="الطلاب المعينون"/>
 
-        <div className={elementContainer}>
+        <Row>
           <MultiChoices
             register={register}
             name="initial_students"
-            disabled={!isTeacher && employType === "Staff"}
+            disabled={!isTeacher && isStaff}
             error={errors.initial_students?.message as string}
-            predefinedChoices={
-              specificEmployeeData && specificEmployeeData?.initial_students
-            }
+            predefinedChoices={initialStudentsChoices}
+            setValue={setValue}
           />
 
           <article className="group"></article>
-        </div>
+        </Row>
 
-        <hr className="hr" />
-        <Heading text="إضافة صلاحيات" />
-        <div className={elementContainer}>
+        <hr className="hr"/>
+        <Heading text="إضافة صلاحيات"/>
+        <Row>
           <MultiChoices
             register={register}
             name="groups_id"
-            // isRequired
             error={errors.groups_id?.message as string}
-            predefinedChoices={
-              specificEmployeeData && specificEmployeeData?.groups_id
-            }
+            predefinedChoices={groupsIdsChoices}
             position="relative"
+            setValue={setValue}
           />
           <article className="group"></article>
-        </div>
+        </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
-        <Heading text="إضافة صلاحيات خاصة" />
-        <div className={elementContainer}>
+        <Heading text="إضافة صلاحيات خاصة"/>
+        <Row>
           <MultiChoices
             register={register}
             name="user_permissions_id"
-            // isRequired
             error={errors.user_permissions_id?.message as string}
-            predefinedChoices={
-              specificEmployeeData && specificEmployeeData?.user_permissions_id
-            }
+            predefinedChoices={userPermissionsChoices}
             position="relative"
+            setValue={setValue}
           />
           <article className="group"></article>
-        </div>
+        </Row>
         <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
             {isSubmitting ? (
-              <CircleLoadingIndecator size={16} color="#fff" />
+              <CircleLoadingIndecator size={16} color="#fff"/>
             ) : (
               " حفظ"
             )}
