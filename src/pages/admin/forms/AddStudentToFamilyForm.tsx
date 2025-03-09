@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { format } from "date-fns";
 import { useFeedback } from "@/store/context";
 import {
   ColorField,
@@ -10,7 +9,7 @@ import {
   MultiChoices,
   PhoneField,
   Row,
-  CircleLoadingIndecator,
+  LoadingIndicator,
 } from "@/components";
 import { Heading } from "@/components/UI";
 import { NotificationForm } from "@/components/mini-forms";
@@ -21,7 +20,7 @@ import {
   TAddStudentToFamilyFormDataForServer,
 } from "@/schemas/AddStudentToFamilySchema";
 import { TOption } from "@/types/Dropdown";
-import { TModalRef } from "@/types/shared";
+import { TLoading, TModalRef } from "@/types/shared";
 import {
   TIMEZONES_OPTIONS,
   SERVICE_OPTIONS,
@@ -35,6 +34,7 @@ import {
   actSendDataToServer,
 } from "@/store/single-actions";
 import AddParentForm from "./AddParentForm";
+import removeLeadingZero from "./utils/removeLeadingZero.ts";
 // -------------------------------------------------------------------------
 
 const AddStudentToFamilyForm = () => {
@@ -47,12 +47,14 @@ const AddStudentToFamilyForm = () => {
   const [locationOptions, setLocationOptions] = useState<TOption[]>([]);
   const [curriculumOptions, setCurriculumOptions] = useState<TOption[]>([]);
   const [familiesList, setFamiliesList] = useState<TOption[]>([]);
+  const [loading, setLoading] = useState<TLoading>('idle')
+  const [removePreviewChoices, setRemovePreviewChoices] = useState(false)
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setValue,
     reset,
   } = useForm<TAddStudentToFamilyFormData>({
@@ -63,54 +65,55 @@ const AddStudentToFamilyForm = () => {
     },
   });
 
-  const onSubmit = (data: TAddStudentToFamilyFormData) => {
-    const enteredPhoneParts = data["mobile_phone"].split(" ");
-    let firstPartOfNumber = enteredPhoneParts[1];
-    if (firstPartOfNumber[0] === "0") {
-      firstPartOfNumber = firstPartOfNumber.slice(1);
-      enteredPhoneParts[1] = firstPartOfNumber;
+  const onSubmit = async (data: TAddStudentToFamilyFormData) => {
+    setLoading('pending')
+    setRemovePreviewChoices(false)
+
+    const processedData = {
+      ...data,
+      mobile_phone: removeLeadingZero(data['mobile_phone']),
+      is_superuser: false,
     }
-    data["mobile_phone"] = enteredPhoneParts.join("");
-
-    data["is_superuser"] = false;
-
-    // data.birth_date = format(data.birth_date || "", "yyyy-MM-dd");
-    // data.start_date = format(data.start_date || "", "yyyy-MM-dd");
 
     const serverData: TAddStudentToFamilyFormDataForServer = {
-      ...data,
+      ...processedData,
       student_type: "child",
-      status: data["status"] === "true",
-      subject_choices: data["subject_choices"]?.map((subject) =>
+      status: processedData["status"] === "true",
+      subject_choices: processedData["subject_choices"]?.map((subject) =>
         parseInt(subject)
       ),
-      initial_services: data["initial_services"]?.map((service) =>
+      initial_services: processedData["initial_services"]?.map((service) =>
         parseInt(service)
       ),
-      initial_teachers: data["initial_teachers"]?.map((teacher) =>
+      initial_teachers: processedData["initial_teachers"]?.map((teacher) =>
         parseInt(teacher)
       ),
     };
 
-    dispatch(
-      actSendDataToServer({
-        purpose: "add_family_student",
-        formData: serverData,
-      })
-    )
+    try {
+      const res = await dispatch(
+        actSendDataToServer({
+          purpose: "add_family_student",
+          formData: serverData,
+        })
+      )
       .unwrap()
-    .then((res) => {
+
       if (typeof res === 'string') {
+        setLoading('failed')
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
         return;
       }
+
+      setLoading('succeeded')
       openFeedbackModal("succeeded", "تم اضافة الطالب بنجاح!");
       reset()
       setRemovePreviewChoices(true)
-    })
-      .catch((error) => {
-        openFeedbackModal("failed", error);
-      });
+
+    } catch (error) {
+      openFeedbackModal("failed", error as string);
+      setLoading('failed')
+    }
   };
 
   useEffect(() => {
@@ -141,10 +144,11 @@ const AddStudentToFamilyForm = () => {
 
   const addNewFamilyRef = useRef<TModalRef>(null);
 
-  const [removePreviewChoices, setRemovePreviewChoices] = useState(false)
-
   return (
     <>
+      {loading === 'pending' && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <BasicModal ref={addNewFamilyRef} headerText="">
         <AddParentForm />
       </BasicModal>
@@ -376,13 +380,7 @@ const AddStudentToFamilyForm = () => {
         <hr className="hr" />
 
         <div className="submit-buttons-container">
-          <button type="submit" className="btn submit-btn">
-            {isSubmitting ? (
-              <CircleLoadingIndecator size={16} color="#fff" />
-            ) : (
-              " حفظ"
-            )}
-          </button>
+          <button type="submit" className="btn submit-btn">حفظ</button>
 
           <button
             type="button"

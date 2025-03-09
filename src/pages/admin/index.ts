@@ -8,7 +8,6 @@ const AdminStudentsPage = lazy(() => import('./Students'));
 const AdminRolesPage = lazy(() => import('./roles/Roles'));
 // FORMS
 const AddEmployeeForm = lazy(() => import("./forms/AddEmployeeForm"));
-const AddTeacherForm = lazy(() => import('./forms/AddTeacherForm'));
 const AddParentForm = lazy(() => import('./forms/AddParentForm'));
 const AddStudentForm = lazy(() => import('./forms/AddStudentForm'));
 const AddStudentToFamilyForm = lazy(() => import('./forms/AddStudentToFamilyForm'));
@@ -39,7 +38,6 @@ export {
   AdminReportsPage,
   AdminStudentsPage,
   AddEmployeeForm,
-  AddTeacherForm,
   AddParentForm,
   AddStudentForm,
   AddStudentToFamilyForm,

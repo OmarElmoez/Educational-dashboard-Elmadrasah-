@@ -81,7 +81,7 @@ const UnscheduledFamilyTableRow = ({
                 case "unscheduled":
                   return `/admin/schedule-lesson/${customer_id}/${rowData.unscheduled}/${rowData.id}`;
                 case "scheduled":
-                  return `/admin/schedule-emplyee/${customer_id}/${id}`;
+                  return `/admin/schedule-employee/${customer_id}/${id}`;
                 case "scheduling_error":
                   return `/admin/schedule-errors/${customer_id}/${id}`;
                 case "under_scheduling":

@@ -1,6 +1,6 @@
 import UploadIcon from "@/assets/upload.svg?react";
 import styles from "./uploadFile.module.css";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FieldValues, UseFormRegister, Path, Control } from "react-hook-form";
 import PdfIcon from "@/assets/pdf.svg?react";
 import WordIcon from "@/assets/word.svg?react";
@@ -25,6 +25,7 @@ const UploadFile = <T extends FieldValues>({
   maxFiles = 2,
   label,
   error,
+  removePreviewChoices
 }: {
   register: UseFormRegister<T>;
   name: Path<T>;
@@ -34,9 +35,10 @@ const UploadFile = <T extends FieldValues>({
   maxFiles?: number;
   label: string;
   error?: string;
+  removePreviewChoices?: boolean;
 }) => {
 
-  const [previewFiles, setPreviewFiles] = useState<FilePreview[]>([]); // Multiple previews
+  const [previewFiles, setPreviewFiles] = useState<FilePreview[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -44,7 +46,7 @@ const UploadFile = <T extends FieldValues>({
     const acceptedFiles = event.target.files;
 
     if (acceptedFiles && acceptedFiles.length > 0) {
-      const filesArray = Array.from(acceptedFiles); // Convert FileList to array
+      const filesArray = Array.from(acceptedFiles);
       const newPreviews = filesArray.map((file) => ({
         url: URL.createObjectURL(file),
         name: file.name,
@@ -56,7 +58,7 @@ const UploadFile = <T extends FieldValues>({
         ...filesArray,
       ]);
       if (fileInputRef.current) {
-        fileInputRef.current.value = ""; // Clear the input value
+        fileInputRef.current.value = "";
       }
     }
   };
@@ -141,6 +143,12 @@ const UploadFile = <T extends FieldValues>({
     return types.map((type) => typeMap[type]).join(",");
   };
 
+  useEffect(() => {
+    if (removePreviewChoices) {
+      setPreviewFiles([]);
+    }
+  }, [removePreviewChoices]);
+
   return (
     <article className="group">
       <label htmlFor={name} className="adminFormLabel">
@@ -150,7 +158,7 @@ const UploadFile = <T extends FieldValues>({
         <input
           type="file"
           accept={getAcceptString(fileTypes)}
-          multiple // Allow multiple files
+          multiple
           {...register(name)}
           onChange={handleFileChange}
           ref={fileInputRef}

@@ -1,10 +1,9 @@
 import {
   AddNewSubjectModal,
-  CircleLoadingIndecator,
   CountriesDropdown,
   Dropdown,
   DropdownWithSearch,
-  InputField,
+  InputField, LoadingIndicator,
   MultiChoices,
   PhoneField,
   Row,
@@ -29,11 +28,17 @@ import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
 import { DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
-import { TModalRef } from "@/types/shared";
+import { TLoading, TModalRef } from "@/types/shared";
 import { CalendarSettingsForm, NotificationForm, } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
 import { actGetDropdownOptions, actSendDataToServer, } from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
+import removeLeadingZero from "./utils/removeLeadingZero.ts";
+
+const InitialWageState = {
+  wage_type: "",
+  work_wage_type: "",
+}
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
@@ -41,10 +46,8 @@ const AddEmployeeForm = () => {
   const { countries, cities, states, chosenState } =
     useAppSelector((state) => state.location);
 
-
   const { openFeedbackModal } = useFeedback();
 
-  // const [choices, setChoices] = useState<TOption[]>([]);
   const { subjects } = useAppSelector((state) => state.formSubjects);
   const [removePreviewChoices, setRemovePreviewChoices] = useState(false);
 
@@ -52,7 +55,7 @@ const AddEmployeeForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setValue,
     reset,
     watch,
@@ -81,10 +84,7 @@ const AddEmployeeForm = () => {
 
   const [employeeType, setEmployeeType] = useState("")
 
-  const [wage, setWage] = useState({
-    wage_type: "",
-    work_wage_type: "",
-  })
+  const [wage, setWage] = useState(InitialWageState)
 
   const ONLY_STAFF = !isTeacher && employeeType === "Staff"
 
@@ -100,7 +100,11 @@ const AddEmployeeForm = () => {
     remove(index);
   };
 
-  const onSubmit = (data: TAddEmployeeFormData) => {
+  const [loading, setLoading] = useState<TLoading>('idle')
+
+  const onSubmit = async (data: TAddEmployeeFormData) => {
+    setLoading('pending')
+    setRemovePreviewChoices(false)
     if (
       (isTeacher || data.employee_type === "Teacher") &&
       (data.initial_students.length === 0 || data.subject_choices.length === 0)
@@ -114,68 +118,59 @@ const AddEmployeeForm = () => {
       data.availabilities = [];
     }
 
-    // Remove the 0 digit from the phone number
-    const enteredPhoneParts = data["phone"].split(" ");
-    let firstPartOfNumber = enteredPhoneParts[1];
-    if (firstPartOfNumber[0] === "0") {
-      firstPartOfNumber = firstPartOfNumber.slice(1);
-      enteredPhoneParts[1] = firstPartOfNumber;
+    const processedData = {
+      ...data,
+      phone: removeLeadingZero(data['phone']),
+      calendar_color_by: data.calendar_color_by ?? "",
+      calendar_setting: data.calendar_setting ?? "",
+      is_superuser: false,
     }
-    data["phone"] = enteredPhoneParts.join("");
-
-    if (data.calendar_color_by === null) {
-      data["calendar_color_by"] = "";
-    }
-
-    if (data.calendar_setting === null) {
-      data["calendar_setting"] = "";
-    }
-
-
-    data["is_superuser"] = false;
-
-    // Add region to timezone value
-    // data["time_zone"] = `${chosenRegion}/${data["time_zone"]}`;
 
     const serverData: TAddEmployeeFormDataForServer = {
-      ...data,
-      default_subject: data["default_subject"]
-        ? parseInt(data["default_subject"])
+      ...processedData,
+      default_subject: processedData["default_subject"]
+        ? parseInt(processedData["default_subject"])
         : null,
-      subject_choices: data["subject_choices"] ? data["subject_choices"].map((subject) =>
+      subject_choices: processedData["subject_choices"] ? processedData["subject_choices"].map((subject) =>
         parseInt(subject)
       ) : [],
-      initial_students: data["initial_students"] ? data["initial_students"].map((student) =>
+      initial_students: processedData["initial_students"] ? processedData["initial_students"].map((student) =>
         parseInt(student)
       ) : [],
-      is_active: data["is_active"] === "true",
-      user_permissions_id: data["user_permissions_id"]
-        ? data["user_permissions_id"].map((item) => Number(item))
+      is_active: processedData["is_active"] === "true",
+      user_permissions_id: processedData["user_permissions_id"]
+        ? processedData["user_permissions_id"].map((item) => Number(item))
         : [],
-      groups_id: data["groups_id"]
-        ? data["groups_id"].map((item) => Number(item))
+      groups_id: processedData["groups_id"]
+        ? processedData["groups_id"].map((item) => Number(item))
         : [],
     };
-    dispatch( 
-      actSendDataToServer({
-        formData: serverData,
-        hasFiles: true,
-        purpose: "add_employee",
-      })
-    )
-    .unwrap()
-    .then((res) => {
+
+    try {
+      const res = await dispatch(
+        actSendDataToServer({
+          formData: serverData,
+          hasFiles: true,
+          purpose: "add_employee",
+        })
+      )
+      .unwrap()
+
       if (typeof res === 'string') {
+        setLoading('failed')
         openFeedbackModal('failed', res);
         return;
       }
+
+      setLoading('succeeded')
       openFeedbackModal("succeeded", "تم اضافة الموظف بنجاح!");
       reset()
       setRemovePreviewChoices(true)
-    })
-    .catch((error) => {
-      openFeedbackModal("failed", error);
-    });
+      setWage(InitialWageState)
+    } catch (error) {
+      openFeedbackModal("failed", error as string);
+      setLoading('failed')
+    }
   };
   useEffect(() => {
     if (countries.length === 0) {
@@ -192,8 +187,12 @@ const AddEmployeeForm = () => {
   const formattedStates = formatStates(states);
   const addNewSubjectRef = useRef<TModalRef>(null);
 
+
   return (
     <>
+      {loading === 'pending' && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <AddNewSubjectModal ref={addNewSubjectRef} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Heading text="نوع الموظف" />
@@ -408,6 +407,7 @@ const AddEmployeeForm = () => {
             setValue={setValue}
             fileTypes={["images"]}
             error={errors.uploaded_pp?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <UploadFile
@@ -418,6 +418,7 @@ const AddEmployeeForm = () => {
             setValue={setValue}
             fileTypes={["pdfs", "word"]}
             error={errors.uploaded_cv?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -430,6 +431,7 @@ const AddEmployeeForm = () => {
             setValue={setValue}
             fileTypes={["images"]}
             error={errors.uploaded_id?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <InputField
@@ -452,6 +454,7 @@ const AddEmployeeForm = () => {
             setValue={setValue}
             fileTypes={["images"]}
             error={errors.uploaded_passport?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <InputField
@@ -690,6 +693,7 @@ const AddEmployeeForm = () => {
 
           <DropdownWithSearch label="الموقع الأفتراضي" name="initial_location" register={register}
                               optionsFor="locations"
+                              resetOption={removePreviewChoices}
                               setValue={setValue}/>
 
           <article className="group"></article>
@@ -755,33 +759,19 @@ const AddEmployeeForm = () => {
 
         <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
-            {isSubmitting ? (
-              <CircleLoadingIndecator size={16} color="#fff" />
-            ) : (
-              " حفظ"
-            )}
+               حفظ
           </button>
           <button
             type="button"
             onClick={() => {
-              // reset();
-              // setRemovePreviewChoices(true);
-              console.log(errors);
+              reset();
+              setRemovePreviewChoices(true);
+              setWage(InitialWageState)
             }}
             className="btn cancel-btn"
           >
             يلغى
           </button>
-          {/*<button*/}
-          {/*  type="button"*/}
-          {/*  onClick={() => {*/}
-          {/*    console.log("errors", errors);*/}
-          {/*    console.log("values", control._getWatch("subject_choices"));*/}
-          {/*  }}*/}
-          {/*  className="btn cancel-btn"*/}
-          {/*>*/}
-          {/*  test*/}
-          {/*</button>*/}
         </div>
       </form>
     </>

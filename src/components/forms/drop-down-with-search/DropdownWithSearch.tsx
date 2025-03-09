@@ -27,6 +27,7 @@ const DropdownWithSearch = <T extends FieldValues>({
                                                      name,
                                                      setValue,
   optionsFor,
+  resetOption,
                                                    }: {
   register: UseFormRegister<T>,
   name: Path<T>,
@@ -36,7 +37,8 @@ const DropdownWithSearch = <T extends FieldValues>({
   handleChange?: (option: TOption) => void;
   // to get option as needed option.label not id
   handleGetOption?: (option: TOption | null) => void;
-  optionsFor: TOptionsFor
+  optionsFor: TOptionsFor;
+  resetOption?: boolean;
 }) => {
   const [options, setOptions] = useState<TOption[]>([])
   const [isOpen, setIsOpen] = useState(false);
@@ -70,6 +72,12 @@ const DropdownWithSearch = <T extends FieldValues>({
         setSearchResults(res);
       });
   }, [debouncedQuery, dispatch, credentials?.token, optionsFor]);
+
+  useEffect(() => {
+    if (resetOption) {
+      setSelectedOption(null);
+    }
+  }, [resetOption]);
 
   return (
     <article className="group">

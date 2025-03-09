@@ -1,7 +1,7 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {LoginLayout, MainLayout} from "@/layouts";
 import {Classes} from "@/pages/student";
-import ProdectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 // ==================== Icons ====================
 // import HomeIcon from "@/assets/home.svg?react";
@@ -14,7 +14,6 @@ import {
   AddParentForm,
   AddStudentForm,
   AddStudentToFamilyForm,
-  AddTeacherForm,
   AdminClassesPage,
   AdminHomePage,
   AdminReportsPage,
@@ -76,9 +75,9 @@ const router = createBrowserRouter([
   {
     path: "/student",
     element: (
-      <ProdectedRoute allowedTypes={["Student"]}>
+      <ProtectedRoute allowedTypes={["Student"]}>
         <PageSuspense><MainLayout sideBarData={SIDEBAR_DATA["Student"]}/></PageSuspense>
-      </ProdectedRoute>
+      </ProtectedRoute>
     ),
     children: [
       // {
@@ -118,11 +117,11 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      <ProdectedRoute allowedTypes={["Admin"]}>
+      <ProtectedRoute allowedTypes={["Admin"]}>
         <PageSuspense>
           <MainLayout sideBarData={SIDEBAR_DATA["Admin"]}/>
         </PageSuspense>
-      </ProdectedRoute>
+      </ProtectedRoute>
     ),
     children: [
       {
@@ -223,12 +222,6 @@ const router = createBrowserRouter([
         ,
       },
       {
-        path: 'employees/add-teacher',
-        element: <PageSuspense>
-          <AddTeacherForm/>
-        </PageSuspense>,
-      },
-      {
         path: 'students/add-family',
         element: <PageSuspense>
           <AddParentForm/>
@@ -314,7 +307,7 @@ const router = createBrowserRouter([
         </PageSuspense>,
       },
       {
-        path: 'schedule-emplyee/:std_id/:id',
+        path: 'schedule-employee/:std_id/:id',
         element: <PageSuspense>
           <GeneralScheduledEmployeesLists/>
         </PageSuspense>,
@@ -341,9 +334,9 @@ const router = createBrowserRouter([
   {
     path: "/teacher",
     element: (
-      <ProdectedRoute allowedTypes={["Teacher"]}>
+      <ProtectedRoute allowedTypes={["Teacher"]}>
         <PageSuspense><MainLayout sideBarData={SIDEBAR_DATA["Teacher"]}/></PageSuspense>
-      </ProdectedRoute>
+      </ProtectedRoute>
     ),
     children: [
       // {
@@ -395,9 +388,9 @@ const router = createBrowserRouter([
   {
     path: "/family",
     element: (
-      <ProdectedRoute allowedTypes={["Family"]}>
+      <ProtectedRoute allowedTypes={["Family"]}>
         <PageSuspense><MainLayout sideBarData={SIDEBAR_DATA["Family"]}/></PageSuspense>
-      </ProdectedRoute>
+      </ProtectedRoute>
     ),
     children: [
       // {
