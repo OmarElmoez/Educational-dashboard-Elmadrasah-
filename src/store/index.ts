@@ -19,6 +19,7 @@ import location from "./location/LocationSlice";
 import formSubjects from "./form-subjects/FormSubjectsSlice";
 import table from "./table/TableSlice";
 import tabs from "./tabs/TabsSlice";
+import families from './families/FamiliesSlice.ts'
 
 const reviewQuestionsPersistConfig = {
   key: 'reviewQuestions',
@@ -66,6 +67,7 @@ const rootReducer = combineReducers({
   formSubjects,
   table,
   tabs: persistReducer(tabsPersistConfig, tabs),
+  families,
 })
 
 // const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

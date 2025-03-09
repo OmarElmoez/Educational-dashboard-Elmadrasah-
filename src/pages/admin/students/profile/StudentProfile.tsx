@@ -28,7 +28,6 @@ const StudentProfile = () => {
 
   return (
     <>
-
       {!specificStudentData && <div className="loadingBox">
           <LoadingIndicator/>
       </div>}

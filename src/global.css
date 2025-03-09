@@ -162,6 +162,25 @@ menu {
   top: -1rem;
 }
 
+.phone-cell {
+  direction: ltr;
+}
+
+.MuiDataGrid-root .MuiDataGrid-columnHeaderTitleContainer {
+  justify-content: center;
+}
+
+.MuiDataGrid-filler,
+.MuiDataGrid-cellEmpty {
+  display: none;
+}
+
+.MuiDataGrid-root .edit-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center !important;
+}
+
 /* override MUI styles */
 .css-45d4e2 {
   flex-direction: row-reverse;

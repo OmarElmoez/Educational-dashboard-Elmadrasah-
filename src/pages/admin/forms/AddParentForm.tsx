@@ -177,6 +177,15 @@ const AddParentForm = () => {
             label="الهاتف المحمول"
           />
 
+          <PhoneField
+            control={control as any}
+            error={errors.work_phone?.message as string}
+            name="work_phone"
+            label="هاتف العمل"
+          />
+        </Row>
+
+        <Row>
           <InputField
             label="هاتف المنزل"
             type="tel"
@@ -184,15 +193,6 @@ const AddParentForm = () => {
             name="home_phone"
             placeholder="071453343"
             error={errors.home_phone?.message as string}
-          />
-        </Row>
-
-        <Row>
-          <PhoneField
-            control={control as any}
-            error={errors.work_phone?.message as string}
-            name="work_phone"
-            label="هاتف العمل"
           />
 
           <InputField

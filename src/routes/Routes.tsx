@@ -30,7 +30,7 @@ import {
   RescheduleLesson,
   ScheduleLesson,
   StudentsList,
-  AdminRolesPage, EditStudent, StudentProfile,
+  AdminRolesPage, EditStudent, StudentProfile,FamiliesList, FamilyProfile, EditFamily
 } from "@/pages/admin";
 import {TeacherClassesPage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
@@ -226,6 +226,24 @@ const router = createBrowserRouter([
         element: <PageSuspense>
           <AddParentForm/>
         </PageSuspense>,
+      },
+      {
+        path: 'students/families-list',
+        element: <PageSuspense>
+          <FamiliesList />
+        </PageSuspense>
+      },
+      {
+        path: 'students/families-list/:id',
+        element: <PageSuspense>
+          <FamilyProfile />
+        </PageSuspense>
+      },
+      {
+        path: 'students/families-list/:id/edit',
+        element: <PageSuspense>
+          <EditFamily />
+        </PageSuspense>
       },
       {
         path: 'students/add-student',

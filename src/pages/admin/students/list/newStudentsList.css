@@ -12,10 +12,6 @@
   display: none;
 }
 
-.phone-cell {
-  direction: ltr;
-}
-
 .MuiDataGrid-root .edit-cell {
   display: flex;
   align-items: center;

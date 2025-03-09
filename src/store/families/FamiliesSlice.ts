@@ -2,18 +2,22 @@ import { TLoading } from "@/types/shared";
 import { createSlice } from "@reduxjs/toolkit";
 import actGetAllFamilies from "./act/actGetAllFamilies";
 import { isString } from "@/types/gurads";
-import { TAllFamiliesData } from "@/types/table";
+import { TFamilyData } from "@/types/table";
 
 type TFamiliesState = {
-  allFamiliesData: TAllFamiliesData[];
+  familiesData: TFamilyData[];
   loading: TLoading;
   error: string | null;
+  next: string | null;
+  previous: string | null;
 };
 
 const initialState: TFamiliesState = {
-  allFamiliesData: [],
+  familiesData: [],
   loading: "idle",
   error: null,
+  next: null,
+  previous: null,
 };
 
 const familiesSlice = createSlice({
@@ -28,7 +32,9 @@ const familiesSlice = createSlice({
   
       builder.addCase(actGetAllFamilies.fulfilled, (state, action) => {
         state.loading = "succeeded"
-        state.allFamiliesData = action.payload
+        state.familiesData = action.payload.results;
+        state.next = action.payload.next;
+        state.previous = action.payload.previous;
       })
   
       builder.addCase(actGetAllFamilies.rejected, (state, action) => {

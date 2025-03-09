@@ -8,7 +8,7 @@ const actGetAllFamilies = createAsyncThunk('families/getAllFamilies', async (_, 
   const { rejectWithValue } = thunkAPI;
 
   try {
-    const response = await axiosInstance.get<TAllFamiliesData[]>('/customer/families');
+    const response = await axiosInstance.get<TAllFamiliesData>('/customer/families');
     return response.data;
   } catch (error) {
     return rejectWithValue(axiosErrorHandler(error))

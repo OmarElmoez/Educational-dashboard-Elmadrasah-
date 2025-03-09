@@ -7,6 +7,7 @@ import location from "@/store/location/LocationSlice.ts";
 import formSubjects from "@/store/form-subjects/FormSubjectsSlice.ts";
 import table from "@/store/table/TableSlice.ts";
 import tabs from "@/store/tabs/TabsSlice.ts"
+import families from "@/store/families/FamiliesSlice.ts"
 
 import { RootState } from "@/store";
 import { configureStore } from "@reduxjs/toolkit";
@@ -70,6 +71,10 @@ export const setupTestWrapper = (
     },
     tabs: {
       ...tabs(undefined, { type: 'INIT' }),
+      ...defaultPersist
+    },
+    families: {
+      ...families(undefined, { type: 'INIT' }),
       ...defaultPersist
     }
   };
