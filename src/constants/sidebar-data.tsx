@@ -29,6 +29,7 @@ import {
 } from "@/assets/nav-icons";
 import StudentIcon from "@/assets/student.svg?react";
 import UploadIcon from "@/assets/upload_icon.svg?react";
+import RolesIcon from "@/assets/roles.svg?react";
 
 const SIDEBAR_DATA = {
   Student: [
@@ -234,7 +235,13 @@ const SIDEBAR_DATA = {
         },
       ],
     },
-
+    {
+      title: "الادوار",
+      path: "roles",
+      icon: <RolesIcon />,
+      page_title: "الادوار",
+      children: undefined
+    },
     {
       title: "التقارير",
       path: "reports",
