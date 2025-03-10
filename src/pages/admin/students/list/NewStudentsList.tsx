@@ -34,10 +34,11 @@ const NewStudentsList = () => {
   useEffect(() => {
     setLoading(true);
     dispatch(actGetStudents({}))
-      .then(() => {
+    .unwrap()
+      .then((res) => {
         setLoading(false);
-        setNext(students.next);
-        setPrevious(students.previous); 
+        setNext(res.next);
+        setPrevious(res.previous);
       })
       .catch((error) => {
         setLoading(false);
@@ -50,10 +51,11 @@ const NewStudentsList = () => {
     if (next) {
       setLoading(true);
       dispatch(actGetStudents({ next }))
-        .then(() => {
+      .unwrap()
+        .then((res) => {
           setLoading(false);
-          setNext(students.next);
-          setPrevious(students.previous); 
+          setNext(res.next);
+          setPrevious(res.previous);
         })
         .catch((error) => {
           setLoading(false);
@@ -66,10 +68,11 @@ const NewStudentsList = () => {
     if (previous) {
       setLoading(true);
       dispatch(actGetStudents({ previous }))
-        .then(() => {
+      .unwrap()
+        .then((res) => {
           setLoading(false);
-          setNext(students.next);
-          setPrevious(students.previous);
+          setNext(res.next);
+          setPrevious(res.previous);
         })
         .catch((error) => {
           setLoading(false);
@@ -185,7 +188,7 @@ const NewStudentsList = () => {
         paginationMode="client"
       />
 
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}>
+      <Box sx={{display: "flex", justifyContent: "center", gap: 2, padding: 2}}>
         <Button
           variant="contained"
           onClick={handlePrevious}
