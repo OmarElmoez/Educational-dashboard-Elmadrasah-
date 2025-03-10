@@ -21,7 +21,11 @@ import {
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import { AddEmployeeSchema, TAddEmployeeFormData, TAddEmployeeFormDataForServer, } from "@/schemas/AddEmployeeSchema";
+import {
+  AddEmployeeSchema,
+  TAddEmployeeFormData,
+  TAddEmployeeFormDataForServer,
+} from "@/schemas/AddEmployeeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -31,7 +35,10 @@ import { DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown
 import { TLoading, TModalRef } from "@/types/shared";
 import { CalendarSettingsForm, NotificationForm, } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
-import { actGetDropdownOptions, actSendDataToServer, } from "@/store/single-actions";
+import {
+  actGetDropdownOptions,
+  actSendDataToServer,
+} from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import removeLeadingZero from "./utils/removeLeadingZero.ts";
 
@@ -49,6 +56,7 @@ const AddEmployeeForm = () => {
   const { openFeedbackModal } = useFeedback();
 
   const { subjects } = useAppSelector((state) => state.formSubjects);
+
   const [removePreviewChoices, setRemovePreviewChoices] = useState(false);
 
   const {
@@ -209,11 +217,10 @@ const AddEmployeeForm = () => {
           >
             {employeeType === "Staff" && (
               <SingleCheckbox
-                className="includeAsATeacher"
                 register={register}
                 name="include_as_teacher"
-                label="تضمين كمُعلم"
-                error=""
+                label="تضمين كمعلم"
+                error={errors.include_as_teacher?.message as string}
               />
             )}
           </Dropdown>
@@ -607,7 +614,7 @@ const AddEmployeeForm = () => {
                 label="وقت البدء"
                 placeholder="03:00 "
                 type="time"
-                disabled={ONLY_STAFF}
+                disabled={!isTeacher && employeeType === "Staff"}
                 name={`availabilities.${index}.start_time`} // Pass name separately
                 register={register} // Pass the entire register function
                 error={
@@ -631,7 +638,7 @@ const AddEmployeeForm = () => {
                 label="تفاصيل أخرى"
                 placeholder="03:00 "
                 type="text"
-                disabled={ONLY_STAFF}
+                disabled={!isTeacher && employeeType === "Staff"}
                 name={`availabilities.${index}.description`} // Pass name separately
                 register={register} // Pass the entire register function
                 error={
@@ -654,7 +661,7 @@ const AddEmployeeForm = () => {
                   </button>
                 </div>
               ) : (
-                <div style={{alignItems: "center", display: ONLY_STAFF ? 'none' : 'flex'}}>
+                <div style={{ alignItems: "center" }}>
                   <button
                     className="add-action-btn"
                     type="button"
@@ -687,7 +694,7 @@ const AddEmployeeForm = () => {
           {/*  type="url"*/}
           {/*  register={register}*/}
           {/*  name="link"*/}
-          {/*  disabled={ONLY_STAFF}*/}
+          {/*  disabled={!isTeacher && employeeType === "Staff"}*/}
           {/*  error={errors.link?.message as string}*/}
           {/*/>*/}
 

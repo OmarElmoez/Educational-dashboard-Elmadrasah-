@@ -18,6 +18,7 @@ type TTableState = {
     data: TCustomer[];
     next: string | null;
     previous: string | null;
+    count: number;
   };
   invoices: {
     data: TInvoice[];
@@ -50,6 +51,7 @@ const initialState: TTableState = {
     data: [],
     next: null,
     previous: null,
+    count: 0,
   },
   invoices: {
     data: [],
@@ -124,6 +126,7 @@ const TableSlice = createSlice({
         state.students.data = action.payload.results as TCustomer[];
         state.students.next = action.payload.next;
         state.students.previous = action.payload.previous;
+        state.students.count = action.payload.count;
       })
 
       .addCase(actGetStudents.rejected, (state, action) => {

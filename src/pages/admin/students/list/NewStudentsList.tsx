@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   DataGrid,
   GridColDef,
+  GridPaginationModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import { actGetStudents } from "@/store/table/TableSlice.ts";
 
@@ -17,14 +19,64 @@ import "./newStudentsList.css";
 import { useNavigate } from "react-router-dom";
 
 const NewStudentsList = () => {
-  const { students, loading } = useAppSelector((state) => state.table);
-
+  const { students } = useAppSelector((state) => state.table);
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 20,  
+  });
+  const [loading, setLoading] = useState<boolean>(true);
+  const [next, setNext] = useState<string | null>(null);
+  const [previous, setPrevious] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(actGetStudents({}));
+    setLoading(true);
+    dispatch(actGetStudents({}))
+      .then(() => {
+        setLoading(false);
+        setNext(students.next);
+        setPrevious(students.previous); 
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error fetching students:", error);
+      });
   }, [dispatch]);
+
+
+  const handleNext = () => {
+    if (next) {
+      setLoading(true);
+      dispatch(actGetStudents({ next }))
+        .then(() => {
+          setLoading(false);
+          setNext(students.next);
+          setPrevious(students.previous); 
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching next page:", error);
+        });
+    }
+  };
+
+  const handlePrevious = () => {
+    if (previous) {
+      setLoading(true);
+      dispatch(actGetStudents({ previous }))
+        .then(() => {
+          setLoading(false);
+          setNext(students.next);
+          setPrevious(students.previous);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching previous page:", error);
+        });
+    }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -121,23 +173,34 @@ const NewStudentsList = () => {
         }}
         rows={students.data}
         columns={columns}
-        initialState={{
-          pagination: { paginationModel: { page: 0, pageSize: 20 } },
-        }}
-        onPaginationModelChange={() => console.log("paginationModelChange")}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         pageSizeOptions={[10, 20, 50]}
         checkboxSelection
         disableRowSelectionOnClick
         slots={{ toolbar: CustomToolbar }}
         localeText={localeToolbarText}
-        loading={loading === "pending"}
-        slotProps={{
-          loadingOverlay: {
-            variant: "skeleton",
-            noRowsVariant: "skeleton",
-          },
-        }}
+        loading={loading}
+        rowCount={students.data.length}
+        paginationMode="client"
       />
+
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}>
+        <Button
+          variant="contained"
+          onClick={handlePrevious}
+          disabled={!previous}
+        >
+          المجموعة السابقة
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleNext}
+          disabled={!next}
+        >
+          المجموعة التالية
+        </Button>
+      </Box>
     </Box>
   );
 };
