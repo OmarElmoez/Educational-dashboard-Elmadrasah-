@@ -1,8 +1,7 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TDataForSpecificStudent } from "@/schemas/AddStudentSchema.ts";
 import {
-  CircleLoadingIndecator,
   Dropdown,
   InputField,
   LoadingIndicator,
@@ -18,6 +17,7 @@ import { EditStudentSchema, TEditStudentSchema } from "@/schemas/EditStudentSche
 import { actSendDataToServer } from "@/store/single-actions";
 import { useAppDispatch } from "@/store/hooks.ts";
 import { useFeedback } from "@/store/context";
+import { TLoading } from "@/types/shared.ts";
 
 const EditStudent = () => {
 
@@ -25,13 +25,14 @@ const EditStudent = () => {
 
   const location = useLocation();
   const specificStudentData: TDataForSpecificStudent = location.state;
+  const [loading, setLoading] = useState<TLoading>('idle')
 
   const {
     handleSubmit,
     register,
     control,
     reset,
-    formState: {isSubmitting},
+    formState: {errors},
     setValue
   } = useForm<TEditStudentSchema>({
     mode: "onBlur",
@@ -39,6 +40,7 @@ const EditStudent = () => {
   })
 
   const setPreviousData = useCallback((response: TDataForSpecificStudent) => {
+    setValue('status', response.status ? "true" : "false");
     setValue('billing_method', response.billing_method);
     setValue('subject_choices', response.subject_choices as number[]);
     setValue('initial_services', response.initial_services as number[]);
@@ -57,11 +59,16 @@ const EditStudent = () => {
 
   const onSubmit = (data: TEditStudentSchema) => {
 
+    if (data.status === "") {
+      openFeedbackModal('failed', "برجاء تحديد الحالة.");
+      return;
+    }
+
     const formattedServerData = {
       ...data,
       subject_choices: data['subject_choices'].map(subjectId => Number(subjectId)),
       initial_services: data['initial_services'].map(serviceId => Number(serviceId)),
-      student_cost: data['student_cost'],
+      student_cost: data['student_cost'] || '0.00',
       billing_method: data['billing_method'],
       first_name: data['first_name'],
       last_name: data['last_name'],
@@ -69,6 +76,9 @@ const EditStudent = () => {
       email: data['email'],
       time_zone: data['time_zone'],
     }
+
+    setLoading('pending');
+
     dispatch(
       actSendDataToServer({
         purpose: "edit_student",
@@ -80,9 +90,12 @@ const EditStudent = () => {
     .unwrap()
     .then((res) => {
       if (typeof res === 'string') {
+        setLoading('failed')
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
         return;
       }
+
+      setLoading('succeeded')
       openFeedbackModal("succeeded", "تم تعديل بيانات الطالب بنجاح!");
       navigate(-1);
     })
@@ -95,6 +108,9 @@ const EditStudent = () => {
       {!specificStudentData && <div className="loadingBox">
           <LoadingIndicator/>
       </div>}
+      {loading === 'pending' && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Dropdown
@@ -102,7 +118,7 @@ const EditStudent = () => {
             name="status"
             register={register}
             options={STATUS_OPTIONS}
-            error=""
+            error={errors?.status?.message as string}
           />
 
           <InputField
@@ -120,7 +136,7 @@ const EditStudent = () => {
             placeholder="الأسم الأول"
             register={register}
             name="first_name"
-            error=""
+            error={errors?.first_name?.message as string}
           />
 
           <InputField
@@ -128,7 +144,7 @@ const EditStudent = () => {
             placeholder="الأسم الأخير"
             register={register}
             name="last_name"
-            error=""
+            error={errors?.last_name?.message as string}
           />
         </Row>
 
@@ -148,7 +164,7 @@ const EditStudent = () => {
             name="time_zone"
             options={TIMEZONES_OPTIONS}
             register={register}
-            error=""
+            error={errors?.time_zone?.message as string}
           />
 
           <InputField
@@ -164,7 +180,7 @@ const EditStudent = () => {
           <PhoneField
             name="mobile_phone"
             control={control as any}
-            error=""
+            error={errors?.mobile_phone?.message as string}
             label="الهاتف المحمول"
           />
           <section className="group"></section>
@@ -177,14 +193,16 @@ const EditStudent = () => {
           <MultiChoices
             register={register}
             name="subject_choices"
-            error=""
+            error={errors?.subject_choices?.message as string}
+            setValue={setValue}
             predefinedChoices={specificStudentData && specificStudentData?.subject_choices}
           />
 
           <MultiChoices
             register={register}
             name="initial_services"
-            error=""
+            error={errors?.initial_services?.message as string}
+            setValue={setValue}
             predefinedChoices={specificStudentData && specificStudentData?.initial_services}
           />
         </Row>
@@ -196,7 +214,7 @@ const EditStudent = () => {
             name="billing_method"
             register={register}
             options={SERVICE_OPTIONS}
-            error=""
+            error={errors?.billing_method?.message as string}
           />
 
           <InputField
@@ -209,12 +227,8 @@ const EditStudent = () => {
           />
         </Row>
 
-        <button type="submit" className="btn submit-btn">
-          {isSubmitting ? (
-            <CircleLoadingIndecator size={16} color="#fff"/>
-          ) : (
-            "تعديل"
-          )}
+        <button type="submit" className="btn submit-btn" style={{marginTop: '2rem'}}>
+          تعديل
         </button>
       </form>
     </>
