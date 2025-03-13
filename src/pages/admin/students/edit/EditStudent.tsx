@@ -18,7 +18,6 @@ const EditStudent = () => {
   const {id} = useParams();
 
   const location = useLocation();
-  // const specificStudentData: TDataForSpecificStudent = location.state;
   const [loading, setLoading] = useState<TLoading>('idle')
 
   const [specificStudentData, setSpecificStudentData] = useState<TDataForSpecificStudent>(location.state)

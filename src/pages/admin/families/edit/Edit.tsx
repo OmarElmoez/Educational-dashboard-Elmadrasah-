@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { TSpecificFamilyResponse } from "@/services/families.ts";
+import { getSpecificFamily, TSpecificFamilyResponse } from "@/services/families.ts";
 import {
   Dropdown,
   InputField,
@@ -22,27 +22,43 @@ const EditFamily = () => {
   const {id} = useParams();
 
   const location = useLocation();
-  const specificFamilyData: TSpecificFamilyResponse = location.state;
+  const [specificFamilyData, setSpecificFamilyData] = useState<TSpecificFamilyResponse>(location.state)
   const {openFeedbackModal} = useFeedback();
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const [loading, setLoading] = useState<TLoading>('idle')
+
+  useEffect(() => {
+    if (!specificFamilyData && id) {
+      getSpecificFamily(id).then((data) => {
+        setSpecificFamilyData(data)
+      })
+    }
+  }, [id, specificFamilyData]);
 
   const {
     handleSubmit,
     register,
     control,
     reset,
+    formState: { errors },
   } = useForm<TEditFamilySchema>({
     mode: "onBlur",
     resolver: zodResolver(EditFamilySchema),
   })
   
   useEffect(() => {
+    if (specificFamilyData) {
     reset(specificFamilyData)
+    }
   }, [reset, specificFamilyData])
 
   const onSubmit = async (data: TEditFamilySchema) => {
+    if (data.status === "") {
+      openFeedbackModal('failed', "برجاء تحديد الحالة.");
+      return;
+    }
+
     setLoading("pending")
 
     try {
@@ -57,6 +73,7 @@ const EditFamily = () => {
         .unwrap()
 
       if (typeof res === 'string') {
+        setLoading('failed')
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
         return;
       }
@@ -94,7 +111,7 @@ const EditFamily = () => {
             placeholder="البريد الإلكتروني"
             register={register}
             name="email"
-            error=""
+            error={errors?.email?.message as string}
           />
         </Row>
 
@@ -104,7 +121,7 @@ const EditFamily = () => {
             placeholder="الأسم الأول"
             register={register}
             name="first_name"
-            error=""
+            error={errors?.first_name?.message as string}
           />
 
           <InputField
@@ -112,7 +129,7 @@ const EditFamily = () => {
             placeholder="الأسم الأخير"
             register={register}
             name="last_name"
-            error=""
+            error={errors?.last_name?.message as string}
           />
         </Row>
 
@@ -122,7 +139,7 @@ const EditFamily = () => {
             placeholder="الأسم بالكامل"
             register={register}
             name="full_name"
-            error=""
+            error={errors?.full_name?.message as string}
           />
 
           <Dropdown
@@ -130,14 +147,14 @@ const EditFamily = () => {
             name="time_zone"
             options={TIMEZONES_OPTIONS}
             register={register}
-            error=""
+            error={errors?.time_zone?.message as string}
           />
         </Row>
         <Row>
           <PhoneField
             name="mobile_phone"
             control={control as any}
-            error=""
+            error={errors?.mobile_phone?.message as string}
             label="الهاتف المحمول"
           />
           <section className="group"></section>

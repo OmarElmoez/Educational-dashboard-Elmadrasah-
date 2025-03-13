@@ -91,7 +91,7 @@ export type TSpecificFamilyResponse = {
   students_attributes: Student[];
   first_name: string;
   last_name: string;
-  full_name: string | null;
+  full_name: string;
   email: string;
   mobile_phone: string;
   status: boolean;

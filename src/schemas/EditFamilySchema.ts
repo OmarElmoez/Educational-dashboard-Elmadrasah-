@@ -4,12 +4,12 @@ import { matchIsValidTel } from "mui-tel-input";
 export const EditFamilySchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
-  full_name: z.string().min(1, "برجاء ادخال الاسم الكامل").nullable(),
+  full_name: z.string().min(1, "برجاء ادخال الاسم بالكامل"),
   email: z
   .string()
   .min(1, "برجاء ادخال البريد الإلكتروني")
   .email("برجاء ادخال بريد إلكتروني صحيح"),
-  status: z.boolean(),
+  status: z.union([z.string(), z.boolean()]),
   mobile_phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
