@@ -27,7 +27,6 @@ export const EditEmployeeSchema = z.object({
   passport_expiration_date: z
     .string()
     .optional(),
-
   subject_choices: z.array(z.union([z.string(), z.number()])).min(1, {message: 'يجب علي الاقل اختيار مادة.'}),
   position: z.string().min(1, "برجاء ادخال المسمى"),
   initial_students: z.array(z.union([z.string(), z.number()])).min(1, {message: 'يرجي تحديد الطلاب.'}),
