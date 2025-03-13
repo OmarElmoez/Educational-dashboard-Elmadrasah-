@@ -91,6 +91,15 @@ const NewStudentsList = () => {
       field: "first_name",
       headerName: "الاسم الأول",
       width: 140,
+      renderCell: (params) => (
+        <button
+          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          disabled={!params.row.id}
+          onClick={() => navigate(`/admin/students/profile/${params.row.id}`)}
+        >
+          {params.value}
+        </button>
+      )
     },
     {
       field: "last_name",
@@ -140,7 +149,7 @@ const NewStudentsList = () => {
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
-          onClick={() => navigate(`/admin/students/profile/${params.row.id}`)}
+          onClick={() => navigate(`/admin/students/profile/${params.row.id}/edit`)}
         >
           <EditPenIcon />
         </button>

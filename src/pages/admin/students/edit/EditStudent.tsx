@@ -1,14 +1,7 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { TDataForSpecificStudent } from "@/schemas/AddStudentSchema.ts";
-import {
-  Dropdown,
-  InputField,
-  LoadingIndicator,
-  MultiChoices,
-  PhoneField,
-  Row
-} from "@/components";
+import { Dropdown, InputField, LoadingIndicator, MultiChoices, PhoneField, Row } from "@/components";
 import { useForm } from "react-hook-form";
 import { SERVICE_OPTIONS, STATUS_OPTIONS, TIMEZONES_OPTIONS } from "@/constants";
 import { Heading } from "@/components/UI";
@@ -18,14 +11,25 @@ import { actSendDataToServer } from "@/store/single-actions";
 import { useAppDispatch } from "@/store/hooks.ts";
 import { useFeedback } from "@/store/context";
 import { TLoading } from "@/types/shared.ts";
+import { getSpecificStudent } from "@/services/studentsAndTeachers.ts";
 
 const EditStudent = () => {
 
   const {id} = useParams();
 
   const location = useLocation();
-  const specificStudentData: TDataForSpecificStudent = location.state;
+  // const specificStudentData: TDataForSpecificStudent = location.state;
   const [loading, setLoading] = useState<TLoading>('idle')
+
+  const [specificStudentData, setSpecificStudentData] = useState<TDataForSpecificStudent>(location.state)
+
+  useEffect(() => {
+    if (!specificStudentData && id) {
+      getSpecificStudent({id}).then((data) => {
+        setSpecificStudentData(data)
+      })
+    }
+  }, [id, specificStudentData]);
 
   const {
     handleSubmit,
@@ -47,8 +51,10 @@ const EditStudent = () => {
   }, [setValue])
 
   useEffect(() => {
-    reset(specificStudentData)
-    setPreviousData(specificStudentData)
+    if (specificStudentData) {
+      reset(specificStudentData)
+      setPreviousData(specificStudentData)
+    }
   }, [reset, setPreviousData, specificStudentData]);
 
   const dispatch = useAppDispatch()
@@ -126,7 +132,7 @@ const EditStudent = () => {
             placeholder="البريد الإلكتروني"
             register={register}
             name="email"
-            error=""
+            error={errors?.email?.message as string}
           />
         </Row>
 
