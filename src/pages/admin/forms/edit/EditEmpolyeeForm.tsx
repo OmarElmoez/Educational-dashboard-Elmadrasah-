@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  CircleLoadingIndecator,
   Dropdown,
   InputField,
   LoadingIndicator,
@@ -22,20 +21,22 @@ import { WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
 import createListOfIds from "./utils/createListOfIds.ts";
 import { useFeedback } from "@/store/context";
 import usePredefinedChoices from "./hooks/usePredefinedChoices.ts";
+import actGetSpecificEmployees from "@/store/table/act/actGetSpecificEmployee.ts";
+import { TLoading } from "@/types/shared.ts";
 
 const EditEmployeeForm = () => {
   const {id} = useParams();
   const location = useLocation();
-  const specificEmployeeData: TDataForSpecificEmployee = location.state;
+  const [specificEmployeeData, setSpecificEmployeeData] = useState<TDataForSpecificEmployee>(location.state)
   const dispatch = useAppDispatch();
   const {openFeedbackModal} = useFeedback();
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState<TLoading>('idle')
   const {
     register,
     handleSubmit,
     control,
-    formState: {errors, isSubmitting},
+    formState: {errors},
     setValue,
     reset,
   } = useForm<TEditEmployeeForm>({
@@ -52,22 +53,42 @@ const EditEmployeeForm = () => {
     setValue('work_wage', response?.work_wage || '')
   }, [setValue])
 
+  const [wage, setWage] = useState({
+    wage_type: "",
+    work_wage_type: "",
+  })
+
+  useEffect(() => {
+    dispatch(actGetSpecificEmployees({ employeeID: Number(id) })).unwrap().then(
+      (res) => {
+        // @ts-ignore
+        setSpecificEmployeeData(res);
+        setWage({
+          wage_type: res?.wage_type,
+          work_wage_type: res?.work_wage_type,
+        })
+      }
+    );
+  }, [dispatch, id]);
+
   useEffect(() => {
     dispatch(actGetDropdownOptions({optionsFor: "subjects"}));
-    // @ts-ignore
-    reset(specificEmployeeData);
-    setPreviousData(specificEmployeeData);
+    if (specificEmployeeData) {
+      reset(specificEmployeeData);
+      setPreviousData(specificEmployeeData);
+    }
   }, [dispatch, reset, setPreviousData, specificEmployeeData]);
 
   const isTeacher = specificEmployeeData?.include_as_teacher === true;
   const isStaff = specificEmployeeData?.employee_type === 'Staff';
 
-  const [wage, setWage] = useState({
-    wage_type: specificEmployeeData?.wage_type,
-    work_wage_type: specificEmployeeData?.work_wage_type,
-  })
-
   const onSubmit = (data: TEditEmployeeForm) => {
+    if (data.is_active === "") {
+      setLoading('failed')
+      openFeedbackModal('failed', "برجاء تحديد الحالة.");
+      return;
+    }
+
     data['groups_id'] = data['groups_id']?.map(item => Number(item));
     data['user_permissions_id'] = data['user_permissions_id']?.map(item => Number(item));
     data['subject_choices'] = data['subject_choices']?.map(item => Number(item));
@@ -86,13 +107,17 @@ const EditEmployeeForm = () => {
     .unwrap()
     .then((res) => {
       if (typeof res === 'string') {
+        setLoading('failed')
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
         return;
       }
+
+      setLoading('succeeded')
       openFeedbackModal("succeeded", "تم تعديل بيانات الموظف بنجاح!");
       navigate(-1);
     })
     .catch((error) => {
+      setLoading('failed')
       openFeedbackModal("failed", error);
     });
   };
@@ -105,6 +130,9 @@ const EditEmployeeForm = () => {
   return (
     <>
       {!specificEmployeeData && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
+      {loading === 'pending' && <div className="loadingBox">
           <LoadingIndicator/>
       </div>}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -141,7 +169,7 @@ const EditEmployeeForm = () => {
             placeholder="الأسم بالكامل"
             register={register}
             name="full_name"
-            error={errors.full_name?.message as string}
+            error=""
           />
           <InputField
             label="البريد الإلكتروني"
@@ -339,7 +367,7 @@ const EditEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="groups_id"
-            error={errors.groups_id?.message as string}
+            error=""
             predefinedChoices={groupsIdsChoices}
             position="relative"
             setValue={setValue}
@@ -354,42 +382,16 @@ const EditEmployeeForm = () => {
           <MultiChoices
             register={register}
             name="user_permissions_id"
-            error={errors.user_permissions_id?.message as string}
+            error=""
             predefinedChoices={userPermissionsChoices}
             position="relative"
             setValue={setValue}
           />
           <article className="group"></article>
         </Row>
-        <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
-            {isSubmitting ? (
-              <CircleLoadingIndecator size={16} color="#fff"/>
-            ) : (
-              " حفظ"
-            )}
+              تعديل
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              console.log("errors", errors);
-
-            }}
-            className="btn cancel-btn"
-          >
-            errors
-          </button>
-          {/*<button*/}
-          {/*  type="button"*/}
-          {/*  onClick={() => {*/}
-          {/*    console.log("errors", errors);*/}
-          {/*    console.log("values", control._getWatch("subject_choices"));*/}
-          {/*  }}*/}
-          {/*  className="btn cancel-btn"*/}
-          {/*>*/}
-          {/*  test*/}
-          {/*</button>*/}
-        </div>
       </form>
     </>
   );

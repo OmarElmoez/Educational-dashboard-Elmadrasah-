@@ -73,7 +73,6 @@ const AdminTeachersPage = () => {
   }: {
     searchDataValues?: TsearchData | undefined;
   }) => {
-    console.log("searchDataValues", searchDataValues);
     dispatch(
       actSearchForTableData({
         searchTerm: "",

@@ -65,9 +65,7 @@ const TeacherDataTable = ({
     pageSize: rowCount,
   });
   const navigate = useNavigate();
-  const editEmployee = (id:number) => {
-    navigate(`/admin/employees/employee-profile/${id}`);
-  };
+
   const columns: GridColDef[] = [
     {
       field: "image",
@@ -103,9 +101,15 @@ const TeacherDataTable = ({
       headerName: "الاسم الكامل",
       width: 150,
       headerAlign: "center",
-      renderCell: (params) => {
-        return `${params.row.first_name} ${params.row.last_name}`;
-      },
+      renderCell: (params) => (
+        <button
+          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          disabled={!params.row.id}
+          onClick={() => navigate(`/admin/employees/employee-profile/${params.row.id}`)}
+        >
+          {params.row.first_name} {params.row.last_name}
+        </button>
+      )
     },
     {
       field: "phone",
@@ -177,12 +181,8 @@ const TeacherDataTable = ({
       renderCell: (params) => {
         return (
           <button
-            onClick={(event) => {
-              event.stopPropagation();
-              editEmployee(params.formattedValue);
-            }}
+            onClick={() => navigate(`/admin/employees/edit-employee/${params.row.id}`)}
           >
-            <p style={{color:"#1c8a44"}}>View Profile</p>
             <EditPenIcon />
           </button>
         );
