@@ -5,19 +5,25 @@ import { isString } from "@/types/gurads";
 import { TFamilyData } from "@/types/table";
 
 type TFamiliesState = {
-  familiesData: TFamilyData[];
+  families: {
+    familiesData: TFamilyData[];
+    next: string | null;
+    previous: string | null;
+    count: number;
+  };
   loading: TLoading;
   error: string | null;
-  next: string | null;
-  previous: string | null;
 };
 
 const initialState: TFamiliesState = {
-  familiesData: [],
+  families: {
+    familiesData: [],
+    next: null,
+    previous: null,
+    count: 0,
+  },
   loading: "idle",
   error: null,
-  next: null,
-  previous: null,
 };
 
 const familiesSlice = createSlice({
@@ -32,9 +38,10 @@ const familiesSlice = createSlice({
   
       builder.addCase(actGetAllFamilies.fulfilled, (state, action) => {
         state.loading = "succeeded"
-        state.familiesData = action.payload.results;
-        state.next = action.payload.next;
-        state.previous = action.payload.previous;
+        state.families.familiesData = action.payload.results;
+        state.families.next = action.payload.next;
+        state.families.previous = action.payload.previous;
+        state.families.count = action.payload.count;
       })
   
       builder.addCase(actGetAllFamilies.rejected, (state, action) => {

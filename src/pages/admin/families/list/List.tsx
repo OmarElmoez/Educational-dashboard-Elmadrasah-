@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   DataGrid,
   GridColDef,
+  GridPaginationModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
@@ -33,15 +35,66 @@ const localeToolbarText = {
 };
 
 const FamiliesList = () => {
-
   const navigate = useNavigate();
-
-  const {familiesData, loading} = useAppSelector(state => state.families);
-
   const dispatch = useAppDispatch();
+
+  const { families } = useAppSelector((state) => state.families);
+    const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+      page: 0,
+      pageSize: 20,
+    });
+  const [loading, setLoading] = useState<boolean>(true);
+  const [next, setNext] = useState<string | null>(null);
+  const [previous, setPrevious] = useState<string | null>(null);
+
   useEffect(() => {
-    dispatch(actGetAllFamilies());
+    setLoading(true);
+    dispatch(actGetAllFamilies({}))
+      .unwrap()
+      .then((res) => {
+        setLoading(false);
+        setNext(res.next);
+        setPrevious(res.previous);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error fetching students:", error);
+      });
   }, [dispatch]);
+
+  const handleNext = () => {
+    if (next) {
+      setLoading(true);
+      dispatch(actGetAllFamilies({ next }))
+        .unwrap()
+        .then((res) => {
+          setLoading(false);
+          setNext(res.next);
+          setPrevious(res.previous);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching next page:", error);
+        });
+    }
+  };
+
+  const handlePrevious = () => {
+    if (previous) {
+      setLoading(true);
+      dispatch(actGetAllFamilies({ previous }))
+        .unwrap()
+        .then((res) => {
+          setLoading(false);
+          setNext(res.next);
+          setPrevious(res.previous);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching previous page:", error);
+        });
+    }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -118,21 +171,39 @@ const FamiliesList = () => {
         sx={{
           paddingTop: "1rem",
         }}
-        rows={familiesData}
+        rows={families.familiesData}
         columns={columns}
-        onPaginationModelChange={() => console.log("paginationModelChange")}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        pageSizeOptions={[10, 20, 50]}
         checkboxSelection
         disableRowSelectionOnClick
         slots={{ toolbar: CustomToolbar }}
         localeText={localeToolbarText}
-        loading={loading === "pending"}
+        loading={loading}
+        rowCount={families.familiesData.length}
+        paginationMode="client"
         slotProps={{
-          loadingOverlay: {
+          loadingOverlay: { 
             variant: "skeleton",
             noRowsVariant: "skeleton",
           },
         }}
       />
+      <Box
+        sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
+      >
+        <Button
+          variant="contained"
+          onClick={handlePrevious}
+          disabled={!previous}
+        >
+          المجموعة السابقة
+        </Button>
+        <Button variant="contained" onClick={handleNext} disabled={!next}>
+          المجموعة التالية
+        </Button>
+      </Box>
     </Box>
   );
 };

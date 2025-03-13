@@ -9,6 +9,7 @@ import {
   GridPaginationModel,
 } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 import { Typography, Box } from "@mui/material";
 import { TEmployeesData } from "@/types/table";
 import "./teacherDataTable.css";
@@ -62,7 +63,7 @@ const TeacherDataTable = ({
 }) => {
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
-    pageSize: rowCount,
+    pageSize: 20,
   });
   const navigate = useNavigate();
 
@@ -217,16 +218,27 @@ const TeacherDataTable = ({
       </Box>
     );
   };
-  const handlePaginationModelChange = (
-    newPaginationModel: GridPaginationModel
-  ) => {
-    const { page } = newPaginationModel;
-    if (page > paginationModel.page && next) {
+  // const handlePaginationModelChange = (
+  //   newPaginationModel: GridPaginationModel
+  // ) => {
+  //   const { page } = newPaginationModel;
+  //   if (page > paginationModel.page && next) {
+  //     dispatchGetAllEmployees({ next });
+  //   } else if (page < paginationModel.page && previous) {
+  //     dispatchGetAllEmployees({ previous });
+  //   }
+  //   setPaginationModel(newPaginationModel);
+  // };
+  const handleNext = () => {
+    if (next) {
       dispatchGetAllEmployees({ next });
-    } else if (page < paginationModel.page && previous) {
+    }
+  };
+
+  const handlePrevious = () => {
+    if (previous) {
       dispatchGetAllEmployees({ previous });
     }
-    setPaginationModel(newPaginationModel);
   };
   return (
     <>
@@ -235,13 +247,13 @@ const TeacherDataTable = ({
           rows={employeesData}
           columns={columns}
           paginationModel={paginationModel}
-          onPaginationModelChange={handlePaginationModelChange}
-          pageSizeOptions={[10]}
+          onPaginationModelChange={setPaginationModel}   
+          pageSizeOptions={[10,20,50]}
           checkboxSelection
+          disableRowSelectionOnClick
           rowCount={rowCount}
-          paginationMode="server"
+          paginationMode="client"
           sx={{
-            border: 0,
             paddingTop: "1rem",
           }}
           localeText={localeToolbarText}
@@ -258,6 +270,20 @@ const TeacherDataTable = ({
             },
           }}
         />
+              <Box
+        sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
+      >
+        <Button
+          variant="contained"
+          onClick={handlePrevious}
+          disabled={!previous}
+        >
+          المجموعة السابقة
+        </Button>
+        <Button variant="contained" onClick={handleNext} disabled={!next}>
+          المجموعة التالية
+        </Button>
+      </Box>
       </Paper>
     </>
   );

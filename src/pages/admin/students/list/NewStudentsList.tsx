@@ -12,29 +12,27 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import { actGetStudents } from "@/store/table/TableSlice.ts";
-
 import EditPenIcon from "@/assets/edit_pen.svg?react";
+import { useNavigate } from "react-router-dom";
 
 import "./newStudentsList.css";
-import { useNavigate } from "react-router-dom";
 
 const NewStudentsList = () => {
   const { students } = useAppSelector((state) => state.table);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
-    pageSize: 20,  
+    pageSize: 20,
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [next, setNext] = useState<string | null>(null);
   const [previous, setPrevious] = useState<string | null>(null);
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     setLoading(true);
     dispatch(actGetStudents({}))
-    .unwrap()
+      .unwrap()
       .then((res) => {
         setLoading(false);
         setNext(res.next);
@@ -110,36 +108,27 @@ const NewStudentsList = () => {
       field: "email",
       headerName: "البريد الإلكتروني",
       width: 260,
-      renderCell: (params) => {
-        if (!params.value) return "لا يوجد";
-        return params.value;
-      },
+      renderCell: (params) => (params.value ? params.value : "لا يوجد"),
     },
     {
       field: "mobile_phone",
       width: 160,
       headerName: "الهاتف المحمول",
-      renderCell: (params) => {
-        return params.value || "لا يوجد";
-      },
+      renderCell: (params) => params.value || "لا يوجد",
       cellClassName: "phone-cell",
     },
     {
       field: "home_phone",
       width: 150,
       headerName: "هاتف المنزل",
-      renderCell: (params) => {
-        return params.value || "لا يوجد";
-      },
+      renderCell: (params) => params.value || "لا يوجد",
       cellClassName: "phone-cell",
     },
     {
       field: "student_type",
       width: 100,
       headerName: "النوع",
-      renderCell: (params) => {
-        return params.value || "لا يوجد";
-      },
+      renderCell: (params) => params.value || "لا يوجد",
     },
     {
       field: "action",
@@ -170,7 +159,6 @@ const NewStudentsList = () => {
       <GridToolbarColumnsButton />
     </GridToolbarContainer>
   );
-
   const localeToolbarText = {
     toolbarColumns: "",
     toolbarFilters: "",
@@ -180,9 +168,7 @@ const NewStudentsList = () => {
   return (
     <Box component="section">
       <DataGrid
-        sx={{
-          paddingTop: "1rem",
-        }}
+        sx={{ paddingTop: "1rem" }}
         rows={students.data}
         columns={columns}
         paginationModel={paginationModel}
@@ -190,14 +176,22 @@ const NewStudentsList = () => {
         pageSizeOptions={[10, 20, 50]}
         checkboxSelection
         disableRowSelectionOnClick
-        slots={{ toolbar: CustomToolbar }}
         localeText={localeToolbarText}
+        slots={{ toolbar: CustomToolbar }}
         loading={loading}
         rowCount={students.data.length}
         paginationMode="client"
+        slotProps={{
+          loadingOverlay: {
+            variant: "skeleton",
+            noRowsVariant: "skeleton",
+          },
+        }}
       />
 
-      <Box sx={{display: "flex", justifyContent: "center", gap: 2, padding: 2}}>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
+      >
         <Button
           variant="contained"
           onClick={handlePrevious}
@@ -205,11 +199,7 @@ const NewStudentsList = () => {
         >
           المجموعة السابقة
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleNext}
-          disabled={!next}
-        >
+        <Button variant="contained" onClick={handleNext} disabled={!next}>
           المجموعة التالية
         </Button>
       </Box>
