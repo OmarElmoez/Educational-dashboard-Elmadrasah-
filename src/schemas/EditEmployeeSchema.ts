@@ -5,7 +5,7 @@ export const EditEmployeeSchema = z.object({
   is_active: z.union([z.string(), z.boolean()]),
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
-  full_name: z.string().optional(),
+  full_name: z.string().min(1, "برجاء ادخال الاسم بالكامل"),
   email: z
     .string()
     .min(1, "برجاء ادخال البريد الإلكتروني")

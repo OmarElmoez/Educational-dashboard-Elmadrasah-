@@ -159,7 +159,7 @@ const EditStudent = () => {
             placeholder="الأسم بالكامل"
             register={register}
             name="full_name"
-            error=""
+            error={errors?.full_name?.message as string}
           />
         </Row>
 

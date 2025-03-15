@@ -4,7 +4,7 @@ import { matchIsValidTel } from "mui-tel-input";
 export const EditStudentSchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
-  full_name: z.string().optional(),
+  full_name: z.string().min(1, "برجاء ادخال الاسم بالكامل"),
   email: z
   .string()
   .min(1, "برجاء ادخال البريد الإلكتروني")

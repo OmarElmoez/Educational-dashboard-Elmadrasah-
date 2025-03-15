@@ -169,7 +169,7 @@ const EditEmployeeForm = () => {
             placeholder="الأسم بالكامل"
             register={register}
             name="full_name"
-            error=""
+            error={errors.full_name?.message as string}
           />
           <InputField
             label="البريد الإلكتروني"
