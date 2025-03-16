@@ -6,7 +6,7 @@ import actGetSpecificEmployees from "@/store/table/act/actGetSpecificEmployee";
 import Styles from "./EmployeeProfileData.module.css";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
-import { SimpleTable } from "@/pages/admin/students/profile/components";
+import { SimpleTable } from "@/pages/shared/components";
 
 const { headerContainer, sectionContainer, infoContainer, iconButton } = Styles;
 const EmployeeProfileData = () => {

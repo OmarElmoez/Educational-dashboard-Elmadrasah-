@@ -5,7 +5,7 @@ import { getSpecificStudent } from "@/services/studentsAndTeachers.ts";
 import { LoadingIndicator, Row } from "@/components";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { Heading } from "@/components/UI";
-import { InfoBox, InfoGroup, SimpleTable } from "./components";
+import { InfoBox, InfoGroup, SimpleTable } from "../../../shared/components";
 import createObjectsWithCustomKeys from "@/pages/admin/students/profile/utils/createObjectsWithCustomKeys.ts";
 
 const customRowStyle = {

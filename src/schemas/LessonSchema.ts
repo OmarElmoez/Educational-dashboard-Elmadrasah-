@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const lessonFileSchema = z.object({
+export const lessonFileSchema = z.object({
   id: z.number(),
   lesson: z.number(),
   file: z.string().url(),

@@ -22,7 +22,7 @@ const StudentsList = lazy(() => import('./students/list/NewStudentsList.tsx'));
 const EditStudent = lazy(() => import('./students/edit/EditStudent.tsx'));
 const StudentProfile = lazy(() => import('./students/profile/StudentProfile'));
 const FamiliesList = lazy(() => import('./families/list/List.tsx'));
-const FamilyProfile = lazy(() => import('./families/profile/Profile.tsx'))
+const FamilyProfile = lazy(() => import('./families/profile/FamilyProfile.tsx'))
 const EditFamily = lazy(() => import('./families/edit/Edit.tsx'))
 const InvoicesList = lazy(() => import('./lists/InvoicesList'));
 const PackageBalanceList = lazy(() => import('./lists/balance/PackageBalanceList'));

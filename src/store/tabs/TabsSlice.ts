@@ -22,11 +22,20 @@ export type TimeSlotInfo = {
 type HourlyCounts = {
   [timeSlot: string]: TimeSlotInfo;
 };
-
+type TlessonFile = {
+    id: number,
+    lesson: number,
+    file: string,
+    title: string,
+    uploaded_at: string,
+    uploaded_by: string
+}
 export type THourLesson = {
   start_time_student: null | string;
+  end_time_student: null | string;
   student_name: string;
   start_time_employee: null | string;
+  end_time_employee: null | string;
   spaces: null | string;
   status: "Scheduled" | "Attended" | "Missed" | "Progressing" | "Cancelled";
   employee_name: string;
@@ -37,6 +46,7 @@ export type THourLesson = {
   from_datetime: string;
   to_datetime: string;
   id: number;
+  lesson_files: TlessonFile[];
 };
 
 // Define the main type

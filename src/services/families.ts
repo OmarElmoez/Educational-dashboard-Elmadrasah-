@@ -1,5 +1,6 @@
 import axiosInstance from "@/utils/axiosInstance.ts";
 import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
+import { TStudentInvoice, TStudentPayment } from '../schemas/AddStudentSchema';
 
 type Teacher = {
   id: number;
@@ -31,8 +32,8 @@ type Curriculum = {
   status: string;
 };
 
-type Student = {
-  id: number;
+export type Student = {
+  id?: number;
   initial_teachers: Teacher[];
   initial_location: Location | null;
   family_name: string;
@@ -128,6 +129,8 @@ export type TSpecificFamilyResponse = {
   created_at: string;
   updated_at: string;
   user: number;
+    invoices: TStudentInvoice[],
+    payments: TStudentPayment[],
 };
 
 export const getSpecificFamily = async (id: string): Promise<TSpecificFamilyResponse> => {

@@ -12,7 +12,7 @@ import STATUS_INFO from "@/constants/lessons-status.ts";
 import convertToArabicTime from "@/utils/convertToArabicTime";
 import convertAppTime from "@/utils/convertAppTime";
 
-const { card, status_box, role_title, status_data } = styles;
+const { card, status_box, role_title, status_data, uploaded_files } = styles;
 
 type TLessonCardProps<T> = {
   lesson: T;
@@ -94,7 +94,6 @@ const LessonCard = <T extends TLesson | THourLesson>({
                 "لا يوجد"}
             </span>
             <span>
-              
               خروج المدرس :
               {convertAppTime(lessonData?.end_time_employee || "") || "لا يوجد"}
             </span>
@@ -109,6 +108,75 @@ const LessonCard = <T extends TLesson | THourLesson>({
               {convertAppTime(
                 lessonData.participants[0]?.end_time_student || ""
               ) || "لا يوجد"}
+            </span>
+          </>
+        );
+    }
+  };
+  const lessonStartEndTimeForUserRoleOfTHourLesson = (
+    lessonData: THourLesson
+  ) => {
+    let userRole = credintials?.role?.toLowerCase();
+    switch (userRole) {
+      case "teacher":
+        return (
+          <>
+            <span>
+              توقيت دخول :
+              {convertAppTime(lessonData?.start_time_employee || "") ||
+                "لا يوجد"}
+            </span>
+            <span>
+              توقيت خروج :
+              {convertAppTime(lessonData?.end_time_employee || "") || "لا يوجد"}
+            </span>
+          </>
+        );
+      case "student":
+        return (
+          <>
+            <span>
+              توقيت دخول :
+              {convertAppTime(lessonData.start_time_student || "") || "لا يوجد"}
+            </span>
+            <span>
+              توقيت خروج :
+              {convertAppTime(lessonData.end_time_student || "") || "لا يوجد"}
+            </span>
+          </>
+        );
+      case "family":
+        return (
+          <>
+            <span>
+              توقيت دخول :
+              {convertAppTime(lessonData.start_time_student || "") || "لا يوجد"}
+            </span>
+            <span>
+              توقيت خروج :
+              {convertAppTime(lessonData.end_time_student || "") || "لا يوجد"}
+            </span>
+          </>
+        );
+      default:
+        return (
+          <>
+            <span>
+              دخول المدرس :
+              {convertAppTime(lessonData?.start_time_employee || "") ||
+                "لا يوجد"}
+            </span>
+            <span>
+              خروج المدرس :
+              {convertAppTime(lessonData?.end_time_employee || "") || "لا يوجد"}
+            </span>
+            <span>
+              دخول الطالب :
+              {convertAppTime(lessonData.start_time_student || "") || "لا يوجد"}
+            </span>
+            <span>
+              خروج الطالب :
+              {convertAppTime(lessonData.end_time_student || "") || "لا يوجد"}
             </span>
           </>
         );
@@ -157,7 +225,7 @@ const LessonCard = <T extends TLesson | THourLesson>({
 
       <div>
         <FileIcon />
-        <p>رفع الملفات</p>
+        {lesson.lesson_files?.length > 0 ? <p className={uploaded_files}> تم رفع الملفات</p>:<p>لم يتم رفع الملفات</p>}
       </div>
       <div className={status_data}>
         <span
@@ -169,7 +237,10 @@ const LessonCard = <T extends TLesson | THourLesson>({
         >
           {STATUS_INFO[lesson.status].label}
         </span>
-        {STATUS_INFO[lesson.status].label==="تم الحضور"?<>{isTLesson(lesson) && lessonStartEndTimeForUserRole(lesson)}</>:null }      </div>
+        {isTLesson(lesson)
+          ? lessonStartEndTimeForUserRole(lesson)
+          : lessonStartEndTimeForUserRoleOfTHourLesson(lesson)}
+      </div>
     </article>
   );
 };
