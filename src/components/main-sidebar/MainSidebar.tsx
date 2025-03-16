@@ -40,7 +40,6 @@ const MainSidebar = ({data}: TSidebarProps) => {
 
   const {setHeaderTitle} = useContext(CalendarContext)
 
-
   const [isSubNavOpen, setIsSubNavOpen] = useState(false)
 
   const [activeLinkTitle, setActiveLinkTitle] = useState("")
@@ -92,12 +91,11 @@ const MainSidebar = ({data}: TSidebarProps) => {
 
         <nav className={main_nav_menu}>
           <menu className={main_menu}>
-            {data.map(({title, path, icon, children, page_title}) => (
+            {data.map(({title, path, icon, children}) => (
               <li
                 key={title}
                 onClick={() => {
                   setActiveLinkTitle(title);
-                  page_title && setHeaderTitle(page_title);
                   handleToggle();
                 }}
               >

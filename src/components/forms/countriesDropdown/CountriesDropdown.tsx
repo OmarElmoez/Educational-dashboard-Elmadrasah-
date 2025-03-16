@@ -5,6 +5,7 @@ import { TCountry } from "@/schemas/CountrySchema";
 import actGetCities from "@/store/location/act/actGetCities";
 import { actGetStates, setChosenRegion } from "@/store/location/LocationSlice";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { useOutsideClick } from "@/hooks";
 
 const { results } = styles;
 
@@ -54,8 +55,10 @@ const CountriesDropdown = <T extends FieldValues>({
     setShowResults(true);
   };
 
+  const countriesRef = useOutsideClick(() => setShowResults(false))
+
   return (
-    <article className="group">
+    <article className="group" ref={countriesRef}>
       <label className="adminFormLabel" htmlFor="country">الدولة</label>
       <section className="select_wrapper">
         <input

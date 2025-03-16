@@ -10,7 +10,7 @@
 import {useEffect, useState} from "react";
 import styles from "./dropdownWithSearch.module.css";
 import {TOption} from "@/types/Dropdown";
-import {useDebounce} from "@/hooks";
+import { useDebounce, useOutsideClick } from "@/hooks";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {actGetDropdownOptions} from "@/store/single-actions";
 import {FieldValues, Path, UseFormRegister} from "react-hook-form";
@@ -79,8 +79,10 @@ const DropdownWithSearch = <T extends FieldValues>({
     }
   }, [resetOption]);
 
+  const dropdownRef = useOutsideClick(() => setIsOpen(false))
+
   return (
-    <article className="group">
+    <article className="group" ref={dropdownRef}>
       {/* Hidden input for form registration */}
       <input
         {...register(name)}

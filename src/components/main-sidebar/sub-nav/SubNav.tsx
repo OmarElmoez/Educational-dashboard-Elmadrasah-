@@ -2,6 +2,7 @@ import { CSSProperties, Dispatch, ReactNode, SetStateAction, useContext } from "
 import styles from './subNav.module.css'
 import {NavLink} from "react-router-dom";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
+import { useOutsideClick } from "@/hooks";
 
 const {sub_nav, sub_nav__link} = styles;
 
@@ -21,8 +22,10 @@ const SubNav = ({style, subLinks, setIsSubNavOpen}: {
 
   const {setHeaderTitle} = useContext(CalendarContext)
 
+  const subNavRef = useOutsideClick(() => setIsSubNavOpen(false))
+
   return (
-    <nav className={sub_nav} style={style} onClick={() => setIsSubNavOpen(false)}>
+    <nav className={sub_nav} style={style} onClick={() => setIsSubNavOpen(false)} ref={subNavRef}>
       <menu>
         {subLinks?.map((link) => (
           <NavLink to={link.path} key={link.title} className={sub_nav__link} onClick={() => {

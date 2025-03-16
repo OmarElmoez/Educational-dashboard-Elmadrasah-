@@ -217,6 +217,7 @@ const AddEmployeeForm = () => {
           >
             {employeeType === "Staff" && (
               <SingleCheckbox
+                className="includeAsATeacher"
                 register={register}
                 name="include_as_teacher"
                 label="تضمين كمعلم"

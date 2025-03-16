@@ -5,7 +5,7 @@ import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import styles from "./multiChoices.module.css";
 import { END_POINTS } from "@/constants";
 import actGetChoices, { TResponse } from "@/store/single-actions/actGetChoices";
-import { useDebounce } from "@/hooks";
+import { useDebounce, useOutsideClick } from "@/hooks";
 
 const {
   checkboxInput,
@@ -194,8 +194,10 @@ const MultiChoices = <T extends FieldValues>({
       : item.name.toLowerCase().includes(debouncedQuery.toLowerCase())
   );
 
+  const dropdownRef = useOutsideClick(() => setIsWrapperClicked(false))
+
   return (
-    <article className="group">
+    <article className="group" ref={dropdownRef}>
       <label
         htmlFor={name}
         className={`adminFormLabel ${isRequired && "required"}`}
