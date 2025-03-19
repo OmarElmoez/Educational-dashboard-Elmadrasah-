@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ColorField,
   CountriesDropdown,
+  DatePicker,
   Dropdown,
   InputField,
   LoadingIndicator,
@@ -167,6 +168,7 @@ const AddStudentForm = () => {
             register={register}
             options={STATUS_OPTIONS}
             error={errors.status?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -175,6 +177,7 @@ const AddStudentForm = () => {
             options={EMPLOYEE_TITLES}
             name="salutation"
             error={errors.salutation?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -279,6 +282,7 @@ const AddStudentForm = () => {
             register={register}
             setValue={setValue}
             error={errors.country?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -289,6 +293,7 @@ const AddStudentForm = () => {
             register={register}
             options={formattedStates}
             error={errors.state?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -297,6 +302,7 @@ const AddStudentForm = () => {
             register={register}
             options={formattedCities}
             error={errors.city?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -315,28 +321,29 @@ const AddStudentForm = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors.time_zone?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
         <hr className="hr"/>
         <Heading text="تفاصيل الطالب "/>
 
         <Row>
-          <InputField
-            type="date"
-            label="تاريخ الميلاد "
-            placeholder=" يوم / شهر / سنه"
+          <DatePicker
+            setValue={setValue}
+            label="تاريخ الميلاد"
             register={register}
             name="birth_date"
             error={errors.birth_date?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
-          <InputField
-            type="date"
+          <DatePicker
+            setValue={setValue}
             label="تاريخ البدء"
-            placeholder="يوم / شهر / سنه"
             register={register}
             name="start_date"
             error={errors.start_date?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -374,6 +381,7 @@ const AddStudentForm = () => {
             register={register}
             options={curriculumOptions}
             error={errors.student_curriculum?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <MultiChoices
@@ -409,6 +417,7 @@ const AddStudentForm = () => {
             options={locationOptions}
             name="initial_location"
             error={errors.initial_location?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -437,6 +446,7 @@ const AddStudentForm = () => {
             register={register}
             options={SERVICE_OPTIONS}
             error={errors.billing_method?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <InputField
@@ -448,11 +458,12 @@ const AddStudentForm = () => {
           />
         </Row>
 
+        <hr className="hr"/>
+
         <NotificationForm
           register={register}
         />
 
-        <hr className="hr"/>
 
         <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
@@ -467,7 +478,7 @@ const AddStudentForm = () => {
             }}
             className="btn cancel-btn"
           >
-            يلغى
+            إلغاء
           </button>
         </div>
       </form>

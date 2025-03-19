@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
+  DatePicker,
   Dropdown,
   InputField,
   LoadingIndicator,
@@ -144,6 +145,7 @@ const EditEmployeeForm = () => {
             register={register}
             options={STATUS_OPTIONS}
             error={errors.is_active?.message as string}
+            isEdit
           />
           <article className="group"></article>
         </Row>
@@ -186,6 +188,7 @@ const EditEmployeeForm = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors.time_zone?.message as string}
+            isEdit
           />
           <PhoneField
             control={control}
@@ -231,14 +234,24 @@ const EditEmployeeForm = () => {
             error={errors.uploaded_id?.message as string}
           />
 
-          <InputField
+          {/*<InputField*/}
+          {/*  label="تاريخ إنتهاء الرقم القومى"*/}
+          {/*  placeholder="يوم / شهر / سنه"*/}
+          {/*  type="date"*/}
+          {/*  register={register}*/}
+          {/*  name="national_id_expiration_date"*/}
+          {/*  error={errors.national_id_expiration_date?.message as string}*/}
+          {/*  style={{alignSelf: 'flex-end'}}*/}
+          {/*/>*/}
+
+          <DatePicker
+            setValue={setValue}
             label="تاريخ إنتهاء الرقم القومى"
-            placeholder="يوم / شهر / سنه"
-            type="date"
             register={register}
             name="national_id_expiration_date"
             error={errors.national_id_expiration_date?.message as string}
             style={{alignSelf: 'flex-end'}}
+            predefinedDate={specificEmployeeData?.national_id_expiration_date}
           />
         </Row>
 
@@ -253,14 +266,14 @@ const EditEmployeeForm = () => {
             error={errors.uploaded_passport?.message as string}
           />
 
-          <InputField
+          <DatePicker
+            setValue={setValue}
             label="تاريخ إنتهاء جواز السفر"
-            placeholder="يوم / شهر / سنه"
-            type="date"
             register={register}
             name="passport_expiration_date"
             error={errors.passport_expiration_date?.message as string}
             style={{alignSelf: 'flex-end'}}
+            predefinedDate={specificEmployeeData?.passport_expiration_date}
           />
         </Row>
         <hr className="hr"/>
@@ -302,6 +315,7 @@ const EditEmployeeForm = () => {
               wage_type: val,
             }))}
             error={errors.wage_type?.message as string}
+            isEdit
           />
 
           {wage.wage_type === "wage" ? (
@@ -329,6 +343,7 @@ const EditEmployeeForm = () => {
               ...prev,
               work_wage_type: val,
             }))}
+            isEdit
           />
 
           {wage.work_wage_type === "wage" ? (

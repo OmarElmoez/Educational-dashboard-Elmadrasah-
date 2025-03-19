@@ -1,9 +1,10 @@
 import {
   AddNewSubjectModal,
-  CountriesDropdown,
+  CountriesDropdown, DatePicker,
   Dropdown,
   DropdownWithSearch,
-  InputField, LoadingIndicator,
+  InputField,
+  LoadingIndicator,
   MultiChoices,
   PhoneField,
   Row,
@@ -21,11 +22,7 @@ import {
 } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { actGetCountries } from "@/store/location/LocationSlice";
-import {
-  AddEmployeeSchema,
-  TAddEmployeeFormData,
-  TAddEmployeeFormDataForServer,
-} from "@/schemas/AddEmployeeSchema";
+import { AddEmployeeSchema, TAddEmployeeFormData, TAddEmployeeFormDataForServer, } from "@/schemas/AddEmployeeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -35,10 +32,7 @@ import { DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown
 import { TLoading, TModalRef } from "@/types/shared";
 import { CalendarSettingsForm, NotificationForm, } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
-import {
-  actGetDropdownOptions,
-  actSendDataToServer,
-} from "@/store/single-actions";
+import { actGetDropdownOptions, actSendDataToServer, } from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import removeLeadingZero from "./utils/removeLeadingZero.ts";
 
@@ -49,13 +43,13 @@ const InitialWageState = {
 
 const AddEmployeeForm = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
-  const { countries, cities, states, chosenState } =
+  const {user} = useAppSelector((state) => state.auth);
+  const {countries, cities, states, chosenState} =
     useAppSelector((state) => state.location);
 
-  const { openFeedbackModal } = useFeedback();
+  const {openFeedbackModal} = useFeedback();
 
-  const { subjects } = useAppSelector((state) => state.formSubjects);
+  const {subjects} = useAppSelector((state) => state.formSubjects);
 
   const [removePreviewChoices, setRemovePreviewChoices] = useState(false);
 
@@ -63,7 +57,7 @@ const AddEmployeeForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: {errors},
     setValue,
     reset,
     watch,
@@ -72,7 +66,7 @@ const AddEmployeeForm = () => {
     resolver: zodResolver(AddEmployeeSchema),
     defaultValues: {
       availabilities: [
-        { day: "", start_time: "", end_time: "", description: "" },
+        {day: "", start_time: "", end_time: "", description: ""},
       ], // Start with one entry
       calendar_color: INITIAL_CALENDAR_COLOR,
       subject_choices: [],
@@ -96,13 +90,13 @@ const AddEmployeeForm = () => {
 
   const ONLY_STAFF = !isTeacher && employeeType === "Staff"
 
-  const { fields, append, remove } = useFieldArray({
+  const {fields, append, remove} = useFieldArray({
     control,
     name: "availabilities",
   });
 
   const handleAdd = () => {
-    append({ start_time: "", end_time: "", description: "" });
+    append({start_time: "", end_time: "", description: ""});
   };
   const handleRemove = (index: number) => {
     remove(index);
@@ -175,6 +169,7 @@ const AddEmployeeForm = () => {
       reset()
       setRemovePreviewChoices(true)
       setWage(InitialWageState)
+      setEmployeeType("")
     } catch (error) {
       openFeedbackModal("failed", error as string);
       setLoading('failed')
@@ -187,7 +182,7 @@ const AddEmployeeForm = () => {
   }, [dispatch, countries]);
 
   useEffect(() => {
-    dispatch(actGetDropdownOptions({ optionsFor: "subjects" }));
+    dispatch(actGetDropdownOptions({optionsFor: "subjects"}));
   }, [dispatch, user?.token]);
 
   const formattedCities = formatCities(cities, chosenState);
@@ -201,10 +196,8 @@ const AddEmployeeForm = () => {
       {loading === 'pending' && <div className="loadingBox">
           <LoadingIndicator/>
       </div>}
-      <AddNewSubjectModal ref={addNewSubjectRef} />
+      <AddNewSubjectModal ref={addNewSubjectRef}/>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Heading text="نوع الموظف" />
-
         <Row>
           <Dropdown
             label="اختار نوع الموظف"
@@ -214,6 +207,8 @@ const AddEmployeeForm = () => {
             isRequired
             error={errors.employee_type?.message as string}
             handleChange={(val) => setEmployeeType(val)}
+            watch={watch}
+            removePreviewChoices={removePreviewChoices}
           >
             {employeeType === "Staff" && (
               <SingleCheckbox
@@ -231,6 +226,7 @@ const AddEmployeeForm = () => {
             register={register}
             options={STATUS_OPTIONS}
             error={errors.is_active?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -273,6 +269,7 @@ const AddEmployeeForm = () => {
             name="title"
             isRequired
             error={errors.title?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <InputField
@@ -327,6 +324,7 @@ const AddEmployeeForm = () => {
             register={register}
             setValue={setValue}
             error={errors.country?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -335,6 +333,7 @@ const AddEmployeeForm = () => {
             register={register}
             options={formattedStates}
             error={errors.state?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -345,6 +344,7 @@ const AddEmployeeForm = () => {
             register={register}
             options={formattedCities}
             error={errors.city?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -354,6 +354,7 @@ const AddEmployeeForm = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors.time_zone?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -377,14 +378,14 @@ const AddEmployeeForm = () => {
         </Row>
 
         <Row>
-          <InputField
+          <DatePicker
+            setValue={setValue}
             label="تاريخ الميلاد"
-            placeholder="يوم / شهر / سنه"
-            type="date"
-            isRequired
             register={register}
             name="birth_date"
             error={errors.birth_date?.message as string}
+            isRequired
+            removePreviewChoices={removePreviewChoices}
           />
 
           <InputField
@@ -396,13 +397,13 @@ const AddEmployeeForm = () => {
           />
         </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
         <span className="mainContainer">
-          <Heading text="المرفقات" />{" "}
+          <Heading text="المرفقات"/>{" "}
           <span
             className="required"
-            style={{ position: "relative", top: "0px" }}
+            style={{position: "relative", top: "0px"}}
           ></span>
         </span>
 
@@ -442,13 +443,13 @@ const AddEmployeeForm = () => {
             removePreviewChoices={removePreviewChoices}
           />
 
-          <InputField
+          <DatePicker
+            setValue={setValue}
             label="تاريخ الانتهاء"
-            placeholder="يوم / شهر / سنه"
-            type="date"
             register={register}
             name="national_id_expiration_date"
             error={errors.national_id_expiration_date?.message as string}
+            removePreviewChoices={removePreviewChoices}
             style={{alignSelf: 'flex-end'}}
           />
         </Row>
@@ -465,37 +466,41 @@ const AddEmployeeForm = () => {
             removePreviewChoices={removePreviewChoices}
           />
 
-          <InputField
+          <DatePicker
+            setValue={setValue}
             label="تاريخ الانتهاء"
-            placeholder="يوم / شهر / سنه"
-            type="date"
             register={register}
             name="passport_expiration_date"
             error={errors.passport_expiration_date?.message as string}
+            removePreviewChoices={removePreviewChoices}
             style={{alignSelf: 'flex-end'}}
           />
         </Row>
 
-        <hr className="hr" />
 
-        <Heading text="المواد" />
+        {!ONLY_STAFF && (<>
+          <hr className="hr"/>
 
-        <Row>
-          <MultiChoices
-            register={register}
-            name="subject_choices"
-            isRequired
-            disabled={ONLY_STAFF}
-            error={errors.subject_choices?.message as string}
-            removePreviewChoices={removePreviewChoices}
-          />
+          <Heading text="المواد"/>
 
-          <article className="group"></article>
-        </Row>
+          <Row>
+            <MultiChoices
+              register={register}
+              name="subject_choices"
+              isRequired
+              disabled={ONLY_STAFF}
+              error={errors.subject_choices?.message as string}
+              removePreviewChoices={removePreviewChoices}
+            />
 
-        <hr className="hr" />
+            <article className="group"></article>
+          </Row>
+        </>)}
 
-        <Heading text="تفاصيل التوظيف" />
+
+        <hr className="hr"/>
+
+        <Heading text="تفاصيل التوظيف"/>
 
         <Row>
           <InputField
@@ -506,83 +511,97 @@ const AddEmployeeForm = () => {
             error={errors.position?.message as string}
           />
 
-          <InputField
+          <DatePicker
+            setValue={setValue}
             label="تاريخ التوظيف"
-            type="date"
-            placeholder="يوم / شهر / سنه"
             register={register}
             name="hire_date"
             error={errors.hire_date?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
-        <Row>
-          <Dropdown
-            label="نوع أجر الدرس"
-            name="wage_type"
-            register={register}
-            options={WAGE_TYPES}
-            disabled={ONLY_STAFF}
-            error={errors.wage_type?.message as string}
-            handleChange={(val) => setWage((prev) => ({
-              ...prev,
-              wage_type: val,
-            }))}
-          />
+        {!ONLY_STAFF && (
+          <>
+            <Row>
+              <Dropdown
+                label="نوع أجر الدرس"
+                name="wage_type"
+                register={register}
+                options={WAGE_TYPES}
+                disabled={ONLY_STAFF}
+                error={errors.wage_type?.message as string}
+                handleChange={(val) => setWage((prev) => ({
+                  ...prev,
+                  wage_type: val,
+                }))}
+                removePreviewChoices={removePreviewChoices}
+              />
 
-          {wage.wage_type === "wage" ? (
-            <InputField
-              label="معدل الأجر"
-              placeholder="معدل الأجر"
-              register={register}
-              name="employee_wage"
-              disabled={ONLY_STAFF}
-              error={errors.employee_wage?.message as string}
-            />
-          ) : (
-            <article className="group"></article>
+              {wage.wage_type === "wage" ? (
+                <InputField
+                  label="معدل الأجر"
+                  placeholder="معدل الأجر"
+                  register={register}
+                  name="employee_wage"
+                  disabled={ONLY_STAFF}
+                  error={errors.employee_wage?.message as string}
+                />
+              ) : (
+                <article className="group"></article>
+              )}
+            </Row>
+
+            <Row>
+              <Dropdown
+                label="نوع الأجر غير التدريسي"
+                name="work_wage_type"
+                register={register}
+                options={WORK_WAGE_TYPES}
+                disabled={ONLY_STAFF}
+                error={errors.work_wage_type?.message as string}
+                handleChange={(val) => setWage((prev) => ({
+                  ...prev,
+                  work_wage_type: val,
+                }))}
+                removePreviewChoices={removePreviewChoices}
+              />
+
+              {wage.work_wage_type === "wage" ? (
+                <InputField
+                  label="معدل الأجر"
+                  placeholder="معدل الأجر"
+                  register={register}
+                  name="work_wage"
+                  disabled={ONLY_STAFF}
+                  error={errors.work_wage?.message as string}
+                />
+              ) : (
+                <article className="group"></article>
+              )}
+            </Row>
+
+          </>
+        )}
+
+
+        <Row>
+          {!ONLY_STAFF && (
+            <>
+              <Dropdown
+                label="الموضوع"
+                name="default_subject"
+                isWithPopup
+                disabled={ONLY_STAFF}
+                register={register}
+                options={subjects}
+                subjectRef={addNewSubjectRef}
+                error={errors.default_subject?.message as string}
+                removePreviewChoices={removePreviewChoices}
+              />
+
+            </>
           )}
-        </Row>
-
-        <Row>
-          <Dropdown
-            label="نوع الأجر غير التدريسي"
-            name="work_wage_type"
-            register={register}
-            options={WORK_WAGE_TYPES}
-            disabled={ONLY_STAFF}
-            error={errors.work_wage_type?.message as string}
-            handleChange={(val) => setWage((prev) => ({
-              ...prev,
-              work_wage_type: val,
-            }))}
-          />
-
-          {wage.work_wage_type === "wage" ? (
-            <InputField
-              label="معدل الأجر"
-              placeholder="معدل الأجر"
-              register={register}
-              name="work_wage"
-              disabled={ONLY_STAFF}
-              error={errors.work_wage?.message as string}
-            />
-          ) : (
-            <article className="group"></article>
-          )}
-        </Row>
-
-        <Row>
-          <Dropdown
-            label="الموضوع"
-            name="default_subject"
-            isWithPopup
-            disabled={ONLY_STAFF}
-            register={register}
-            options={subjects}
-            subjectRef={addNewSubjectRef}
-            error={errors.default_subject?.message as string}
-          />
           {/*<DropdownWithSearch label="الموضوع" name="default_subject" register={register} optionsFor="subjects"*/}
           {/*                    setValue={setValue}/>*/}
           {/*<p>{subjects.map(item => item.label)}</p>*/}
@@ -594,100 +613,109 @@ const AddEmployeeForm = () => {
             error={errors.bio?.message as string}
             textarea
           />
+
+          {ONLY_STAFF && (<article className="group"></article>)}
         </Row>
 
-        <hr className="hr" />
-        <Heading text="مواقيت العمل" />
-        <>
-          {fields.map((field, index) => (
-            <Row key={field.id} style={{ alignItems: "center" }}>
-              <Dropdown
-                label="حدد اليوم"
-                isRequired
-                disabled={ONLY_STAFF}
-                name={`availabilities.${index}.day`} // Pass name separately
-                options={DAYS_OPTIONS}
-                register={register} // Pass the entire register function
-                error={errors?.availabilities?.[index]?.day?.message as string}
-              />
+        {!ONLY_STAFF && (
+          <>
+            <hr className="hr"/>
+            <Heading text="مواقيت العمل"/>
+            <>
+              {fields.map((field, index) => (
+                <Row key={field.id} style={{alignItems: "center"}}>
+                  <Dropdown
+                    label="حدد اليوم"
+                    isRequired
+                    disabled={ONLY_STAFF}
+                    name={`availabilities.${index}.day`} // Pass name separately
+                    options={DAYS_OPTIONS}
+                    register={register} // Pass the entire register function
+                    error={errors?.availabilities?.[index]?.day?.message as string}
+                  />
 
-              <InputField
-                label="وقت البدء"
-                placeholder="03:00 "
-                type="time"
-                disabled={!isTeacher && employeeType === "Staff"}
-                name={`availabilities.${index}.start_time`} // Pass name separately
-                register={register} // Pass the entire register function
-                error={
-                  errors?.availabilities?.[index]?.start_time?.message as string
-                }
-              />
+                  <InputField
+                    label="وقت البدء"
+                    placeholder="03:00 "
+                    type="time"
+                    disabled={!isTeacher && employeeType === "Staff"}
+                    name={`availabilities.${index}.start_time`} // Pass name separately
+                    register={register} // Pass the entire register function
+                    error={
+                      errors?.availabilities?.[index]?.start_time?.message as string
+                    }
+                  />
 
-              <InputField
-                label="وقت الانتهاء"
-                placeholder="03:00 "
-                type="time"
-                disabled={ONLY_STAFF}
-                name={`availabilities.${index}.end_time`} // Pass name separately
-                register={register} // Pass the entire register function
-                error={
-                  errors?.availabilities?.[index]?.end_time?.message as string
-                }
-              />
+                  <InputField
+                    label="وقت الانتهاء"
+                    placeholder="03:00 "
+                    type="time"
+                    disabled={ONLY_STAFF}
+                    name={`availabilities.${index}.end_time`} // Pass name separately
+                    register={register} // Pass the entire register function
+                    error={
+                      errors?.availabilities?.[index]?.end_time?.message as string
+                    }
+                  />
 
-              <InputField
-                label="تفاصيل أخرى"
-                placeholder="03:00 "
-                type="text"
-                disabled={!isTeacher && employeeType === "Staff"}
-                name={`availabilities.${index}.description`} // Pass name separately
-                register={register} // Pass the entire register function
-                error={
-                  errors?.availabilities?.[index]?.description
-                    ?.message as string
-                }
-              />
+                  <InputField
+                    label="تفاصيل أخرى"
+                    placeholder="03:00 "
+                    type="text"
+                    disabled={!isTeacher && employeeType === "Staff"}
+                    name={`availabilities.${index}.description`} // Pass name separately
+                    register={register} // Pass the entire register function
+                    error={
+                      errors?.availabilities?.[index]?.description
+                        ?.message as string
+                    }
+                  />
 
-              {index > 0 ? (
-                <div className="mainContainer">
-                  <button type="button" onClick={() => handleRemove(index)}>
-                    <CloseButton />
-                  </button>
-                  <button
-                    className="add-action-btn mr-1"
-                    type="button"
-                    onClick={handleAdd}
-                  >
-                    + إضافة مواقيت عمل
-                  </button>
-                </div>
-              ) : (
-                <div style={{ alignItems: "center" }}>
-                  <button
-                    className="add-action-btn"
-                    type="button"
-                    onClick={handleAdd}
-                  >
-                    + إضافة مواقيت عمل
-                  </button>
-                </div>
-              )}
-            </Row>
-          ))}
+                  {index > 0 ? (
+                    <div className="mainContainer">
+                      <button type="button" onClick={() => handleRemove(index)}>
+                        <CloseButton/>
+                      </button>
+                      <button
+                        className="add-action-btn mr-1"
+                        type="button"
+                        onClick={handleAdd}
+                      >
+                        + إضافة مواقيت عمل
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{alignItems: "center"}}>
+                      <button
+                        className="add-action-btn"
+                        type="button"
+                        onClick={handleAdd}
+                      >
+                        + إضافة مواقيت عمل
+                      </button>
+                    </div>
+                  )}
+                </Row>
+              ))}
 
-          <br />
-          <span className="helper-text">
-            * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
-            بشكل عام هنا.
-          </span>
-          <span className="helper-text">
-            يمكن حظر عدم التوفر في الحالات الفردية مباشرةً على التقويم. سيتم عرض
-            مدى توفر الموظف على التقويم
-          </span>
-        </>
+              <div className="helper-text helper-wrapper">
+                <span>
+                  * تتوفر المواعيد حسب المنطقة الزمنية للموظفين \ أدخل مدى توفر الموظف
+                  بشكل عام هنا. يمكن حظر عدم التوفر
+                </span>
+                <span>
+                   في الحالات الفردية مباشرةً على التقويم. سيتم عرض
+                  مدى توفر الموظف على التقويم
+                </span>
+              </div>
 
-        <hr className="hr" />
-        <Heading text="رابط موقع المعلم" />
+            </>
+          </>
+        )}
+
+
+        <hr className="hr"/>
+        <Heading text="رابط موقع المعلم"/>
         <Row>
           {/*<InputField*/}
           {/*  label="رابط الموقع URL"*/}
@@ -707,37 +735,48 @@ const AddEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr" />
+        {!ONLY_STAFF && (
+          <>
+            <hr className="hr"/>
 
-        <Heading text="الطلاب المعينون" />
+            <Heading text="الطلاب المعينون"/>
 
-        <Row>
-          <MultiChoices
-            register={register}
-            name="initial_students"
-            disabled={ONLY_STAFF}
-            error={errors.initial_students?.message as string}
-            removePreviewChoices={removePreviewChoices}
-          />
+            <Row>
+              <MultiChoices
+                register={register}
+                name="initial_students"
+                disabled={ONLY_STAFF}
+                error={errors.initial_students?.message as string}
+                removePreviewChoices={removePreviewChoices}
+              />
 
-          <article className="group"></article>
-        </Row>
+              <article className="group"></article>
+            </Row>
 
-        <hr className="hr" />
+          </>
+        )}
 
-        <CalendarSettingsForm
-          register={register}
-          errors={errors}
-          setValue={setValue}
-          disabled={ONLY_STAFF}
-          fields={RADIO_FIELDS_FOR_CALENDAR}
-        />
 
-        <NotificationForm register={register} />
 
-        <hr className="hr" />
+        {!ONLY_STAFF && (
+          <>
+            <hr className="hr"/>
 
-        <Heading text="إضافة صلاحيات" />
+            <CalendarSettingsForm
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              disabled={ONLY_STAFF}
+              fields={RADIO_FIELDS_FOR_CALENDAR}
+            />
+          </>
+        )}
+
+        <NotificationForm register={register}/>
+
+        <hr className="hr"/>
+
+        <Heading text="إضافة صلاحيات"/>
         <Row>
           <MultiChoices
             register={register}
@@ -750,9 +789,9 @@ const AddEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr" />
+        <hr className="hr"/>
 
-        <Heading text="إضافة صلاحيات خاصة" />
+        <Heading text="إضافة صلاحيات خاصة"/>
         <Row>
           <MultiChoices
             register={register}
@@ -767,7 +806,7 @@ const AddEmployeeForm = () => {
 
         <div className="submit-buttons-container">
           <button type="submit" className="btn submit-btn">
-               حفظ
+            حفظ
           </button>
           <button
             type="button"
@@ -778,7 +817,7 @@ const AddEmployeeForm = () => {
             }}
             className="btn cancel-btn"
           >
-            يلغى
+            إلغاء
           </button>
         </div>
       </form>

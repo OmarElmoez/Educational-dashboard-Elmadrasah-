@@ -173,7 +173,6 @@ const NewStudentsList = () => {
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
-        pageSizeOptions={[10, 20, 50]}
         checkboxSelection
         disableRowSelectionOnClick
         localeText={localeToolbarText}

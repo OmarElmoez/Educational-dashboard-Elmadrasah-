@@ -870,7 +870,7 @@ const CopyInvoicesForm = () => {
           }}
           className="btn cancel-btn"
         >
-          يلغى
+          إلغاء
         </button>
       </div>
     </form>

@@ -849,7 +849,7 @@ const CreateInvoiceForm = () => {
           }}
           className="btn cancel-btn"
         >
-          يلغى
+          إلغاء
         </button>
       </div>
     </form>

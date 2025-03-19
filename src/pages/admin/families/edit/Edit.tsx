@@ -1,18 +1,12 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getSpecificFamily, TSpecificFamilyResponse } from "@/services/families.ts";
-import {
-  Dropdown,
-  InputField,
-  LoadingIndicator,
-  PhoneField,
-  Row
-} from "@/components";
+import { Dropdown, InputField, LoadingIndicator, PhoneField, Row } from "@/components";
 import { STATUS_OPTIONS, TIMEZONES_OPTIONS } from "@/constants";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditFamilySchema, TEditFamilySchema } from "@/schemas/EditFamilySchema.ts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFeedback } from "@/store/context";
 import { useAppDispatch } from "@/store/hooks.ts";
 import { actSendDataToServer } from "@/store/single-actions";
@@ -41,17 +35,23 @@ const EditFamily = () => {
     register,
     control,
     reset,
-    formState: { errors },
+    formState: {errors},
+    setValue
   } = useForm<TEditFamilySchema>({
     mode: "onBlur",
     resolver: zodResolver(EditFamilySchema),
   })
   
+  const resetValues = useCallback((res: TSpecificFamilyResponse) => {
+    setValue('time_zone', res?.time_zone ?? "");
+  }, [setValue]);
+
   useEffect(() => {
     if (specificFamilyData) {
-    reset(specificFamilyData)
+      reset(specificFamilyData)
+      resetValues(specificFamilyData)
     }
-  }, [reset, specificFamilyData])
+  }, [reset, resetValues, specificFamilyData])
 
   const onSubmit = async (data: TEditFamilySchema) => {
     if (data.status === "") {
@@ -70,7 +70,7 @@ const EditFamily = () => {
           id
         })
       )
-        .unwrap()
+      .unwrap()
 
       if (typeof res === 'string') {
         setLoading('failed')
@@ -104,6 +104,7 @@ const EditFamily = () => {
             register={register}
             options={STATUS_OPTIONS}
             error=""
+            isEdit
           />
 
           <InputField
@@ -148,6 +149,7 @@ const EditFamily = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors?.time_zone?.message as string}
+            isEdit
           />
         </Row>
         <Row>
@@ -161,7 +163,7 @@ const EditFamily = () => {
         </Row>
 
         <button type="submit" className="btn submit-btn">
-            تعديل
+          تعديل
         </button>
       </form>
     </>

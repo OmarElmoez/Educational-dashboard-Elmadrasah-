@@ -47,6 +47,7 @@ const EditStudent = () => {
     setValue('billing_method', response.billing_method);
     setValue('subject_choices', response.subject_choices as number[]);
     setValue('initial_services', response.initial_services as number[]);
+    setValue('time_zone', response.time_zone ?? "")
   }, [setValue])
 
   useEffect(() => {
@@ -124,6 +125,7 @@ const EditStudent = () => {
             register={register}
             options={STATUS_OPTIONS}
             error={errors?.status?.message as string}
+            isEdit
           />
 
           <InputField
@@ -170,6 +172,7 @@ const EditStudent = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors?.time_zone?.message as string}
+            isEdit
           />
 
           <InputField
@@ -220,6 +223,7 @@ const EditStudent = () => {
             register={register}
             options={SERVICE_OPTIONS}
             error={errors?.billing_method?.message as string}
+            isEdit
           />
 
           <InputField

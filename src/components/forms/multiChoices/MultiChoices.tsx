@@ -150,7 +150,7 @@ const MultiChoices = <T extends FieldValues>({
   const renderPreview = () => {
     if (disabled || selectedChoices.length === 0) {
       return (
-        <span className="firstOption">
+        <span style={{opacity: 0}}>
           {END_POINTS[name as keyof typeof END_POINTS].placeholder}
         </span>
       );

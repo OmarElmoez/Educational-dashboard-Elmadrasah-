@@ -166,6 +166,47 @@ menu {
   direction: ltr;
 }
 
+.select_wrapper:not(:has(.colorInput))::before {
+  content: '--اختر--';
+  position: absolute;
+  top: 50%;
+  right: 1.6rem;
+  background: transparent;
+  font-size: 1rem;
+  color: #cdcdcd;
+  transform: translateY(-50%);
+  font-weight: 500;
+}
+
+.select_wrapper:has(.removeBefore)::before,
+.select_wrapper.removeBefore::before {
+  content: '';
+}
+
+.feedback {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feedback:has(.includeAsATeacher) {
+  bottom: -1.5rem !important;
+}
+
+.includeAsATeacher .checkboxItem {
+  gap: 1rem;
+}
+
+.colorInput {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .MuiDataGrid-root .MuiDataGrid-columnHeaderTitleContainer {
   justify-content: center;
 }
@@ -182,15 +223,17 @@ menu {
 }
 
 /* override MUI styles */
-.css-45d4e2 {
+.MuiFormControl-root .MuiInputBase-formControl {
   flex-direction: row-reverse;
   gap: 1rem;
+  height: 42px;
+  border-radius: 1rem;
 }
 
-.css-45d4e2:hover .MuiOutlinedInput-notchedOutline {
+.MuiInputBase-formControl:hover .MuiOutlinedInput-notchedOutline {
   border-color: rgba(0, 0, 0, 0.23) !important;
 }
-.css-45d4e2.Mui-focused .MuiOutlinedInput-notchedOutline {
+.MuiInputBase-formControl.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: var(--main-color) !important;
 }
 
@@ -198,6 +241,14 @@ menu {
   background-color: transparent !important;
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  color: red;
+  text-align: right;
+  margin-inline: 0;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 
 /* change the font of google button */
@@ -308,6 +359,7 @@ textarea {
 
 .searchDropdownInput {
   cursor: pointer;
+  caret-color: transparent;
 }
 
 .select_wrapper {
@@ -319,7 +371,7 @@ textarea {
 .searchDropdownInput::after {
   content: url("./assets/select_arrow.svg");
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 1.6rem;
   transform: translateY(-50%);
   pointer-events: none;
@@ -348,7 +400,7 @@ textarea::placeholder,
 
 .adminFormLabel {
   font-family: "Expo",'IBM Plex Sans Arabic', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #818181;
 }
 
@@ -374,9 +426,7 @@ input#formatted_number::placeholder {
 }
 
 .dropdown-placeholder {
-  color: #CDCDCD;
-  font-size: 1rem;
-  font-weight: 500
+  opacity: 0;
 }
 
 .calendar_wrapper {
@@ -390,9 +440,8 @@ input#formatted_number::placeholder {
 .submit-buttons-container {
   display: flex;
   justify-content: flex-end;
-  /* margin-inline-end: 10.1rem; */
-  margin-top: 2rem;
-  gap: 1rem;
+  margin-top: 4rem;
+  gap: 2rem;
 }
 
 .btn {
@@ -400,7 +449,7 @@ input#formatted_number::placeholder {
   font-weight: 500;
   padding-block: 1.5rem;
   border-radius: 1rem;
-  min-width: 130px;
+  min-width: 150px;
 }
 
 .submit-btn {
@@ -428,8 +477,15 @@ input#formatted_number::placeholder {
 }
 
 .helper-text {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #cdcdcd;
+}
+
+.helper-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin-right: auto;
 }
 
 .link-text {
@@ -439,7 +495,7 @@ input#formatted_number::placeholder {
 
 .add-action-btn {
   color: var(--main-color);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
   text-decoration: underline;
 }
@@ -483,6 +539,7 @@ input#formatted_number::placeholder {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  gap: 1rem;
 }
 
 .flex-1 {

@@ -90,7 +90,7 @@ const DropdownWithSearch = <T extends FieldValues>({
       />
       <label className={`adminFormLabel`}>{label}</label>
       <section
-        className={`select_wrapper ${select_box}`}
+        className={`select_wrapper ${select_box} ${selectedOption !== null && 'removeBefore'}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedOption ? (<span>{selectedOption?.label}</span>) : (

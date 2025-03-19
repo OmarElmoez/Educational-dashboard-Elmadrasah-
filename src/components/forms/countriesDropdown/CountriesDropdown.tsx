@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./countriesDropdown.module.css";
 import { TCountry } from "@/schemas/CountrySchema";
 import actGetCities from "@/store/location/act/actGetCities";
@@ -13,12 +13,14 @@ const CountriesDropdown = <T extends FieldValues>({
   register,
   name,
   setValue,
-  error
+  error,
+  removePreviewChoices
 }: {
   register: UseFormRegister<T>,
   name: Path<T>,
   setValue: (name: Path<T>, value: string) => void,
-  error: string
+  error: string,
+  removePreviewChoices?: boolean,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -50,6 +52,12 @@ const CountriesDropdown = <T extends FieldValues>({
       });
   };
 
+  useEffect(() => {
+    if (removePreviewChoices) {
+      setSearchVal("");
+    }
+  }, [removePreviewChoices]);
+
   const onClickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setShowResults(true);
@@ -60,7 +68,7 @@ const CountriesDropdown = <T extends FieldValues>({
   return (
     <article className="group" ref={countriesRef}>
       <label className="adminFormLabel" htmlFor="country">الدولة</label>
-      <section className="select_wrapper">
+      <section className={`select_wrapper ${searchVal && 'removeBefore'}`}>
         <input
           type="text"
           {...register(name)}
@@ -70,7 +78,6 @@ const CountriesDropdown = <T extends FieldValues>({
           onClick={onClickHandler}
           className="searchDropdownInput"
           style={{ width: "100%" }}
-          placeholder="ابحث عن دولة"
         />
       </section>
       <p className="error">{error}</p>

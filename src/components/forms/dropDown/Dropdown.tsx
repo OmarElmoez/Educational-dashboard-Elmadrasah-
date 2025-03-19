@@ -1,26 +1,25 @@
 import { FieldValues } from "react-hook-form";
 import { TDropdownProps } from "@/types/Dropdown";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { setChosenState } from "@/store/location/LocationSlice";
-import styles from "./dropDown.module.css";
-
-const { feedback } = styles;
 
 const Dropdown = <T extends FieldValues, U extends string>({
-  name,
-  options,
-  chosen,
-  register,
-  label,
-  error,
-  isRequired,
-  subjectRef,
-  isWithPopup = false,
-  disabled = false,
-  children = null,
-  handleChange,
-}: TDropdownProps<T, U>) => {
+                                                             name,
+                                                             options,
+                                                             chosen,
+                                                             register,
+                                                             label,
+                                                             error,
+                                                             isRequired,
+                                                             subjectRef,
+                                                             isWithPopup = false,
+                                                             disabled = false,
+                                                             children = null,
+                                                             handleChange,
+                                                             removePreviewChoices,
+                                                             isEdit = false,
+                                                           }: TDropdownProps<T, U>) => {
   const chosenValue = options?.find((option) => option.value === chosen)?.value;
 
   const dispatch = useAppDispatch();
@@ -36,7 +35,12 @@ const Dropdown = <T extends FieldValues, U extends string>({
       }
     }
   };
-
+  const [selectedValue, setSelectedValue] = useState("")
+  useEffect(() => {
+    if (removePreviewChoices) {
+      setSelectedValue("");
+    }
+  }, [isEdit, removePreviewChoices]);
   return (
     <article className="group">
       <label className={`adminFormLabel ${isRequired && "required"}`}>
@@ -48,21 +52,15 @@ const Dropdown = <T extends FieldValues, U extends string>({
           value={chosenValue}
           onClick={handleChosenState}
           disabled={disabled || false}
-          className={`${disabled && "disabled_btn"}`}
-          onChange={(e) =>
-            handleChange && handleChange(e.currentTarget.value as U)
+          className={`${disabled && "disabled_btn"} ${(selectedValue !== "" || isEdit) && 'removeBefore'}`}
+          onChange={(e) => {
+            const value = e.currentTarget.value;
+            setSelectedValue(value);
+            handleChange && handleChange(value as U);
           }
-          // onChange={(e) =>
-          //   setTreatmentType &&
-          //   setTreatmentType(
-          //     e.currentTarget.value as
-          //       | "Tax Exclusive"
-          //       | "Tax Inclusive"
-          //       | "Tax Exempt"
-          //   )
-          // }
+          }
         >
-          <option value="">--اختر--</option>
+          <option value="" hidden></option>
           {options?.map((option, index) => (
             <option key={`${option.value}-${index}`} value={option.value}>
               {option.label}
@@ -70,7 +68,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
           ))}
         </select>
       </div>
-      <div className={feedback}>
+      <div className='feedback'>
         {error ? <p className="error">{error}</p> : <p></p>}
         {(isWithPopup && !disabled) && (
           <p

@@ -35,7 +35,8 @@ import Tabs from './tabs/Tabs.tsx'
 import StarRating from "./star-rating/StarRating.tsx";
 import ScheduleForDay from "./schedule-for-day/ScheduleForDay.tsx";
 import Rate from "./star-rating/Rate.tsx";
-import LessonCard from "@/components/lesson-card/LessonCard.tsx";
+import LessonCard from "./lesson-card/LessonCard.tsx";
+import DatePicker from './forms/dateField/DatePicker.tsx'
 
 export {
   Header,
@@ -75,4 +76,5 @@ export {
   ScheduleForDay,
   Rate,
   LessonCard,
+  DatePicker,
 };

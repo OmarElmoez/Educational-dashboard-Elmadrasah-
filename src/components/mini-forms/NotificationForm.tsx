@@ -22,10 +22,9 @@ const NotificationForm = <T extends FieldValues>({
         options={LESSON_CHECK_BOXES}
         register={register}
         style={{
-          width: "85%",
-          columnGap: "20rem",
-          rowGap: "2.6rem",
-          flexWrap: "wrap",
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "1rem"
         }}
       />
       
@@ -40,7 +39,7 @@ const NotificationForm = <T extends FieldValues>({
         />
         <span className="helper-text">
           يسمح حساب المستخدم للطالب باستخدام عنوان بريده الإلكتروني لتسجيل
-          الدخول إلى حسابه الشخصي.يلغي
+          الدخول إلى حسابه الشخصي.
         </span>
       </div>
     </>

@@ -3,7 +3,7 @@ import { INITIAL_CALENDAR_COLOR } from "@/constants";
 import styles from "./colorField.module.css";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
-const { color_wrapper, colorInput, colorPreview, colorValue, previewBox } =
+const { color_wrapper, colorPreview, colorValue, previewBox } =
   styles;
 
 const ColorField = <T extends FieldValues>({
@@ -40,8 +40,7 @@ const ColorField = <T extends FieldValues>({
         <input
           type="color"
           {...register(name)}
-          style={{ visibility: "hidden" }}
-          className={colorInput}
+          className='colorInput'
           value={selectedColor}
           ref={inputColorRef}
           onChange={(e) => {

@@ -9,7 +9,7 @@ import {
   MultiChoices,
   PhoneField,
   Row,
-  LoadingIndicator,
+  LoadingIndicator, DatePicker,
 } from "@/components";
 import { Heading } from "@/components/UI";
 import { NotificationForm } from "@/components/mini-forms";
@@ -166,6 +166,7 @@ const AddStudentToFamilyForm = () => {
             isWithPopup
             subjectRef={addNewFamilyRef}
             error={errors.customer?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
         <Row>
@@ -175,6 +176,7 @@ const AddStudentToFamilyForm = () => {
             register={register}
             options={STATUS_OPTIONS}
             error={errors.status?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -250,26 +252,28 @@ const AddStudentToFamilyForm = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors.time_zone?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
-          <InputField
-            type="date"
-            isRequired
-            label="تاريخ الميلاد "
-            placeholder=" يوم / شهر / سنه"
+
+          <DatePicker
+            setValue={setValue}
+            label="تاريخ الميلاد"
             register={register}
             name="birth_date"
             error={errors.birth_date?.message as string}
+            isRequired
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
         <Row>
-          <InputField
-            type="date"
+          <DatePicker
+            setValue={setValue}
             label="تاريخ البدء"
-            placeholder="يوم / شهر / سنه"
             register={register}
             name="start_date"
             error={errors.start_date?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <InputField
@@ -302,6 +306,7 @@ const AddStudentToFamilyForm = () => {
             options={curriculumOptions}
             name="student_curriculum"
             error={errors.student_curriculum?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -331,11 +336,12 @@ const AddStudentToFamilyForm = () => {
           />
 
           <Dropdown
-            label="رابط دخول الحصة "
+            label="رابط دخول الحصة"
             register={register}
             options={locationOptions}
             name="initial_location"
             error={errors.initial_location?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -364,6 +370,7 @@ const AddStudentToFamilyForm = () => {
             register={register}
             options={SERVICE_OPTIONS}
             error={errors.billing_method?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <InputField
@@ -390,7 +397,7 @@ const AddStudentToFamilyForm = () => {
             }}
             className="btn cancel-btn"
           >
-            يلغى
+            إلغاء
           </button>
         </div>
       </form>

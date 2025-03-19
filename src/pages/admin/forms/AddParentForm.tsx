@@ -45,8 +45,11 @@ const AddParentForm = () => {
 
   const [loading, setLoading] = useState<TLoading>('idle')
 
+  const [removePreviewChoices, setRemovePreviewChoices] = useState(false)
+
   const onSubmit = async (data: TAddParentFormData) => {
     setLoading('pending')
+    setRemovePreviewChoices(false)
 
     const processedData = {
       ...data,
@@ -73,6 +76,7 @@ const AddParentForm = () => {
       setLoading('succeeded')
       openFeedbackModal("succeeded", "تم اضافة العائلة بنجاح!");
       reset()
+      setRemovePreviewChoices(true)
 
     } catch (error) {
       openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error as string);
@@ -106,6 +110,7 @@ const AddParentForm = () => {
             register={register}
             options={STATUS_OPTIONS}
             error={errors.status?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -115,6 +120,7 @@ const AddParentForm = () => {
             isRequired
             name="salutation"
             error={errors.salutation?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -220,6 +226,7 @@ const AddParentForm = () => {
             register={register}
             setValue={setValue}
             error={errors.country?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -228,6 +235,7 @@ const AddParentForm = () => {
             register={register}
             options={formattedStates}
             error={errors.state?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -238,6 +246,7 @@ const AddParentForm = () => {
             register={register}
             options={formattedCities}
             error={errors.city?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
 
           <Dropdown
@@ -247,6 +256,7 @@ const AddParentForm = () => {
             options={TIMEZONES_OPTIONS}
             register={register}
             error={errors.time_zone?.message as string}
+            removePreviewChoices={removePreviewChoices}
           />
         </Row>
 
@@ -285,10 +295,11 @@ const AddParentForm = () => {
             type="button"
             onClick={() => {
               reset();
+              setRemovePreviewChoices(true)
             }}
             className="btn cancel-btn"
           >
-            يلغى
+            إلغاء
           </button>
         </div>
       </form>

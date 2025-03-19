@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { FieldValues, Path, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { TModalRef,  } from "./shared";
 
 type TOption = {
@@ -20,6 +20,9 @@ type TDropdownProps<T extends FieldValues, U> = {
   children?: ReactNode | null;
   disabled?: boolean;
   handleChange?: (service: U) => void;
+  watch?: UseFormWatch<T>
+  removePreviewChoices?: boolean;
+  isEdit?: boolean;
 };
 
 type TStatus = "" | "Saved" | "Approved" | "Paid" | "Void";
