@@ -45,7 +45,6 @@ const TeacherDataTable = ({
   loading,
   next,
   previous,
-  rowCount,
   dispatchGetAllEmployees,
 }: {
   employeesData: TEmployeesData[];
