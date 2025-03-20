@@ -776,6 +776,16 @@ const AddEmployeeForm = () => {
 
         <hr className="hr"/>
 
+        <Heading text="إنشاء رابط الحصة"/>
+
+        <SingleCheckbox
+          register={register}
+          name="create_events"
+          label="تفعيل"
+        />
+
+        <hr className="hr"/>
+
         <Heading text="إضافة صلاحيات"/>
         <Row>
           <MultiChoices
