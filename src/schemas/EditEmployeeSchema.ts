@@ -62,4 +62,5 @@ export const EditEmployeeSchema = z.object({
     path: ["wage_type"]
   })
 
+
 export type TEditEmployeeForm = z.infer<typeof EditEmployeeSchema>;
