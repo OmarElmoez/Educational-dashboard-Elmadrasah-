@@ -8,7 +8,7 @@ import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import { SimpleTable } from "@/pages/shared/components";
 
-const { headerContainer, sectionContainer, infoContainer, iconButton } = Styles;
+const {  sectionContainer, infoContainer, iconButton } = Styles;
 const EmployeeProfileData = () => {
   const [specificEmployeeData, setSpecificEmployeeData] =
     useState<TDataForSpecificEmployee>();
@@ -32,9 +32,18 @@ const EmployeeProfileData = () => {
   }, [dispatch, employeeId]);
   return (
     <>
-      <div className={headerContainer}>
-        <p>{specificEmployeeData?.full_name || "لايوجد"}</p>
+      <div className="flex justify-between mb-[4.8rem]" >
+        <div className="flex items-center gap-[2rem]">
+        <p className="font-medium text-[2.4rem]">{specificEmployeeData?.full_name || "لايوجد"}</p>
         <EditPenIcon className={iconButton} onClick={editEmployee} />
+        </div>
+        {specificEmployeeData?.is_active ? (
+          <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[var(--main-color)] text-[#FFFFFF]">
+              نشط
+            </span>
+        ) : (
+          <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">غير نشط</span>
+        )}
       </div>
       {/* Section One Contact Information */}
       <section className={sectionContainer}>

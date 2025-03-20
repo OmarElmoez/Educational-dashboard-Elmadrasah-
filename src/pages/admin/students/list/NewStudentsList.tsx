@@ -22,7 +22,7 @@ const NewStudentsList = () => {
   const { students } = useAppSelector((state) => state.table);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
-    pageSize: 20,
+    pageSize: 10,
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [next, setNext] = useState<string | null>(null);
@@ -174,6 +174,7 @@ const NewStudentsList = () => {
           border:0,
           paddingTop: "1rem"}}
         rows={students.data}
+        pageSizeOptions={[10, 20, 50]}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}

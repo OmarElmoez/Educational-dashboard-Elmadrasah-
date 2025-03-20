@@ -37,13 +37,13 @@ const StudentProfile = () => {
                  style={{marginBottom: "0", color: "#000"}}/>
         <button onClick={() => navigate(`/admin/students/profile/${id}/edit`, {state: specificStudentData})}>
           <EditPenIcon/></button>
-          </div>  
+      </div>
           {specificStudentData?.status ? (
             <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[var(--main-color)] text-[#FFFFFF]">
               نشط
             </span>
           ) : (
-            <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">متوقف</span>
+            <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">غير نشط</span>
           )}
       </div>
 

@@ -15,7 +15,7 @@
 }
 .MuiTextField-root .MuiOutlinedInput-root .MuiOutlinedInput-input {
   font-size: 1rem;
-  padding: 0rem;
+  padding: 0;
 }
 .MuiDrawer-paper .MuiSelect-root {
   width: 25rem;
@@ -24,12 +24,12 @@
   border-radius: 1rem;
 }
 .MuiSelect-root .MuiOutlinedInput-input {
-  padding: 0rem;
+  padding: 0;
   border-radius: 1rem;
   font-size: 1rem;
 }
-.MuiSelect-select {
-  padding-right : 0rem !important;
+.MuiInputBase-root:not(.MuiTablePagination-select) .MuiInputBase-input {
+  padding-right : 0 !important;
 }
 .MuiDrawer-paper .MuiSelect-root .MuiSelect-icon {
   right: 88%;

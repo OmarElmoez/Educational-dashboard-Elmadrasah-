@@ -57,7 +57,7 @@ const FamilyProfile = () => {
               نشط
             </span>
           ) : (
-            <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">متوقف</span>
+            <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">غير نشط</span>
           )}
       </div>
       {/* Section One Contact Information */}
@@ -154,11 +154,10 @@ const FamilyProfile = () => {
           }) as TTableRow[]
         }
       />
-      <hr className="hr" style={{ marginBottom: "4.8rem" }} />
 
       {/* Section Five Subscriptions Credits */}
-      <Heading text="أرصدة الاشتركات" style={{ color: "#000" }} />
-      {/* <SimpleTable
+      <Heading text="أرصدة الاشتركات" style={{ color: "#000", marginTop: '4.8rem' }} />
+      <SimpleTable
         tableHead={[
           "نوع الخدمة",
           "تم شراؤها",
@@ -169,10 +168,10 @@ const FamilyProfile = () => {
         ]}
         noDataMsg="لا توجد ارصدة !"
         rows={specificFamilyData?.subscriptions_credits || []}
-      /> */}
-      <hr className="hr" style={{ marginBottom: "4.8rem" }} />
+      />
+
       {/* Section Six Last Invoices */}
-      <div className="flex items-center justify-start gap-[3.2rem] my-[4.8rem]">
+      <div className="flex items-center justify-between my-[4.8rem]">
         <Heading
           text="الفواتير الأخيرة"
           style={{ marginBottom: "0", color: "#000" }}
@@ -216,7 +215,7 @@ const FamilyProfile = () => {
         </button>
       </div> */}
       {/* Section Seven Last Payments */}
-      <div className="flex items-center justify-start gap-[3.2rem] my-[4.8rem]">
+      <div className="flex items-center justify-between my-[4.8rem]">
         <Heading
           text="المدفوعات الأخيرة"
           style={{ marginBottom: "0", color: "#000" }}
