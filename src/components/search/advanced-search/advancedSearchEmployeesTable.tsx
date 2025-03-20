@@ -196,6 +196,7 @@ const AdvancedSearchSection = ({
           onChange={(event) => setPhoneNumber(event.target.value)}
         />
         <Select
+          className="subject-select"
           labelId="subject-select-label"
           id="subject-select"
           value={selectedSubjectId ?? ""}

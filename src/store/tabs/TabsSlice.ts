@@ -59,6 +59,8 @@ export type TLessonForCurrentHour = {
   lesson_count: number;
   attended_count: number;
   not_attended_count: number;
+  attended_count_participant: number;
+  not_attended_count_participant: number;
   attendance_percentage: number;
   teachers: TTeacher[];
   students: TStudent[];
@@ -84,6 +86,8 @@ const initialState: TTabsState = {
     attended_count: 0,
     not_attended_count: 0,
     attendance_percentage: 0,
+    attended_count_participant: 0,
+    not_attended_count_participant: 0,
     teachers: [],
     students: [],
     results: []

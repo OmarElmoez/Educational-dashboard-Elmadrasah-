@@ -71,7 +71,7 @@ const TeacherDataTable = ({
     {
       field: "image",
       headerName: "صورة شخصية",
-      width: 100,
+      flex: 0.65,
       headerAlign: "center",
       renderCell: (params) => {
         if (params.value) {
@@ -100,22 +100,24 @@ const TeacherDataTable = ({
     {
       field: "full_name",
       headerName: "الاسم الكامل",
-      width: 150,
+      flex: 1,
       headerAlign: "center",
       renderCell: (params) => (
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
-          onClick={() => navigate(`/admin/employees/employee-profile/${params.row.id}`)}
+          onClick={() =>
+            navigate(`/admin/employees/employee-profile/${params.row.id}`)
+          }
         >
           {params.row.first_name} {params.row.last_name}
         </button>
-      )
+      ),
     },
     {
       field: "phone",
       headerName: "الهاتف",
-      width: 150,
+      flex: 0.75,
       headerAlign: "center",
       cellClassName: "cell-phone",
       renderCell: (params) => {
@@ -129,7 +131,7 @@ const TeacherDataTable = ({
     {
       field: "email",
       headerName: "البريد الإلكترونى",
-      width: 200,
+      flex: 1.5,
       headerAlign: "center",
       editable: true,
       renderCell: (params) => {
@@ -143,7 +145,7 @@ const TeacherDataTable = ({
     {
       field: "city",
       headerName: "المدينة",
-      width: 100,
+      flex: 0.75,
       headerAlign: "center",
       renderCell: (params) => {
         if (params.formattedValue) {
@@ -156,13 +158,13 @@ const TeacherDataTable = ({
     {
       field: "employee_type",
       headerName: "النوع",
-      width: 100,
+      flex: 0.75,
       headerAlign: "center",
     },
     {
       field: "subject_choices_response",
       headerName: "المواد",
-      width: 280,
+      flex: 1.25,
       headerAlign: "center",
       renderCell: (params) => {
         if (params.formattedValue.length > 0) {
@@ -170,24 +172,27 @@ const TeacherDataTable = ({
             return `${subject.name_ar},`;
           });
         } else {
-          return "لا توجد مواد مختارة حتى الآن";
+          return "لا توجد مواد مختارة";
         }
       },
     },
     {
       field: "id",
-      headerName: "تعديل بيانات",
-      width: 100,
+      headerName: "تعديل",
+      flex: 0.5,
       headerAlign: "center",
       renderCell: (params) => {
         return (
           <button
-            onClick={() => navigate(`/admin/employees/edit-employee/${params.row.id}`)}
+            onClick={() =>
+              navigate(`/admin/employees/edit-employee/${params.row.id}`)
+            }
           >
             <EditPenIcon />
           </button>
         );
       },
+      cellClassName: "edit-cell",
     },
   ];
   const CustomNoRowsOverlay = () => {
@@ -242,18 +247,17 @@ const TeacherDataTable = ({
   };
   return (
     <>
-      <Paper sx={{ height: "100%", width: "100%" }}>
+      <Paper sx={{ height: "auto", width: "100%" }}>
         <DataGrid
           rows={employeesData}
           columns={columns}
           paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}   
-          pageSizeOptions={[10,20,50]}
+          onPaginationModelChange={setPaginationModel}
+          pageSizeOptions={[10, 20, 50]}
           checkboxSelection
           disableRowSelectionOnClick
-          rowCount={rowCount}
-          paginationMode="client"
           sx={{
+            border: 0,
             paddingTop: "1rem",
           }}
           localeText={localeToolbarText}
@@ -270,7 +274,8 @@ const TeacherDataTable = ({
             },
           }}
         />
-              <Box
+      </Paper>
+      <Box
         sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
       >
         <Button
@@ -284,7 +289,6 @@ const TeacherDataTable = ({
           المجموعة التالية
         </Button>
       </Box>
-      </Paper>
     </>
   );
 };

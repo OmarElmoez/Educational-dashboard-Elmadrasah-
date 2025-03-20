@@ -31,11 +31,20 @@ const StudentProfile = () => {
       {!specificStudentData && <div className="loadingBox">
           <LoadingIndicator/>
       </div>}
-      <div className="flex items-center gap-[2rem] mb-[4.8rem]">
+      <div className="flex justify-between mb-[4.8rem]">
+      <div className="flex items-center gap-[2rem]">
         <Heading text={specificStudentData?.full_name as string}
                  style={{marginBottom: "0", color: "#000"}}/>
         <button onClick={() => navigate(`/admin/students/profile/${id}/edit`, {state: specificStudentData})}>
           <EditPenIcon/></button>
+          </div>  
+          {specificStudentData?.status ? (
+            <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[var(--main-color)] text-[#FFFFFF]">
+              نشط
+            </span>
+          ) : (
+            <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">متوقف</span>
+          )}
       </div>
 
       {specificStudentData?.student_type === 'child' && (
@@ -159,7 +168,7 @@ const StudentProfile = () => {
                            noDataMsg="لا توجد فواتير حديثة."
                            rows={createObjectsWithCustomKeys({
                              arr: specificStudentData?.invoices,
-                             keys: ["date", "formatted_number", "status", "due_date", "total"]
+                             keys: ["id","date", "formatted_number", "status", "due_date", "total"]
                            })}/>
 
               <div className="flex items-center justify-between gap-[2rem] my-[4.8rem]">

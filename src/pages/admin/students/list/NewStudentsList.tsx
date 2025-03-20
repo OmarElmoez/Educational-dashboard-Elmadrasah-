@@ -16,6 +16,7 @@ import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 
 import "./newStudentsList.css";
+import Paper from '@mui/material/Paper';
 
 const NewStudentsList = () => {
   const { students } = useAppSelector((state) => state.table);
@@ -83,12 +84,12 @@ const NewStudentsList = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 100,
+      flex: 0.5,
     },
     {
       field: "first_name",
       headerName: "الاسم الأول",
-      width: 140,
+      flex: 1,
       renderCell: (params) => (
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
@@ -102,38 +103,38 @@ const NewStudentsList = () => {
     {
       field: "last_name",
       headerName: "الاسم الأخير",
-      width: 140,
+      flex: 1,
     },
     {
       field: "email",
       headerName: "البريد الإلكتروني",
-      width: 260,
+      flex: 1.5,
       renderCell: (params) => (params.value ? params.value : "لا يوجد"),
     },
     {
       field: "mobile_phone",
-      width: 160,
+      flex: 1,
       headerName: "الهاتف المحمول",
       renderCell: (params) => params.value || "لا يوجد",
       cellClassName: "phone-cell",
     },
     {
       field: "home_phone",
-      width: 150,
+      flex: 1,
       headerName: "هاتف المنزل",
       renderCell: (params) => params.value || "لا يوجد",
       cellClassName: "phone-cell",
     },
     {
       field: "student_type",
-      width: 100,
+      flex: 1,
       headerName: "النوع",
       renderCell: (params) => params.value || "لا يوجد",
     },
     {
       field: "action",
       headerName: "أكشن",
-      width: 90,
+      flex: 0.5,
       renderCell: (params) => (
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
@@ -167,8 +168,11 @@ const NewStudentsList = () => {
 
   return (
     <Box component="section">
+      <Paper sx={{ height: "auto", width: "100%" }}>
       <DataGrid
-        sx={{ paddingTop: "1rem" }}
+        sx={{ 
+          border:0,
+          paddingTop: "1rem"}}
         rows={students.data}
         columns={columns}
         paginationModel={paginationModel}
@@ -178,8 +182,6 @@ const NewStudentsList = () => {
         localeText={localeToolbarText}
         slots={{ toolbar: CustomToolbar }}
         loading={loading}
-        rowCount={students.data.length}
-        paginationMode="client"
         slotProps={{
           loadingOverlay: {
             variant: "skeleton",
@@ -187,7 +189,7 @@ const NewStudentsList = () => {
           },
         }}
       />
-
+</Paper>
       <Box
         sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
       >

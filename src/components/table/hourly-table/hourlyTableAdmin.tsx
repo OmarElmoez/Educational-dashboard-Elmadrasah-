@@ -17,13 +17,13 @@ const columns: GridColDef[] = [
   {
     field: "from_date",
     headerName: "التاريخ",
-    width: 180,
+    flex: 1,
     headerAlign: "center",
   },
   {
     field: "start_time_employee",
     headerName: "وقت الدخول المدرس",
-    width: 180,
+    flex: 1,
     headerAlign: "center",
     renderCell: (params) => {
       let employeeTime = params.value;
@@ -40,7 +40,7 @@ const columns: GridColDef[] = [
   {
     field: "start_time_student",
     headerName: "وقت الدخول الطالب",
-    width: 180,
+    flex: 1,
     headerAlign: "center",
     renderCell: (params) => {
       let studentTime = params.value;
@@ -57,19 +57,19 @@ const columns: GridColDef[] = [
   {
     field: "student_name",
     headerName: "اسم الطالب",
-    width: 280,
+    flex: 1,
     headerAlign: "center",
   },
   {
     field: "employee_name",
     headerName: "اسم المدرس",
-    width: 280,
+    flex: 1,
     headerAlign: "center",
   },
   {
     field: "status",
     headerName: "الحالة",
-    width: 180,
+    flex: 1,
     headerAlign: "center",
     renderCell: (params) => {
       const status = params.value;
@@ -142,14 +142,13 @@ const CustomNoResultsOverlay = () => {
     <>
       <Paper sx={{ height: "auto", width: "100%" }}>
         <DataGrid
-        // className="custom-data-grid"
           rows={hourlyLessons}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[10, 50]}
           checkboxSelection
           sx={{
-            border: 0,
+            border:0,
             paddingTop: "1rem",
         }}
           localeText={localeToolbarText}

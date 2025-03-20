@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import { actGetAllFamilies } from "@/store/families/FamiliesSlice.ts";
+import Paper from "@mui/material/Paper";
 
 const CustomToolbar = () => (
   <GridToolbarContainer>
@@ -39,10 +40,10 @@ const FamiliesList = () => {
   const dispatch = useAppDispatch();
 
   const { families } = useAppSelector((state) => state.families);
-    const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-      page: 0,
-      pageSize: 20,
-    });
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 20,
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [next, setNext] = useState<string | null>(null);
   const [previous, setPrevious] = useState<string | null>(null);
@@ -100,31 +101,33 @@ const FamiliesList = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 100,
+      flex: 0.5,
     },
     {
       field: "first_name",
       headerName: "الاسم الأول",
-      width: 140,
+      flex: 1,
       renderCell: (params) => (
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
-          onClick={() => navigate(`/admin/students/families-list/${params.row.id}`)}
+          onClick={() =>
+            navigate(`/admin/students/families-list/${params.row.id}`)
+          }
         >
           {params.value}
         </button>
-      )
+      ),
     },
     {
       field: "last_name",
       headerName: "الاسم الأخير",
-      width: 140,
+      flex: 1,
     },
     {
       field: "email",
       headerName: "البريد الإلكتروني",
-      width: 280,
+      flex: 1.5,
       renderCell: (params) => {
         if (!params.value) return "لا يوجد";
         return params.value;
@@ -132,7 +135,7 @@ const FamiliesList = () => {
     },
     {
       field: "mobile_phone",
-      width: 160,
+      flex: 1,
       headerName: "الهاتف المحمول",
       renderCell: (params) => {
         return params.value || "لا يوجد";
@@ -141,7 +144,7 @@ const FamiliesList = () => {
     },
     {
       field: "home_phone",
-      width: 150,
+      flex: 1,
       headerName: "هاتف المنزل",
       renderCell: (params) => {
         return params.value || "لا يوجد";
@@ -151,12 +154,14 @@ const FamiliesList = () => {
     {
       field: "action",
       headerName: "أكشن",
-      width: 90,
+      flex: 0.5,
       renderCell: (params) => (
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
-          onClick={() => navigate(`/admin/students/families-list/${params.row.id}/edit`)}
+          onClick={() =>
+            navigate(`/admin/students/families-list/${params.row.id}/edit`)
+          }
         >
           <EditPenIcon />
         </button>
@@ -167,29 +172,30 @@ const FamiliesList = () => {
 
   return (
     <Box component="section">
-      <DataGrid
-        sx={{
-          paddingTop: "1rem",
-        }}
-        rows={families.familiesData}
-        columns={columns}
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
-        pageSizeOptions={[10, 20, 50]}
-        checkboxSelection
-        disableRowSelectionOnClick
-        slots={{ toolbar: CustomToolbar }}
-        localeText={localeToolbarText}
-        loading={loading}
-        rowCount={families.familiesData.length}
-        paginationMode="client"
-        slotProps={{
-          loadingOverlay: { 
-            variant: "skeleton",
-            noRowsVariant: "skeleton",
-          },
-        }}
-      />
+      <Paper sx={{ height: "auto", width: "100%" }}>
+        <DataGrid
+          sx={{
+            border: 0,
+            paddingTop: "1rem",
+          }}
+          rows={families.familiesData}
+          columns={columns}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          pageSizeOptions={[10, 20, 50]}
+          checkboxSelection
+          disableRowSelectionOnClick
+          slots={{ toolbar: CustomToolbar }}
+          localeText={localeToolbarText}
+          loading={loading}
+          slotProps={{
+            loadingOverlay: {
+              variant: "skeleton",
+              noRowsVariant: "skeleton",
+            },
+          }}
+        />
+      </Paper>
       <Box
         sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
       >
