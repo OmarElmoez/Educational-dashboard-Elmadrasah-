@@ -90,7 +90,6 @@ const JoinClass = () => {
   useEffect(() => {
     if (classId) {
       actGetSpecificLessonData(classId).then((res) => {
-        console.log(res);
         setLessonData(res);
         if (credintials?.role === "Admin") {
           let timeRange = `${res?.from_time} - ${res?.to_time}`;
@@ -150,9 +149,9 @@ const JoinClass = () => {
     if (classId) {
       actGetSpecificLessonData(classId).then((res) => {
         setEntranceTime({
-          startTimeTeacher: res?.start_time_employee || "لا يوجد",
+          startTimeTeacher: res?.start_time_employee || "",
           startTimeStudent:
-            res?.participants[0]?.start_time_student || "لا يوجد",
+            res?.participants[0]?.start_time_student || "",
         });
         setDisplayEntranceTime(!displayEntranceTime);
       });
