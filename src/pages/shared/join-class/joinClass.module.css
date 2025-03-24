@@ -1,4 +1,4 @@
-.heading_button_container{
+.heading_button_container {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -29,16 +29,16 @@
   background-color: var(--main-color);
 }
 
-.lesson_actions button:nth-of-type(2) {
-  background-color: #C92516;
+.lesson_actions button:nth-of-type(1) {
+  background-color: #c92516;
 }
 
 .lesson_status {
   position: absolute;
   left: 2.4rem;
   top: 2.4rem;
-  color: #C99309;
-  background-color: #FFB8002E;
+  color: #c99309;
+  background-color: #ffb8002e;
   font-size: 1.2rem;
   font-weight: 500;
   padding-block: 1rem;
@@ -46,9 +46,27 @@
   text-align: center;
   width: 128px;
 }
-.lesson_indicator{
+.lesson_indicator {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 3rem;
+}
+.entrance_data {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  margin-top: 1.2rem;
+}
+.entrance_data p {
+  font-size: 1.4rem;
+  color: #aab8af;
+}
+.start_timer {
+  display: flex;
+  justify-content: end;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 1rem;
+  color: #aab8af;
 }

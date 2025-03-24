@@ -14,12 +14,12 @@ const actJoinLesson = createAsyncThunk(
   ) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      return await axiosInstance.get(attendance_link);
+      const response = await axiosInstance.get(attendance_link);
+      return response
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }
   }
 
 );
-
 export default actJoinLesson;

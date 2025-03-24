@@ -5,6 +5,7 @@
 
 .personal_info {
   margin-top: 2rem;
+  margin-bottom: 3.2rem;
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -16,9 +17,9 @@
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 25rem;
+  width: 15rem;
   color: var(--secondary-color);
-  direction: ltr;
+  direction: rtl;
 }
 
 .text_box p {
@@ -31,7 +32,7 @@ menu {
   color: #616161;
   margin-top: 2rem;
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 menu li {

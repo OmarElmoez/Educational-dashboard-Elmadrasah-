@@ -4,6 +4,7 @@ import styles from './button.module.css'
 const { button } = styles;
 
 type TButtonProps = {
+  variant?: 'text' | 'outlined' | 'contained';
   children: ReactNode;
   style?: CSSProperties;
   onClick?: () => void;
