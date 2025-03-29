@@ -147,15 +147,13 @@ const UploadEduFilesForm = ({
       dispatch(actSendEduUploadedFiles({classId, data})).unwrap().then((res) => {
         if (res.message === "Files uploaded successfully") {
           setLoading(false);
-          openFeedbackModal("succeeded",
-            "تم إضافة الملفات بنجاح");
+          openFeedbackModal("succeeded", "تم إضافة الملفات بنجاح");
           reset();
           setPreviewFiles([]);
           afterUploadNewFile(res.uploaded_files)
         } else {
           setLoading(false);
-          openFeedbackModal("failed",
-            "حدثت مشكلة اثناء اضافة الملفات .. الرجاء المحاولة ثانية");
+          openFeedbackModal("failed", "حدثت مشكلة اثناء اضافة الملفات .. الرجاء المحاولة ثانية");
         }
       })
     }

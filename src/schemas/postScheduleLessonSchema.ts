@@ -50,7 +50,7 @@ const PostScheduleLessonSchema =
       const today = new Date();
 
       return selectedDate && (selectedDate >= today);
-    }, {message: 'لا يمكن الجدولة بتاريخ فائت', path: ["from_date"]}
+    }, {message: 'لا يمكن الجدولة بتاريخ اليوم او تاريخ فائت', path: ["from_date"]}
     )
 
 export type TScheduleLessonFormData = z.infer<typeof PostScheduleLessonSchema>;
@@ -89,4 +89,6 @@ export type TScheduleLessonFormDataForServer = Omit<TScheduleLessonFormData, TKe
   is_auto: boolean;
   repeat_count: number | null;
   repeat_times: number;
+  error?: string;
+  conflicts?: string[];
 }

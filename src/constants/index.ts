@@ -21,8 +21,6 @@ import {
   paymentOptionsForSchema,
   PACKAGE_STATUS_OPTIONS,
   SCHEDULED_STATUS_OPTIONS,
-
-
 } from "./dropdown-options";
 import { END_POINTS, POST_END_POINTS } from "./end-points";
 import { INITIAL_CALENDAR_COLOR } from "./initial-values";
@@ -58,5 +56,4 @@ export {
   paymentOptionsForSchema,
   PACKAGE_STATUS_OPTIONS,
   SCHEDULED_STATUS_OPTIONS,
-
 };

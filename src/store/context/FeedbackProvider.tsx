@@ -1,11 +1,11 @@
 import { FeedbackAlert } from "@/components";
-import React, { createContext, useRef, useState } from "react";
+import React, { createContext, ReactNode, useRef, useState } from "react";
 
 type FeedbackContextType = {
   openFeedbackModal: (
     status: "succeeded" | "failed" | "warning" | "confirm",
     title: string,
-    desc?: string,
+    desc?: ReactNode,
     timeout?: number,
     onComplete?: () => void,
     onConfirm?: () => void,
@@ -27,7 +27,7 @@ export const FeedbackProvider = ({
   const [feedbackData, setFeedbackData] = useState<{
     status: "succeeded" | "failed" | "warning" | "confirm";
     title: string;
-    desc: string;
+    desc: string | ReactNode;
     timeout?: number;
     onComplete?: () => void;
     onConfirm?: () => void;
@@ -42,7 +42,7 @@ export const FeedbackProvider = ({
   const openFeedbackModal = (
     status: "succeeded" | "failed" | "warning" | "confirm",
     title: string,
-    desc?: string,
+    desc?: string | ReactNode,
     timeout?: number,
     onComplete?: () => void,
     onConfirm?: () => void,

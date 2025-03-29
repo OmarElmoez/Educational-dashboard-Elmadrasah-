@@ -1,5 +1,5 @@
-import React, {forwardRef, useImperativeHandle, useRef} from "react";
-import {createPortal} from "react-dom";
+import { forwardRef, ReactNode, useImperativeHandle, useRef } from "react";
+import { createPortal } from "react-dom";
 import SuccessFeedback from "@/assets/successFeedback.svg?react";
 import FailedFeedback from "@/assets/failedFeedback.svg?react";
 import WarningFeedback from "@/assets/warningFeedback.svg?react";
@@ -10,9 +10,9 @@ const {reviewModal, btn_container, caption} = styles;
 
 type TContentForStatus = {
   [key in "succeeded" | "failed" | "warning" | "confirm"]: {
-    icon: React.ReactNode;
+    icon: ReactNode;
     title: string;
-    desc?: string;
+    desc?: string | ReactNode;
   };
 };
 
@@ -29,7 +29,7 @@ const FeedbackAlert = forwardRef(
     }: {
       status: "succeeded" | "failed" | "warning" | "confirm";
       title: string;
-      desc?: string;
+      desc?: string | ReactNode;
       timeout?: number;
       onComplete?: () => void | null;
       onConfirm?: () => void;
@@ -45,7 +45,6 @@ const FeedbackAlert = forwardRef(
           dialog.current?.showModal();
 
           if (status === 'confirm') return;
-
           setTimeout(() => {
               dialog.current?.close();
               handleComplete();
@@ -124,7 +123,10 @@ const FeedbackAlert = forwardRef(
           {contentForStatus[status].icon}
           <h3>{contentForStatus[status].title}</h3>
           {contentForStatus[status].desc && (
-            <p className="error">{contentForStatus[status].desc}</p>
+
+            typeof contentForStatus[status].desc === "object" ? contentForStatus[status].desc :
+              <p className="error">{contentForStatus[status].desc}</p>
+
           )}
         </dialog>,
         document.getElementById("modal")!

@@ -2,8 +2,11 @@
   padding: 0.8rem 1.6rem;
   border-radius: 1rem;
   border: 1px solid #c7c7c7;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: var(--secondary-color);
+  height: 4.2rem;
+  display: flex;
+  align-items: center;
 }
 
 .popup_box {
@@ -36,6 +39,7 @@
 
 .options_box span {
   padding: 0.5rem 1rem;
+  font-size: 1.4rem;
 }
 
 .options_box span:hover {

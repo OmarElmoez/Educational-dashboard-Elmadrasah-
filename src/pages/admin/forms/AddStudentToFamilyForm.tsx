@@ -9,7 +9,7 @@ import {
   MultiChoices,
   PhoneField,
   Row,
-  LoadingIndicator, DatePicker,
+  LoadingIndicator, DateOrTimePicker,
 } from "@/components";
 import { Heading } from "@/components/UI";
 import { NotificationForm } from "@/components/mini-forms";
@@ -255,7 +255,7 @@ const AddStudentToFamilyForm = () => {
             removePreviewChoices={removePreviewChoices}
           />
 
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ الميلاد"
             register={register}
@@ -267,7 +267,7 @@ const AddStudentToFamilyForm = () => {
         </Row>
 
         <Row>
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ البدء"
             register={register}

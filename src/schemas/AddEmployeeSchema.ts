@@ -89,7 +89,7 @@ export const AddEmployeeSchema = z.object({
   web_reminders: z.boolean().optional(),
   // send_welcome_email: z.boolean().optional(),
   user_account: z.boolean().optional(),
-  create_events: z.boolean().optional(),
+  event_type: z.string().optional(),
   is_superuser: z.boolean().optional(),
   user_permissions_id: z.array(z.string()).optional(),
   groups_id: z.array(z.string()).optional(),

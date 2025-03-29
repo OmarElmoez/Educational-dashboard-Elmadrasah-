@@ -24,7 +24,6 @@ const PACKAGE_STATUS_OPTIONS = [
 
 const StatusOptionsForSchema = generateValesForSchema(STATUS_OPTIONS);
 
-// ********************** SHOULD BE Miss/  *****************************
 const EMPLOYEE_TITLES = [
   {
     label: "Mr",
@@ -178,6 +177,11 @@ const FOLLOW_UP_OPTIONS = [
   { label: "20 حصة", value: "20" },
 ];
 
+const EVENTS_TYPE = [
+  { label: 'CIS', value: 'cis' },
+  { label: 'CBS', value: 'cbs' },
+];
+
 
 
 export {
@@ -204,6 +208,6 @@ export {
   FOLLOW_UP_OPTIONS,
   PACKAGE_STATUS_OPTIONS,
   SCHEDULED_STATUS_OPTIONS,
-
+  EVENTS_TYPE
   // AddTaxTreatmentOptionsForSchema,
 };

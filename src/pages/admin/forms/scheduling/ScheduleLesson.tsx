@@ -1,28 +1,37 @@
-import {BasicModal, Dropdown, DropdownWithSearch, InputField, RadioButtonsGroup, Row,} from "@/components";
-import {Heading} from "@/components/UI"
-import {TIMEZONES_OPTIONS} from "@/constants";
-import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
-import {actGetDropdownOptions} from "@/store/single-actions";
-import {TOption} from "@/types/Dropdown";
-import {useEffect, useRef, useState} from "react";
-import {useFieldArray, useForm} from "react-hook-form";
+import {
+  BasicModal,
+  DateOrTimePicker,
+  Dropdown,
+  DropdownWithSearch,
+  InputField,
+  LoadingIndicator,
+  RadioButtonsGroup,
+  Row,
+} from "@/components";
+import { Heading } from "@/components/UI"
+import { TIMEZONES_OPTIONS } from "@/constants";
+import { FOLLOW_UP_OPTIONS } from "@/constants/dropdown-options";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { actGetDropdownOptions } from "@/store/single-actions";
+import { TOption } from "@/types/Dropdown";
+import { useEffect, useRef, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 
 // import CloseButton from "@/assets/close-button.svg?react";
 import RepeatIcon from "@/assets/repeat.svg?react";
-import {TModalRef} from "@/types/shared";
+import { TLoading, TModalRef } from "@/types/shared";
 import ScheduleForm from "./schedule-form/ScheduleForm";
 import actGetScheduleLessonData from "@/store/single-actions/actGetScheduleLessonData";
-import {useNavigate, useParams} from "react-router-dom";
-import {TLeadFlowData} from "@/schemas/getScheduleLessonSchema.ts";
+import { useNavigate, useParams } from "react-router-dom";
+import { TLeadFlowData } from "@/schemas/getScheduleLessonSchema.ts";
 import createOptionsFrom from "@/utils/createOptionsFrom";
 import removeDuplicates from "@/utils/removeDuplicates";
-import {useFeedback} from "@/store/context";
+import { useFeedback } from "@/store/context";
 import PostScheduleLessonSchema, {
   TScheduleLessonFormData,
   TScheduleLessonFormDataForServer
 } from "@/schemas/postScheduleLessonSchema.ts";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import actSendScheduleLessonData from "@/store/single-actions/actSendScheduleLessonData.ts";
 
 const previewTeacherStyle = {
@@ -39,6 +48,7 @@ const ScheduleLesson = () => {
   const dispatch = useAppDispatch();
 
   const {credintials} = useAppSelector((state) => state.auth);
+  const [loading, setLoading] = useState<TLoading>('idle')
 
   const [customerData, setCustomerData] = useState<TLeadFlowData>();
 
@@ -129,6 +139,9 @@ const ScheduleLesson = () => {
   const teachersOptions = removeDuplicates(customerData?.teachers);
 
   const onSubmit = (data: TScheduleLessonFormData) => {
+
+    setLoading('pending');
+
     const scheduledClasses = data.subjects.reduce(
       (total: number, subject: any) => {
         return total + Number(subject.count);
@@ -145,30 +158,18 @@ const ScheduleLesson = () => {
       data.teacher_ids = customerData?.teachers.map(teacher => teacher.id);
     }
 
-
-    if (data.description === '') {
-      data.description = null;
+    const processedData = {
+      ...data,
+      description: data.description === "" ? null : data.description,
+      end_repeat_on: data.end_repeat_on === undefined ? null : data.end_repeat_on,
+      received_days: customerData?.days.map(day => day.id.toString()),
+      days: data.days === "" ? null : data.days,
+      repeat_every: data.repeat_every === "" ? null : data.repeat_every,
+      package_id: Number(package_id)
     }
-
-    if (data.end_repeat_on === undefined) {
-      data.end_repeat_on === null
-    }
-
-    data.received_days = customerData?.days.map(day => day.id.toString());
-
-    if (data.days === '') {
-      data.days = null;
-    }
-
-    data.package_id = Number(package_id);
-
-    if (data.repeat_every === '') {
-      data.repeat_every = null;
-    }
-
 
     const serverData: TScheduleLessonFormDataForServer = {
-      ...data,
+      ...processedData,
       student_id: Number(data.student_id),
       subjects: [{
         subject: Number(data.subjects[0].subject),
@@ -188,11 +189,21 @@ const ScheduleLesson = () => {
     }
 
     dispatch(actSendScheduleLessonData(serverData)).unwrap().then((res) => {
-      if (typeof res === 'string') {
-        openFeedbackModal('failed', res);
+
+      if (res?.error) {
+        setLoading('failed')
+        const conflictsDiv = (
+          <div>
+            {res?.conflicts?.map((msg, index) => (
+              <p key={index} className="mt-2 text-[1.1rem] text-red-500">{msg}</p>
+            ))}
+          </div>
+        );
+        openFeedbackModal('failed', res?.error, conflictsDiv);
         return;
       }
-      openFeedbackModal("succeeded", "تم ارسال الاشعارات بنجاح", "")
+      setLoading('succeeded')
+      openFeedbackModal("succeeded", "تمت الجدولة بنجاح")
       navigate('/admin/calendar/all-unscheduled-list')
     });
 
@@ -205,6 +216,9 @@ const ScheduleLesson = () => {
 
   return (
     <>
+      {(loading === 'pending' || !customerData) && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <BasicModal ref={scheduleRef} headerText="ضبط إعادة التكرار"
                   headerTextStyle={{fontSize: "1.8rem", fontWeight: "500"}}>
         <ScheduleForm
@@ -239,13 +253,6 @@ const ScheduleLesson = () => {
         <Heading text="مواقيت الإتاحة للطالب" style={{marginTop: "2.8rem"}}/>
 
         <Row>
-          {/*{customerData && <MultiChoices*/}
-          {/*    error=""*/}
-          {/*    name="day"*/}
-          {/*    register={register}*/}
-          {/*    fields={customerData?.days.length === 0 ? DAYS : customerData?.days}*/}
-          {/*/>}*/}
-
           <>
             <article className="group">
               <span className="adminFormLabel">الايام</span>
@@ -300,6 +307,7 @@ const ScheduleLesson = () => {
             error={errors.lesson_credit?.message as string}
             // chosen={customerData?.timezone}
             chosen="Cairo"
+            isEdit
           />
 
           <Dropdown
@@ -358,32 +366,8 @@ const ScheduleLesson = () => {
               error={errors.subjects?.[index]?.student_credit?.message as string}
               type="number"
             />
-            {/*<button*/}
-            {/*  type="button"*/}
-            {/*  style={{marginTop: "1rem"}}*/}
-            {/*  onClick={() => {*/}
-            {/*    remove(index);*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  <CloseButton/>*/}
-            {/*</button>*/}
           </Row>
         ))}
-        {/*<button*/}
-        {/*  style={{display: "block", marginRight: "auto"}}*/}
-        {/*  className="add-action-btn"*/}
-        {/*  type="button"*/}
-        {/*  onClick={() =>*/}
-        {/*    append({*/}
-        {/*      gender: "",*/}
-        {/*      language: "",*/}
-        {/*      subject: "",*/}
-        {/*      student_credit: 0,*/}
-        {/*    })*/}
-        {/*  }*/}
-        {/*>*/}
-        {/*  + إضافة مادة أخري*/}
-        {/*</button>*/}
 
         <Heading text="اختيار المٌعلمين" style={{marginTop: "2.8rem"}}/>
 
@@ -443,45 +427,43 @@ const ScheduleLesson = () => {
         </Row>
 
         <Row>
-          <InputField
+
+          <DateOrTimePicker
+            setValue={setValue}
             label="بداية الدرس"
-            type="date"
             register={register}
             name="from_date"
             error={errors.from_date?.message as string}
-            onChange={(e) => setPredefinedDate(e.target.value)}
+            onChange={(val: string) => setPredefinedDate(val)}
           />
 
           {customerData?.time.length === 0 ?
             <>
-              <InputField
+
+              <DateOrTimePicker
+                type='time'
+                setValue={setValue}
                 label="وقت البدء"
-                type="time"
                 register={register}
                 name="from_time"
                 error={errors.from_time?.message as string}
               />
 
-              <InputField
+              <DateOrTimePicker
+                type='time'
+                setValue={setValue}
                 label="وقت الانتهاء"
-                type="time"
                 register={register}
                 name="to_time"
                 error={errors.to_time?.message as string}
               />
+
             </> : <article className="group"></article>}
 
 
         </Row>
 
         <Row style={{marginTop: "2.8rem"}}>
-          {/*<InputField*/}
-          {/*    label="الأماكن المتاحة بالدرس"*/}
-          {/*    placeholder="........"*/}
-          {/*    register={register}*/}
-          {/*    name="avalible_locations"*/}
-          {/*    error={errors.lesson_credit?.message as string}*/}
-          {/*/>*/}
 
           <InputField
             label="معلومات إضافية"
@@ -494,19 +476,6 @@ const ScheduleLesson = () => {
 
           <article className="group"></article>
         </Row>
-
-        {/*<Heading text="اشعارات التذكير" style={{marginTop: "2.8rem"}}/>*/}
-
-        {/*<CheckBoxesGroup*/}
-        {/*    options={SCHEDULE_CHECK_BOXES}*/}
-        {/*    register={register}*/}
-        {/*    style={{*/}
-        {/*        width: "80%",*/}
-        {/*        columnGap: "20rem",*/}
-        {/*        rowGap: "2.6rem",*/}
-        {/*        flexWrap: "wrap",*/}
-        {/*    }}*/}
-        {/*/>*/}
 
         <Heading text="خيارات المتابعة" style={{marginTop: "4.8rem"}}/>
 
@@ -547,23 +516,12 @@ const ScheduleLesson = () => {
           </button>
           <button
             type="button"
-            className="btn"
-            style={{
-              minWidth: "256px",
-              backgroundColor: "#ffb72b",
-              color: "#fff",
-            }}
-          >
-            التأكيد علي المواعيد
-          </button>
-          <button
-            type="button"
             className="btn cancel-btn"
             onClick={() => {
               reset()
             }}
           >
-            يُلغي
+            إلغاء
           </button>
         </Row>
       </form>

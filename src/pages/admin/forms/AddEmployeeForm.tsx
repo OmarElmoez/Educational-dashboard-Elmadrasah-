@@ -1,6 +1,7 @@
 import {
   AddNewSubjectModal,
-  CountriesDropdown, DatePicker,
+  CountriesDropdown,
+  DateOrTimePicker,
   Dropdown,
   DropdownWithSearch,
   InputField,
@@ -28,7 +29,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import formatCities from "@/utils/formatCities";
 import formatStates from "@/utils/formatStates";
-import { DAYS_OPTIONS, WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
+import { DAYS_OPTIONS, EVENTS_TYPE, WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
 import { TLoading, TModalRef } from "@/types/shared";
 import { CalendarSettingsForm, NotificationForm, } from "@/components/mini-forms";
 import CloseButton from "@/assets/close-button.svg?react";
@@ -111,10 +112,7 @@ const AddEmployeeForm = () => {
       (isTeacher || data.employee_type === "Teacher") &&
       (data.initial_students.length === 0 || data.subject_choices.length === 0)
     ) {
-      return openFeedbackModal(
-        "warning",
-        "اذا كان الموظف معلم يجب اختيار المواد والطلاب المعنيين"
-      );
+      return openFeedbackModal("warning", "اذا كان الموظف معلم يجب اختيار المواد والطلاب المعنيين");
     }
     if (data.employee_type === "Staff") {
       data.availabilities = [];
@@ -378,7 +376,7 @@ const AddEmployeeForm = () => {
         </Row>
 
         <Row>
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ الميلاد"
             register={register}
@@ -443,7 +441,7 @@ const AddEmployeeForm = () => {
             removePreviewChoices={removePreviewChoices}
           />
 
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ الانتهاء"
             register={register}
@@ -466,7 +464,7 @@ const AddEmployeeForm = () => {
             removePreviewChoices={removePreviewChoices}
           />
 
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ الانتهاء"
             register={register}
@@ -511,7 +509,7 @@ const AddEmployeeForm = () => {
             error={errors.position?.message as string}
           />
 
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ التوظيف"
             register={register}
@@ -757,7 +755,6 @@ const AddEmployeeForm = () => {
         )}
 
 
-
         {!ONLY_STAFF && (
           <>
             <hr className="hr"/>
@@ -777,12 +774,17 @@ const AddEmployeeForm = () => {
         <hr className="hr"/>
 
         <Heading text="إنشاء رابط الحصة"/>
-
-        <SingleCheckbox
-          register={register}
-          name="create_events"
-          label="تفعيل"
-        />
+        <Row>
+          <Dropdown
+            label="نوع انشاء الرابط"
+            register={register}
+            options={EVENTS_TYPE}
+            name="event_type"
+            error=""
+            removePreviewChoices={removePreviewChoices}
+          />
+          <article className="group"></article>
+        </Row>
 
         <hr className="hr"/>
 

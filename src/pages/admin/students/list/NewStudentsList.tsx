@@ -19,7 +19,7 @@ import "./newStudentsList.css";
 import Paper from '@mui/material/Paper';
 
 const NewStudentsList = () => {
-  const { students } = useAppSelector((state) => state.table);
+  const {students} = useAppSelector((state) => state.table);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
     pageSize: 10,
@@ -33,6 +33,23 @@ const NewStudentsList = () => {
   useEffect(() => {
     setLoading(true);
     dispatch(actGetStudents({}))
+    .unwrap()
+    .then((res) => {
+      setLoading(false);
+      setNext(res.next);
+      setPrevious(res.previous);
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.error("Error fetching students:", error);
+    });
+  }, [dispatch]);
+
+
+  const handleNext = () => {
+    if (next) {
+      setLoading(true);
+      dispatch(actGetStudents({next}))
       .unwrap()
       .then((res) => {
         setLoading(false);
@@ -41,46 +58,29 @@ const NewStudentsList = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.error("Error fetching students:", error);
+        console.error("Error fetching next page:", error);
       });
-  }, [dispatch]);
-
-
-  const handleNext = () => {
-    if (next) {
-      setLoading(true);
-      dispatch(actGetStudents({ next }))
-      .unwrap()
-        .then((res) => {
-          setLoading(false);
-          setNext(res.next);
-          setPrevious(res.previous);
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.error("Error fetching next page:", error);
-        });
     }
   };
 
   const handlePrevious = () => {
     if (previous) {
       setLoading(true);
-      dispatch(actGetStudents({ previous }))
+      dispatch(actGetStudents({previous}))
       .unwrap()
-        .then((res) => {
-          setLoading(false);
-          setNext(res.next);
-          setPrevious(res.previous);
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.error("Error fetching previous page:", error);
-        });
+      .then((res) => {
+        setLoading(false);
+        setNext(res.next);
+        setPrevious(res.previous);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error fetching previous page:", error);
+      });
     }
   };
 
-  const columns: GridColDef[] = [
+  const initialColumns: GridColDef[] = [
     {
       field: "id",
       headerName: "ID",
@@ -92,7 +92,7 @@ const NewStudentsList = () => {
       flex: 1,
       renderCell: (params) => (
         <button
-          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
           disabled={!params.row.id}
           onClick={() => navigate(`/admin/students/profile/${params.row.id}`)}
         >
@@ -137,11 +137,11 @@ const NewStudentsList = () => {
       flex: 0.5,
       renderCell: (params) => (
         <button
-          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
           disabled={!params.row.id}
           onClick={() => navigate(`/admin/students/profile/${params.row.id}/edit`)}
         >
-          <EditPenIcon />
+          <EditPenIcon/>
         </button>
       ),
       cellClassName: "edit-cell",
@@ -156,43 +156,66 @@ const NewStudentsList = () => {
           utf8WithBom: true,
         }}
       />
-      <GridToolbarFilterButton />
-      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton/>
+      <GridToolbarColumnsButton/>
     </GridToolbarContainer>
   );
-  const localeToolbarText = {
+
+  const arabicLocaleText = {
+    // Sorting options
+    columnMenuSortAsc: 'ترتيب تصاعدي',
+    columnMenuSortDesc: 'ترتيب تنازلي',
+
+    // Filter option
+    columnMenuFilter: 'تصفية',
+
+    // Column visibility
+    columnMenuHideColumn: 'إخفاء العمود',
+    columnMenuManageColumns: 'إدارة الأعمدة',
+
+    // Additional context-specific translations
+    columnMenuLabel: 'قائمة العمود',
+    columnMenuShowColumns: 'إظهار الأعمدة',
+    columnMenuUnsort: 'إلغاء الترتيب',
+
+    // Email example from the image
+    noRowsLabel: 'لا توجد بيانات',
+
     toolbarColumns: "",
     toolbarFilters: "",
     toolbarExport: "",
   };
 
+
   return (
     <Box component="section">
-      <Paper sx={{ height: "auto", width: "100%" }}>
-      <DataGrid
-        sx={{ 
-          border:0,
-          paddingTop: "1rem"}}
-        rows={students.data}
-        pageSizeOptions={[10, 20, 50]}
-        columns={columns}
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
-        checkboxSelection
-        disableRowSelectionOnClick
-        localeText={localeToolbarText}
-        slots={{ toolbar: CustomToolbar }}
-        loading={loading}
-        slotProps={{
-          loadingOverlay: {
-            variant: "skeleton",
-            noRowsVariant: "skeleton",
-          },
-        }}
-      />
-</Paper>
+      <Paper sx={{height: "auto", width: "100%"}}>
+        <DataGrid
+          sx={{
+            border: 0,
+            paddingTop: "1rem",
+          }}
+          localeText={arabicLocaleText}
+          rows={students.data}
+          pageSizeOptions={[10, 20, 50]}
+          columns={initialColumns}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          checkboxSelection
+          disableRowSelectionOnClick
+          // localeText={localeToolbarText}
+          slots={{toolbar: CustomToolbar}}
+          loading={loading}
+          slotProps={{
+            loadingOverlay: {
+              variant: "skeleton",
+              noRowsVariant: "skeleton",
+            },
+          }}
+        />
+      </Paper>
       <Box
-        sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
+        sx={{display: "flex", justifyContent: "center", gap: 2, padding: 2}}
       >
         <Button
           variant="contained"

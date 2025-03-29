@@ -35,7 +35,7 @@ export const EditEmployeeSchema = z.object({
   work_wage: z.string().optional(),
   user_permissions_id: z.array(z.union([z.string(), z.number()])).optional(),
   groups_id: z.array(z.union([z.string(), z.number()])).optional(),
-  create_events: z.boolean().optional(),
+  event_type: z.string().optional(),
 }).refine(data => {
   return data?.employee_type === 'Staff' || data?.initial_students.length >= 1;
 },

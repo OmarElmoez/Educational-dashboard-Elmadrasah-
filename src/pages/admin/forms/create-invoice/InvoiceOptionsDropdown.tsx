@@ -23,14 +23,8 @@ const InvoiceOptionsDropdown: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleDelee = () => {
-    openFeedbackModal(
-      "confirm",
-      "تأكيد حذف الفاتورة",
-      "هل انت متأكد أنك تريد حذف الفاتورة؟",
-      100000,
-      undefined,
-      () => {
-    dispatch(actDeleteData({ endpoint: `customer/invoices/${id}/` }))
+    openFeedbackModal("confirm", "تأكيد حذف الفاتورة", "هل انت متأكد أنك تريد حذف الفاتورة؟", 100000, undefined, () => {
+      dispatch(actDeleteData({endpoint: `customer/invoices/${id}/`}))
       .then(unwrapResult)
       .then(() => {
         openFeedbackModal("succeeded", "تم حذف الفاتورة بنجاح");
@@ -43,16 +37,11 @@ const InvoiceOptionsDropdown: React.FC = () => {
   };
 
   const handleVoid = () => {
-    openFeedbackModal(
-      "confirm",
-      "تأكيد الغاء الفاتورة",
-      "هل انت متأكد أنك تريد الغاء الفاتورة؟",
-      10000,
-      undefined,
+    openFeedbackModal("confirm", "تأكيد الغاء الفاتورة", "هل انت متأكد أنك تريد الغاء الفاتورة؟", 10000, undefined,
       () => {
         dispatch(
           actSendDataToServer({
-            formData: { status: "Void" },
+            formData: {status: "Void"},
             purpose: "edit_invoice_status",
             isEdit: true,
             id: id,
@@ -66,8 +55,7 @@ const InvoiceOptionsDropdown: React.FC = () => {
         .catch((error: string) => {
           openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error, 5000);
         })
-      }
-    );
+      });
   };
 
   const options: Option[] = [

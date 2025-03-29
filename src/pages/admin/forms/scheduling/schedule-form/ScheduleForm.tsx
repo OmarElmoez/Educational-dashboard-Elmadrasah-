@@ -82,6 +82,7 @@ const ScheduleForm = <T extends FieldValues>({
           handleChange={(value: string) => {
             setSelectedRepeatType(value);
           }}
+          isEdit
         />
 
         {((selectedRepeatType === "daily" || selectedRepeatType === 'weekly') || (draftLessonData?.repeat_count && selectedRepeatType !== "monthly" && draftLessonData?.repeat_every !== 'monthly')) && (
@@ -254,7 +255,7 @@ const ScheduleForm = <T extends FieldValues>({
           setValue("end_repeat_on" as Path<T>, null)
           setValue("repeat_times" as Path<T>, null)
         }}>
-          يُلغي
+          إلغاء
         </button>
       </Row>
     </form>

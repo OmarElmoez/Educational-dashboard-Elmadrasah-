@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  DatePicker,
+  DateOrTimePicker,
   Dropdown,
   InputField,
   LoadingIndicator,
   MultiChoices,
   PhoneField,
   Row,
-  SingleCheckbox,
   UploadFile,
 } from "@/components";
 import { STATUS_OPTIONS, TIMEZONES_OPTIONS } from "@/constants";
@@ -19,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { TDataForSpecificEmployee } from "@/schemas/AddEmployeeSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditEmployeeSchema, TEditEmployeeForm } from '@/schemas/EditEmployeeSchema.ts';
-import { WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
+import { EVENTS_TYPE, WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
 import createListOfIds from "./utils/createListOfIds.ts";
 import { useFeedback } from "@/store/context";
 import usePredefinedChoices from "./hooks/usePredefinedChoices.ts";
@@ -239,17 +238,7 @@ const EditEmployeeForm = () => {
           error={errors.uploaded_id?.message as string}
         />
 
-        {/*<InputField*/}
-        {/*  label="تاريخ إنتهاء الرقم القومى"*/}
-        {/*  placeholder="يوم / شهر / سنه"*/}
-        {/*  type="date"*/}
-        {/*  register={register}*/}
-        {/*  name="national_id_expiration_date"*/}
-        {/*  error={errors.national_id_expiration_date?.message as string}*/}
-        {/*  style={{alignSelf: 'flex-end'}}*/}
-        {/*/>*/}
-
-        <DatePicker
+        <DateOrTimePicker
           setValue={setValue}
           label="تاريخ إنتهاء الرقم القومى"
           register={register}
@@ -271,7 +260,7 @@ const EditEmployeeForm = () => {
           error={errors.uploaded_passport?.message as string}
         />
 
-        <DatePicker
+        <DateOrTimePicker
           setValue={setValue}
           label="تاريخ إنتهاء جواز السفر"
           register={register}
@@ -393,11 +382,17 @@ const EditEmployeeForm = () => {
 
       <Heading text="إنشاء رابط الحصة"/>
 
-      <SingleCheckbox
-        register={register}
-        name="create_events"
-        label="تفعيل"
-      />
+      <Row>
+        <Dropdown
+          label="نوع انشاء الرابط"
+          register={register}
+          options={EVENTS_TYPE}
+          name="event_type"
+          error=""
+          isEdit
+        />
+        <article className="group"></article>
+      </Row>
 
     <hr className="hr"/>
     <Heading text="إضافة صلاحيات"/>

@@ -1,4 +1,12 @@
-import {BasicModal, Dropdown, DropdownWithSearch, InputField, RadioButtonsGroup, Row,} from "@/components";
+import {
+  BasicModal,
+  DateOrTimePicker,
+  Dropdown,
+  DropdownWithSearch,
+  InputField, LoadingIndicator,
+  RadioButtonsGroup,
+  Row,
+} from "@/components";
 import {Heading} from '@/components/UI'
 import {TIMEZONES_OPTIONS} from "@/constants";
 import {FOLLOW_UP_OPTIONS} from "@/constants/dropdown-options";
@@ -8,9 +16,8 @@ import {TOption} from "@/types/Dropdown";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useFieldArray, useForm} from "react-hook-form";
 
-// import CloseButton from "@/assets/close-button.svg?react";
 import RepeatIcon from "@/assets/repeat.svg?react";
-import {TModalRef} from "@/types/shared";
+import { TLoading, TModalRef } from "@/types/shared";
 import ScheduleForm from "./schedule-form/ScheduleForm";
 import actGetRescheduleLessonData, {TRescheduleLessonResponse} from "@/store/single-actions/actGetRescheduleLessonData";
 import {useNavigate, useParams} from "react-router-dom";
@@ -39,6 +46,7 @@ const RescheduleLesson = () => {
   const dispatch = useAppDispatch();
 
   const {credintials} = useAppSelector((state) => state.auth);
+  const [loading, setLoading] = useState<TLoading>('idle')
 
   const [customerData, setCustomerData] = useState<TRescheduleLessonResponse>();
 
@@ -56,10 +64,6 @@ const RescheduleLesson = () => {
       defaultValues: {
         subjects: [{gender: "", language: "", student_credit: "", subject: ""}],
         repeat: false,
-        // lesson_credit: customerData?.leadflow_data[0].customer.credit.toString(),
-        // student_id: customerData?.leadflow_data[0].students[0].id.toString(),
-        // time_id: customerData?.leadflow_data[0].time[0]?.id,
-        // timezone: customerData?.leadflow_data[0].timezone,
       },
       resolver: zodResolver(PostScheduleLessonSchema),
     }
@@ -161,7 +165,7 @@ const RescheduleLesson = () => {
   // We use this method because the data came from the server is duplicated.
   const studentsOptions = createOptionsFrom(customerData?.leadflow_data[0].students)
 
-  // const predefinedDays = customerData?.leadflow_data[0].days.map(day => day.id);
+  const predefinedDays = removeDuplicates(customerData?.leadflow_data[0].days);
 
   const timeOptions = createOptionsFrom(customerData?.leadflow_data[0].time)
 
@@ -170,6 +174,8 @@ const RescheduleLesson = () => {
   const teachersOptions = removeDuplicates(customerData?.leadflow_data[0].teachers);
 
   const onSubmit = (data: TScheduleLessonFormData) => {
+    setLoading('pending');
+
     const scheduledClasses = data.subjects.reduce(
       (total: number, subject: any) => {
         return total + Number(subject.count);
@@ -178,10 +184,7 @@ const RescheduleLesson = () => {
     );
 
     if (scheduledClasses > Number(data.lesson_credit)) {
-      openFeedbackModal(
-        "warning",
-        `لا يمكن جدولة أكثر من ${data.lesson_credit} حصص`
-      );
+      openFeedbackModal("warning", `لا يمكن جدولة أكثر من ${data.lesson_credit} حصص`);
       return;
     }
 
@@ -189,30 +192,19 @@ const RescheduleLesson = () => {
       data.teacher_ids = customerData?.leadflow_data[0].teachers.map(teacher => teacher.id);
     }
 
-    if (data.repeat_monthly === '') {
-      data.repeat_monthly = null;
-    }
-
-    if (data.on_quarter === '') {
-      data.on_quarter = null;
-    }
-
-    if (data.description === '') {
-      data.description = null;
-    }
-
-    if (data.days === '') {
-      data.days = null;
-    }
-
-    data.lesson_draft_id = Number(id);
-
-    if (data.repeat_every === '') {
-      data.repeat_every = null;
+    const processedData = {
+      ...data,
+      description: data.description === "" ? null : data.description,
+      end_repeat_on: data.end_repeat_on === undefined ? null : data.end_repeat_on,
+      days: data.days === "" ? null : data.days,
+      repeat_monthly: data.repeat_monthly === "" ? null : data.repeat_monthly,
+      on_quarter: data.on_quarter === "" ? null : data.on_quarter,
+      repeat_every: data.repeat_every === "" ? null : data.repeat_every,
+      lesson_draft_id: Number(id)
     }
 
     const serverData: TScheduleLessonFormDataForServer = {
-      ...data,
+      ...processedData,
       student_id: Number(data.student_id),
       subjects: [{
         subject: Number(data.subjects[0].subject),
@@ -231,7 +223,20 @@ const RescheduleLesson = () => {
       is_auto: data.is_auto === "true",
     }
 
-    dispatch(actSendScheduleLessonData(serverData)).unwrap().then(() => {
+    dispatch(actSendScheduleLessonData(serverData)).unwrap().then((res) => {
+      if (res?.error) {
+        setLoading('failed')
+        const conflictsDiv = (
+          <div>
+            {res?.conflicts?.map((msg, index) => (
+              <p key={index} className="mt-2 text-[1.1rem] text-red-500">{msg}</p>
+            ))}
+          </div>
+        );
+        setLoading('succeeded')
+        openFeedbackModal('failed', res?.error, conflictsDiv);
+        return;
+      }
       openFeedbackModal("succeeded", "تمت إعادة الجدولة بنجاح", "")
       navigate('/admin/calendar/all-unscheduled-list')
     });
@@ -245,6 +250,9 @@ const RescheduleLesson = () => {
 
   return (
     <>
+      {(loading === 'pending' || !customerData) && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <BasicModal ref={scheduleRef} headerText="ضبط إعادة التكرار"
                   headerTextStyle={{fontSize: "1.8rem", fontWeight: "500"}}>
         <ScheduleForm
@@ -267,6 +275,7 @@ const RescheduleLesson = () => {
             register={register}
             error={errors.student_id?.message as string}
             chosen={customerData?.leadflow_data[0].students[0].id.toString()}
+            isEdit
           />
 
           <InputField
@@ -282,21 +291,13 @@ const RescheduleLesson = () => {
         <Heading text="مواقيت الإتاحة للطالب" style={{marginTop: "2.8rem"}}/>
 
         <Row>
-          {/*{customerData && <MultiChoices*/}
-          {/*    error=""*/}
-          {/*    name="day"*/}
-          {/*    register={register}*/}
-          {/*    fields={customerData?.leadflow_data[0].days.length === 0 ? DAYS : customerData?.leadflow_data[0].days}*/}
-          {/*    predefinedDays={predefinedDays}*/}
-          {/*/>*/}
-          {/*}*/}
           <article className="group">
             <span className="adminFormLabel">الايام</span>
             <section
               className="inputField"
               style={{display: "flex", gap: "1rem", flexWrap: "wrap", paddingBlock: "0.7rem"}}
             >
-              {customerData?.leadflow_data[0].days.map((day) => {
+              {predefinedDays.map((day) => {
                   return (
                     <span
                       style={previewTeacherStyle}
@@ -326,6 +327,7 @@ const RescheduleLesson = () => {
             register={register}
             error=""
             chosen={customerData?.leadflow_data[0].time[0]?.id.toString()}
+            isEdit
           />
         </Row>
 
@@ -337,6 +339,7 @@ const RescheduleLesson = () => {
             register={register}
             error={errors.lesson_credit?.message as string}
             chosen={customerData?.leadflow_data[0].timezone}
+            isEdit
           />
 
           <Dropdown
@@ -345,7 +348,7 @@ const RescheduleLesson = () => {
             name="service_id"
             register={register}
             error={errors?.service_id?.message as string}
-            // chosen={customerData?.lesson_draft_data.service_id === null ? '0' : customerData?.lesson_draft_data.service_id.toString()}
+            isEdit
           />
         </Row>
 
@@ -361,6 +364,7 @@ const RescheduleLesson = () => {
                 {label: "معلمة", value: "Female"},
               ]}
               error={errors.subjects?.[index]?.gender?.message as string}
+              isEdit
             />
 
             <Dropdown
@@ -372,6 +376,7 @@ const RescheduleLesson = () => {
                 {label: "العربية", value: "ar"},
               ]}
               error={errors.subjects?.[index]?.language?.message as string}
+              isEdit
             />
 
             <Dropdown
@@ -381,6 +386,7 @@ const RescheduleLesson = () => {
               options={subjectsOptions}
               error={errors.subjects?.[index]?.subject?.message as string}
               chosen={customerData?.leadflow_data[0].subjects[0].id.toString()}
+              isEdit
             />
 
             <InputField
@@ -391,32 +397,8 @@ const RescheduleLesson = () => {
               error={errors.subjects?.[index]?.student_credit?.message as string}
               type="number"
             />
-            {/*<button*/}
-            {/*  type="button"*/}
-            {/*  style={{marginTop: "1rem"}}*/}
-            {/*  onClick={() => {*/}
-            {/*    remove(index);*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  <CloseButton/>*/}
-            {/*</button>*/}
           </Row>
         ))}
-        {/*<button*/}
-        {/*  style={{display: "block", marginRight: "auto"}}*/}
-        {/*  className="add-action-btn"*/}
-        {/*  type="button"*/}
-        {/*  onClick={() =>*/}
-        {/*    append({*/}
-        {/*      gender: "",*/}
-        {/*      language: "",*/}
-        {/*      subject: "",*/}
-        {/*      student_credit: 0,*/}
-        {/*    })*/}
-        {/*  }*/}
-        {/*>*/}
-        {/*  + إضافة مادة أخري*/}
-        {/*</button>*/}
 
         <Heading text="اختيار المٌعلمين" style={{marginTop: "2.8rem"}}/>
 
@@ -474,13 +456,14 @@ const RescheduleLesson = () => {
         </Row>
 
         <Row>
-          <InputField
+          <DateOrTimePicker
+            setValue={setValue}
             label="بداية الدرس"
-            type="date"
             register={register}
             name="from_date"
             error={errors.from_date?.message as string}
-            onChange={(e) => setPredefinedDate(e.target.value)}
+            onChange={(val: string) => setPredefinedDate(val)}
+            predefinedDate={customerData?.lesson_draft_data.from_date as string}
           />
 
           {customerData?.leadflow_data[0].time.length === 0 ?
@@ -506,14 +489,6 @@ const RescheduleLesson = () => {
         </Row>
 
         <Row style={{marginTop: "2.8rem"}}>
-          {/*<InputField*/}
-          {/*    label="الأماكن المتاحة بالدرس"*/}
-          {/*    placeholder="........"*/}
-          {/*    register={register}*/}
-          {/*    name="avalible_locations"*/}
-          {/*    error={errors.lesson_credit?.message as string}*/}
-          {/*/>*/}
-
           <InputField
             label="معلومات إضافية"
             placeholder="اكتب معلوماتك الإضافية"
@@ -526,19 +501,6 @@ const RescheduleLesson = () => {
           <article className="group"></article>
         </Row>
 
-        {/*<Heading text="اشعارات التذكير" style={{marginTop: "2.8rem"}}/>*/}
-
-        {/*<CheckBoxesGroup*/}
-        {/*    options={SCHEDULE_CHECK_BOXES}*/}
-        {/*    register={register}*/}
-        {/*    style={{*/}
-        {/*        width: "80%",*/}
-        {/*        columnGap: "20rem",*/}
-        {/*        rowGap: "2.6rem",*/}
-        {/*        flexWrap: "wrap",*/}
-        {/*    }}*/}
-        {/*/>*/}
-
         <Heading text="خيارات المتابعة" style={{marginTop: "4.8rem"}}/>
 
         <Row>
@@ -548,7 +510,6 @@ const RescheduleLesson = () => {
             options={FOLLOW_UP_OPTIONS}
             name="follow_up_type"
             error={errors.follow_up_type?.message as string}
-            // chosen={customerData?.lesson_draft_data.follow_up_type === null ? '0' : customerData?.lesson_draft_data.follow_up_type.toString()}
           />
 
           <article className="group"></article>
@@ -583,23 +544,12 @@ const RescheduleLesson = () => {
           </button>
           <button
             type="button"
-            className="btn"
-            style={{
-              minWidth: "256px",
-              backgroundColor: "#ffb72b",
-              color: "#fff",
-            }}
-          >
-            التأكيد علي المواعيد
-          </button>
-          <button
-            type="button"
             className="btn cancel-btn"
             onClick={() => {
               reset()
             }}
           >
-            يُلغي
+            إلغاء
           </button>
         </Row>
       </form>

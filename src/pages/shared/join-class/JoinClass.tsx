@@ -308,7 +308,7 @@ const JoinClass = () => {
                   </button>
                 )}
 
-                {!lessonData?.can_join && (
+                {(!lessonData?.can_join && lessonData?.end_time_employee === null) && (
                   <button onClick={onEndLesson} style={{ width: "18rem" }}>
                     <PhoneHangUpIcon />
                     <span>إنهاء الدرس</span>
@@ -344,7 +344,7 @@ const JoinClass = () => {
                   </span>
                 )}
               </section>
-              <section className={student_classes}>
+              <section className={student_classes} style={{marginTop: '2rem'}}>
                 <div className={heading_button_container}>
                   <Heading
                     text="حصص الطالب"
@@ -367,7 +367,7 @@ const JoinClass = () => {
                       </button>
                     )}
 
-                    {!lessonData?.can_join && (
+                    {(!lessonData?.can_join && lessonData?.end_time_employee === null) && (
                       <button onClick={onEndLesson}>
                         <PhoneHangUpIcon />
                         <span >إنهاء الدرس</span>

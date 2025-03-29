@@ -140,7 +140,6 @@ menu {
 }
 
 .error {
-  font-weight: 500;
   color: red;
   font-size: 1.3rem;
 }
@@ -251,6 +250,11 @@ menu {
   font-weight: 500;
 }
 
+.MuiDataGrid-root .MuiDataGrid-columnSeparator--sideRight {
+  right: unset !important;
+  left: -5px;
+}
+
 /* change the font of google button */
 .nsm7Bb-HzV7m-LgbsSe {
   border-radius: 1rem !important;
@@ -347,8 +351,11 @@ textarea {
   border-radius: 1rem;
   border: 1px solid #c7c7c7;
   outline: none;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: var(--secondary-color);
+  min-height: 4.2rem;
+  display: flex;
+  align-items: center;
 }
 
 textarea {

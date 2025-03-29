@@ -440,9 +440,15 @@ const CopyInvoicesForm = () => {
       .then((res) => {
         navigate(`/admin/invoices/invoice-details/${res?.id}`);
         if(dataStatus === "Approved") {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
+          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000,
+            () => {
+              navigate(`/admin/invoices/invoice-details/${res?.id}`)
+            });
         } else {
-          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000, () => {navigate(`/admin/invoices/invoice-details/${res?.id}`)});
+          return openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!", "", 1000,
+            () => {
+              navigate(`/admin/invoices/invoice-details/${res?.id}`)
+            });
         }
       })
       .catch((error) =>

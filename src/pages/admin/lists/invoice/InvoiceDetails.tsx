@@ -223,39 +223,34 @@ const InvoiceDetails: React.FC = () => {
     id: string | number,
     amount: number
   ) => {
-    openFeedbackModal(
-      "confirm",
-      "تأكيد الحذف",
-      "هل انت متأكد أنك تريد التراجع عن هذه العملية؟",
-      100000,
-      undefined,
+    openFeedbackModal("confirm", "تأكيد الحذف", "هل انت متأكد أنك تريد التراجع عن هذه العملية؟", 100000, undefined,
       () => {
-        dispatch(actRemovePaymentAllocation({ id }))
-          .unwrap()
-          .then((res) => {
-            if (res) {
-              openFeedbackModal(
-                "succeeded",
-                "تم الحذف بنجاح",
-                "تم حذف المدفوعات بنجاح",
-                5000,
-                () => {
-                  calcRemovePaymentAllocation(id, amount);
-                  getInvoiceDetailsById();
-                }
-              );
-            } else {
-              openFeedbackModal(
-                "failed",
-                "حدث خطأ",
-                "حدث خطأ أثناء حذف المدفوعات",
-                10000,
-                () => {}
-              );
-            }
-          });
-      }
-    );
+        dispatch(actRemovePaymentAllocation({id}))
+        .unwrap()
+        .then((res) => {
+          if (res) {
+            openFeedbackModal(
+              "succeeded",
+              "تم الحذف بنجاح",
+              "تم حذف المدفوعات بنجاح",
+              5000,
+              () => {
+                calcRemovePaymentAllocation(id, amount);
+                getInvoiceDetailsById();
+              }
+            );
+          } else {
+            openFeedbackModal(
+              "failed",
+              "حدث خطأ",
+              "حدث خطأ أثناء حذف المدفوعات",
+              10000,
+              () => {
+              }
+            );
+          }
+        });
+      });
   };
 
   const calcRemovePaymentAllocation = (id: string | number, amount: number) => {

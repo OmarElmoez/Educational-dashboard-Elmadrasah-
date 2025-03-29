@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ColorField,
   CountriesDropdown,
-  DatePicker,
+  DateOrTimePicker,
   Dropdown,
   InputField,
   LoadingIndicator,
@@ -328,7 +328,7 @@ const AddStudentForm = () => {
         <Heading text="تفاصيل الطالب "/>
 
         <Row>
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ الميلاد"
             register={register}
@@ -337,7 +337,7 @@ const AddStudentForm = () => {
             removePreviewChoices={removePreviewChoices}
           />
 
-          <DatePicker
+          <DateOrTimePicker
             setValue={setValue}
             label="تاريخ البدء"
             register={register}

@@ -49,19 +49,13 @@ const UploadFiles = ({classId}: { classId: string }) => {
     [classId]);
 
   const removeFileHandler = (classId: string, fileId: number) => {
-    openFeedbackModal('confirm',
-      "هل تريد مسح الملف ؟",
-      "هل أنت متأكد أنك تريد مسح الملف المرفوق يرجي العلم عند مسح الملف لا يمكن استرجاعه مرة أخري",
-      10000,
-      undefined,
+    openFeedbackModal('confirm', "هل تريد مسح الملف ؟",
+      "هل أنت متأكد أنك تريد مسح الملف المرفوق يرجي العلم عند مسح الملف لا يمكن استرجاعه مرة أخري", 10000, undefined,
       () => {
         actDeleteLessonFile(classId,
           fileId).then(() => {
           setFiles(prevFiles => prevFiles?.filter(prevFile => prevFile.id !== fileId))
-          openFeedbackModal('succeeded',
-            "تم الحذف بنجاح.",
-            '',
-            500)
+          openFeedbackModal('succeeded', "تم الحذف بنجاح.", '', 500)
         });
       })
   }
