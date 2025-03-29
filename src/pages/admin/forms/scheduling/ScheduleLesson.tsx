@@ -189,7 +189,6 @@ const ScheduleLesson = () => {
     }
 
     dispatch(actSendScheduleLessonData(serverData)).unwrap().then((res) => {
-
       if (res?.error) {
         setLoading('failed')
         const conflictsDiv = (
@@ -206,7 +205,6 @@ const ScheduleLesson = () => {
       openFeedbackModal("succeeded", "تمت الجدولة بنجاح")
       navigate('/admin/calendar/all-unscheduled-list')
     });
-
   };
 
 

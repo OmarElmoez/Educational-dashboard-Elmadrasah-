@@ -55,10 +55,15 @@ export type TPersonInfo = {
   number_of_lessons?: number | null;
   //   todo: waiting for student classes
 };
-type TEntranceTime = {
-  startTimeTeacher: string;
-  startTimeStudent: string;
+type TEntranceTimeControl = {
+  startTimeTeacher?: string;
+  startTimeStudent?: string;
+  endTimeTeacher?: string | null;
+  endTimeStudent?: string | null;
+  canJoinTeacher?: boolean;
+  canJoinStudent?: boolean;
 };
+
 const JoinClass = () => {
   const { classId } = useParams();
   const [lessonData, setLessonData] = useState<TLesson>();
@@ -67,10 +72,11 @@ const JoinClass = () => {
   const [displayTime, setDisplayTime] = useState<string>();
   const [displayEntranceTime, setDisplayEntranceTime] =
     useState<boolean>(false);
-  const [EntranceTime, setEntranceTime] = useState<TEntranceTime>({
-    startTimeTeacher: "",
-    startTimeStudent: "",
-  });
+  const [EntranceTimeControl, setEntranceTimeControl] =
+    useState<TEntranceTimeControl>({
+      startTimeTeacher: "",
+      startTimeStudent: "",
+    });
   const [person, setPerson] = useState<TPersonInfo>({
     name: "",
     subject: "",
@@ -85,11 +91,17 @@ const JoinClass = () => {
   const { openFeedbackModal } = useFeedback();
 
   const isTeacher = credintials?.role === "Teacher";
-
-
   useEffect(() => {
     if (classId) {
       actGetSpecificLessonData(classId).then((res) => {
+        setEntranceTimeControl({
+          startTimeTeacher: res?.start_time_employee || "",
+          startTimeStudent: res?.participants[0]?.start_time_student || "",
+          endTimeTeacher: res?.end_time_employee || null,
+          endTimeStudent: res?.participants[0]?.end_time_student || null,
+          canJoinTeacher: res?.can_join,
+          canJoinStudent: res?.participants[0]?.can_join,
+        });
         setLessonData(res);
         if (credintials?.role === "Admin") {
           let timeRange = `${res?.from_time} - ${res?.to_time}`;
@@ -139,6 +151,19 @@ const JoinClass = () => {
           : lessonData?.end_attendance_link) as string,
       })
     ).then((res) => {
+      if (typeof res.payload !== "string" && status === "start") {
+        setEntranceTimeControl({
+          canJoinTeacher: false,
+          canJoinStudent: false,
+        });
+      } else if (typeof res.payload !== "string" && status === "end") {
+        setEntranceTimeControl({
+          canJoinTeacher: false,
+          canJoinStudent: false,
+          endTimeTeacher: "with time",
+          endTimeStudent: "with time",
+        });
+      }
       if (typeof res.payload === "string") {
         openFeedbackModal("failed", `${res.payload}`);
         return;
@@ -148,10 +173,9 @@ const JoinClass = () => {
   const handleAttendanceTime = () => {
     if (classId) {
       actGetSpecificLessonData(classId).then((res) => {
-        setEntranceTime({
+        setEntranceTimeControl({
           startTimeTeacher: res?.start_time_employee || "",
-          startTimeStudent:
-            res?.participants[0]?.start_time_student || "",
+          startTimeStudent: res?.participants[0]?.start_time_student || "",
         });
         setDisplayEntranceTime(!displayEntranceTime);
       });
@@ -239,10 +263,16 @@ const JoinClass = () => {
                   {displayEntranceTime ? (
                     <>
                       <p>
-                        حضر المُعلم الساعة : {convert24HourToArabic(EntranceTime.startTimeTeacher)}
+                        حضر المُعلم الساعة :{" "}
+                        {convert24HourToArabic(
+                          EntranceTimeControl.startTimeTeacher || ""
+                        )}
                       </p>
                       <p>
-                        حضر الطالب الساعة : {convert24HourToArabic(EntranceTime.startTimeStudent)}
+                        حضر الطالب الساعة :{" "}
+                        {convert24HourToArabic(
+                          EntranceTimeControl.startTimeStudent || ""
+                        )}
                       </p>
                     </>
                   ) : null}
@@ -281,7 +311,7 @@ const JoinClass = () => {
                     أتم{" "}
                     {`${
                       lessonData?.participants[0]
-                        .remaining_classes_percentage ?? 0
+                        ?.remaining_classes_percentage ?? 0
                     }%`}
                   </p>
                 </div>
@@ -290,28 +320,30 @@ const JoinClass = () => {
                 className={lesson_actions}
                 style={{ marginTop: "1.2rem" }}
               >
-                {((isTeacher && lessonData?.can_join) ||
-                  (!isTeacher && lessonData?.participants[0].can_join)) && (
+                {credintials?.role === "Admin" &&
+                  !lessonData?.end_time_employee && (
+                    <button
+                      onClick={() => lessonHandler("start")}
+                      style={{
+                        backgroundColor: "var(--main-color)",
+                        width: "18rem",
+                        height: "4.8rem",
+                      }}
+                    >
+                      <VideoCamIcon />
+                      <span>فتح الدرس</span>
+                    </button>
+                  )}
+                {lessonData?.end_time_employee && (
                   <button
-                    onClick={() => lessonHandler("start")}
+                    disabled
                     style={{
-                      backgroundColor:
-                        lessonData?.can_join === false
-                          ? "var(--gray-color)"
-                          : "var(--main-color)",
                       width: "18rem",
                       height: "4.8rem",
+                      backgroundColor: "var(--gray-color)",
                     }}
                   >
-                    <VideoCamIcon />
-                    <span>بدأ الدرس</span>
-                  </button>
-                )}
-
-                {(!lessonData?.can_join && lessonData?.end_time_employee === null) && (
-                  <button onClick={onEndLesson} style={{ width: "18rem" }}>
-                    <PhoneHangUpIcon />
-                    <span>إنهاء الدرس</span>
+                    <span>تم حضور الدرس</span>
                   </button>
                 )}
               </section>
@@ -351,26 +383,48 @@ const JoinClass = () => {
                     style={{ fontSize: "2rem", fontWeight: "400", margin: "0" }}
                   />
                   <section className={lesson_actions}>
-                    {((isTeacher && lessonData?.can_join) ||
-                      (!isTeacher && lessonData?.participants[0].can_join)) && (
+                    {((isTeacher &&
+                      EntranceTimeControl?.canJoinTeacher &&
+                      !lessonData?.start_time_employee) ||
+                      (!isTeacher &&
+                        EntranceTimeControl?.canJoinStudent &&
+                        !lessonData?.participants[0].start_time_student)) && (
                       <button
                         onClick={() => lessonHandler("start")}
                         style={{
-                          backgroundColor:
-                            lessonData?.can_join === false
-                              ? "var(--gray-color)"
-                              : "var(--main-color)",
+                          backgroundColor: "var(--main-color)",
                         }}
                       >
                         <VideoCamIcon />
                         <span>بدأ الدرس</span>
                       </button>
                     )}
-
-                    {(!lessonData?.can_join && lessonData?.end_time_employee === null) && (
+                    {((isTeacher &&
+                      !EntranceTimeControl?.canJoinTeacher &&
+                      !EntranceTimeControl.endTimeTeacher) ||
+                      (!isTeacher &&
+                        !EntranceTimeControl?.canJoinStudent &&
+                        !EntranceTimeControl.endTimeStudent &&
+                        !lessonData?.participants[0]?.end_time_student)) && (
                       <button onClick={onEndLesson}>
                         <PhoneHangUpIcon />
-                        <span >إنهاء الدرس</span>
+                        <span>إنهاء الدرس</span>
+                      </button>
+                    )}
+                    {((isTeacher &&
+                      !EntranceTimeControl?.canJoinTeacher &&
+                      EntranceTimeControl.endTimeTeacher) ||
+                      (!isTeacher &&
+                        !EntranceTimeControl?.canJoinStudent &&
+                        EntranceTimeControl.endTimeStudent &&
+                        lessonData?.participants[0]?.end_time_student)) && (
+                      <button
+                        disabled
+                        style={{
+                          backgroundColor: "var(--gray-color)",
+                        }}
+                      >
+                        <span>تم حضور الدرس</span>
                       </button>
                     )}
                   </section>
@@ -381,7 +435,7 @@ const JoinClass = () => {
                       style={{ marginTop: "0rem" }}
                       width={`${
                         lessonData?.participants[0]
-                          .remaining_classes_percentage ?? 0
+                          ?.remaining_classes_percentage ?? 0
                       }%`}
                     />
                   </div>
@@ -394,7 +448,7 @@ const JoinClass = () => {
                     أتم{" "}
                     {`${
                       lessonData?.participants[0]
-                        .remaining_classes_percentage ?? 0
+                        ?.remaining_classes_percentage ?? 0
                     }%`}
                   </p>
                 </div>
