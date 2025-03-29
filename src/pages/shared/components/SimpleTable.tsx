@@ -6,7 +6,7 @@ import {
 } from "@/schemas/AddStudentSchema.ts";
 import convert24HourToArabic from "@/utils/convert24HourToArabic.ts";
 import { TInitialStudent } from "@/schemas/AddEmployeeSchema.ts";
-import { Student } from '../../../services/families';
+import { Student } from '@/services/families.ts';
 import { useNavigate } from "react-router-dom";
 import { JSX } from 'react';
 export type TTableRow = TSubscriptionCredit | TSpecificStudentLesson | TStudentInvoice | TStudentPayment | TInitialStudent | Student
