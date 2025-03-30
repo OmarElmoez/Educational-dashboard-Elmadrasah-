@@ -29,7 +29,7 @@ const SimpleTable = <T extends TTableRow>({tableHead, rows, noDataMsg}: TSimpleT
         ))}
       </div>
 
-      {rows.length === 0 && <p className="font-medium !text-[2rem] text-[#8D8D8D] mt-6 text-center">{noDataMsg}</p>}
+      {rows.length === 0 && <p className="font-thin !text-[1.6rem] text-[#8D8D8D] mt-6 text-center">{noDataMsg}</p>}
 
       {rows.length > 0 && rows.map(({id, ...rest}) =>(
         <div key={id}

@@ -61,7 +61,7 @@ const FamilyProfile = () => {
           )}
       </div>
       {/* Section One Contact Information */}
-      <Heading text="معلومات الاتصال" style={{ color: "#000" }} />
+      <Heading text="معلومات الاتصال" style={{ color: "#000", fontSize: '2rem' }} />
       <InfoGroup>
         <Row style={customRowStyle}>
           <InfoBox
@@ -99,7 +99,7 @@ const FamilyProfile = () => {
       </InfoGroup>
       <hr className="hr" style={{ marginBottom: "4.8rem" }} />
       {/* Section Two Notifications */}
-      <Heading text="الإشعارات" style={{ color: "#000" }} />
+      <Heading text="الإشعارات" style={{ color: "#000", fontSize: '2rem' }} />
       <Row style={customRowStyle}>
         <InfoBox
           boxKey="تذكيرات الدرس"
@@ -118,7 +118,7 @@ const FamilyProfile = () => {
       </Row>
       <hr className="hr" style={{ marginBottom: "4.8rem" }} />
       {/* Section Three Family Account */}
-      <Heading text="حساب المستخدم" style={{ color: "#000" }} />
+      <Heading text="حساب المستخدم" style={{ color: "#000", fontSize: '2rem' }} />
       <InfoGroup>
         <Row style={customRowStyle}>
           <InfoBox
@@ -143,7 +143,7 @@ const FamilyProfile = () => {
       </InfoGroup>
       <hr className="hr" style={{ marginBottom: "4.8rem" }} />
       {/* Section Four Students Information */}
-      <Heading text="الطلاب" style={{ color: "#000" }} />
+      <Heading text="الطلاب" style={{ color: "#000", fontSize: '2rem' }} />
       <SimpleTable
         tableHead={["الاسم", "البريد الإلكتروني", "الهاتف المحمول", "الحالة"]}
         noDataMsg="لا توجد طلاب !"
@@ -156,7 +156,7 @@ const FamilyProfile = () => {
       />
 
       {/* Section Five Subscriptions Credits */}
-      <Heading text="أرصدة الاشتركات" style={{ color: "#000", marginTop: '4.8rem' }} />
+      <Heading text="أرصدة الاشتركات" style={{ color: "#000", marginTop: '4.8rem', fontSize: '2rem' }} />
       <SimpleTable
         tableHead={[
           "نوع الخدمة",
@@ -174,7 +174,7 @@ const FamilyProfile = () => {
       <div className="flex items-center justify-between my-[4.8rem]">
         <Heading
           text="الفواتير الأخيرة"
-          style={{ marginBottom: "0", color: "#000" }}
+          style={{ marginBottom: "0", color: "#000", fontSize: '2rem' }}
         />
         <button
           onClick={() => navigate(`/admin/invoices/create-invoice`)}
@@ -218,7 +218,7 @@ const FamilyProfile = () => {
       <div className="flex items-center justify-between my-[4.8rem]">
         <Heading
           text="المدفوعات الأخيرة"
-          style={{ marginBottom: "0", color: "#000" }}
+          style={{ marginBottom: "0", color: "#000", fontSize: '2rem' }}
         />
         <button
           onClick={() => navigate(`/admin/invoices/create-invoice`)}

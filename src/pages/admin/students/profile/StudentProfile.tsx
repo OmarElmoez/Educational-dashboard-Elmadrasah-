@@ -49,7 +49,7 @@ const StudentProfile = () => {
 
       {specificStudentData?.student_type === 'child' && (
         <>
-          <Heading text="معلومات العائلة" style={{color: "#000"}}/>
+          <Heading text="معلومات العائلة" style={{color: "#000", fontSize: '2rem'}}/>
           <Row style={customRowStyle}>
             <InfoBox boxKey="اسم العائلة" boxValue={specificStudentData?.family_name}/>
           </Row>
@@ -58,7 +58,7 @@ const StudentProfile = () => {
       )}
 
 
-      <Heading text="معلومات الاتصال" style={{color: "#000"}}/>
+      <Heading text="معلومات الاتصال" style={{color: "#000", fontSize: '2rem'}}/>
       <InfoGroup>
         <Row style={customRowStyle}>
           <InfoBox boxKey="البريد الإلكتروني" boxValue={specificStudentData?.email}/>
@@ -71,7 +71,7 @@ const StudentProfile = () => {
 
       <hr className="hr" style={{marginBottom: "4.8rem"}}/>
 
-      <Heading text="تفاصيل الطالب" style={{color: "#000"}}/>
+      <Heading text="تفاصيل الطالب" style={{color: "#000", fontSize: '2rem'}}/>
       <InfoGroup>
         <Row style={customRowStyle}>
           <InfoBox boxKey="المنطقة الزمنية" boxValue={specificStudentData?.time_zone}/>
@@ -100,7 +100,7 @@ const StudentProfile = () => {
 
       <hr className="hr" style={{marginBottom: "4.8rem"}}/>
 
-      <Heading text="تفاصيل الفواتير" style={{color: "#000"}}/>
+      <Heading text="تفاصيل الفواتير" style={{color: "#000", fontSize: '2rem'}}/>
       <Row style={customRowStyle}>
         <InfoBox boxKey="طريقة الفوترة" boxValue={specificStudentData?.billing_method}/>
         <InfoBox boxKey="خصم الطالب" boxValue={`%${specificStudentData?.student_cost}`}/>
@@ -108,7 +108,7 @@ const StudentProfile = () => {
 
       <hr className="hr" style={{marginBottom: "4.8rem"}}/>
 
-      <Heading text="الإشعارات" style={{color: "#000"}}/>
+      <Heading text="الإشعارات" style={{color: "#000", fontSize: '2rem'}}/>
       <Row style={customRowStyle}>
         <InfoBox boxKey="تذكيرات الدرس"
                  boxValue={(specificStudentData?.whatsapp_reminders && specificStudentData?.web_reminders && specificStudentData?.app_reminders) ? "ممكن" : "وقف"}/>
@@ -117,7 +117,7 @@ const StudentProfile = () => {
 
       <hr className="hr" style={{marginBottom: "4.8rem"}}/>
 
-      <Heading text="حساب المستخدم" style={{color: "#000"}}/>
+      <Heading text="حساب المستخدم" style={{color: "#000", fontSize: '2rem'}}/>
       <InfoGroup>
         <Row style={customRowStyle}>
           <InfoBox boxKey="حساب المستخدم" boxValue={specificStudentData?.user_account ? "ممكن" : "وقف"}/>
@@ -126,14 +126,14 @@ const StudentProfile = () => {
 
       <hr className="hr" style={{marginBottom: "4.8rem"}}/>
 
-      <Heading text="أرصدة الاشتركات" style={{color: "#000"}}/>
+      <Heading text="أرصدة الاشتركات" style={{color: "#000", fontSize: '2rem'}}/>
       <SimpleTable tableHead={["نوع الخدمة", "تم شراؤها", "المقرر", "غير مجدولة", "مستخدم", "غير مستخدمة"]}
                    noDataMsg="لا توجد ارصدة !"
                    rows={specificStudentData?.subscriptions_credits || []}
       />
 
       <div className="flex items-center justify-between gap-[2rem] my-[4.8rem]">
-        <Heading text="الدروس القادمة" style={{marginBottom: "0", color: "#000"}}/>
+        <Heading text="الدروس القادمة" style={{marginBottom: "0", color: "#000", fontSize: '2rem'}}/>
         <button onClick={() => navigate(`/admin/reschedule-lesson/${id}`)}
                 className="text-[var(--main-color)] underline">
           جدولة الدروس
@@ -144,7 +144,7 @@ const StudentProfile = () => {
                    rows={specificStudentData?.upcoming_lessons || []}/>
 
       <div className="flex items-center justify-between gap-[2rem] my-[4.8rem]">
-        <Heading text="الدروس الحالية" style={{marginBottom: "0", color: "#000"}}/>
+        <Heading text="الدروس الحالية" style={{marginBottom: "0", color: "#000", fontSize: '2rem'}}/>
         <button onClick={() => navigate(`/admin/reschedule-lesson/${id}`)}
                 className="text-[var(--main-color)] underline">
           عرض الكل
@@ -158,7 +158,7 @@ const StudentProfile = () => {
           <>
 
               <div className="flex items-center justify-between gap-[2rem] my-[4.8rem]">
-                  <Heading text="الفواتير الأخيرة" style={{marginBottom: "0", color: "#000"}}/>
+                  <Heading text="الفواتير الأخيرة" style={{marginBottom: "0", color: "#000", fontSize: '2rem'}}/>
                   <button onClick={() => navigate(`/admin/invoices/create-invoice`)}
                           className="text-[var(--main-color)] underline">
                       إنشاء فاتورة
@@ -172,7 +172,7 @@ const StudentProfile = () => {
                            })}/>
 
               <div className="flex items-center justify-between gap-[2rem] my-[4.8rem]">
-                  <Heading text="المدفوعات الأخيرة" style={{marginBottom: "0", color: "#000"}}/>
+                  <Heading text="المدفوعات الأخيرة" style={{marginBottom: "0", color: "#000", fontSize: '2rem'}}/>
                   <button onClick={() => navigate(`/admin/invoices/create-invoice`)}
                           className="text-[var(--main-color)] underline">
                       إنشاء الفواتير

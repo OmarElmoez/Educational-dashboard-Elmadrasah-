@@ -10,7 +10,7 @@ import {
 } from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import {
-  CircleLoadingIndecator,
+  CircleLoadingIndecator, DateOrTimePicker,
   Dropdown,
   InputField,
   Row,
@@ -456,24 +456,42 @@ const EditInvoiceForm = () => {
       </Row>
 
       <div className={row}>
-        <InputField
+        {/*<InputField*/}
+        {/*  label="تاريخ"*/}
+        {/*  type="date"*/}
+        {/*  placeholder="02-05-2024"*/}
+        {/*  isRequired*/}
+        {/*  register={register}*/}
+        {/*  name="date"*/}
+        {/*  error={errors?.date?.message as string}*/}
+        {/*/>*/}
+        <DateOrTimePicker
+          setValue={setValue}
           label="تاريخ"
-          type="date"
           placeholder="02-05-2024"
-          isRequired
           register={register}
           name="date"
-          error={errors?.date?.message as string}
-        />
-        <InputField
-          label=" تاريخ الاستحقاق"
-          type="date"
-          placeholder="02-05-2024"
           isRequired
-          register={register}
-          name="due_date"
-          error={errors?.due_date?.message as string}
+          error={errors.date?.message as string}
         />
+        <DateOrTimePicker
+          setValue={setValue}
+          label=" تاريخ الاستحقاق"
+          register={register}
+          placeholder="02-05-2024"
+          name="due_date"
+          isRequired
+          error={errors.due_date?.message as string}
+        />
+        {/*<InputField*/}
+        {/*  label=" تاريخ الاستحقاق"*/}
+        {/*  type="date"*/}
+        {/*  placeholder="02-05-2024"*/}
+        {/*  isRequired*/}
+        {/*  register={register}*/}
+        {/*  name="due_date"*/}
+        {/*  error={errors?.due_date?.message as string}*/}
+        {/*/>*/}
 
         <InputField
           label="رقم الفاتورة"
@@ -495,7 +513,7 @@ const EditInvoiceForm = () => {
         {/* ******** options  ******** */}
         <Dropdown
           label="المعاملة الضريبية"
-          // placeholder="حصريا للضريبة"
+          isEdit
           register={register}
           options={TAX_TREATMENT_OPTIONS}
           name="tax_treatment"
