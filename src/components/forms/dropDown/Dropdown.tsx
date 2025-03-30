@@ -18,6 +18,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
                                                              children = null,
                                                              handleChange,
                                                              removePreviewChoices,
+                                                             style,
                                                              isEdit = false,
                                                            }: TDropdownProps<T, U>) => {
   const chosenValue = options?.find((option) => option.value === chosen)?.value;
@@ -42,7 +43,7 @@ const Dropdown = <T extends FieldValues, U extends string>({
     }
   }, [isEdit, removePreviewChoices]);
   return (
-    <article className="group">
+    <article className="group" style={style}>
       <label className={`adminFormLabel ${isRequired && "required"}`}>
         {label}
       </label>

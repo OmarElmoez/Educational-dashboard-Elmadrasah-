@@ -39,7 +39,7 @@ const FamilyProfile = () => {
       <div className="flex justify-between mb-[4.8rem]">
         <div className="flex items-center gap-[2rem]">
           <Heading
-            text={specificFamilyData?.full_name as string}
+            text={specificFamilyData?.full_name || `${specificFamilyData?.first_name} ${specificFamilyData?.last_name}` as string}
             style={{ marginBottom: "0", color: "#000" }}
           />
           <button

@@ -14,7 +14,7 @@ const InputField = <T extends FieldValues>({
   isRequired = false,
   value,
   style,
-  onChange, // Add onChange as a prop
+  onChange,
 }: TInputField<T> & { onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void }) => {
   return (
     <article className="group" style={style}>
@@ -29,7 +29,7 @@ const InputField = <T extends FieldValues>({
           id={name}
           {...register(name)}
           placeholder={placeholder}
-          onChange={onChange} // Handle onChange 
+          onChange={onChange}
           disabled={disabled}
         />
       ) : (
@@ -40,7 +40,7 @@ const InputField = <T extends FieldValues>({
           {...register(name)}
           placeholder={placeholder}
           disabled={disabled}
-          onChange={onChange} // Handle onChange 
+          onChange={onChange}
           defaultValue={value}
         />
       )}

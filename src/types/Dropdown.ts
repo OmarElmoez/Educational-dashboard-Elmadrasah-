@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { CSSProperties, ReactNode, RefObject } from "react";
 import { FieldValues, Path, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { TModalRef,  } from "./shared";
 
@@ -15,7 +15,7 @@ type TDropdownProps<T extends FieldValues, U> = {
   register: UseFormRegister<T>;
   error: string;
   isRequired?: boolean;
-  subjectRef?: React.RefObject<TModalRef>;
+  subjectRef?: RefObject<TModalRef>;
   isWithPopup?: boolean;
   children?: ReactNode | null;
   disabled?: boolean;
@@ -23,6 +23,7 @@ type TDropdownProps<T extends FieldValues, U> = {
   watch?: UseFormWatch<T>
   removePreviewChoices?: boolean;
   isEdit?: boolean;
+  style?: CSSProperties;
 };
 
 type TStatus = "" | "Saved" | "Approved" | "Paid" | "Void";

@@ -6,7 +6,7 @@ export const EditEmployeeSchema = z.object({
   employee_type: z.string().optional(),
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
-  full_name: z.string().min(1, "برجاء ادخال الاسم بالكامل"),
+  full_name: z.string().optional(),
   email: z
     .string()
     .min(1, "برجاء ادخال البريد الإلكتروني")
@@ -15,7 +15,7 @@ export const EditEmployeeSchema = z.object({
   phone: z.string().refine((phoneNumber) => {
     return matchIsValidTel(phoneNumber);
   }, "رقم الهاتف غير صالح"),
-  time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
+  time_zone: z.string().optional(),
   wage_type: z.string(),
   work_wage_type: z.string(),
   uploaded_pp: z.array(z.instanceof(File)).optional(),
@@ -29,7 +29,7 @@ export const EditEmployeeSchema = z.object({
     .string()
     .optional(),
   subject_choices: z.array(z.union([z.string(), z.number()])),
-  position: z.string().min(1, "برجاء ادخال المسمى"),
+  position: z.string().optional(),
   initial_students: z.array(z.union([z.string(), z.number()])),
   employee_wage: z.string().optional(),
   work_wage: z.string().optional(),

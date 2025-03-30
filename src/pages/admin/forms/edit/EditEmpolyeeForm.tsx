@@ -92,18 +92,32 @@ const EditEmployeeForm = () => {
       return;
     }
 
-    data['groups_id'] = data['groups_id']?.map(item => Number(item));
-    data['user_permissions_id'] = data['user_permissions_id']?.map(item => Number(item));
-    data['subject_choices'] = data['subject_choices']?.map(item => Number(item));
-    data['initial_students'] = data['initial_students']?.map(item => Number(item));
-    data["is_active"] = data["is_active"] === "true" ? 'True' : 'False';
+    // data['groups_id'] = data['groups_id']?.map(item => Number(item));
+    // data['user_permissions_id'] = data['user_permissions_id']?.map(item => Number(item));
+    // data['subject_choices'] = data['subject_choices']?.map(item => Number(item));
+    // data['initial_students'] = data['initial_students']?.map(item => Number(item));
+    // data["is_active"] = data["is_active"] === "true" ? 'True' : 'False';
+
+
+
+    const processedData = {
+      ...data,
+      groups_id: data['groups_id']?.map(item => Number(item)),
+      user_permissions_id: data['user_permissions_id']?.map(item => Number(item)),
+      subject_choices: data['subject_choices']?.map(item => Number(item)),
+      initial_students: data['initial_students']?.map(item => Number(item)),
+      is_active: data["is_active"] === "true" ? 'True' : 'False',
+      full_name: data['full_name'] || "",
+    }
+
+    console.log(processedData);
 
     setLoading('pending')
 
     dispatch(
       actSendDataToServer({
         purpose: "add_employee",
-        formData: data,
+        formData: processedData,
         hasFiles: true,
         isEdit: true,
         id
@@ -111,7 +125,7 @@ const EditEmployeeForm = () => {
     )
     .unwrap()
     .then((res) => {
-      if (typeof res === 'string') {
+      if (typeof res === 'string' || (typeof res === "object" && res !== null && Object.values(res).every(errors => Array.isArray(errors)))) {
         setLoading('failed')
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
         return;

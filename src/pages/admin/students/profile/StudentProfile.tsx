@@ -33,7 +33,7 @@ const StudentProfile = () => {
       </div>}
       <div className="flex justify-between mb-[4.8rem]">
       <div className="flex items-center gap-[2rem]">
-        <Heading text={specificStudentData?.full_name as string}
+        <Heading text={specificStudentData?.full_name || `${specificStudentData?.first_name} ${specificStudentData?.last_name}` as string}
                  style={{marginBottom: "0", color: "#000"}}/>
         <button onClick={() => navigate(`/admin/students/profile/${id}/edit`, {state: specificStudentData})}>
           <EditPenIcon/></button>

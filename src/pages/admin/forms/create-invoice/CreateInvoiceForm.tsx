@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {actGetData, actGetDropdownOptions, actSendDataToServer,} from "@/store/single-actions";
 import {useFeedback} from "@/store/context";
 import {
-  CircleLoadingIndecator,
+  CircleLoadingIndecator, DateOrTimePicker,
   Dropdown,
   DropdownWithSearch,
   InputField,
@@ -447,41 +447,68 @@ const CreateInvoiceForm = () => {
       </Row>
 
       <div className={row}>
-        <InputField
+        {/*<InputField*/}
+        {/*  label="تاريخ"*/}
+        {/*  type="date"*/}
+        {/*  placeholder="02-05-2024"*/}
+        {/*  isRequired*/}
+        {/*  register={register}*/}
+        {/*  name="date"*/}
+        {/*  error={errors?.date?.message as string}*/}
+        {/*/>*/}
+        <DateOrTimePicker
+          setValue={setValue}
           label="تاريخ"
-          type="date"
           placeholder="02-05-2024"
-          isRequired
           register={register}
           name="date"
-          error={errors?.date?.message as string}
-        />
-        <InputField
-          label=" تاريخ الاستحقاق"
-          type="date"
-          placeholder="02-05-2024"
           isRequired
-          register={register}
-          name="due_date"
-          error={errors?.due_date?.message as string}
+          error={errors.date?.message as string}
         />
+
+        <DateOrTimePicker
+          setValue={setValue}
+          label=" تاريخ الاستحقاق"
+          register={register}
+          placeholder="02-05-2024"
+          name="due_date"
+          isRequired
+          error={errors.due_date?.message as string}
+        />
+        {/*<InputField*/}
+        {/*  label=" تاريخ الاستحقاق"*/}
+        {/*  type="date"*/}
+        {/*  placeholder="02-05-2024"*/}
+        {/*  isRequired*/}
+        {/*  register={register}*/}
+        {/*  name="due_date"*/}
+        {/*  error={errors?.due_date?.message as string}*/}
+        {/*/>*/}
         {/* ****** create new InputField style ******** */}
         {/* <section> */}
-        <InputField
-          label="رقم الفاتورة"
-          placeholder={`INV- ${invoiceNumber}`}
-          disabled
-          value={invoiceNumber}
-          register={register}
-          name="formatted_number"
-          error={errors?.formatted_number?.message as string}
-        />
+        {/*<InputField*/}
+        {/*  label="رقم الفاتورة"*/}
+        {/*  placeholder={`INV- ${invoiceNumber}`}*/}
+        {/*  disabled*/}
+        {/*  value={invoiceNumber}*/}
+        {/*  register={register}*/}
+        {/*  name="formatted_number"*/}
+        {/*  error={errors?.formatted_number?.message as string}*/}
+        {/*/>*/}
         {/* <div>-INV</div> */}
         {/* </section> */}
 
+        <article className='w-[123px] self-start flex flex-col gap-[0.8rem]'>
+          <label className='adminFormLabel'>رقم الفاتورة</label>
+        <section className='inputField relative !text-[1.2rem] !text-[#CDCDCD]'>
+          <div className='absolute h-full w-1/2 left-0 flex justify-center items-center border-r-1 border-r-[#C7C7C7]'>-INV</div>
+          <div className='absolute h-full w-1/2 right-0 flex justify-center items-center border-l-1 border-l-[#C7C7C7]'>{invoiceNumber}</div>
+        </section>
+        </article>
+
         <InputField
-          label=" مرجع"
-          placeholder="مرجع "
+          label="مرجع"
+          placeholder="مرجع"
           isRequired
           register={register}
           name="reference"
@@ -491,7 +518,7 @@ const CreateInvoiceForm = () => {
         {/* ******** options  ******** */}
         <Dropdown
           label="المعاملة الضريبية"
-          // placeholder="حصريا للضريبة"
+          isEdit
           register={register}
           options={TAX_TREATMENT_OPTIONS}
           name="tax_treatment"
@@ -509,13 +536,14 @@ const CreateInvoiceForm = () => {
           options={ADD_SERVICE_OPTIONS}
           handleChange={handleServiceType}
           error={errors?.add?.message as string}
+          style={{ flex: "none", width: "26.6rem" }}
         />
 
-        <article className="group addBtn">
+        <article className="flex-1 self-center">
           <button
             type="button"
             onClick={handleAppend}
-            className="btn submit-btn"
+            className="btn !min-w-[78px] !text-[1.4rem] h-[42px] flex justify-center items-center submit-btn"
           >
             اضافة
           </button>
@@ -559,12 +587,13 @@ const CreateInvoiceForm = () => {
           />
 
           <InputField
-            label="خصم% "
-            placeholder="خصم% "
+            label="خصم%"
+            placeholder="خصم%"
             onChange={(e) => handleChargeChange(e, index)}
             name={`charges.${index}.discount_rate`}
             register={register}
             error={errors?.charges?.[index]?.discount_rate?.message as string}
+            style={{ flex: "none", width: "78px" }}
           />
 
           <InputField
@@ -575,7 +604,7 @@ const CreateInvoiceForm = () => {
             disabled
             error={errors?.charges?.[index]?.amount?.message as string}
           />
-          <div className={close_btn_container}>
+          <div className={close_btn_container} style={{color: 'red'}}>
             <button type="button" onClick={() => handleRemoveCharge(index)}>
               <CloseButton/>
             </button>
@@ -630,6 +659,7 @@ const CreateInvoiceForm = () => {
             register={register}
             onChange={(e) => handlePackagesChange(e, index)}
             error={errors?.packages?.[index]?.discount_rate?.message as string}
+            style={{ flex: "none", width: "78px" }}
           />
           <InputField
             label="المبلغ"
@@ -640,7 +670,7 @@ const CreateInvoiceForm = () => {
             error={errors?.packages?.[index]?.amount?.message as string}
           />
 
-          <div className={close_btn_container}>
+          <div className={close_btn_container} style={{color: 'red'}}>
             <button type="button" onClick={() => handleRemovePackages(index)}>
               <CloseButton/>
             </button>
@@ -856,4 +886,4 @@ const CreateInvoiceForm = () => {
   );
 };
 
-export default CreateInvoiceForm;
+export default CreateInvoiceForm

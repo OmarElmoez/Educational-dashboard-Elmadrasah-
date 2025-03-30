@@ -4,7 +4,7 @@ import { matchIsValidTel } from "mui-tel-input";
 export const EditStudentSchema = z.object({
   first_name: z.string().min(1, "برجاء ادخال الاسم الأول"),
   last_name: z.string().min(1, "برجاء ادخال الاسم الأخير"),
-  full_name: z.string().min(1, "برجاء ادخال الاسم بالكامل"),
+  full_name: z.string().optional(),
   email: z
   .string()
   .min(1, "برجاء ادخال البريد الإلكتروني")
@@ -18,7 +18,7 @@ export const EditStudentSchema = z.object({
   initial_services: z.array(z.union([z.string(), z.number()])).min(1, {message: 'يجب علي الاقل اختيار خدمة.'}),
   billing_method: z.string().min(1, "برجاء اختيار طريقة الدفع"),
   student_cost: z.string().optional(),
-  time_zone: z.string().min(1, "برجاء اختيار التوقيت الزمني"),
+  time_zone: z.string().optional(),
 })
 
 export type TEditStudentSchema = z.infer<typeof EditStudentSchema>;

@@ -135,10 +135,10 @@ const SIDEBAR_DATA = {
           page_title: "إضافة طالب الى عائلة",
         },
         {
-          title: "إضافة طالب منفصل",
+          title: "إضافة طالب مستقل",
           path: "students/add-student",
           icon: <AddStdIcon />,
-          page_title: "إضافة طالب منفصل",
+          page_title: "إضافة طالب مستقل",
         },
       ],
     },

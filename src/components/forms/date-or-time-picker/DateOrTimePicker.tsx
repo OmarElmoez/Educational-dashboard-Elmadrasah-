@@ -13,6 +13,7 @@ type TDatePickerProps<T extends FieldValues> = {
   predefinedDate?: string;
   type?: 'date' | 'time';
   onChange?: (val: string) => void;
+  placeholder?: string;
 }
 
 const DateOrTimePicker = <T extends FieldValues>({
@@ -25,7 +26,7 @@ const DateOrTimePicker = <T extends FieldValues>({
                                                    style,
                                                    isRequired,
                                                    predefinedDate,
-                                                   type = 'date', onChange,
+                                                   type = 'date', onChange, placeholder
                                                  }: TDatePickerProps<T>) => {
 
   const [selectedValue, setSelectedValue] = useState("")
@@ -81,7 +82,7 @@ const DateOrTimePicker = <T extends FieldValues>({
         <input type={type} {...register(name)} ref={dateRef} id={name} className="absolute opacity-0 cursor-pointer"
                onChange={(e) => onValueChange(e.target.value)}/>
         <div>{(predefinedDate && !selectedValue) ? predefinedDate : selectedValue ? selectedValue : (
-          <span className='firstOption'>{type === 'time' ? '11:30 ص' : 'يوم / شهر / سنة'}</span>)}</div>
+          <span className='firstOption'>{type === 'time' ? '11:30 ص' : (placeholder || 'يوم / شهر / سنة')}</span>)}</div>
       </section>
       <p className="error absolute bottom-0">
         {error}

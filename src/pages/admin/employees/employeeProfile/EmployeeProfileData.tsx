@@ -34,7 +34,7 @@ const EmployeeProfileData = () => {
     <>
       <div className="flex justify-between mb-[4.8rem]" >
         <div className="flex items-center gap-[2rem]">
-        <p className="font-medium text-[2.4rem]">{specificEmployeeData?.full_name || "لايوجد"}</p>
+        <p className="font-medium text-[2.4rem]">{specificEmployeeData?.full_name || `${specificEmployeeData?.first_name} ${specificEmployeeData?.last_name}`}</p>
         <EditPenIcon className={iconButton} onClick={editEmployee} />
         </div>
         {specificEmployeeData?.is_active ? (

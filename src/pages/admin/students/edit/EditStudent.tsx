@@ -95,7 +95,7 @@ const EditStudent = () => {
     )
     .unwrap()
     .then((res) => {
-      if (typeof res === 'string') {
+      if (typeof res === 'string' || (typeof res === "object" && res !== null && Object.values(res).every(errors => Array.isArray(errors)))) {
         setLoading('failed')
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
         return;
@@ -161,7 +161,7 @@ const EditStudent = () => {
             placeholder="الأسم بالكامل"
             register={register}
             name="full_name"
-            error={errors?.full_name?.message as string}
+            error=""
           />
         </Row>
 
