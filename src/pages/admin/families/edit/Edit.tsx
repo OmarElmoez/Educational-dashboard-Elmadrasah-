@@ -71,7 +71,6 @@ const EditFamily = () => {
         })
       )
       .unwrap()
-
       if (typeof res === 'string' || (typeof res === "object" && res !== null && Object.values(res).every(errors => Array.isArray(errors)))) {
         setLoading('failed')
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
