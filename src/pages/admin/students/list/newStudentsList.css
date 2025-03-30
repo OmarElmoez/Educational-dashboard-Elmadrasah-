@@ -17,3 +17,18 @@
   align-items: center;
   justify-content: center !important;
 }
+
+.reload-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  background-color: #1C8A441A;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.6rem;
+}
+
+.reload-button span {
+  font-size: 1.4rem;
+  color: #636765;
+}

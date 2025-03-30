@@ -102,6 +102,7 @@ const FamiliesList = () => {
       field: "id",
       headerName: "ID",
       flex: 0.5,
+      filterable: false,
     },
     {
       field: "first_name",
@@ -155,6 +156,7 @@ const FamiliesList = () => {
       field: "action",
       headerName: "أكشن",
       flex: 0.5,
+      filterable: false,
       renderCell: (params) => (
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}

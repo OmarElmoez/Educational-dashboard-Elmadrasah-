@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -14,9 +14,11 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import { actGetStudents } from "@/store/table/TableSlice.ts";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
-
 import "./newStudentsList.css";
 import Paper from '@mui/material/Paper';
+import ReloadIcon from '@/assets/reload.svg?react';
+
+
 
 const NewStudentsList = () => {
   const {students} = useAppSelector((state) => state.table);
@@ -29,6 +31,21 @@ const NewStudentsList = () => {
   const [previous, setPrevious] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const handleGetStudentData = useCallback(() => {
+    setLoading(true);
+    dispatch(actGetStudents({}))
+    .unwrap()
+    .then((res) => {
+      setLoading(false);
+      setNext(res.next);
+      setPrevious(res.previous);
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.error("Error fetching students:", error);
+    });
+  }, [dispatch]);
+
 
   useEffect(() => {
     setLoading(true);
@@ -85,6 +102,7 @@ const NewStudentsList = () => {
       field: "id",
       headerName: "ID",
       flex: 0.5,
+      filterable: false,
     },
     {
       field: "first_name",
@@ -105,6 +123,11 @@ const NewStudentsList = () => {
       headerName: "الاسم الأخير",
       flex: 1,
     },
+    // {
+    //   field: "country",
+    //   headerName: "الدولة",
+    //   flex: 1,
+    // },
     {
       field: "email",
       headerName: "البريد الإلكتروني",
@@ -135,6 +158,7 @@ const NewStudentsList = () => {
       field: "action",
       headerName: "أكشن",
       flex: 0.5,
+      filterable: false,
       renderCell: (params) => (
         <button
           style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
@@ -189,6 +213,10 @@ const NewStudentsList = () => {
 
   return (
     <Box component="section">
+        <button className="reload-button" onClick={handleGetStudentData}>
+        <ReloadIcon />
+        <span> إعادة تحميل البيانات</span>
+      </button>
       <Paper sx={{height: "auto", width: "100%"}}>
         <DataGrid
           sx={{

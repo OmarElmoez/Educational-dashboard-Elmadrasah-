@@ -47,6 +47,7 @@ export type THourLesson = {
   to_datetime: string;
   id: number;
   lesson_files: TlessonFile[];
+  country: string;
 };
 
 // Define the main type

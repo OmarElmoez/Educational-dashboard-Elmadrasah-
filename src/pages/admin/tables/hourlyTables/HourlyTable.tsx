@@ -34,6 +34,7 @@ const HourlyLessonsAdmin = () => {
   useEffect(() => {
     setHourlyLessonsForAllHours(location.state.data);
     setHourlyLessons(location.state.data.lessons);
+    console.log(location.state.data);
     setDate(location.state.date);
     let startTime = location.state.date.start;
     let endTime = location.state.date.end;

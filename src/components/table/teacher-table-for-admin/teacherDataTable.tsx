@@ -72,6 +72,7 @@ const TeacherDataTable = ({
       headerName: "صورة شخصية",
       flex: 0.65,
       headerAlign: "center",
+      filterable: false,
       renderCell: (params) => {
         if (params.value) {
           return (
@@ -142,8 +143,8 @@ const TeacherDataTable = ({
       },
     },
     {
-      field: "city",
-      headerName: "المدينة",
+      field: "country",
+      headerName: "الدولة",
       flex: 0.75,
       headerAlign: "center",
       renderCell: (params) => {
@@ -180,6 +181,7 @@ const TeacherDataTable = ({
       headerName: "تعديل",
       flex: 0.5,
       headerAlign: "center",
+      filterable: false,
       renderCell: (params) => {
         return (
           <button

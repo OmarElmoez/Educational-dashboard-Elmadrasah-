@@ -8,7 +8,7 @@ import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import { SimpleTable } from "@/pages/shared/components";
 
-const {  sectionContainer, infoContainer, iconButton } = Styles;
+const { sectionContainer, infoContainer, iconButton } = Styles;
 const EmployeeProfileData = () => {
   const [specificEmployeeData, setSpecificEmployeeData] =
     useState<TDataForSpecificEmployee>();
@@ -25,24 +25,25 @@ const EmployeeProfileData = () => {
     dispatch(actGetSpecificEmployees({ employeeID: employeeId })).then(
       (res) => {
         setSpecificEmployeeData(res.payload as TDataForSpecificEmployee);
-
       }
-    );  
+    );
     // eslint-disable-next-line
   }, [dispatch, employeeId]);
   return (
     <>
-      <div className="flex justify-between mb-[4.8rem]" >
+      <div className="flex justify-between mb-[4.8rem]">
         <div className="flex items-center gap-[2rem]">
         <p className="font-medium text-[2.4rem]">{specificEmployeeData?.full_name || `${specificEmployeeData?.first_name} ${specificEmployeeData?.last_name}`}</p>
         <EditPenIcon className={iconButton} onClick={editEmployee} />
         </div>
         {specificEmployeeData?.is_active ? (
           <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[var(--main-color)] text-[#FFFFFF]">
-              نشط
-            </span>
+            نشط
+          </span>
         ) : (
-          <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">غير نشط</span>
+          <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">
+            غير نشط
+          </span>
         )}
       </div>
       {/* Section One Contact Information */}
@@ -175,10 +176,13 @@ const EmployeeProfileData = () => {
         ) : null}
         <div className={infoContainer}>
           <h2>المواد: </h2>
-          {specificEmployeeData && specificEmployeeData?.subject_choices_response?.map((subject) => {
+          {specificEmployeeData &&
+            specificEmployeeData?.subject_choices_response?.map((subject) => {
               return (
                 <>
-                  <span key={subject.id}>{`,${subject.name_ar}` || "لايوجد"}</span>
+                  <span key={subject.id}>
+                    {`,${subject.name_ar}` || "لايوجد"}
+                  </span>
                 </>
               );
             })}
@@ -212,7 +216,11 @@ const EmployeeProfileData = () => {
       {/* Section Six Students */}
       <section className={sectionContainer}>
         <p>الطلاب المعينون</p>
-        <SimpleTable tableHead={["الاسم", "البريد الإلكتروني", "رقم الهاتف", "حالة"]} rows={specificEmployeeData?.initial_students_response || []} noDataMsg="لا يوجد طلاب !" />
+        <SimpleTable
+          tableHead={["الاسم", "البريد الإلكتروني", "رقم الهاتف", "حالة"]}
+          rows={specificEmployeeData?.initial_students_response || []}
+          noDataMsg="لا يوجد طلاب !"
+        />
       </section>
       <hr className="hr" />
       {/* Section Seven Notifications */}
