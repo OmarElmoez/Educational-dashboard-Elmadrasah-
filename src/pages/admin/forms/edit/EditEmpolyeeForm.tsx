@@ -23,7 +23,7 @@ import createListOfIds from "./utils/createListOfIds.ts";
 import { useFeedback } from "@/store/context";
 import usePredefinedChoices from "./hooks/usePredefinedChoices.ts";
 import actGetSpecificEmployees from "@/store/table/act/actGetSpecificEmployee.ts";
-import { TLoading } from "@/types/shared.ts";
+import { useComponentLoading } from "@/hooks";
 
 const EditEmployeeForm = () => {
   const {id} = useParams();
@@ -32,7 +32,7 @@ const EditEmployeeForm = () => {
   const dispatch = useAppDispatch();
   const {openFeedbackModal} = useFeedback();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<TLoading>('idle')
+  const {setPending, isPending, setFailed, setSucceeded} = useComponentLoading()
   const {
     register,
     handleSubmit,
@@ -87,18 +87,10 @@ const EditEmployeeForm = () => {
 
   const onSubmit = (data: TEditEmployeeForm) => {
     if (data.is_active === "") {
-      setLoading('failed')
+      setFailed();
       openFeedbackModal('failed', "برجاء تحديد الحالة.");
       return;
     }
-
-    // data['groups_id'] = data['groups_id']?.map(item => Number(item));
-    // data['user_permissions_id'] = data['user_permissions_id']?.map(item => Number(item));
-    // data['subject_choices'] = data['subject_choices']?.map(item => Number(item));
-    // data['initial_students'] = data['initial_students']?.map(item => Number(item));
-    // data["is_active"] = data["is_active"] === "true" ? 'True' : 'False';
-
-
 
     const processedData = {
       ...data,
@@ -109,11 +101,7 @@ const EditEmployeeForm = () => {
       is_active: data["is_active"] === "true" ? 'True' : 'False',
       full_name: data['full_name'] || "",
     }
-
-    console.log(processedData);
-
-    setLoading('pending')
-
+    setPending();
     dispatch(
       actSendDataToServer({
         purpose: "add_employee",
@@ -125,18 +113,19 @@ const EditEmployeeForm = () => {
     )
     .unwrap()
     .then((res) => {
-      if (typeof res === 'string' || (typeof res === "object" && res !== null && Object.values(res).every(errors => Array.isArray(errors)))) {
-        setLoading('failed')
+      if (typeof res === 'string' || (typeof res === "object" && res !== null && Object.values(res).every(
+        errors => Array.isArray(errors)))) {
+        setFailed();
         openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
         return;
       }
 
-      setLoading('succeeded')
+      setSucceeded();
       openFeedbackModal("succeeded", "تم تعديل بيانات الموظف بنجاح!");
       navigate(-1);
     })
     .catch((error) => {
-      setLoading('failed')
+      setFailed();
       openFeedbackModal("failed", error);
     });
   };
@@ -148,300 +137,300 @@ const EditEmployeeForm = () => {
 
   return (
     <>
-    {!specificEmployeeData && <div className="loadingBox">
-        <LoadingIndicator/>
-    </div>}
-    {loading === 'pending' && <div className="loadingBox">
-        <LoadingIndicator/>
-    </div>}
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="نوع الموظف"/>
-      <Row>
-        <Dropdown
-          label="الحالة"
-          name="is_active"
-          register={register}
-          options={STATUS_OPTIONS}
-          error={errors.is_active?.message as string}
-          isEdit
-        />
-        <article className="group"></article>
-      </Row>
-      <Row>
-        <InputField
-          label="الأسم الأول"
-          placeholder="الأسم الأول"
-          register={register}
-          name="first_name"
-          error={errors.first_name?.message as string}
-        />
-        <InputField
-          label="الأسم الأخير"
-          placeholder="الأسم الأخير"
-          register={register}
-          name="last_name"
-          error={errors.last_name?.message as string}
-        />
-      </Row>
-      <Row>
-        <InputField
-          label="الأسم بالكامل"
-          placeholder="الأسم بالكامل"
-          register={register}
-          name="full_name"
-          error={errors.full_name?.message as string}
-        />
-        <InputField
-          label="البريد الإلكتروني"
-          placeholder="البريد الإلكتروني"
-          register={register}
-          name="email"
-          error={errors.email?.message as string}
-        />
-      </Row>
-      <Row>
-        <Dropdown
-          label="التوقيت الزمني"
-          name="time_zone"
-          options={TIMEZONES_OPTIONS}
-          register={register}
-          error={errors.time_zone?.message as string}
-          isEdit
-        />
-        <PhoneField
-          control={control}
-          name="phone"
-          error={errors.phone?.message as string}
-          label="الهاتف المحمول"
-        />
-      </Row>
-      <hr className="hr"/>
-      <span className="mainContainer">
+      {!specificEmployeeData && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
+      {isPending && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Heading text="نوع الموظف"/>
+        <Row>
+          <Dropdown
+            label="الحالة"
+            name="is_active"
+            register={register}
+            options={STATUS_OPTIONS}
+            error={errors.is_active?.message as string}
+            isEdit
+          />
+          <article className="group"></article>
+        </Row>
+        <Row>
+          <InputField
+            label="الأسم الأول"
+            placeholder="الأسم الأول"
+            register={register}
+            name="first_name"
+            error={errors.first_name?.message as string}
+          />
+          <InputField
+            label="الأسم الأخير"
+            placeholder="الأسم الأخير"
+            register={register}
+            name="last_name"
+            error={errors.last_name?.message as string}
+          />
+        </Row>
+        <Row>
+          <InputField
+            label="الأسم بالكامل"
+            placeholder="الأسم بالكامل"
+            register={register}
+            name="full_name"
+            error={errors.full_name?.message as string}
+          />
+          <InputField
+            label="البريد الإلكتروني"
+            placeholder="البريد الإلكتروني"
+            register={register}
+            name="email"
+            error={errors.email?.message as string}
+          />
+        </Row>
+        <Row>
+          <Dropdown
+            label="التوقيت الزمني"
+            name="time_zone"
+            options={TIMEZONES_OPTIONS}
+            register={register}
+            error={errors.time_zone?.message as string}
+            isEdit
+          />
+          <PhoneField
+            control={control}
+            name="phone"
+            error={errors.phone?.message as string}
+            label="الهاتف المحمول"
+          />
+        </Row>
+        <hr className="hr"/>
+        <span className="mainContainer">
           <Heading text="المرفقات"/>
         </span>
 
-      <Row>
-        <UploadFile
-          label="إضافة صورة شخصية"
-          name="uploaded_pp"
-          control={control}
-          register={register}
-          setValue={setValue}
-          fileTypes={["images"]}
-          error={errors.uploaded_pp?.message as string}
-        />
-        <UploadFile
-          label="إضافة السيرة الذاتية"
-          name="uploaded_cv"
-          control={control}
-          register={register}
-          setValue={setValue}
-          fileTypes={["pdfs", "word"]}
-          error={errors.uploaded_cv?.message as string}
-        />
-      </Row>
+        <Row>
+          <UploadFile
+            label="إضافة صورة شخصية"
+            name="uploaded_pp"
+            control={control}
+            register={register}
+            setValue={setValue}
+            fileTypes={["images"]}
+            error={errors.uploaded_pp?.message as string}
+          />
+          <UploadFile
+            label="إضافة السيرة الذاتية"
+            name="uploaded_cv"
+            control={control}
+            register={register}
+            setValue={setValue}
+            fileTypes={["pdfs", "word"]}
+            error={errors.uploaded_cv?.message as string}
+          />
+        </Row>
 
-      <Row>
-        <UploadFile
-          label="إضافة الرقم القومي"
-          name="uploaded_id"
-          control={control}
-          register={register}
-          setValue={setValue}
-          fileTypes={["images"]}
-          error={errors.uploaded_id?.message as string}
-        />
+        <Row>
+          <UploadFile
+            label="إضافة الرقم القومي"
+            name="uploaded_id"
+            control={control}
+            register={register}
+            setValue={setValue}
+            fileTypes={["images"]}
+            error={errors.uploaded_id?.message as string}
+          />
 
-        <DateOrTimePicker
-          setValue={setValue}
-          label="تاريخ إنتهاء الرقم القومى"
-          register={register}
-          name="national_id_expiration_date"
-          error={errors.national_id_expiration_date?.message as string}
-          style={{alignSelf: 'flex-end'}}
-          predefinedDate={specificEmployeeData?.national_id_expiration_date}
-        />
-      </Row>
+          <DateOrTimePicker
+            setValue={setValue}
+            label="تاريخ إنتهاء الرقم القومى"
+            register={register}
+            name="national_id_expiration_date"
+            error={errors.national_id_expiration_date?.message as string}
+            style={{alignSelf: 'flex-end'}}
+            predefinedDate={specificEmployeeData?.national_id_expiration_date}
+          />
+        </Row>
 
-      <Row>
-        <UploadFile
-          label="إضافة جواز السفر"
-          name="uploaded_passport"
-          control={control}
-          register={register}
-          setValue={setValue}
-          fileTypes={["images"]}
-          error={errors.uploaded_passport?.message as string}
-        />
+        <Row>
+          <UploadFile
+            label="إضافة جواز السفر"
+            name="uploaded_passport"
+            control={control}
+            register={register}
+            setValue={setValue}
+            fileTypes={["images"]}
+            error={errors.uploaded_passport?.message as string}
+          />
 
-        <DateOrTimePicker
-          setValue={setValue}
-          label="تاريخ إنتهاء جواز السفر"
-          register={register}
-          name="passport_expiration_date"
-          error={errors.passport_expiration_date?.message as string}
-          style={{alignSelf: 'flex-end'}}
-          predefinedDate={specificEmployeeData?.passport_expiration_date}
-        />
-      </Row>
-      {!ONLY_STAFF && <>
-          <hr className="hr"/>
-          <Heading text="المواد"/>
-          <Row>
-              <MultiChoices
+          <DateOrTimePicker
+            setValue={setValue}
+            label="تاريخ إنتهاء جواز السفر"
+            register={register}
+            name="passport_expiration_date"
+            error={errors.passport_expiration_date?.message as string}
+            style={{alignSelf: 'flex-end'}}
+            predefinedDate={specificEmployeeData?.passport_expiration_date}
+          />
+        </Row>
+        {!ONLY_STAFF && <>
+            <hr className="hr"/>
+            <Heading text="المواد"/>
+            <Row>
+                <MultiChoices
+                    register={register}
+                    name="subject_choices"
+                    disabled={!isTeacher && isStaff}
+                    error={errors.subject_choices?.message as string}
+                    predefinedChoices={subjectChoices}
+                    setValue={setValue}
+                />
+                <article className="group"></article>
+            </Row>
+        </>}
+        <hr className="hr"/>
+        <Heading text="تفاصيل التوظيف"/>
+
+        <Row>
+          <InputField
+            label="مُسمي"
+            placeholder="مُعلم العلوم"
+            register={register}
+            name="position"
+            error={errors.position?.message as string}
+          />
+          <article className="group"></article>
+        </Row>
+
+        {!ONLY_STAFF && <>
+            <Row>
+                <Dropdown
+                    label="نوع أجر الدرس"
+                    name="wage_type"
+                    register={register}
+                    options={WAGE_TYPES}
+                    disabled={!isTeacher && isStaff}
+                    handleChange={(val) => setWage((prev) => ({
+                      ...prev,
+                      wage_type: val,
+                    }))}
+                    error={errors.wage_type?.message as string}
+                    isEdit
+                />
+
+              {wage.wage_type === "wage" ? (
+                <InputField
+                  label="معدل الأجر"
+                  placeholder="معدل الأجر"
                   register={register}
-                  name="subject_choices"
+                  name="employee_wage"
                   disabled={!isTeacher && isStaff}
-                  error={errors.subject_choices?.message as string}
-                  predefinedChoices={subjectChoices}
-                  setValue={setValue}
-              />
-              <article className="group"></article>
-          </Row>
-      </>}
-      <hr className="hr"/>
-      <Heading text="تفاصيل التوظيف"/>
+                  error={errors.employee_wage?.message as string}
+                />
+              ) : (
+                <article className="group"></article>
+              )}
+            </Row>
+            <Row>
+                <Dropdown
+                    label="نوع الأجر غير التدريسي"
+                    name="work_wage_type"
+                    register={register}
+                    options={WORK_WAGE_TYPES}
+                    disabled={!isTeacher && isStaff}
+                    error={errors.work_wage_type?.message as string}
+                    handleChange={(val) => setWage((prev) => ({
+                      ...prev,
+                      work_wage_type: val,
+                    }))}
+                    isEdit
+                />
 
-      <Row>
-        <InputField
-          label="مُسمي"
-          placeholder="مُعلم العلوم"
-          register={register}
-          name="position"
-          error={errors.position?.message as string}
-        />
-        <article className="group"></article>
-      </Row>
-
-      {!ONLY_STAFF && <>
-          <Row>
-              <Dropdown
-                  label="نوع أجر الدرس"
-                  name="wage_type"
+              {wage.work_wage_type === "wage" ? (
+                <InputField
+                  label="معدل الأجر"
+                  placeholder="معدل الأجر"
                   register={register}
-                  options={WAGE_TYPES}
+                  name="work_wage"
                   disabled={!isTeacher && isStaff}
-                  handleChange={(val) => setWage((prev) => ({
-                    ...prev,
-                    wage_type: val,
-                  }))}
-                  error={errors.wage_type?.message as string}
-                  isEdit
-              />
+                  error={errors.work_wage?.message as string}
+                />
+              ) : (
+                <article className="group"></article>
+              )}
+            </Row>
+        </>}
 
-            {wage.wage_type === "wage" ? (
-              <InputField
-                label="معدل الأجر"
-                placeholder="معدل الأجر"
-                register={register}
-                name="employee_wage"
-                disabled={!isTeacher && isStaff}
-                error={errors.employee_wage?.message as string}
-              />
-            ) : (
-              <article className="group"></article>
-            )}
-          </Row>
-          <Row>
-              <Dropdown
-                  label="نوع الأجر غير التدريسي"
-                  name="work_wage_type"
-                  register={register}
-                  options={WORK_WAGE_TYPES}
-                  disabled={!isTeacher && isStaff}
-                  error={errors.work_wage_type?.message as string}
-                  handleChange={(val) => setWage((prev) => ({
-                    ...prev,
-                    work_wage_type: val,
-                  }))}
-                  isEdit
-              />
+        {!ONLY_STAFF && <>
+            <hr className="hr"/>
 
-            {wage.work_wage_type === "wage" ? (
-              <InputField
-                label="معدل الأجر"
-                placeholder="معدل الأجر"
-                register={register}
-                name="work_wage"
-                disabled={!isTeacher && isStaff}
-                error={errors.work_wage?.message as string}
-              />
-            ) : (
-              <article className="group"></article>
-            )}
-          </Row>
-      </>}
+            <Heading text="الطلاب المعينون"/>
 
-      {!ONLY_STAFF && <>
-          <hr className="hr"/>
+            <Row>
+                <MultiChoices
+                    register={register}
+                    name="initial_students"
+                    disabled={!isTeacher && isStaff}
+                    error={errors.initial_students?.message as string}
+                    predefinedChoices={initialStudentsChoices}
+                    setValue={setValue}
+                />
 
-          <Heading text="الطلاب المعينون"/>
-
-          <Row>
-              <MultiChoices
-                  register={register}
-                  name="initial_students"
-                  disabled={!isTeacher && isStaff}
-                  error={errors.initial_students?.message as string}
-                  predefinedChoices={initialStudentsChoices}
-                  setValue={setValue}
-              />
-
-              <article className="group"></article>
-          </Row>
-      </>}
+                <article className="group"></article>
+            </Row>
+        </>}
 
 
-      <hr className="hr"/>
+        <hr className="hr"/>
 
-      <Heading text="إنشاء رابط الحصة"/>
+        <Heading text="إنشاء رابط الحصة"/>
 
-      <Row>
-        <Dropdown
-          label="نوع انشاء الرابط"
-          register={register}
-          options={EVENTS_TYPE}
-          name="event_type"
-          error=""
-          isEdit
-        />
-        <article className="group"></article>
-      </Row>
+        <Row>
+          <Dropdown
+            label="نوع انشاء الرابط"
+            register={register}
+            options={EVENTS_TYPE}
+            name="event_type"
+            error=""
+            isEdit
+          />
+          <article className="group"></article>
+        </Row>
 
-    <hr className="hr"/>
-    <Heading text="إضافة صلاحيات"/>
-    <Row>
-      <MultiChoices
-        register={register}
-        name="groups_id"
-        error=""
-        predefinedChoices={groupsIdsChoices}
-        position="relative"
-        setValue={setValue}
-      />
-      <article className="group"></article>
-    </Row>
+        <hr className="hr"/>
+        <Heading text="إضافة صلاحيات"/>
+        <Row>
+          <MultiChoices
+            register={register}
+            name="groups_id"
+            error=""
+            predefinedChoices={groupsIdsChoices}
+            position="relative"
+            setValue={setValue}
+          />
+          <article className="group"></article>
+        </Row>
 
-    <hr className="hr"/>
+        <hr className="hr"/>
 
-    <Heading text="إضافة صلاحيات خاصة"/>
-    <Row>
-      <MultiChoices
-        register={register}
-        name="user_permissions_id"
-        error=""
-        predefinedChoices={userPermissionsChoices}
-        position="relative"
-        setValue={setValue}
-      />
-      <article className="group"></article>
-    </Row>
-    <button type="submit" className="btn submit-btn">
-      تعديل
-    </button>
-    </form>
-</>
-)
-  ;
+        <Heading text="إضافة صلاحيات خاصة"/>
+        <Row>
+          <MultiChoices
+            register={register}
+            name="user_permissions_id"
+            error=""
+            predefinedChoices={userPermissionsChoices}
+            position="relative"
+            setValue={setValue}
+          />
+          <article className="group"></article>
+        </Row>
+        <button type="submit" className="btn submit-btn">
+          تعديل
+        </button>
+      </form>
+    </>
+  )
+    ;
 };
 export default EditEmployeeForm;

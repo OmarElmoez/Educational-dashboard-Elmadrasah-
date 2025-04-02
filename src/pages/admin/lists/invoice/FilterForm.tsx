@@ -3,6 +3,7 @@ import istyles from "./invoiceDetails.module.css";
 import { TStatus } from "@/types/Dropdown";
 import { useAppDispatch, } from "@/store/hooks";
 import { resetPage } from "@/store/table/TableSlice";
+
 // -------------------------------------------------------------------
 const { inputBox, formContainer, submitBtn,resetButton } = istyles;
 
@@ -61,6 +62,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
     onSubmit(null);
   };
 
+
   return (
     <form onSubmit={handleSubmit} className={formContainer}>
       <div className={inputBox}>
@@ -82,7 +84,6 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
           onChange={handleInputChange}
         />
       </div>
-
       <div>
         <select
           id="status"
@@ -99,11 +100,11 @@ const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
       </div>
 
       <div>
-        <button type="submit" className={submitBtn}>
+        <button type="submit" className={`${submitBtn} w-[100px]`}>
           اذهب
         </button>
         <button type="button" className={resetButton} onClick={handleReset}>
-          reset
+          إلغاء
         </button>
       </div>
     </form>

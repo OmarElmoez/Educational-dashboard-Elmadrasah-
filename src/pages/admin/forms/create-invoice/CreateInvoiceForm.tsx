@@ -1,25 +1,27 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useFieldArray, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
-import {actGetData, actGetDropdownOptions, actSendDataToServer,} from "@/store/single-actions";
-import {useFeedback} from "@/store/context";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { actGetData, actGetDropdownOptions, actSendDataToServer, } from "@/store/single-actions";
+import { useFeedback } from "@/store/context";
 import {
-  CircleLoadingIndecator, DateOrTimePicker,
+  DateOrTimePicker,
   Dropdown,
   DropdownWithSearch,
   InputField,
+  LoadingIndicator,
   Row,
   SingleCheckbox,
 } from "@/components";
-import {Heading} from '@/components/UI'
-import {CreateInvoiceSchema, TCreateInvoiceFormData,} from "@/schemas/CreateInvoiceSchema";
-import {TOption} from "@/types/Dropdown";
-import {ADD_SERVICE_OPTIONS, REPORT_OPTIONS, TAX_TREATMENT_OPTIONS,} from "@/constants";
+import { Heading } from '@/components/UI'
+import { CreateInvoiceSchema, TCreateInvoiceFormData, } from "@/schemas/CreateInvoiceSchema";
+import { TOption } from "@/types/Dropdown";
+import { ADD_SERVICE_OPTIONS, REPORT_OPTIONS, TAX_TREATMENT_OPTIONS, } from "@/constants";
 import CloseButton from "@/assets/close-button.svg?react";
 import styles from "./createInvoice.module.css";
-import {TService, TTax_Treatment} from "@/types/shared";
+import { TService, TTax_Treatment } from "@/types/shared";
+import { useComponentLoading } from "@/hooks";
 
 const {row, close_btn_container} = styles;
 
@@ -59,13 +61,15 @@ const CreateInvoiceForm = () => {
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [serviceType, setServiceType] = useState<TService>();
 
+  const {isPending, setPending, setSucceeded, setFailed} = useComponentLoading();
+
   const {
     register,
     handleSubmit,
     control,
     watch,
     setValue,
-    formState: {errors, isSubmitting},
+    formState: {errors},
     reset,
   } = useForm<TCreateInvoiceFormData>({
     mode: "onBlur",
@@ -172,6 +176,7 @@ const CreateInvoiceForm = () => {
   const handleFilter = async () => {
     if (watchFiltration) {
       const {start_date, end_date, report} = watchFiltration[0];
+      console.log('from handle filter: ', start_date, end_date, report);
 
       try {
         if (!customer) {
@@ -202,6 +207,8 @@ const CreateInvoiceForm = () => {
                 invoice_amount: "",
               })
             );
+          } else {
+            openFeedbackModal("failed", `لا توجد دروس !`)
           }
         });
       } catch (error) {
@@ -218,6 +225,7 @@ const CreateInvoiceForm = () => {
       return;
     }
   };
+
 
   const handleServiceType = (service: TService) => {
     setServiceType(service);
@@ -407,6 +415,8 @@ const CreateInvoiceForm = () => {
       id: null,
     };
 
+    setPending();
+
     dispatch(
       actSendDataToServer({
         formData: serverData,
@@ -416,331 +426,305 @@ const CreateInvoiceForm = () => {
     .unwrap()
     .then((res) => {
       if (typeof res === "string") {
+        setFailed();
         return openFeedbackModal('failed', res);
       } else {
         if (dataStatus === "Approved") {
+          setSucceeded();
           openFeedbackModal("succeeded", "تم حفظ الفاتورة بنجاح!");
           navigate(`/admin/invoices/invoice-details/${res?.id}`)
           return
         }
-      navigate(`/admin/invoices/invoice-details/${res?.id}`);
+        navigate(`/admin/invoices/invoice-details/${res?.id}`);
       }
     })
-    .catch((error) =>
-      openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)
+    .catch((error) => {
+        setFailed()
+        openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.", error)
+      }
     );
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading text="انشاء فاتورة"/>
+    <>
+      {isPending && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Heading text="انشاء فاتورة"/>
 
-      <Row>
-        <DropdownWithSearch
-          register={register}
-          name="customer"
-          setValue={setValue}
-          optionsFor="customers"
-          handleChange={handleCustomer}
-          label="اختر العميل"
-        />
-      </Row>
-
-      <div className={row}>
-        {/*<InputField*/}
-        {/*  label="تاريخ"*/}
-        {/*  type="date"*/}
-        {/*  placeholder="02-05-2024"*/}
-        {/*  isRequired*/}
-        {/*  register={register}*/}
-        {/*  name="date"*/}
-        {/*  error={errors?.date?.message as string}*/}
-        {/*/>*/}
-        <DateOrTimePicker
-          setValue={setValue}
-          label="تاريخ"
-          placeholder="02-05-2024"
-          register={register}
-          name="date"
-          isRequired
-          error={errors.date?.message as string}
-        />
-
-        <DateOrTimePicker
-          setValue={setValue}
-          label=" تاريخ الاستحقاق"
-          register={register}
-          placeholder="02-05-2024"
-          name="due_date"
-          isRequired
-          error={errors.due_date?.message as string}
-        />
-        {/*<InputField*/}
-        {/*  label=" تاريخ الاستحقاق"*/}
-        {/*  type="date"*/}
-        {/*  placeholder="02-05-2024"*/}
-        {/*  isRequired*/}
-        {/*  register={register}*/}
-        {/*  name="due_date"*/}
-        {/*  error={errors?.due_date?.message as string}*/}
-        {/*/>*/}
-        {/* ****** create new InputField style ******** */}
-        {/* <section> */}
-        {/*<InputField*/}
-        {/*  label="رقم الفاتورة"*/}
-        {/*  placeholder={`INV- ${invoiceNumber}`}*/}
-        {/*  disabled*/}
-        {/*  value={invoiceNumber}*/}
-        {/*  register={register}*/}
-        {/*  name="formatted_number"*/}
-        {/*  error={errors?.formatted_number?.message as string}*/}
-        {/*/>*/}
-        {/* <div>-INV</div> */}
-        {/* </section> */}
-
-        <article className='w-[123px] self-start flex flex-col gap-[0.8rem]'>
-          <label className='adminFormLabel'>رقم الفاتورة</label>
-        <section className='inputField relative !text-[1.2rem] !text-[#CDCDCD]'>
-          <div className='absolute h-full w-1/2 left-0 flex justify-center items-center border-r-1 border-r-[#C7C7C7]'>-INV</div>
-          <div className='absolute h-full w-1/2 right-0 flex justify-center items-center border-l-1 border-l-[#C7C7C7]'>{invoiceNumber}</div>
-        </section>
-        </article>
-
-        <InputField
-          label="مرجع"
-          placeholder="مرجع"
-          isRequired
-          register={register}
-          name="reference"
-          error={errors?.reference?.message as string}
-        />
-
-        {/* ******** options  ******** */}
-        <Dropdown
-          label="المعاملة الضريبية"
-          isEdit
-          register={register}
-          options={TAX_TREATMENT_OPTIONS}
-          name="tax_treatment"
-          isRequired
-          handleChange={handleTaxTreatment}
-          error={errors?.tax_treatment?.message as string}
-        />
-      </div>
-
-      <Row>
-        <Dropdown
-          label="اضافة خدمة"
-          name="add"
-          register={register}
-          options={ADD_SERVICE_OPTIONS}
-          handleChange={handleServiceType}
-          error={errors?.add?.message as string}
-          style={{ flex: "none", width: "26.6rem" }}
-        />
-
-        <article className="flex-1 self-center">
-          <button
-            type="button"
-            onClick={handleAppend}
-            className="btn !min-w-[78px] !text-[1.4rem] h-[42px] flex justify-center items-center submit-btn"
-          >
-            اضافة
-          </button>
-        </article>
-      </Row>
-
-      {/* ********* START ROW ********************* */}
-      {chargesFields.map((field, index) => (
-        <div key={field.id} className={row}>
-          <InputField
-            label="الخدمة"
-            placeholder="الخدمة"
-            name={`charges.${index}.title`}
+        <Row>
+          <DropdownWithSearch
             register={register}
-            error={errors?.charges?.[index]?.title?.message as string}
+            name="customer"
+            setValue={setValue}
+            optionsFor="customers"
+            handleChange={handleCustomer}
+            label="اختر العميل"
           />
-          <InputField
-            label="وصف "
-            placeholder="وصف"
-            name={`charges.${index}.description`}
-            register={register}
-            error={errors?.charges?.[index]?.description?.message as string}
-          />
+        </Row>
 
-          <InputField
-            label="الكمية"
-            placeholder="الكمية"
-            onChange={(e) => handleChargeChange(e, index)}
-            name={`charges.${index}.quantity`}
-            register={register}
-            error={errors?.charges?.[index]?.quantity?.message as string}
-          />
-
-          <InputField
-            label="سعر الوحدة"
-            placeholder="سعر الوحدة"
-            onChange={(e) => handleChargeChange(e, index)}
-            name={`charges.${index}.unit_price`}
-            register={register}
-            error={errors?.charges?.[index]?.unit_price?.message as string}
-          />
-
-          <InputField
-            label="خصم%"
-            placeholder="خصم%"
-            onChange={(e) => handleChargeChange(e, index)}
-            name={`charges.${index}.discount_rate`}
-            register={register}
-            error={errors?.charges?.[index]?.discount_rate?.message as string}
-            style={{ flex: "none", width: "78px" }}
-          />
-
-          <InputField
-            label="المبلغ"
-            placeholder="المبلغ"
-            name={`charges.${index}.amount`}
-            register={register}
-            disabled
-            error={errors?.charges?.[index]?.amount?.message as string}
-          />
-          <div className={close_btn_container} style={{color: 'red'}}>
-            <button type="button" onClick={() => handleRemoveCharge(index)}>
-              <CloseButton/>
-            </button>
-          </div>
-        </div>
-      ))}
-
-      {/* ********* END ROW ********************* */}
-
-      {/* ********* START ROW ********************* */}
-      {packagesFields.map((field, index) => (
-        <div key={field.id} className={row}>
-          <Dropdown
-            label="الخدمة"
-            //  placeholder="الخدمة"
-            options={servicesList}
-            name={`packages.${index}.service`}
-            register={register}
-            error={errors?.packages?.[index]?.service?.message as string}
-          />
-
-          <InputField
-            label="وصف "
-            placeholder="وصف"
-            name={`packages.${index}.description`}
-            register={register}
-            error={errors?.packages?.[index]?.description?.message as string}
-          />
-
-          <InputField
-            label="الكمية"
-            placeholder="الكمية"
-            name={`packages.${index}.quantity`}
-            register={register}
-            onChange={(e) => handlePackagesChange(e, index)}
-            error={errors?.packages?.[index]?.quantity?.message as string}
-          />
-
-          <InputField
-            label="سعر الوحدة"
-            placeholder="سعر الوحدة"
-            name={`packages.${index}.unit_price`}
-            register={register}
-            onChange={(e) => handlePackagesChange(e, index)}
-            error={errors?.packages?.[index]?.unit_price?.message as string}
-          />
-
-          <InputField
-            label="خصم% "
-            placeholder="خصم% "
-            name={`packages.${index}.discount_rate`}
-            register={register}
-            onChange={(e) => handlePackagesChange(e, index)}
-            error={errors?.packages?.[index]?.discount_rate?.message as string}
-            style={{ flex: "none", width: "78px" }}
-          />
-          <InputField
-            label="المبلغ"
-            placeholder="المبلغ"
-            disabled
-            name={`packages.${index}.amount`}
-            register={register}
-            error={errors?.packages?.[index]?.amount?.message as string}
-          />
-
-          <div className={close_btn_container} style={{color: 'red'}}>
-            <button type="button" onClick={() => handleRemovePackages(index)}>
-              <CloseButton/>
-            </button>
-          </div>
-        </div>
-      ))}
-      {/* ********* END ROW ********************* */}
-
-      {/* ********* START ROW ********************* */}
-      {filtrationFields.map((field, index) => (
-        <div key={field.id} className={row}>
-          <InputField
-            label=" تاريخ البدء"
-            type="date"
+        <div className={row}>
+          <DateOrTimePicker
+            setValue={setValue}
+            label="تاريخ"
             placeholder="02-05-2024"
+            register={register}
+            name="date"
+            isRequired
+            error={errors.date?.message as string}
+          />
+
+          <DateOrTimePicker
+            setValue={setValue}
+            label=" تاريخ الاستحقاق"
+            register={register}
+            placeholder="02-05-2024"
+            name="due_date"
+            isRequired
+            error={errors.due_date?.message as string}
+          />
+
+          <article className='w-[123px] self-start flex flex-col gap-[0.8rem]'>
+            <label className='adminFormLabel'>رقم الفاتورة</label>
+            <section className='inputField relative !text-[1.2rem] !text-[#CDCDCD]'>
+              <div
+                className='absolute h-full w-1/2 left-0 flex justify-center items-center border-r-1 border-r-[#C7C7C7]'>-INV
+              </div>
+              <div
+                className='absolute h-full w-1/2 right-0 flex justify-center items-center border-l-1 border-l-[#C7C7C7]'>{invoiceNumber}</div>
+            </section>
+          </article>
+
+          <InputField
+            label="مرجع"
+            placeholder="مرجع"
             isRequired
             register={register}
-            name={`filtration.${index}.start_date`}
-            error={errors?.filtration?.[index]?.start_date?.message as string}
-          />
-          <InputField
-            label=" تاريخ النهاية"
-            type="date"
-            placeholder="02-05-2024"
-            isRequired
-            register={register}
-            name={`filtration.${index}.end_date`}
-            error={errors?.filtration?.[index]?.end_date?.message as string}
-          />
-          <Dropdown
-            label="التقرير"
-            options={REPORT_OPTIONS}
-            register={register}
-            name={`filtration.${index}.report`}
-            error={errors?.filtration?.[index]?.report?.message as string}
+            name="reference"
+            error={errors?.reference?.message as string}
           />
 
-          <div className="group addBtn" style={{maxWidth: "fit-content"}}>
+          {/* ******** options  ******** */}
+          <Dropdown
+            label="المعاملة الضريبية"
+            isEdit
+            register={register}
+            options={TAX_TREATMENT_OPTIONS}
+            name="tax_treatment"
+            isRequired
+            handleChange={handleTaxTreatment}
+            error={errors?.tax_treatment?.message as string}
+          />
+        </div>
+
+        <Row>
+          <Dropdown
+            label="اضافة خدمة"
+            name="add"
+            register={register}
+            options={ADD_SERVICE_OPTIONS}
+            handleChange={handleServiceType}
+            error={errors?.add?.message as string}
+            style={{flex: "none", width: "26.6rem"}}
+          />
+
+          <article className="flex-1 self-center">
             <button
               type="button"
-              onClick={handleFilter}
-              className="btn submit-btn"
+              onClick={handleAppend}
+              className="btn !min-w-[78px] !text-[1.4rem] h-[42px] flex justify-center items-center submit-btn"
             >
-              عرض
+              اضافة
             </button>
+          </article>
+        </Row>
+
+        {serviceType === 'charges' && chargesFields.map((field, index) => (
+          <div key={field.id} className={row}>
+            <InputField
+              label="الخدمة"
+              placeholder="الخدمة"
+              name={`charges.${index}.title`}
+              register={register}
+              error={errors?.charges?.[index]?.title?.message as string}
+            />
+            <InputField
+              label="وصف "
+              placeholder="وصف"
+              name={`charges.${index}.description`}
+              register={register}
+              error={errors?.charges?.[index]?.description?.message as string}
+            />
+
+            <InputField
+              label="الكمية"
+              placeholder="الكمية"
+              onChange={(e) => handleChargeChange(e, index)}
+              name={`charges.${index}.quantity`}
+              register={register}
+              error={errors?.charges?.[index]?.quantity?.message as string}
+            />
+
+            <InputField
+              label="سعر الوحدة"
+              placeholder="سعر الوحدة"
+              onChange={(e) => handleChargeChange(e, index)}
+              name={`charges.${index}.unit_price`}
+              register={register}
+              error={errors?.charges?.[index]?.unit_price?.message as string}
+            />
+
+            <InputField
+              label="خصم%"
+              placeholder="خصم%"
+              onChange={(e) => handleChargeChange(e, index)}
+              name={`charges.${index}.discount_rate`}
+              register={register}
+              error={errors?.charges?.[index]?.discount_rate?.message as string}
+              style={{flex: "none", width: "78px"}}
+            />
+
+            <InputField
+              label="المبلغ"
+              placeholder="المبلغ"
+              name={`charges.${index}.amount`}
+              register={register}
+              disabled
+              error={errors?.charges?.[index]?.amount?.message as string}
+            />
+            <div className={close_btn_container} style={{color: 'red'}}>
+              <button type="button" onClick={() => handleRemoveCharge(index)}>
+                <CloseButton/>
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
-      {/* ********* END ROW ********************* */}
+        ))}
 
-      {/* ********* START ROW ********************* */}
-      {/* ********* WHAT SHOULD BE HERE ? ********************* */}
-      {lessonsFields.map((field, index) => (
-        <div key={field.id} className={row}>
-          <InputField
-            label="الخدمة"
-            placeholder="الخدمة"
-            name={`lessons.${index}.service`}
-            register={register}
-            error={errors?.lessons?.[index]?.service?.message as string}
-          />
-          <InputField
-            label="وصف "
-            placeholder="وصف"
-            name={`lessons.${index}.description`}
-            register={register}
-            error={errors?.lessons?.[index]?.description?.message as string}
-          />
+        {serviceType === 'packages' && packagesFields.map((field, index) => (
+          <div key={field.id} className={row}>
+            <Dropdown
+              label="الخدمة"
+              isEdit
+              options={servicesList}
+              name={`packages.${index}.service`}
+              register={register}
+              error={errors?.packages?.[index]?.service?.message as string}
+            />
 
-          {/* <InputField
+            <InputField
+              label="وصف "
+              placeholder="وصف"
+              name={`packages.${index}.description`}
+              register={register}
+              error={errors?.packages?.[index]?.description?.message as string}
+            />
+
+            <InputField
+              label="الكمية"
+              placeholder="الكمية"
+              name={`packages.${index}.quantity`}
+              register={register}
+              onChange={(e) => handlePackagesChange(e, index)}
+              error={errors?.packages?.[index]?.quantity?.message as string}
+            />
+
+            <InputField
+              label="سعر الوحدة"
+              placeholder="سعر الوحدة"
+              name={`packages.${index}.unit_price`}
+              register={register}
+              onChange={(e) => handlePackagesChange(e, index)}
+              error={errors?.packages?.[index]?.unit_price?.message as string}
+            />
+
+            <InputField
+              label="خصم% "
+              placeholder="خصم% "
+              name={`packages.${index}.discount_rate`}
+              register={register}
+              onChange={(e) => handlePackagesChange(e, index)}
+              error={errors?.packages?.[index]?.discount_rate?.message as string}
+              style={{flex: "none", width: "78px"}}
+            />
+            <InputField
+              label="المبلغ"
+              placeholder="المبلغ"
+              disabled
+              name={`packages.${index}.amount`}
+              register={register}
+              error={errors?.packages?.[index]?.amount?.message as string}
+            />
+
+            <div className={close_btn_container} style={{color: 'red'}}>
+              <button type="button" onClick={() => handleRemovePackages(index)}>
+                <CloseButton/>
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {serviceType === 'lessons' && filtrationFields.map((field, index) => (
+          <div key={field.id} className={row}>
+            <DateOrTimePicker
+              setValue={setValue}
+              label="تاريخ البدء"
+              register={register}
+              placeholder="02-05-2024"
+              name={`filtration.${index}.start_date`}
+              isRequired
+              error={errors?.filtration?.[index]?.start_date?.message as string}
+            />
+            <DateOrTimePicker
+              setValue={setValue}
+              label="تاريخ النهاية"
+              register={register}
+              placeholder="02-05-2024"
+              isRequired
+              name={`filtration.${index}.end_date`}
+              error={errors?.filtration?.[index]?.end_date?.message as string}
+            />
+
+            <Dropdown
+              label="التقرير"
+              options={REPORT_OPTIONS}
+              register={register}
+              name={`filtration.${index}.report`}
+              error={errors?.filtration?.[index]?.report?.message as string}
+              isEdit
+            />
+
+            <div className="group addBtn !top-0">
+              <button
+                type="button"
+                onClick={handleFilter}
+                className="btn !min-w-[78px] !text-[1.4rem] h-[42px] flex justify-center items-center submit-btn"
+              >
+                عرض
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {/* ********* WHAT SHOULD BE HERE ? ********************* */}
+        {serviceType === 'lessons' && lessonsFields.map((field, index) => (
+          <div key={field.id} className={row}>
+            <InputField
+              label="الخدمة"
+              placeholder="الخدمة"
+              name={`lessons.${index}.service`}
+              register={register}
+              error={errors?.lessons?.[index]?.service?.message as string}
+            />
+            <InputField
+              label="وصف "
+              placeholder="وصف"
+              name={`lessons.${index}.description`}
+              register={register}
+              error={errors?.lessons?.[index]?.description?.message as string}
+            />
+
+            {/* <InputField
             label="الكمية"
             placeholder="الكمية"
             onChange={(e) => handleChargeChange(e, index)}
@@ -749,140 +733,133 @@ const CreateInvoiceForm = () => {
             error={errors?.lessons?.[index]?.quantity?.message as string}
           /> */}
 
-          <InputField
-            label="سعر الوحدة"
-            placeholder="سعر الوحدة"
-            onChange={(e) => handleChargeChange(e, index)}
-            name={`lessons.${index}.invoice_unit_price`}
-            register={register}
-            error={
-              errors?.lessons?.[index]?.invoice_unit_price?.message as string
-            }
-          />
+            <InputField
+              label="سعر الوحدة"
+              placeholder="سعر الوحدة"
+              onChange={(e) => handleChargeChange(e, index)}
+              name={`lessons.${index}.invoice_unit_price`}
+              register={register}
+              error={
+                errors?.lessons?.[index]?.invoice_unit_price?.message as string
+              }
+            />
 
-          <InputField
-            label="خصم% "
-            placeholder="خصم% "
-            onChange={(e) => handleChargeChange(e, index)}
-            name={`lessons.${index}.invoice_discount_rate`}
-            register={register}
-            error={
-              errors?.lessons?.[index]?.invoice_discount_rate?.message as string
-            }
-          />
+            <InputField
+              label="خصم% "
+              placeholder="خصم% "
+              onChange={(e) => handleChargeChange(e, index)}
+              name={`lessons.${index}.invoice_discount_rate`}
+              register={register}
+              error={
+                errors?.lessons?.[index]?.invoice_discount_rate?.message as string
+              }
+            />
 
+            <InputField
+              label="المبلغ"
+              placeholder="المبلغ"
+              name={`lessons.${index}.invoice_amount`}
+              register={register}
+              disabled
+              error={errors?.lessons?.[index]?.invoice_amount?.message as string}
+            />
+            {/*<div className={close_btn_container}>*/}
+            {/*  <button type="button" onClick={() => handleRemoveCharge(index)}>*/}
+            {/*    <CloseButton/>*/}
+            {/*  </button>*/}
+            {/*</div>*/}
+          </div>
+        ))}
+
+        <hr className="hr"/>
+
+        <Row>
           <InputField
-            label="المبلغ"
-            placeholder="المبلغ"
-            name={`lessons.${index}.invoice_amount`}
+            label="المجموع الفرعى"
+            placeholder="0.00"
+            disabled
+            register={register}
+            name="subtotal"
+            error={errors?.subtotal?.message as string}
+          />
+          <InputField
+            label=" ضريبة المبيعات"
+            placeholder="0.00"
             register={register}
             disabled
-            error={errors?.lessons?.[index]?.invoice_amount?.message as string}
+            name="tax_count"
+            error={errors?.tax_count?.message as string}
           />
-          <div className={close_btn_container}>
-            <button type="button" onClick={() => handleRemoveCharge(index)}>
-              <CloseButton/>
-            </button>
-          </div>
+
+          <InputField
+            label="قيمة الضريبة"
+            placeholder=" 0.00"
+            register={register}
+            name="sales_tax_total"
+            disabled
+            error={errors?.sales_tax_total?.message as string}
+          />
+        </Row>
+        <hr className="hr"/>
+
+        <Row>
+          <InputField
+            label=" المجموع "
+            placeholder=" 0.00"
+            disabled
+            register={register}
+            name="total"
+            error={errors?.total?.message as string}
+          />
+          <article className="group"></article>
+        </Row>
+
+        <Row>
+          <SingleCheckbox
+            register={register}
+            name="send_email"
+            label=" إرسال الفاتورة بالبريد الألكتروني "
+            // placeholder="سيتم إرسال البريد الإلكتروني إذا تم النقر علي ”موافقة”"
+            error={errors?.send_email?.message as string}
+          />
+        </Row>
+
+        <Heading text="تعليمات"/>
+        <Row>
+          <InputField
+            label=""
+            textarea
+            register={register}
+            name="terms_text"
+            error={errors?.terms_text?.message as string}
+          />
+        </Row>
+        <div className="submit-buttons-container">
+          <button type="submit" className="btn submit-btn">
+            حفظ
+          </button>
+
+          <button
+            onClick={() => {
+              setDataStatus("Approved");
+            }}
+            className="btn cancel-btn"
+          >
+            يعتمد
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              reset();
+            }}
+            className="btn cancel-btn"
+          >
+            إلغاء
+          </button>
         </div>
-      ))}
-
-      {/* ********* END ROW ********************* */}
-      <hr className="hr"/>
-
-      <Row>
-        {/* ****** REVIEW NAMES ******* */}
-
-        {/* for: product price */}
-        <InputField
-          label="المجموع الفرعى"
-          placeholder="0.00"
-          disabled
-          register={register}
-          name="subtotal"
-          error={errors?.subtotal?.message as string}
-        />
-        <InputField
-          label=" ضريبة المبيعات"
-          placeholder="0.00"
-          register={register}
-          disabled
-          name="tax_count"
-          error={errors?.tax_count?.message as string}
-        />
-
-        <InputField
-          label="قيمة الضريبة"
-          placeholder=" 0.00"
-          register={register}
-          name="sales_tax_total"
-          disabled
-          error={errors?.sales_tax_total?.message as string}
-        />
-      </Row>
-      <hr className="hr"/>
-
-      <Row>
-        <InputField
-          label=" المجموع "
-          placeholder=" 0.00"
-          disabled
-          register={register}
-          name="total"
-          error={errors?.total?.message as string}
-        />
-        <article className="group"></article>
-      </Row>
-
-      <Row>
-        <SingleCheckbox
-          register={register}
-          name="send_email"
-          label=" إرسال الفاتورة بالبريد الألكتروني "
-          // placeholder="سيتم إرسال البريد الإلكتروني إذا تم النقر علي ”موافقة”"
-          error={errors?.send_email?.message as string}
-        />
-      </Row>
-
-      <Heading text="تعليمات"/>
-      <Row>
-        <InputField
-          label=""
-          textarea
-          register={register}
-          name="terms_text"
-          error={errors?.terms_text?.message as string}
-        />
-      </Row>
-      <div className="submit-buttons-container">
-        <button type="submit" className="btn submit-btn">
-          {isSubmitting ? (
-            <CircleLoadingIndecator size={16} color="#fff"/>
-          ) : (
-            " حفظ"
-          )}
-        </button>
-
-        <button
-          onClick={() => {
-            setDataStatus("Approved");
-          }}
-          className="btn cancel-btn"
-        >
-          يعتمد
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            reset();
-          }}
-          className="btn cancel-btn"
-        >
-          إلغاء
-        </button>
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 

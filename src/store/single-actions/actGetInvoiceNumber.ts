@@ -10,8 +10,12 @@ const actGetData = createAsyncThunk(
   ) => {
     const {rejectWithValue} = thunkAPI;
 
+    const config = {
+      params,
+    }
+
     try {
-      const response = await axiosInstance.get(endpoint, params);
+      const response = await axiosInstance.get(endpoint, config);
       return response.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
