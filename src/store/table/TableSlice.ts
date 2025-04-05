@@ -135,6 +135,8 @@ const TableSlice = createSlice({
           state.error = action.payload;
         }
       })
+
+    builder
       .addCase(actGetAllEmployees.pending, (state) => {
         state.loading = "pending";
         state.error = null;
@@ -154,6 +156,8 @@ const TableSlice = createSlice({
           state.error = action.payload;
         }
       })
+
+    builder
       .addCase(actGetSpecificEmployees.pending, (state) => {
         state.loading = "pending";
         state.error = null;

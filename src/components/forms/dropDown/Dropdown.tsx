@@ -44,9 +44,9 @@ const Dropdown = <T extends FieldValues, U extends string>({
   }, [isEdit, removePreviewChoices]);
   return (
     <article className="group" style={style}>
-      <label className={`adminFormLabel ${isRequired && "required"}`}>
+      {label && <label className={`adminFormLabel ${isRequired && "required"}`}>
         {label}
-      </label>
+      </label>}
       <div className="select_wrapper">
         <select
           {...register(name)}

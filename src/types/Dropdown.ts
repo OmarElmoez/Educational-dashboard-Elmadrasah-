@@ -9,7 +9,7 @@ type TOption = {
 
 type TDropdownProps<T extends FieldValues, U> = {
   name: Path<T>;
-  label: string;
+  label?: string;
   options: TOption[] | undefined;
   chosen?: string | null;
   register: UseFormRegister<T>;

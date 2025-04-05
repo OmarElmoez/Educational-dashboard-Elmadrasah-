@@ -26,7 +26,7 @@ const actGetInvoices = createAsyncThunk(
     try {
       if (searchTerm) {
         url += `?date=${searchTerm.startDate || ""}&due_date=${
-          searchTerm.startDate || ""
+          searchTerm.endDate || ""
         }&status=${searchTerm.status || ""}`;
 
         url += `&page=${page}`;

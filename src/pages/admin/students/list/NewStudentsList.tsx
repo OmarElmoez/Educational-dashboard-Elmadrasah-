@@ -18,8 +18,6 @@ import "./newStudentsList.css";
 import Paper from '@mui/material/Paper';
 import ReloadIcon from '@/assets/reload.svg?react';
 
-
-
 const NewStudentsList = () => {
   const {students} = useAppSelector((state) => state.table);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
@@ -62,6 +60,7 @@ const NewStudentsList = () => {
     });
   }, [dispatch]);
 
+  // console.log('from students list, next: ', students.next);
 
   const handleNext = () => {
     if (next) {

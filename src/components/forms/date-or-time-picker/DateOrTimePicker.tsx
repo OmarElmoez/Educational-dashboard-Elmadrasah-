@@ -79,7 +79,7 @@ const DateOrTimePicker = <T extends FieldValues>({
     <article className='group' style={style}>
       <label htmlFor={name} className={`adminFormLabel ${isRequired && "required"}`}>{label}</label>
       <section className='inputField cursor-pointer relative' onClick={onClickHandler}>
-        <input type={type} {...register(name)} ref={dateRef} id={name} className="absolute opacity-0 cursor-pointer"
+        <input type={type} {...register(name)} ref={dateRef} id={name} className="absolute opacity-0 cursor-pointer w-full"
                onChange={(e) => onValueChange(e.target.value)}/>
         <div>{(predefinedDate && !selectedValue) ? predefinedDate : selectedValue ? selectedValue : (
           <span className='firstOption'>{type === 'time' ? '11:30 ص' : (placeholder || 'يوم / شهر / سنة')}</span>)}</div>

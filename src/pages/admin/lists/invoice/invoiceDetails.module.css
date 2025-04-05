@@ -85,9 +85,8 @@
    gap: 20px;
    border-radius: 10px;
    border: 1px;
-   opacity: 0px;
-
-   border: 1px solid #EBEBEB
+   opacity: 0;
+   border: 1px solid #EBEBEB;
  }
 
  .payHistory {
