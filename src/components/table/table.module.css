@@ -122,7 +122,6 @@ tr.ctive_row_container:nth-last-of-type(1) {
 }
 
 .table_btn {
-
   width: 100%;
   padding: 14.5px;
   gap: 10px;
@@ -132,11 +131,9 @@ tr.ctive_row_container:nth-last-of-type(1) {
   white-space: nowrap;
   font-size: 9px;
   font-weight: 500;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .table_column_cell {

@@ -126,6 +126,11 @@ const FamiliesList = () => {
       flex: 1,
     },
     {
+      field: "country",
+      headerName: "الدولة",
+      flex: 1,
+    },
+    {
       field: "email",
       headerName: "البريد الإلكتروني",
       flex: 1.5,

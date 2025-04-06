@@ -1,6 +1,6 @@
 import { useEffect, useState, RefObject } from "react";
-import { TABLE_HEAD_DATA } from "@/constants";
-import MainTable from "@/components/table/MainTable";
+// import { TABLE_HEAD_DATA } from "@/constants";
+// import MainTable from "@/components/table/MainTable";
 import FilterForm, { FilterFormData } from "./FilterForm";
 import BasicModal from "@/components/add-new-subject-model/BasicModal";
 import styles from "../lists.module.css";
@@ -8,25 +8,26 @@ import { TModalRef } from "@/types/shared";
 import FilterIconSmall from "@/assets/filter_icon_small.svg?react";
 import { getUnscheduledList } from "@/services/unscheduled";
 import { TUnscheduled } from "@/types/ListsTypes";
-import { UnscheduledTableRow } from "@/components/table";
-
+// import { UnscheduledTableRow } from "@/components/table";
+import UnscheduledSeparateStudentsTable from "@/components/table/unscheduled-tables/UnscheduledSeparateStudentsTable";
+import Button from "@mui/material/Button";
 // -----------------------------------------------------------------------------------------
 const { actions } = styles;
-
 type UnscheduledListProps = {
-  formRef:RefObject<TModalRef>;
-  debounceSearchTerm: string| null;
-
+  formRef: RefObject<TModalRef>;
+  debounceSearchTerm: string | null;
 };
 // -----------------------------------------------------------------------------------------
-const UnscheduledList = ({ formRef, debounceSearchTerm }: UnscheduledListProps) => {
-
+const UnscheduledList = ({
+  formRef,
+  debounceSearchTerm,
+}: UnscheduledListProps) => {
   // table data states:
   const [tableData, setTableData] = useState<TUnscheduled[] | null>(null);
   const [allDataCount, setAllDataCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<FilterFormData | null>(null);
-  const [checkRows, setCheckRows] = useState<number[]>([]);
+  // const [checkRows, setCheckRows] = useState<number[]>([]);
 
   // handle change pages:
   const handleNextPage = () => {
@@ -48,39 +49,37 @@ const UnscheduledList = ({ formRef, debounceSearchTerm }: UnscheduledListProps) 
   };
 
   // handle check rows:
-  const handleChecked = (id: number) => {
-    const isSelected = checkRows.includes(id);
-    if (isSelected) {
-      setCheckRows((prev) => prev.filter((row) => row !== id));
-    } else {
-      setCheckRows((prev) => [...prev, id]);
-    }
-  };
+  // const handleChecked = (id: number) => {
+  //   const isSelected = checkRows.includes(id);
+  //   if (isSelected) {
+  //     setCheckRows((prev) => prev.filter((row) => row !== id));
+  //   } else {
+  //     setCheckRows((prev) => [...prev, id]);
+  //   }
+  // };
 
-  const handleCheckAll = () => {
-    if (tableData && tableData.length === checkRows.length) {
-      setCheckRows([]);
-    } else {
-      const list = tableData?.map((row) => row.id);
-      setCheckRows(list || []);
-    }
-  };
+  // const handleCheckAll = () => {
+  //   if (tableData && tableData.length === checkRows.length) {
+  //     setCheckRows([]);
+  //   } else {
+  //     const list = tableData?.map((row) => row.id);
+  //     setCheckRows(list || []);
+  //   }
+  // };
 
   const handleFilterSubmit = (filters: FilterFormData | null) => {
     setCurrentPage(1);
     setSearchTerm(filters);
     formRef.current?.close();
-
   };
 
   useEffect(() => {
     // get All Data
-    getUnscheduledList(1, {name: debounceSearchTerm}).then((res) => {
+    getUnscheduledList(1, { name: debounceSearchTerm }).then((res) => {
       setTableData(res.results);
       setAllDataCount(res.count);
     });
   }, [currentPage, debounceSearchTerm]);
-
 
   useEffect(() => {
     // get All Data
@@ -102,23 +101,33 @@ const UnscheduledList = ({ formRef, debounceSearchTerm }: UnscheduledListProps) 
       </BasicModal>
 
       <section>
-        <MainTable
+        {/* <MainTable
           headData={TABLE_HEAD_DATA["unscheduled"]}
           onCheckAll={handleCheckAll}
         >
           {tableData &&
             tableData?.map((row) => (
+              <>
               <UnscheduledTableRow
                 key={row.id}
                 rowData={row}
                 checkRows={checkRows}
                 handleChecked={handleChecked}
-              />
+                />
+                </>
             ))}
-        </MainTable>
+        </MainTable> */}
+        <UnscheduledSeparateStudentsTable rowData={tableData} />
 
         <section className={actions}>
-          <button
+
+            <Button variant="contained" onClick={handlePreviousPage} disabled={currentPage <= 1}>
+              المجموعة السابقة
+            </Button>
+            <Button variant="contained" onClick={handleNextPage} disabled={currentPage + 1 > Math.ceil(allDataCount / 10)}>
+              المجموعة التالية
+            </Button>
+          {/* <button
             onClick={() => {
               handlePreviousPage();
             }}
@@ -162,7 +171,7 @@ const UnscheduledList = ({ formRef, debounceSearchTerm }: UnscheduledListProps) 
                 fill="#626262"
               />
             </svg>
-          </button>
+          </button> */}
         </section>
       </section>
     </>

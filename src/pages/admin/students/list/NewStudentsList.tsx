@@ -122,11 +122,11 @@ const NewStudentsList = () => {
       headerName: "الاسم الأخير",
       flex: 1,
     },
-    // {
-    //   field: "country",
-    //   headerName: "الدولة",
-    //   flex: 1,
-    // },
+    {
+      field: "country",
+      headerName: "الدولة",
+      flex: 1,
+    },
     {
       field: "email",
       headerName: "البريد الإلكتروني",

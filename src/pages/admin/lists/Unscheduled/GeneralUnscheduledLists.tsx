@@ -120,7 +120,7 @@ const GeneralUnscheduledLists = () => {
               ))}
             </Row>
 
-            <div className={header_filter}>
+            {/* <div className={header_filter}>
               <DebounceSearchBox handleSearch={handleSearch} />
 
               <button
@@ -135,7 +135,7 @@ const GeneralUnscheduledLists = () => {
               >
                 <FilterIcon />
               </button>
-            </div>
+            </div> */}
 
 
           </div>
@@ -154,7 +154,7 @@ const GeneralUnscheduledLists = () => {
           </div>
         </div>
 
-        <div className={balance_left}>
+        {/* <div className={balance_left}>
           <ul>
             {LIST_OPTIONS.map((item) => (
               <li key={item.id}>
@@ -165,7 +165,7 @@ const GeneralUnscheduledLists = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
       </section>
     </>
   );

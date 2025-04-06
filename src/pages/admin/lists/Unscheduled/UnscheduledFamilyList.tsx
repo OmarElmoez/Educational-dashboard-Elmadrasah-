@@ -1,4 +1,4 @@
-import  { useEffect, useState,  RefObject } from "react";
+import { useEffect, useState, RefObject } from "react";
 import { TABLE_HEAD_DATA } from "@/constants";
 import MainTable from "@/components/table/MainTable";
 import FilterForm, { FilterFormData } from "./FilterForm";
@@ -10,16 +10,21 @@ import { TUnscheduledFamily } from "@/types/ListsTypes";
 import { UnscheduledFamilyTableRow } from "@/components/table";
 import { getUnscheduledFamilyList } from "@/services/unscheduled";
 import styles from "../lists.module.css";
+// import UnscheduledFamilyStudentsTable from "@/components/table/unscheduled-tables/UnscheduledFamilyStudentsTable";
+// import { Button } from "@mui/material";
 
 // -----------------------------------------------------------------------------------------
 const { actions } = styles;
 
 type UnscheduledFamilyListProps = {
   formRef: RefObject<TModalRef>;
-  debounceSearchTerm: string| null;
+  debounceSearchTerm: string | null;
 };
 // -----------------------------------------------------------------------------------------
-const UnscheduledFamilyList = ({ formRef, debounceSearchTerm }: UnscheduledFamilyListProps) => {
+const UnscheduledFamilyList = ({
+  formRef,
+  debounceSearchTerm,
+}: UnscheduledFamilyListProps) => {
   // const filterFormRef = useRef<TModalRef>(null);
 
   // table data states:
@@ -75,7 +80,7 @@ const UnscheduledFamilyList = ({ formRef, debounceSearchTerm }: UnscheduledFamil
 
   useEffect(() => {
     // get All Data
-    getUnscheduledFamilyList(1, {name: debounceSearchTerm}).then((res) => {
+    getUnscheduledFamilyList(1, { name: debounceSearchTerm }).then((res) => {
       setTableData(res.results);
       setAllDataCount(res.count);
     });
@@ -116,8 +121,22 @@ const UnscheduledFamilyList = ({ formRef, debounceSearchTerm }: UnscheduledFamil
               />
             ))}
         </MainTable>
-
+        {/* <UnscheduledFamilyStudentsTable rowData={tableData} /> */}
         <section className={actions}>
+          {/* <Button
+            variant="contained"
+            onClick={handlePreviousPage}
+            disabled={currentPage <= 1}
+          >
+            المجموعة السابقة
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleNextPage}
+            disabled={currentPage + 1 > Math.ceil(allDataCount / 10)}
+          >
+            المجموعة التالية
+          </Button> */}
           <button
             onClick={() => {
               handlePreviousPage();

@@ -17,9 +17,9 @@ const calculateTimeRemaining = (fromTime: string): string => {
 
   // Build the result dynamically
   const parts = [];
-  if (hours > 0) parts.push(`${hours} ساعة`);
-  if (minutes > 0) parts.push(`${minutes} دقيقة`);
-  if (seconds > 0) parts.push(`${seconds} ثانية`);
+  if (hours > 0) parts.push(`${hours} س`);
+  if (minutes > 0) parts.push(`${minutes} د`);
+  if (seconds > 0) parts.push(`${seconds} ث`);
 
   if (parts.length > 0) {
     return `سوف يبدأ خلال ${parts.join(" و ")}`;

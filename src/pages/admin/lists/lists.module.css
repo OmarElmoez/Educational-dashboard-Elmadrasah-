@@ -1,22 +1,22 @@
 .actions {
   display: flex;
+  justify-content:center;
   align-items: center;
-  gap: 1rem;
-  margin-top: auto;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.actions button {
+.actions Button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid #E9E9E9;
   border-radius: 4px;
   padding: 0.8rem 1.2rem;
-  color: #313131;
+  color: #fff;
   font-size: 1.4rem;
 }
 
-.actions button:disabled {
+.actions Button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -29,12 +29,12 @@
 
 /* table page  */
 
-.balance_container {
+/* .balance_container {
   display: grid;
   grid-template-columns: 1fr 282px;
   gap: 4rem;
   flex: 1;
-}
+} */
 
 .balance_left {
   padding-right: 2.4rem;
