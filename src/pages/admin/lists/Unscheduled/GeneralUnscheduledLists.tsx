@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import styles from "../lists.module.css";
 import { TModalRef } from "@/types/shared";
-import FilterIcon from "@/assets/filter_icon.svg?react";
-import AddStudentIcon from "@/assets/add_user_icon.svg?react";
-import FamilyIcon from "@/assets/family_icon.svg?react";
-import Download from "@/assets/download.svg?react";
-import UploadIcon from "@/assets/upload_icon.svg?react";
-import { DebounceSearchBox, Row } from "@/components";
+// import FilterIcon from "@/assets/filter_icon.svg?react";
+// import AddStudentIcon from "@/assets/add_user_icon.svg?react";
+// import FamilyIcon from "@/assets/family_icon.svg?react";
+// import Download from "@/assets/download.svg?react";
+// import UploadIcon from "@/assets/upload_icon.svg?react";
+import { Row } from "@/components";
 import {
   getUnscheduledFamilyList,
   getUnscheduledList,
@@ -16,25 +16,25 @@ import UnscheduledFamilyList from "./UnscheduledFamilyList";
 import UnscheduledList from "./UnscheduledList";
 
 // -----------------------------------------------------------------------------------------
-const LIST_OPTIONS = [
-  { id: 1, link: "", title: "إضافة عائلة جديدة", icon: <FamilyIcon /> },
-  { id: 2, link: "", title: "تنزيل الطلاب", icon: <UploadIcon /> },
-  { id: 3, link: "", title: "استيراد الطلاب", icon: <Download /> },
-  { id: 4, link: "", title: "إضافة طالب جديد", icon: <AddStudentIcon /> },
-];
+// const LIST_OPTIONS = [
+//   { id: 1, link: "", title: "إضافة عائلة جديدة", icon: <FamilyIcon /> },
+//   { id: 2, link: "", title: "تنزيل الطلاب", icon: <UploadIcon /> },
+//   { id: 3, link: "", title: "استيراد الطلاب", icon: <Download /> },
+//   { id: 4, link: "", title: "إضافة طالب جديد", icon: <AddStudentIcon /> },
+// ];
 
 // -----------------------------------------------------------------------------------------
 const {
   balance_container,
-  balance_left,
+  // balance_left,
   balance_right,
   balance_right_header,
   balance_right_header_title,
   tab_button,
   active_tab_button,
-  header_filter,
-  filter_button,
-  link_item,
+  // header_filter,
+  // filter_button,
+  // link_item,
   divider,
 } = styles;
 
@@ -48,7 +48,7 @@ const GeneralUnscheduledLists = () => {
   const [allDataCount, setAllDataCount] = useState<number>(0);
   const [studentsCount, setStudentsCount] = useState<number>(0);
   const [familiesCount, setFamiliesCount] = useState<number>(0);
-  const [debounceSearchTerm, setDebounceSearchTerm] = useState<string | null>(null);
+  const [debounceSearchTerm] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState<string>("family");
 
@@ -68,18 +68,18 @@ const GeneralUnscheduledLists = () => {
   ];
 
   // Debounce Function
-  const handleSearch = (debouncedSearchTerm: string | null) => {
-    
-    setDebounceSearchTerm(debouncedSearchTerm);
-      // get All Data length
+  // const handleSearch = (debouncedSearchTerm: string | null) => {
+
+    // setDebounceSearchTerm(debouncedSearchTerm);
+    //   get All Data length
     // getUnscheduledList(1, null).then((res) => {
     //   setStudentsCount(res.count);
     // });
-
+    //
     // getUnscheduledFamilyList(1, null).then((res) => {
     //   setFamiliesCount(res.count);
     // });
-  }
+  // }
 
   useEffect(() => {
     // get All Data length
