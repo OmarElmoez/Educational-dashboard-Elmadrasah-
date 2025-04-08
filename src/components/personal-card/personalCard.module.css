@@ -17,7 +17,7 @@
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 15rem;
+  /*width: 15rem;*/
   color: var(--secondary-color);
   direction: rtl;
 }

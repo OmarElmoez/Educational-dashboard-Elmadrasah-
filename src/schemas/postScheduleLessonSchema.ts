@@ -45,12 +45,19 @@ const PostScheduleLessonSchema =
     start_date: data.from_date,
     to_date: data.from_date
   }))
-    .refine(data => {
-      const selectedDate = data.from_date && new Date(data.from_date);
-      const today = new Date();
+  .refine(data => {
+    if (!data.from_date) return false;
 
-      return selectedDate && (selectedDate >= today);
-    }, {message: 'لا يمكن الجدولة بتاريخ اليوم او تاريخ فائت', path: ["from_date"]}
+    const selectedDate = new Date(data.from_date);
+    const today = new Date();
+
+    // Reset time components to compare dates only
+    const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+    const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    // Compare dates without time
+    return selectedDateOnly >= todayDateOnly;
+  }, {message: 'لا يمكن الجدولة بتاريخ فائت', path: ["from_date"]}
     )
 
 export type TScheduleLessonFormData = z.infer<typeof PostScheduleLessonSchema>;

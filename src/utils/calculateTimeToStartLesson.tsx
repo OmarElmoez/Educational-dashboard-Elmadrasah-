@@ -6,7 +6,7 @@ const calculateTimeRemaining = (fromTime: string): string => {
 
   const diffInSeconds = Math.floor((fromDate.getTime() - now.getTime()) / 1000);
 
-  if (diffInSeconds <= 0) return "لقد بدأ الدرس"; 
+  if (diffInSeconds <= 0) return "";
 
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInMinutes / 60);

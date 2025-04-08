@@ -44,6 +44,7 @@ export type THourLesson = {
   from_date: string;
   name: string;
   from_datetime: string;
+  zoom_id: string | null;
   to_datetime: string;
   id: number;
   lesson_files: TlessonFile[];

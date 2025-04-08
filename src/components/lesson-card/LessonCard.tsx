@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ClockIcon from "@/assets/clock.svg?react";
+import ZoomIcon from "@/assets/zoom-logo.svg?react";
 import EgyptFlag from "@/assets/flag-egypt.svg?react";
 import EmiratesFlag from "@/assets/flag-united-arab-emirates.svg?react";
 import FileIcon from "@/assets/file-outline.svg?react";
@@ -197,6 +198,9 @@ const LessonCard = <T extends TLesson | THourLesson>({
           <p>لم يتم رفع الملفات</p>
         )}
       </div>
+      {lesson.zoom_id && <div>
+          <ZoomIcon />
+      </div>}
       <div className={status_data}>
         {isTLesson(lesson)
           ? lessonStartEndTimeForUserRole(lesson)

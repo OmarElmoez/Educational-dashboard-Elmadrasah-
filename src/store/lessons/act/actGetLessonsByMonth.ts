@@ -20,7 +20,7 @@ const actGetLessonsByMonth = createAsyncThunk(
     try {
       let url = "/dashboard/lesson/";
       if (studentId) {
-        url = `/dashboard/lesson/?student_id=${studentId}/`;
+        url = `/dashboard/lesson/?student_id=${studentId}`;
       }
 
 

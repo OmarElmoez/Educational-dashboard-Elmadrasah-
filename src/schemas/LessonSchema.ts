@@ -38,6 +38,7 @@ export const LessonSchema = z.object({
   spaces: z.number().nullable(),
   joinable: z.boolean().nullable(),
   from_date: z.string(),
+  zoom_id: z.string().nullable(),
   from_time: z.string(),
   to_date: z.string(),
   to_time: z.string(),
