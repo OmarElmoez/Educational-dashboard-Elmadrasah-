@@ -6,7 +6,7 @@ export type TInputField<T extends FieldValues> = {
   type?: string;
   register: UseFormRegister<T>;
   error: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   textarea?: boolean;
   isRequired?: boolean;

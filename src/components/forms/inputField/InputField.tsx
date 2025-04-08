@@ -18,12 +18,12 @@ const InputField = <T extends FieldValues>({
 }: TInputField<T> & { onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void }) => {
   return (
     <article className="group" style={style}>
-      <label
+      {label && <label
         htmlFor={name}
         className={`adminFormLabel ${isRequired && "required"}`}
       >
         {label}
-      </label>
+      </label>}
       {textarea ? (
         <textarea
           id={name}

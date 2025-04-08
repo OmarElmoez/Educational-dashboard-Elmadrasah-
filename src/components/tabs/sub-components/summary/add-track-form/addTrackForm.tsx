@@ -70,15 +70,15 @@ const AddTrackForm = ({addNewTrack}: { addNewTrack: (track: TTrackFromServer) =>
 
   return (
     <form method="post" className={trackForm} onSubmit={handleSubmit(onSubmit)}>
-      <Row>
+      <Row style={{ alignItems: "flex-start" }}>
         <span>عنوان</span>
-        <InputField name="title" register={register} error={errors.title?.message as string} label="title"/>
+        <InputField name="title" register={register} error={errors.title?.message as string} />
         {/*<input type="text" className='inputField' {...register('title')} />*/}
       </Row>
 
-      <Row>
+      <Row style={{ alignItems: "flex-start" }}>
         <span>الحالة</span>
-        <Dropdown name="status" label='status' options={TRACK_STATUS_OPTIONS} register={register}
+        <Dropdown name="status" options={TRACK_STATUS_OPTIONS} register={register}
                   error={errors.status?.message as string}/>
       </Row>
 

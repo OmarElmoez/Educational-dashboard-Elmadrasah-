@@ -61,11 +61,16 @@ const EditFamily = () => {
 
     setLoading("pending")
 
+        const processedData = {
+          ...data,
+          status: data.status === 'true',
+        }
+
     try {
       const res = await dispatch(
         actSendDataToServer({
           purpose: "add_family",
-          formData: data,
+          formData: processedData,
           isEdit: true,
           id
         })

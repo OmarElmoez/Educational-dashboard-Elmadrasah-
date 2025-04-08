@@ -90,7 +90,7 @@ const MainSidebar = ({data}: TSidebarProps) => {
         </NavLink>
 
         <nav className={main_nav_menu}>
-          <menu className={main_menu}>
+          <menu className={`${main_menu} !mt-[0.2rem]`}>
             {data.map(({title, path, icon, children}) => (
               <li
                 key={title}

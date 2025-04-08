@@ -78,12 +78,12 @@ const ClassesForDay = ({lessonsForClickedHour, isHourClicked}: {
                style={{backgroundColor: activeTab.idx === -1 ? "#fff" : "transparent", borderRadius: "5px"}}>
               <span>الكل</span>
           </div>
-        {statistics && statistics?.map((child: TChild, idx: number) => (
+        {(statistics && Object.keys(statistics).length > 0) ? statistics?.map((child: TChild, idx: number) => (
           <div key={child.id} onClick={() => onClickHandler(idx, child)}
                style={{backgroundColor: activeTab.idx === idx ? "#fff" : "transparent", borderRadius: "5px"}}>
             <span>{child.first_name}</span>
           </div>
-        ))}
+        )) : null}
       </section>}
       <section className={lessons_cards}>
         {loading === 'pending' && <LoadingIndicator/>}

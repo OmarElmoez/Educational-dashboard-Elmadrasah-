@@ -73,7 +73,7 @@ const Roles = () => {
               setRemovePreviewChoices(true)
             }}
           >
-            يُلغي
+            إلغاء
           </button>
         </Row>
       </form>
