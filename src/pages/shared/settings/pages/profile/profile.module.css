@@ -23,15 +23,20 @@
 .row input[type="text"] {
   text-align: right;
 }
+.saveChangesBtn {
+  display: flex;
+  justify-content: end;
+}
 
 .form button[type="submit"] {
   background-color: var(--main-color);
+  width: 23.5rem;
   color: #fff;
   padding: 1.2rem 1.6rem;
   border-radius: 0.8rem;
   font-size: 1.6rem;
-  font-weight: 700;
-  margin-top: 3.2rem;
+  font-weight: 500;
+  margin-top: 7.2rem;
   min-width: 12.8rem;
   text-align: center;
 }
@@ -42,9 +47,9 @@
   }
 }
 
-
 /* style for input that is disabled */
-input:disabled, .disabled {
+input:disabled,
+.disabled {
   cursor: not-allowed;
 }
 
@@ -57,7 +62,7 @@ input:disabled, .disabled {
 .content {
   margin-block: 2.4rem;
   padding: 3.2rem;
-  box-shadow: 0px 4px 20px 0px #0000001A;
+  box-shadow: 0px 4px 20px 0px #0000001a;
   border-radius: 1.6rem;
 }
 
@@ -68,9 +73,8 @@ input:disabled, .disabled {
   }
 }
 
-.form button[disabled], 
-.select_wrapper.disabled_btn
-{
-  background-color: #D8DADC;
+.form button[disabled],
+.select_wrapper.disabled_btn {
+  background-color: #d8dadc;
   cursor: not-allowed;
 }

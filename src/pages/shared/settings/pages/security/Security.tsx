@@ -1,7 +1,7 @@
 import { Success } from "@/components";
 import styles from "./security.module.css";
 
-const { title, desc, form, row, group, content } = styles;
+const { title, desc, form, row, group, content, saveChangesBtn } = styles;
 
 const Security = () => {
   const isSuccess = false;
@@ -36,13 +36,15 @@ const Security = () => {
                   <input type="password" id="confirm_password" />
                 </div>
               </section>
-              <button type="submit">حفظ</button>
+              <div className={saveChangesBtn}>
+              <button type="submit">حفظ التغييرات</button>
+              </div>
             </form>
           </>
         )}
         {isSuccess && <Success text="تم تغيير كلمة المرور بنجاح" />}
       </section>
-
+{/* 
       <section className={content}>
         <h1 className={title}>تغيير البريد الإلكترونى</h1>
         <form action="" className={form}>
@@ -60,7 +62,7 @@ const Security = () => {
           </section>
           <button type="submit">حفظ</button>
         </form>
-      </section>
+      </section> */}
     </>
   );
 };

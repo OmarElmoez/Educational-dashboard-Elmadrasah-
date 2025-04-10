@@ -1,8 +1,9 @@
 import { useState, useEffect, JSX } from "react";
+import ClockIcon from "@/assets/clock.svg?react";
 
-const calculateTimeRemaining = (fromTime: string): string => {
-  const fromDate = new Date(fromTime); 
-  const now = new Date(); 
+const calculateTimeRemaining = (fromTime: string): JSX.Element | string => {
+  const fromDate = new Date(fromTime);
+  const now = new Date();
 
   const diffInSeconds = Math.floor((fromDate.getTime() - now.getTime()) / 1000);
 
@@ -15,24 +16,38 @@ const calculateTimeRemaining = (fromTime: string): string => {
   const minutes = diffInMinutes % 60;
   const seconds = diffInSeconds % 60;
 
-  // Build the result dynamically
   const parts = [];
   if (hours > 0) parts.push(`${hours} س`);
   if (minutes > 0) parts.push(`${minutes} د`);
   if (seconds > 0) parts.push(`${seconds} ث`);
 
   if (parts.length > 0) {
-    return `سوف يبدأ خلال ${parts.join(" و ")}`;
+    return (
+      <div
+        style={{
+          display: "flex",
+          gap: "0.4rem",
+          fontSize: "1rem",
+          color: "#AAB8AF",
+        }}
+      >
+        <ClockIcon style={{ stroke: "#AAB8AF", width:"2rem", height:"2rem" }} />
+        <span>{`سوف يبدأ خلال ${parts.join(" و ")}`}</span>
+      </div>
+    );
   } else {
     return "سوف يبدأ قريبًا";
   }
 };
+
 interface CalculateTimeToStartLessonProps {
   fromTime: string;
 }
 
-const CalculateTimeToStartLesson = ({ fromTime }: CalculateTimeToStartLessonProps): JSX.Element => {
-  const [timeRemaining, setTimeRemaining] = useState<string>("");
+const CalculateTimeToStartLesson = ({
+  fromTime,
+}: CalculateTimeToStartLessonProps): JSX.Element => {
+  const [timeRemaining, setTimeRemaining] = useState<JSX.Element | string>("");
 
   useEffect(() => {
     setTimeRemaining(calculateTimeRemaining(fromTime));
@@ -43,7 +58,9 @@ const CalculateTimeToStartLesson = ({ fromTime }: CalculateTimeToStartLessonProp
     return () => clearInterval(interval);
   }, [fromTime]);
 
-  return <div style={{width:"12rem", textAlign:"right"}}>{timeRemaining}</div>;
+  return (
+    <div style={{ width: "12rem", textAlign: "right" }}>{timeRemaining}</div>
+  );
 };
 
 export default CalculateTimeToStartLesson;

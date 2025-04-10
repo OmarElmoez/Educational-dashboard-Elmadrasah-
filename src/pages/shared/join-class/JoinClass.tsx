@@ -2,7 +2,6 @@ import VideoCallIcon from "@/assets/videoCall.svg?react";
 import VideoCamIcon from "@/assets/videoCam.svg?react";
 import PhoneHangUpIcon from "@/assets/phoneHangUp.svg?react";
 import { Card, FlexWrapper, Heading, ProgressBar } from "@/components/UI";
-import Fingerprint from "@mui/icons-material/Fingerprint";
 import PersonalCard from "@/components/personal-card/PersonalCard.tsx";
 import { ReviewForm, Tabs } from "@/components";
 import styles from "./joinClass.module.css";
@@ -19,7 +18,7 @@ import convertToArabicTime from "@/utils/convertToArabicTime.ts";
 import convert24HourToArabic from "@/utils/convert24HourToArabic.ts";
 import IconButton from "@mui/material/IconButton";
 import CalculateTimeToStartLesson from "@/utils/calculateTimeToStartLesson";
-import ClockIcon from "@/assets/clock.svg?react";
+import FingerprintScan from "@/assets/FingerprintScan.png";
 const {
   attendance_box,
   student_classes,
@@ -28,6 +27,7 @@ const {
   heading_button_container,
   lesson_indicator,
   entrance_data,
+  start_timer,
 } = styles;
 
 const STATUS_TEXT = {
@@ -209,18 +209,7 @@ const JoinClass = () => {
               <section className={attendance_box}>
                 {lessonData?.from_datetime && (
                   <>
-                    <div
-                      className="start_timer"
-                      style={{
-                        display: "flex",
-                        justifyContent: "end",
-                        gap: "0.4rem",
-                        fontSize: "1rem",
-                        textAlign: "left",
-                        color: "#AAB8AF",
-                      }}
-                    >
-                      <ClockIcon style={{ stroke: "#AAB8AF" }} />
+                    <div className={start_timer}>
                       <CalculateTimeToStartLesson
                         fromTime={lessonData?.from_datetime}
                       />
@@ -255,10 +244,9 @@ const JoinClass = () => {
                   <IconButton
                     aria-label="fingerprint"
                     color="success"
-                    style={{ border: "1px solid" }}
                     onClick={handleAttendanceTime}
                   >
-                    <Fingerprint />
+                    <img src={FingerprintScan} alt="fingerprint" />
                   </IconButton>
                   {displayEntranceTime ? (
                     <>
@@ -357,6 +345,15 @@ const JoinClass = () => {
                 style={{ fontSize: "2rem", marginTop: "0", marginBottom: "0" }}
               />
               <section className={attendance_box}>
+                {lessonData?.from_datetime && (
+                  <>
+                    <div className={start_timer}>
+                      <CalculateTimeToStartLesson
+                        fromTime={lessonData?.from_datetime}
+                      />
+                    </div>
+                  </>
+                )}
                 <div
                   style={{
                     display: "flex",
@@ -376,7 +373,10 @@ const JoinClass = () => {
                   </span>
                 )}
               </section>
-              <section className={student_classes} style={{marginTop: '2rem'}}>
+              <section
+                className={student_classes}
+                style={{ marginTop: "2rem" }}
+              >
                 <div className={heading_button_container}>
                   <Heading
                     text="حصص الطالب"
@@ -404,20 +404,32 @@ const JoinClass = () => {
                       !EntranceTimeControl.endTimeTeacher) ||
                       (!isTeacher &&
                         !EntranceTimeControl?.canJoinStudent &&
-                        !EntranceTimeControl.endTimeStudent &&
-                        !lessonData?.participants[0]?.end_time_student)) && (
-                      <button onClick={onEndLesson}>
-                        <PhoneHangUpIcon />
-                        <span>إنهاء الدرس</span>
-                      </button>
+                        !EntranceTimeControl.endTimeStudent)) && (
+                      <>
+                        <button
+                          onClick={() => lessonHandler("start")}
+                          style={{
+                            backgroundColor: "var(--main-color)",
+                          }}
+                        >
+                          <VideoCamIcon />
+                          <span>بدأ الدرس</span>
+                        </button>
+                        <button
+                          onClick={onEndLesson}
+                          style={{ backgroundColor: "#c92516" }}
+                        >
+                          <PhoneHangUpIcon />
+                          <span>إنهاء الدرس</span>
+                        </button>
+                      </>
                     )}
                     {((isTeacher &&
                       !EntranceTimeControl?.canJoinTeacher &&
                       EntranceTimeControl.endTimeTeacher) ||
                       (!isTeacher &&
                         !EntranceTimeControl?.canJoinStudent &&
-                        EntranceTimeControl.endTimeStudent &&
-                        lessonData?.participants[0]?.end_time_student)) && (
+                        EntranceTimeControl.endTimeStudent)) && (
                       <button
                         disabled
                         style={{

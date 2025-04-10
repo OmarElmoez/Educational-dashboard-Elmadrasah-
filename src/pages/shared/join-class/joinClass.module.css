@@ -29,9 +29,6 @@
   background-color: var(--main-color);
 }
 
-.lesson_actions button:nth-of-type(1) {
-  background-color: #c92516;
-}
 
 .lesson_status {
   position: absolute;
@@ -55,18 +52,17 @@
 .entrance_data {
   display: flex;
   align-items: center;
-  gap: 2.4rem;
+  gap: 1rem;
   margin-top: 1.2rem;
 }
 .entrance_data p {
   font-size: 1.4rem;
   color: #aab8af;
+  margin-left: 2rem;
 }
+
 .start_timer {
   display: flex;
   justify-content: end;
-  align-items: baseline;
-  gap: 0.4rem;
-  font-size: 1rem;
-  color: #aab8af;
+  margin-left: 1rem;
 }

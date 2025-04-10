@@ -47,16 +47,21 @@
   color: var(--primary-color);
 }
 
-.form button {
+.form button[type="submit"] {
   background-color: var(--main-color);
+  width: 23.5rem;
   color: #fff;
   padding: 1.2rem 1.6rem;
   border-radius: 0.8rem;
   font-size: 1.6rem;
-  font-weight: 700;
-  margin-top: 3.2rem;
+  font-weight: 500;
+  margin-top: 5rem;
   min-width: 12.8rem;
   text-align: center;
+}
+.saveChangesBtn {
+  display: flex;
+  justify-content: end;
 }
 
 @media (max-width: 991px) {

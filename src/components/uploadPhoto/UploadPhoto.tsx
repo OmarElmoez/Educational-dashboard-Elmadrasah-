@@ -7,7 +7,7 @@ import { ChangeEvent, useRef, useState } from "react";
 import { FieldValues, UseFormRegister, Path } from "react-hook-form";
 import { useAppSelector } from "@/store/hooks";
 
-const { container, uploadBox, hiddenInput, previewBox } = styles;
+const { container, uploadBox, hiddenInput, previewBox, userInfo } = styles;
 const UploadPhoto = <T extends FieldValues>({
   register,
   name,
@@ -20,7 +20,7 @@ const UploadPhoto = <T extends FieldValues>({
   const { img_url } = useAppSelector((state) => state.profile);
   const [preview, setPreview] = useState<string | undefined>(img_url);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const { user } = useAppSelector((state) => state.auth);
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
@@ -28,7 +28,6 @@ const UploadPhoto = <T extends FieldValues>({
       setPreview(URL.createObjectURL(file));
     }
   };
-
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
@@ -55,7 +54,10 @@ const UploadPhoto = <T extends FieldValues>({
           <PressedIcon width={'35px'} height={'35px'}/>
         </button>
       </div>
-      <span>صورة الملف الشخصي</span>
+      <div className={userInfo}>
+      <span>{user?.first_name} {user?.last_name}</span>
+      <span>{user?.email}</span>
+      </div>
     </section>
   );
 };

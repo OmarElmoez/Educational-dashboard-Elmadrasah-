@@ -1,4 +1,4 @@
-import styles from './classesForDay.module.css'
+import styles from "./classesForDay.module.css";
 import { useContext, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 
@@ -9,74 +9,113 @@ import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import actGetLessonsByMonth from "@/store/lessons/act/actGetLessonsByMonth.ts";
 // import { THourLesson } from "@/components/tabs/sub-components/all-hours/AllHours.tsx";
 import { format } from "date-fns";
-import { ar } from 'date-fns/locale';
+import { ar } from "date-fns/locale";
 import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 import { THourLesson } from "@/store/tabs/TabsSlice.ts";
 
-const {title, lessons_cards, kids_names} = styles;
+const { title, lessons_cards, kids_names } = styles;
 
-type TChild = { id: number, first_name: string, last_name: string }
+type TChild = { id: number; first_name: string; last_name: string };
 
-const ClassesForDay = ({lessonsForClickedHour, isHourClicked}: {
-  lessonsForClickedHour?: THourLesson[],
-  isHourClicked?: boolean,
+const ClassesForDay = ({
+  lessonsForClickedHour,
+  isHourClicked,
+}: {
+  lessonsForClickedHour?: THourLesson[];
+  isHourClicked?: boolean;
 }) => {
-
-  const {Today_lessons, Month_lessons, loading} = useAppSelector(state => state.lessons);
-  const {currentHourData} = useAppSelector(state => state.tabs)
+  const { Today_lessons, Month_lessons, loading } = useAppSelector(
+    (state) => state.lessons
+  );
+  const { currentHourData } = useAppSelector((state) => state.tabs);
 
   const dispatch = useAppDispatch();
 
-  const {credintials} = useAppSelector(state => state.auth);
+  const { credintials } = useAppSelector((state) => state.auth);
 
-  const {statistics} = useAppSelector(state => state.profile)
+  const { statistics } = useAppSelector((state) => state.profile);
 
-  const {clickedDate, setStudentId, classesPageActiveId} = useContext(CalendarContext);
-  const arabicDate = format(clickedDate, "d MMMM yyyy", {locale: ar})
+  const { clickedDate, setStudentId, classesPageActiveId } =
+    useContext(CalendarContext);
+  const arabicDate = format(clickedDate, "d MMMM yyyy", { locale: ar });
 
-  const filteredLessons = Month_lessons.filter(lesson => {
-    return clickedDate.setHours(0, 0, 0, 0) === new Date(lesson.from_date).setHours(0, 0, 0, 0);
-  })
+  const filteredLessons = Month_lessons.filter((lesson) => {
+    return (
+      clickedDate.setHours(0, 0, 0, 0) ===
+      new Date(lesson.from_date).setHours(0, 0, 0, 0)
+    );
+  });
 
   const [activeTab, setActiveTab] = useState({
     idx: -1,
     name: "",
-  })
+  });
 
   const onClickHandler = (idx: number, child: TChild) => {
-    setActiveTab({idx, name: child.first_name})
-    setStudentId(child.id)
+    setActiveTab({ idx, name: child.first_name });
+    setStudentId(child.id);
     dispatch(
-      actGetLessonsByMonth({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`, studentId: child.id}))
-  }
+      actGetLessonsByMonth({
+        date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`,
+        studentId: child.id,
+      })
+    );
+  };
 
   const clickAllHandler = (idx: number) => {
-    setActiveTab({idx, name: ""})
-    dispatch(actGetLessonsByMonth({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))
-  }
+    setActiveTab({ idx, name: "" });
+    dispatch(
+      actGetLessonsByMonth({
+        date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`,
+      })
+    );
+  };
 
   useEffect(() => {
     if (credintials?.role !== "Admin" && Month_lessons.length === 0) {
-      dispatch(actGetLessonsByMonth({date: `${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
+      dispatch(
+        actGetLessonsByMonth({
+          date: `${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`,
+        })
+      );
       return;
     }
     if (credintials?.role === "Admin" && Today_lessons.length === 0) {
-      dispatch(actGetLessonsByDay(
-        {day: `${clickedDate.getDate()}-${clickedDate.getMonth() + 1}-${clickedDate.getFullYear()}`}))
+      dispatch(
+        actGetLessonsByDay({
+          day: `${clickedDate.getDate()}-${
+            clickedDate.getMonth() + 1
+          }-${clickedDate.getFullYear()}`,
+        })
+      );
       return;
     }
-  }, [Month_lessons.length, Today_lessons.length, clickedDate, credintials?.role, dispatch])
+  }, [
+    Month_lessons.length,
+    Today_lessons.length,
+    clickedDate,
+    credintials?.role,
+    dispatch,
+  ]);
 
   return (
     <>
-      {!statistics && <div className="loadingBox">
-          <LoadingIndicator/>
-      </div>}
+      {!statistics && (
+        <div className="loadingBox">
+          <LoadingIndicator />
+        </div>
+      )}
       <h3 className={title}>حصص اليوم {arabicDate}</h3>
-      {credintials?.role === 'Family' && <section className={kids_names}>
-          <div onClick={() => clickAllHandler(-1)}
-               style={{backgroundColor: activeTab.idx === -1 ? "#fff" : "transparent", borderRadius: "5px"}}>
-              <span>الكل</span>
+      {credintials?.role === "Family" && (
+        <section className={kids_names}>
+          <div
+            onClick={() => clickAllHandler(-1)}
+            style={{
+              backgroundColor: activeTab.idx === -1 ? "#fff" : "transparent",
+              borderRadius: "5px",
+            }}
+          >
+            <span>الكل</span>
           </div>
         {(statistics && Object.keys(statistics).length > 0) ? statistics?.map((child: TChild, idx: number) => (
           <div key={child.id} onClick={() => onClickHandler(idx, child)}
@@ -86,33 +125,40 @@ const ClassesForDay = ({lessonsForClickedHour, isHourClicked}: {
         )) : null}
       </section>}
       <section className={lessons_cards}>
-        {loading === 'pending' && <LoadingIndicator/>}
+        {loading === "pending" && <LoadingIndicator />}
         {/*{((credintials?.role === "Admin" ? Today_lessons.length === 0 : filteredLessons.length === 0) && !isHourClicked && loading !== "pending") &&*/}
         {/*    <p className="error">ليس لديك حصص اليوم !</p>}*/}
-        {((credintials?.role === "Admin" ? Today_lessons.length === 0 : filteredLessons.length === 0) && !isHourClicked && loading !== "pending") &&
-            <p className="error">لا توجد حصص !</p>}
+        {(credintials?.role === "Admin"
+          ? Today_lessons.length === 0
+          : filteredLessons.length === 0) &&
+          !isHourClicked &&
+          loading !== "pending" && <p className="error">لا توجد حصص !</p>}
         {/*{((credintials?.role === "Admin" && currentHourData.results.length === 0 && classesPageActiveId === 0) && !isHourClicked && loading !== "pending") &&*/}
         {/*    <p className="error">ليس لديك حصص هذه الساعة !</p>}*/}
-        {credintials?.role !== "Admin" && (filteredLessons.length > 0) && filteredLessons.map((lesson: TLesson) => {
-          return (
-            <LessonCard lesson={lesson} key={lesson.id}/>
-          )
-        })}
-        {credintials?.role === "Admin" && ((Today_lessons.length > 0) && !isHourClicked && loading !== 'pending') && ((classesPageActiveId === 0 ) ? currentHourData.results : Today_lessons).map(
-          (lesson: TLesson) => {
-            return (
-              <LessonCard lesson={lesson} key={lesson.id}/>
-            )
+        {credintials?.role !== "Admin" &&
+          filteredLessons.length > 0 &&
+          filteredLessons.map((lesson: TLesson) => {
+            return <LessonCard lesson={lesson} key={lesson.id} />;
           })}
-        {(lessonsForClickedHour && lessonsForClickedHour.length > 0 && isHourClicked) && lessonsForClickedHour?.map(
-          (lesson: THourLesson) => {
-            return (
-                <LessonCard lesson={lesson} key={lesson.id}/>
-            )
+        {credintials?.role === "Admin" &&
+          Today_lessons.length > 0 &&
+          !isHourClicked &&
+          loading !== "pending" &&
+          (classesPageActiveId === 0
+            ? currentHourData.results
+            : Today_lessons
+          ).map((lesson: TLesson) => {
+            return <LessonCard lesson={lesson} key={lesson.id} />;
+          })}
+        {lessonsForClickedHour &&
+          lessonsForClickedHour.length > 0 &&
+          isHourClicked &&
+          lessonsForClickedHour?.map((lesson: THourLesson) => {
+            return <LessonCard lesson={lesson} key={lesson.id} />;
           })}
       </section>
     </>
-  )
-}
+  );
+};
 
-export default ClassesForDay
+export default ClassesForDay;

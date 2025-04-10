@@ -1,50 +1,46 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import styles from "./settings.module.css";
 import { useAppSelector } from "@/store/hooks";
 import { useContext } from "react";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
+import Button from "@mui/material/Button";
 
-const { nav, selected } = styles;
+const { nav } = styles;
 const SettingsPage = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { setHeaderTitle } = useContext(CalendarContext);
+  const navigate = useNavigate();
+  const currentPath = window.location.pathname;
 
-  const {setHeaderTitle} = useContext(CalendarContext)
-
+  const handleNavigation = (path: string, title: string) => {
+    navigate(path);
+    setHeaderTitle(title);
+  };
   return (
     <>
-      <nav className={nav}>
-        <NavLink
-          to=""
-          end
-          replace
-          className={({ isActive }) => (isActive ? selected : "")}
-          onClick={() => setHeaderTitle("إعدادات الحساب")}
+       <nav className={nav}>
+        <Button
+          variant={currentPath.endsWith("/settings") ? "contained" : "outlined"}
+          onClick={() => handleNavigation("", "الملف الشخصي")}
         >
-          إعدادات الحساب
-        </NavLink>
-
-        <NavLink
-          to="security"
-          end
-          replace
-          className={({ isActive }) => (isActive ? selected : "")}
-          onClick={() => setHeaderTitle("تسجيل الدخول والأمان")}
-        >
-          تسجيل الدخول والأمان
-        </NavLink>
-
+          البيانات الشخصية 
+        </Button>
         {user?.user_type === "Admin" && (
-          <NavLink
-            to="roles"
-            end
-            replace
-            className={({ isActive }) => (isActive ? selected : "")}
-            onClick={() => setHeaderTitle("الأدوار والمسؤوليات")}
-          >
+          <>
+          <Button
+          variant={currentPath.includes("security") ? "contained" : "outlined"}
+          onClick={() => handleNavigation("security", " الملف الشخصي")}
+        >
+          تغيير كلمة المرور
+        </Button>
+          <Button
+            variant={currentPath.includes("roles") ? "contained" : "outlined"}
+            onClick={() => handleNavigation("roles", "الأدوار والمسؤوليات")}
+            >
             الأدوار والمسؤوليات
-          </NavLink>
+          </Button>
+            </>
         )}
-
       </nav>
       <section>
         <Outlet />

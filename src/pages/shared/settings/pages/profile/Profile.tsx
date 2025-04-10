@@ -10,7 +10,7 @@ import {
 } from "@/store/profile/ProfileSlice";
 import { useCallback, useEffect } from "react";
 
-const { form, row, content } = styles;
+const { form, row, content, saveChangesBtn } = styles;
 
 const Profile = () => {
   const { loading, user } = useAppSelector((state) => state.profile);
@@ -126,9 +126,11 @@ const Profile = () => {
         </section>
 
         {user?.user_type === "Admin" && (
-          <button type="submit" disabled={loading === "pending"}>
-            {loading === "pending" ? "جاري الحفظ..." : "حفظ"}
-          </button>
+          <div className={saveChangesBtn}>
+            <button type="submit" disabled={loading === "pending"}>
+              {loading === "pending" ? "جاري الحفظ..." : "حفظ التغييرات"}
+            </button>
+          </div>
         )}
         {/* <input type="submit" value="حفظ" onClick={() => console.log('you click')} /> */}
         {loading === "failed" && (
