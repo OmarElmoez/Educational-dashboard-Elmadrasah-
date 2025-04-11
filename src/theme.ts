@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material";
 
 const theme = createTheme({
+  direction: 'rtl',
   typography: {
     fontFamily: 'Expo, IBM Plex Sans Arabic, sans-serif',
     htmlFontSize: 10,
