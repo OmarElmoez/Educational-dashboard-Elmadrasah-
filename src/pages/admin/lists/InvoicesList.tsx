@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { actGetInvoices, decrementPage, incrementPage } from "@/store/table/TableSlice";
 import { TStatus } from "@/types/Dropdown";
 import { MuiTable } from "@/components";
 import { GridColDef } from "@mui/x-data-grid";
@@ -9,36 +7,58 @@ import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import SearchIcon from "@/assets/search_icon.svg?react";
 import FilterForm from "@/pages/admin/lists/invoice/FilterForm.tsx";
-import { useComponentLoading } from "@/hooks";
+import { useQuery } from "@tanstack/react-query";
+import { getInvoices } from "@/services/invoices";
+import { queryClient } from "@/main";
 
 export type TFilterData = {
   startDate: string;
   endDate: string;
   status: TStatus;
-}
+};
 // -----------------------------------------------------------------------------------------
 const InvoicesList = () => {
-  const dispatch = useAppDispatch();
-  const {user} = useAppSelector((state) => state.auth);
-  const {invoices} = useAppSelector((state) => state.table);
   const navigate = useNavigate();
-  const {setPending, setSucceeded, isPending} = useComponentLoading();
 
   const [searchTerm, setSearchTerm] = useState<TFilterData | null>(null);
 
-  const getNewtPage = useCallback(
-    () => {
-      let page = invoices?.page;
-      setPending()
-      dispatch(actGetInvoices({token: user?.token, page, searchTerm})).unwrap().then(() => setSucceeded());
-    },
-    [invoices.page, setPending, dispatch, user?.token, searchTerm, setSucceeded]
-  );
+  const [page, setPage] = useState(1);
+
+  const { data: invoices, isPending } = useQuery({
+    queryKey: ["invoices", { page, searchTerm }],
+    queryFn: () => getInvoices({ page, searchTerm }),
+    staleTime: 60 * 1000,
+  });
 
   useEffect(() => {
-    getNewtPage();
-  }, [getNewtPage]);
+    if (invoices?.next) {
+      const nextPageNumber = page + 1;
+      const nextPageQueryKey = [
+        "invoices",
+        { page: nextPageNumber, searchTerm },
+      ];
 
+      if (!queryClient.getQueryData(nextPageQueryKey)) {
+        queryClient.prefetchQuery({
+          queryKey: nextPageQueryKey,
+          queryFn: () => getInvoices({ page: nextPageNumber, searchTerm }),
+        });
+      }
+    }
+  }, [invoices, page, searchTerm]);
+
+  const increasePage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const decreasePage = () => {
+    setPage((prevPage) => prevPage - 1);
+  };
+
+  const onSearchHandler = (data: TFilterData) => {
+    setSearchTerm(data);
+    setPage(1)
+  };
 
   const initialColumns: GridColDef[] = [
     {
@@ -72,7 +92,7 @@ const InvoicesList = () => {
       field: "sent_at",
       headerName: "اخر ارسال",
       flex: 2,
-      renderCell: (params) => formatFullArabicDate(params.value)
+      renderCell: (params) => formatFullArabicDate(params.value),
     },
     {
       field: "status",
@@ -97,18 +117,20 @@ const InvoicesList = () => {
       renderCell: (params) => (
         <div className="w-full flex items-center justify-center gap-[3rem]">
           <button
-            style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
+            style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
             disabled={!params.row.id}
-            onClick={() => navigate(`/admin/invoices/invoice-details/${params.row.id}`)}
+            onClick={() =>
+              navigate(`/admin/invoices/invoice-details/${params.row.id}`)
+            }
           >
-            <SearchIcon/>
+            <SearchIcon />
           </button>
           <button
-            style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
+            style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
             disabled={!params.row.id}
             onClick={() => navigate(`/admin/edit-invoice/${params.row.id}`)}
           >
-            <EditPenIcon/>
+            <EditPenIcon />
           </button>
         </div>
       ),
@@ -116,17 +138,16 @@ const InvoicesList = () => {
     },
   ];
 
-
   return (
     <MuiTable
-      rows={invoices.data}
+      rows={invoices?.results}
       columns={initialColumns}
       loading={isPending}
-      filterForm={<FilterForm submitFn={(filters) => setSearchTerm(filters)}/>}
-      nextFn={() => dispatch(incrementPage())}
-      previousFn={() => dispatch(decrementPage())}
-      next={invoices?.next}
-      previous={invoices?.previous}
+      filterForm={<FilterForm submitFn={onSearchHandler} />}
+      nextFn={() => increasePage()}
+      previousFn={() => decreasePage()}
+      next={invoices?.next || ""}
+      previous={invoices?.previous || ""}
     />
   );
 };

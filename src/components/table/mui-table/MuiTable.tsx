@@ -47,7 +47,7 @@ const CustomToolbar = () => (
 );
 
 type TTableProps<T extends Record<string, unknown>, U extends GridColDef> = {
-  rows: T[],
+  rows: T[] | undefined,
   columns: U[],
   loading: boolean,
   filterForm?: ReactNode,
@@ -82,12 +82,14 @@ const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
   return (
     <>
       {filterForm && <>
-        <div className="text-left">
-          <Button onClick={toggleDrawer(true)}>+ بحث متقدم</Button>
-        </div>
-        <Drawer open={openDrawer} onClose={toggleDrawer(false)}>
-          {filterForm}
-        </Drawer>
+          <div className="text-left">
+              <Button onClick={toggleDrawer(true)}>+ بحث متقدم</Button>
+          </div>
+          <Drawer open={openDrawer} onClose={toggleDrawer(false)} SlideProps={{
+            direction: "right",
+          }} keepMounted>
+            {filterForm}
+          </Drawer>
       </>}
       <Paper sx={{height: "auto", width: "100%"}}>
         <DataGrid
@@ -110,6 +112,9 @@ const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
               variant: "skeleton",
               noRowsVariant: "skeleton",
             },
+            panel: {
+              placement: 'auto-start'
+            }
           }}
         />
       </Paper>

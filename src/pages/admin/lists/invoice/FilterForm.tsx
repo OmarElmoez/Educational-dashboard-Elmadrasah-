@@ -2,8 +2,6 @@ import { useState } from "react";
 import { DateOrTimePicker, Dropdown, Row } from "@/components";
 import { useForm } from "react-hook-form";
 import { Button } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
-import { actGetInvoices } from "@/store/table/TableSlice.ts";
 import { TFilterData } from "@/pages/admin/lists/InvoicesList.tsx";
 
 const FILTER_STATUS_OPTIONS = [
@@ -15,7 +13,7 @@ const FILTER_STATUS_OPTIONS = [
 ];
 
 interface FilterFormProps {
-  submitFn: (filters: TFilterData | null) => void;
+  submitFn: (data: TFilterData) => void
 }
 
 // -------------------------------------------------------------------
@@ -24,17 +22,10 @@ const FilterForm = ({submitFn}: FilterFormProps) => {
 
   const {setValue, register, reset, handleSubmit} = useForm<TFilterData>();
 
-  const {invoices} = useAppSelector((state) => state.table);
-
-  const dispatch = useAppDispatch();
-
-  const {user} = useAppSelector((state) => state.auth);
 
   const onSubmit = (data: TFilterData) => {
     setRemovePreviewChoices(false);
-    console.log('from filter form: ', data);
-    let page = invoices?.page;
-    dispatch(actGetInvoices({token: user?.token, page, searchTerm: data}));
+    submitFn(data)
   };
 
   const [removePreviewChoices, setRemovePreviewChoices] = useState(false);
