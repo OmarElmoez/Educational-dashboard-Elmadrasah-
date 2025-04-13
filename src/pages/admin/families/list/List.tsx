@@ -1,103 +1,51 @@
 import { useEffect, useState } from "react";
 import {
-  DataGrid,
   GridColDef,
-  GridPaginationModel,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarExport,
-  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
-import { actGetAllFamilies } from "@/store/families/FamiliesSlice.ts";
-import Paper from "@mui/material/Paper";
-
-const CustomToolbar = () => (
-  <GridToolbarContainer>
-    <GridToolbarExport
-      csvOptions={{
-        fileName: "El Madrasah Dashboard",
-        utf8WithBom: true,
-      }}
-    />
-    <GridToolbarFilterButton />
-    <GridToolbarColumnsButton />
-  </GridToolbarContainer>
-);
-
-const localeToolbarText = {
-  toolbarColumns: "",
-  toolbarFilters: "",
-  toolbarExport: "",
-};
+import { MuiTable } from "@/components";
+import { useQuery } from "@tanstack/react-query";
+import { getFamilies } from "@/services/families.ts";
+import { queryClient } from "@/main.tsx";
 
 const FamiliesList = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
-  const { families } = useAppSelector((state) => state.families);
-  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    page: 0,
-    pageSize: 20,
+  const [page, setPage] = useState(1);
+
+  const increasePage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const decreasePage = () => {
+    setPage((prevPage) => prevPage - 1);
+  };
+
+  const { data: families, isPending } = useQuery({
+    queryKey: ["families", { page }],
+    queryFn: () => getFamilies({ page }),
+    staleTime: 0.5 * 60 * 1000
   });
-  const [loading, setLoading] = useState<boolean>(true);
-  const [next, setNext] = useState<string | null>(null);
-  const [previous, setPrevious] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    dispatch(actGetAllFamilies({}))
-      .unwrap()
-      .then((res) => {
-        setLoading(false);
-        setNext(res.next);
-        setPrevious(res.previous);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("Error fetching students:", error);
-      });
-  }, [dispatch]);
+    if (families?.next) {
+      const nextPageNumber = page + 1;
+      const nextPageQueryKey = [
+        "families",
+        { page: nextPageNumber },
+      ];
 
-  const handleNext = () => {
-    if (next) {
-      setLoading(true);
-      dispatch(actGetAllFamilies({ next }))
-        .unwrap()
-        .then((res) => {
-          setLoading(false);
-          setNext(res.next);
-          setPrevious(res.previous);
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.error("Error fetching next page:", error);
+      if (!queryClient.getQueryData(nextPageQueryKey)) {
+        queryClient.prefetchQuery({
+          queryKey: nextPageQueryKey,
+          queryFn: () => getFamilies({ page: nextPageNumber }),
         });
+      }
     }
-  };
+  }, [families, page]);
 
-  const handlePrevious = () => {
-    if (previous) {
-      setLoading(true);
-      dispatch(actGetAllFamilies({ previous }))
-        .unwrap()
-        .then((res) => {
-          setLoading(false);
-          setNext(res.next);
-          setPrevious(res.previous);
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.error("Error fetching previous page:", error);
-        });
-    }
-  };
-
-  const columns: GridColDef[] = [
+  const initialColumns: GridColDef[] = [
     {
       field: "id",
       headerName: "ID",
@@ -178,46 +126,15 @@ const FamiliesList = () => {
   ];
 
   return (
-    <Box component="section">
-      <Paper sx={{ height: "auto", width: "100%" }}>
-        <DataGrid
-          sx={{
-            border: 0,
-            paddingTop: "1rem",
-          }}
-          rows={families.familiesData}
-          columns={columns}
-          paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
-          pageSizeOptions={[10, 20, 50]}
-          checkboxSelection
-          disableRowSelectionOnClick
-          slots={{ toolbar: CustomToolbar }}
-          localeText={localeToolbarText}
-          loading={loading}
-          slotProps={{
-            loadingOverlay: {
-              variant: "skeleton",
-              noRowsVariant: "skeleton",
-            },
-          }}
-        />
-      </Paper>
-      <Box
-        sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
-      >
-        <Button
-          variant="contained"
-          onClick={handlePrevious}
-          disabled={!previous}
-        >
-          المجموعة السابقة
-        </Button>
-        <Button variant="contained" onClick={handleNext} disabled={!next}>
-          المجموعة التالية
-        </Button>
-      </Box>
-    </Box>
+    <MuiTable
+      rows={families?.results}
+      columns={initialColumns}
+      loading={isPending}
+      nextFn={() => increasePage()}
+      previousFn={() => decreasePage()}
+      next={families?.next || ""}
+      previous={families?.previous || ""}
+    />
   );
 };
 

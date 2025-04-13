@@ -1,6 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance.ts";
 import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
 import { TStudentInvoice, TStudentPayment } from '../schemas/AddStudentSchema';
+import { TFamilyData } from "@/types/table.ts";
 
 type Teacher = {
   id: number;
@@ -141,3 +142,29 @@ export const getSpecificFamily = async (id: string): Promise<TSpecificFamilyResp
     return axiosErrorHandler(error)
   }
 }
+
+type TProps = {
+  page: number,
+};
+
+type TResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: TFamilyData[];
+};
+
+export const getFamilies = async ({ page }: TProps) => {
+  try {
+    let url = "/customer/families";
+
+    if (page) {
+      url += `?page=${page}`
+    }
+
+    const response = await axiosInstance.get<TResponse>(url);
+    return response.data;
+  } catch (error) {
+    throw axiosErrorHandler(error);
+  }
+};
