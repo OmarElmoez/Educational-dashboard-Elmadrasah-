@@ -276,6 +276,39 @@ menu {
   border-radius: 1rem;
 }
 
+.MuiDataGrid-filterFormColumnInput .MuiInputLabel-root,
+.MuiDataGrid-filterFormOperatorInput .MuiInputLabel-root,
+.MuiDataGrid-filterFormValueInput .MuiInputLabel-root {
+  left: unset !important;
+  right: 0;
+}
+
+.MuiMenu-list .MuiMenuItem-root {
+  font-size: 1.2rem;
+}
+
+.MuiDataGrid-root .MuiTablePagination-selectLabel,
+.MuiDataGrid-root .MuiTablePagination-displayedRows {
+  direction: ltr;
+}
+
+.MuiTablePagination-actions {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.MuiButtonBase-root[title="Go to next page"] {
+  transform: rotate(180deg);
+}
+
+.MuiButtonBase-root[title="Go to previous page"] {
+  transform: rotate(-180deg);
+}
+
+.MuiSelect-select {
+  padding: 0;
+}
+
 /* change the font of google button */
 .nsm7Bb-HzV7m-LgbsSe {
   border-radius: 1rem !important;

@@ -15,12 +15,6 @@
   justify-content: flex-end;
 }
 
-.MuiDataGrid-root .MuiTablePagination-actions,
-.MuiDataGrid-root .MuiTablePagination-selectLabel,
-.MuiDataGrid-root .MuiTablePagination-displayedRows {
-  direction: ltr;
-}
-
 .MuiDataGrid-columnHeaderTitle {
   color: #8D8D8D;
 }

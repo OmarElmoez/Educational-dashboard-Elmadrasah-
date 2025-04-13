@@ -18,7 +18,6 @@ import {
   AdminHomePage,
   AdminReportsPage,
   AdminStudentsPage,
-  AdminTeachersPage,
   CopyInvoicesForm,
   CreateInvoiceForm,
   EditInvoiceForm,
@@ -30,7 +29,7 @@ import {
   RescheduleLesson,
   ScheduleLesson,
   StudentsList,
-  AdminRolesPage, EditStudent, StudentProfile,FamiliesList, FamilyProfile, EditFamily
+  AdminRolesPage, EditStudent, StudentProfile,FamiliesList, FamilyProfile, EditFamily, EmployeesList
 } from "@/pages/admin";
 import {TeacherClassesPage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
@@ -162,7 +161,7 @@ const router = createBrowserRouter([
       },
       {
         path: "employees/teachers",
-        element: <PageSuspense><AdminTeachersPage/></PageSuspense>,
+        element: <PageSuspense><EmployeesList/></PageSuspense>,
       },
       {
         path: "reports",

@@ -2,7 +2,6 @@ import {lazy} from "react";
 
 const AdminClassesPage = lazy(() => import('./classes/Classes'))
 const AdminHomePage = lazy(() => import('./HomePage'))
-const AdminTeachersPage = lazy(() => import('./Teachers'));
 const AdminReportsPage = lazy(() => import('./Reports'));
 const AdminStudentsPage = lazy(() => import('./Students'));
 const AdminRolesPage = lazy(() => import('./roles/Roles'));
@@ -33,11 +32,11 @@ const UnscheduledFamilyList = lazy(() => import('./lists/Unscheduled/Unscheduled
 const GeneralScheduledEmployeesLists = lazy(
   () => import('./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists'));
 const SchedulingErrorsTableList = lazy(() => import('./lists/ScheduledEmployeesLists/ScheduledErrorsTableList'));
+const EmployeesList = lazy(() => import('./employees/list/EmployeesList.tsx'))
 
 export {
   AdminClassesPage,
   AdminHomePage,
-  AdminTeachersPage,
   AdminReportsPage,
   AdminStudentsPage,
   AddEmployeeForm,
@@ -63,5 +62,6 @@ export {
   StudentProfile,
   FamiliesList,
   FamilyProfile,
-  EditFamily
+  EditFamily,
+  EmployeesList
 };

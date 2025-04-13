@@ -1,14 +1,14 @@
 import { TABLE_SEARCH_END_POINTS } from "@/constants";
-import { TsearchData } from "@/pages/admin/Teachers";
 import { TTableResponse } from "@/types/table";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import axiosInstance from "@/utils/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { TEmployeeFilterData } from "@/pages/admin/employees/list/EmployeesList.tsx";
 
 type TSearchProps = {
   searchTerm: string;
   searchFor: keyof typeof TABLE_SEARCH_END_POINTS;
-  queryParams?: TsearchData;
+  queryParams?: TEmployeeFilterData;
 };
 
 const actSearchForTableData = createAsyncThunk(

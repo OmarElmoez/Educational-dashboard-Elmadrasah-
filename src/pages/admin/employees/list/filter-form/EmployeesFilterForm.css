@@ -14,7 +14,7 @@
   direction: rtl;
 }
 .MuiTextField-root .MuiOutlinedInput-root .MuiOutlinedInput-input {
-  font-size: 1rem;
+  font-size: 1.2rem;
   padding: 0;
 }
 .MuiDrawer-paper .MuiSelect-root {
@@ -28,19 +28,12 @@
   border-radius: 1rem;
   font-size: 1rem;
 }
-.MuiInputBase-root:not(.MuiTablePagination-select) .MuiInputBase-input {
+.MuiInputBase-root:not(.MuiTablePagination-select, .MuiInputBase-formControl) .MuiInputBase-input {
   padding-right : 0 !important;
 }
 .MuiDrawer-paper .MuiSelect-root .MuiSelect-icon {
   right: 88%;
   left: 0.7rem;
-}
-.MuiMenu-list .MuiMenuItem-root {
-  font-size: 1rem;
-}
-.search-button-container {
-  display: flex;
-  gap: 1.6rem;
 }
 .search-button-container .MuiButton-root {
   width: 10.9rem;
@@ -63,9 +56,14 @@
 .date-container .MuiTextField-root .MuiOutlinedInput-root {
   width: 10rem;
 }
-.date-range-container .MuiTypography-root {
+.label.MuiTypography-root {
   width: 100%;
   font-size: 1.4rem !important;
   color: #b6b6b6;
-  margin-bottom: 1rem !important;
+}
+.adminFormLabel {
+  font-size: 1rem !important;
+}
+.inputField {
+  padding: 0.8rem 1rem !important
 }

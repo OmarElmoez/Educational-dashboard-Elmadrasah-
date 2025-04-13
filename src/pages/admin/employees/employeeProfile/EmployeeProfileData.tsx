@@ -7,6 +7,7 @@ import Styles from "./EmployeeProfileData.module.css";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import { SimpleTable } from "@/pages/shared/components";
+import { LoadingIndicator } from "@/components";
 
 const { sectionContainer, infoContainer, iconButton } = Styles;
 const EmployeeProfileData = () => {
@@ -31,6 +32,9 @@ const EmployeeProfileData = () => {
   }, [dispatch, employeeId]);
   return (
     <>
+      {!specificEmployeeData && <div className="loadingBox">
+          <LoadingIndicator/>
+      </div>}
       <div className="flex justify-between mb-[4.8rem]">
         <div className="flex items-center gap-[2rem]">
         <p className="font-medium text-[2.4rem]">{specificEmployeeData?.full_name || `${specificEmployeeData?.first_name} ${specificEmployeeData?.last_name}`}</p>
