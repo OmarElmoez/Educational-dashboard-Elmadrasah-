@@ -198,7 +198,7 @@ const LessonCard = <T extends TLesson | THourLesson>({
           <p>لم يتم رفع الملفات</p>
         )}
       </div>
-      {lesson.zoom_id && <div>
+      {credintials?.role === "Admin" && lesson.zoom_id && <div>
           <ZoomIcon />
       </div>}
       <div className={status_data}>

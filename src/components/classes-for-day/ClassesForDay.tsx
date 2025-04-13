@@ -13,31 +13,31 @@ import { ar } from "date-fns/locale";
 import actGetLessonsByDay from "@/store/lessons/act/actGetLessonsByDay.ts";
 import { THourLesson } from "@/store/tabs/TabsSlice.ts";
 
-const { title, lessons_cards, kids_names } = styles;
+const {title, lessons_cards, kids_names} = styles;
 
 type TChild = { id: number; first_name: string; last_name: string };
 
 const ClassesForDay = ({
-  lessonsForClickedHour,
-  isHourClicked,
-}: {
+                         lessonsForClickedHour,
+                         isHourClicked,
+                       }: {
   lessonsForClickedHour?: THourLesson[];
   isHourClicked?: boolean;
 }) => {
-  const { Today_lessons, Month_lessons, loading } = useAppSelector(
+  const {Today_lessons, Month_lessons, loading} = useAppSelector(
     (state) => state.lessons
   );
-  const { currentHourData } = useAppSelector((state) => state.tabs);
+  const {currentHourData} = useAppSelector((state) => state.tabs);
 
   const dispatch = useAppDispatch();
 
-  const { credintials } = useAppSelector((state) => state.auth);
+  const {credintials} = useAppSelector((state) => state.auth);
 
-  const { statistics } = useAppSelector((state) => state.profile);
+  const {statistics} = useAppSelector((state) => state.profile);
 
-  const { clickedDate, setStudentId, classesPageActiveId } =
+  const {clickedDate, setStudentId, classesPageActiveId} =
     useContext(CalendarContext);
-  const arabicDate = format(clickedDate, "d MMMM yyyy", { locale: ar });
+  const arabicDate = format(clickedDate, "d MMMM yyyy", {locale: ar});
 
   const filteredLessons = Month_lessons.filter((lesson) => {
     return (
@@ -52,7 +52,7 @@ const ClassesForDay = ({
   });
 
   const onClickHandler = (idx: number, child: TChild) => {
-    setActiveTab({ idx, name: child.first_name });
+    setActiveTab({idx, name: child.first_name});
     setStudentId(child.id);
     dispatch(
       actGetLessonsByMonth({
@@ -63,7 +63,7 @@ const ClassesForDay = ({
   };
 
   const clickAllHandler = (idx: number) => {
-    setActiveTab({ idx, name: "" });
+    setActiveTab({idx, name: ""});
     dispatch(
       actGetLessonsByMonth({
         date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`,
@@ -102,7 +102,7 @@ const ClassesForDay = ({
     <>
       {!statistics && (
         <div className="loadingBox">
-          <LoadingIndicator />
+          <LoadingIndicator/>
         </div>
       )}
       <h3 className={title}>حصص اليوم {arabicDate}</h3>
@@ -117,20 +117,20 @@ const ClassesForDay = ({
           >
             <span>الكل</span>
           </div>
-        {(statistics && Object.keys(statistics).length > 0) ? statistics?.map((child: TChild, idx: number) => (
-          <div key={child.id} onClick={() => onClickHandler(idx, child)}
-               style={{backgroundColor: activeTab.idx === idx ? "#fff" : "transparent", borderRadius: "5px"}}>
-            <span>{child.first_name}</span>
-          </div>
-        )) : null}
-      </section>}
+          {(statistics && Object.keys(statistics).length > 0) ? statistics?.map((child: TChild, idx: number) => (
+            <div key={child.id} onClick={() => onClickHandler(idx, child)}
+                 style={{backgroundColor: activeTab.idx === idx ? "#fff" : "transparent", borderRadius: "5px"}}>
+              <span>{child.first_name}</span>
+            </div>
+          )) : null}
+        </section>)}
       <section className={lessons_cards}>
-        {loading === "pending" && <LoadingIndicator />}
+        {loading === "pending" && <LoadingIndicator/>}
         {/*{((credintials?.role === "Admin" ? Today_lessons.length === 0 : filteredLessons.length === 0) && !isHourClicked && loading !== "pending") &&*/}
         {/*    <p className="error">ليس لديك حصص اليوم !</p>}*/}
         {(credintials?.role === "Admin"
-          ? Today_lessons.length === 0
-          : filteredLessons.length === 0) &&
+            ? Today_lessons.length === 0
+            : filteredLessons.length === 0) &&
           !isHourClicked &&
           loading !== "pending" && <p className="error">لا توجد حصص !</p>}
         {/*{((credintials?.role === "Admin" && currentHourData.results.length === 0 && classesPageActiveId === 0) && !isHourClicked && loading !== "pending") &&*/}
@@ -138,23 +138,23 @@ const ClassesForDay = ({
         {credintials?.role !== "Admin" &&
           filteredLessons.length > 0 &&
           filteredLessons.map((lesson: TLesson) => {
-            return <LessonCard lesson={lesson} key={lesson.id} />;
+            return <LessonCard lesson={lesson} key={lesson.id}/>;
           })}
         {credintials?.role === "Admin" &&
           Today_lessons.length > 0 &&
           !isHourClicked &&
           loading !== "pending" &&
           (classesPageActiveId === 0
-            ? currentHourData.results
-            : Today_lessons
+              ? currentHourData.results
+              : Today_lessons
           ).map((lesson: TLesson) => {
-            return <LessonCard lesson={lesson} key={lesson.id} />;
+            return <LessonCard lesson={lesson} key={lesson.id}/>;
           })}
         {lessonsForClickedHour &&
           lessonsForClickedHour.length > 0 &&
           isHourClicked &&
           lessonsForClickedHour?.map((lesson: THourLesson) => {
-            return <LessonCard lesson={lesson} key={lesson.id} />;
+            return <LessonCard lesson={lesson} key={lesson.id}/>;
           })}
       </section>
     </>

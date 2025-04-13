@@ -1,9 +1,9 @@
 .cell-phone {
   direction: ltr;
 }
-.MuiDataGrid-cell {
-  font-size: 1.1rem;
-}
+/*.MuiDataGrid-cell {*/
+/*  font-size: 1.1rem;*/
+/*}*/
 .MuiDataGrid-cell .image-container{
   height: inherit;
   display: flex;
