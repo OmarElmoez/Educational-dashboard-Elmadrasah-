@@ -14,23 +14,53 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 
 const arabicLocaleText = {
-  columnMenuSortAsc: 'ترتيب تصاعدي',
-  columnMenuSortDesc: 'ترتيب تنازلي',
+  columnMenuSortAsc: "ترتيب تصاعدي",
+  columnMenuSortDesc: "ترتيب تنازلي",
 
-  columnMenuFilter: 'تصفية',
+  columnMenuFilter: "تصفية",
 
-  columnMenuHideColumn: 'إخفاء العمود',
-  columnMenuManageColumns: 'إدارة الأعمدة',
+  columnMenuHideColumn: "إخفاء العمود",
+  columnMenuManageColumns: "إدارة الأعمدة",
 
-  columnMenuLabel: 'قائمة العمود',
-  columnMenuShowColumns: 'إظهار الأعمدة',
-  columnMenuUnsort: 'إلغاء الترتيب',
+  columnMenuLabel: "قائمة العمود",
+  columnMenuShowColumns: "إظهار الأعمدة",
+  columnMenuUnsort: "إلغاء الترتيب",
 
-  noRowsLabel: 'لا توجد بيانات',
+  noRowsLabel: "لا توجد بيانات",
+
+  columnHeaderSortIconLabel: "ترتيب",
+
+  toolbarExport: "",
+  toolbarExportLabel: "تحميل",
+  toolbarExportCSV: "تحميل بصيغة CSV",
+  toolbarExportPrint: "طباعة",
+
+  toolbarFilters: "",
+  toolbarFiltersTooltipShow: "اظهار الفلاتر",
+  toolbarFiltersTooltipHide: "اخفاء الفلاتر",
+  toolbarFiltersLabel: "اظهار الفلاتر",
 
   toolbarColumns: "",
-  toolbarFilters: "",
-  toolbarExport: "",
+  filterPanelColumns: "الاعمدة",
+  toolbarColumnsLabel: "تحديد الاعمدة",
+
+  filterPanelOperator: "المعامل",
+  filterOperatorContains: "يحتوي على",
+  filterOperatorEquals: "يساوي",
+  filterOperatorStartsWith: "يبدأ بـ",
+  filterOperatorEndsWith: "ينتهي بـ",
+  filterOperatorIs: "هو",
+  filterOperatorNot: "ليس",
+  filterOperatorAfter: "بعد",
+  filterOperatorOnOrAfter: "في أو بعد",
+  filterOperatorBefore: "قبل",
+  filterOperatorOnOrBefore: "في أو قبل",
+  filterOperatorIsEmpty: "فارغ",
+  filterOperatorIsNotEmpty: "غير فارغ",
+  filterOperatorIsAnyOf: "أي من",
+
+  filterPanelInputLabel: "القيمة",
+  filterPanelInputPlaceholder: "ادخل قيمة",
 };
 
 const CustomToolbar = () => (

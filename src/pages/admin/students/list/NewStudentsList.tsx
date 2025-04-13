@@ -1,100 +1,50 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  DataGrid,
   GridColDef,
-  GridPaginationModel,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarExport,
-  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
-import { actGetStudents } from "@/store/table/TableSlice.ts";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import "./newStudentsList.css";
-import Paper from '@mui/material/Paper';
-import ReloadIcon from '@/assets/reload.svg?react';
+import { MuiTable } from "@/components";
+import { useQuery } from "@tanstack/react-query";
+import { getStudents } from "@/services/students";
+import { queryClient } from "@/main";
 
 const NewStudentsList = () => {
-  const {students} = useAppSelector((state) => state.table);
-  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    page: 0,
-    pageSize: 10,
-  });
-  const [loading, setLoading] = useState<boolean>(true);
-  const [next, setNext] = useState<string | null>(null);
-  const [previous, setPrevious] = useState<string | null>(null);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const handleGetStudentData = useCallback(() => {
-    setLoading(true);
-    dispatch(actGetStudents({}))
-    .unwrap()
-    .then((res) => {
-      setLoading(false);
-      setNext(res.next);
-      setPrevious(res.previous);
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.error("Error fetching students:", error);
-    });
-  }, [dispatch]);
 
+  const [page, setPage] = useState(1);
+
+  const increasePage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const decreasePage = () => {
+    setPage((prevPage) => prevPage - 1);
+  };
+
+  const { data: students, isPending } = useQuery({
+    queryKey: ["students", { page }],
+    queryFn: () => getStudents({ page }),
+    staleTime: 0.5 * 60 * 1000
+  });
 
   useEffect(() => {
-    setLoading(true);
-    dispatch(actGetStudents({}))
-    .unwrap()
-    .then((res) => {
-      setLoading(false);
-      setNext(res.next);
-      setPrevious(res.previous);
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.error("Error fetching students:", error);
-    });
-  }, [dispatch]);
+    if (students?.next) {
+      const nextPageNumber = page + 1;
+      const nextPageQueryKey = [
+        "students",
+        { page: nextPageNumber },
+      ];
 
-  // console.log('from students list, next: ', students.next);
-
-  const handleNext = () => {
-    if (next) {
-      setLoading(true);
-      dispatch(actGetStudents({next}))
-      .unwrap()
-      .then((res) => {
-        setLoading(false);
-        setNext(res.next);
-        setPrevious(res.previous);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("Error fetching next page:", error);
-      });
+      if (!queryClient.getQueryData(nextPageQueryKey)) {
+        queryClient.prefetchQuery({
+          queryKey: nextPageQueryKey,
+          queryFn: () => getStudents({ page: nextPageNumber }),
+        });
+      }
     }
-  };
-
-  const handlePrevious = () => {
-    if (previous) {
-      setLoading(true);
-      dispatch(actGetStudents({previous}))
-      .unwrap()
-      .then((res) => {
-        setLoading(false);
-        setNext(res.next);
-        setPrevious(res.previous);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("Error fetching previous page:", error);
-      });
-    }
-  };
+  }, [students, page]);
 
   const initialColumns: GridColDef[] = [
     {
@@ -109,13 +59,13 @@ const NewStudentsList = () => {
       flex: 1,
       renderCell: (params) => (
         <button
-          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
+          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
           onClick={() => navigate(`/admin/students/profile/${params.row.id}`)}
         >
           {params.value}
         </button>
-      )
+      ),
     },
     {
       field: "last_name",
@@ -160,102 +110,29 @@ const NewStudentsList = () => {
       filterable: false,
       renderCell: (params) => (
         <button
-          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
+          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
-          onClick={() => navigate(`/admin/students/profile/${params.row.id}/edit`)}
+          onClick={() =>
+            navigate(`/admin/students/profile/${params.row.id}/edit`)
+          }
         >
-          <EditPenIcon/>
+          <EditPenIcon />
         </button>
       ),
       cellClassName: "edit-cell",
     },
   ];
 
-  const CustomToolbar = () => (
-    <GridToolbarContainer>
-      <GridToolbarExport
-        csvOptions={{
-          fileName: "El Madrasah Dashboard",
-          utf8WithBom: true,
-        }}
-      />
-      <GridToolbarFilterButton/>
-      <GridToolbarColumnsButton/>
-    </GridToolbarContainer>
-  );
-
-  const arabicLocaleText = {
-    // Sorting options
-    columnMenuSortAsc: 'ترتيب تصاعدي',
-    columnMenuSortDesc: 'ترتيب تنازلي',
-
-    // Filter option
-    columnMenuFilter: 'تصفية',
-
-    // Column visibility
-    columnMenuHideColumn: 'إخفاء العمود',
-    columnMenuManageColumns: 'إدارة الأعمدة',
-
-    // Additional context-specific translations
-    columnMenuLabel: 'قائمة العمود',
-    columnMenuShowColumns: 'إظهار الأعمدة',
-    columnMenuUnsort: 'إلغاء الترتيب',
-
-    // Email example from the image
-    noRowsLabel: 'لا توجد بيانات',
-
-    toolbarColumns: "",
-    toolbarFilters: "",
-    toolbarExport: "",
-  };
-
-
   return (
-    <Box component="section">
-        <button className="reload-button" onClick={handleGetStudentData}>
-        <ReloadIcon />
-        <span> إعادة تحميل البيانات</span>
-      </button>
-      <Paper sx={{height: "auto", width: "100%"}}>
-        <DataGrid
-          sx={{
-            border: 0,
-            paddingTop: "1rem",
-          }}
-          localeText={arabicLocaleText}
-          rows={students.data}
-          pageSizeOptions={[10, 20, 50]}
-          columns={initialColumns}
-          paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
-          checkboxSelection
-          disableRowSelectionOnClick
-          // localeText={localeToolbarText}
-          slots={{toolbar: CustomToolbar}}
-          loading={loading}
-          slotProps={{
-            loadingOverlay: {
-              variant: "skeleton",
-              noRowsVariant: "skeleton",
-            },
-          }}
-        />
-      </Paper>
-      <Box
-        sx={{display: "flex", justifyContent: "center", gap: 2, padding: 2}}
-      >
-        <Button
-          variant="contained"
-          onClick={handlePrevious}
-          disabled={!previous}
-        >
-          المجموعة السابقة
-        </Button>
-        <Button variant="contained" onClick={handleNext} disabled={!next}>
-          المجموعة التالية
-        </Button>
-      </Box>
-    </Box>
+    <MuiTable
+      rows={students?.results}
+      columns={initialColumns}
+      loading={isPending}
+      nextFn={() => increasePage()}
+      previousFn={() => decreasePage()}
+      next={students?.next as string}
+      previous={students?.previous as string}
+    />
   );
 };
 
