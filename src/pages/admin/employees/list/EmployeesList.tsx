@@ -22,7 +22,7 @@ export type TEmployeeFilterData = {
   last_name: string;
   email: string;
   phone: string;
-  subject: string,
+  subject_choices: string | null,
   country: string,
   state: string,
   gender: string,

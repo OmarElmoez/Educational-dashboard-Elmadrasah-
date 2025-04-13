@@ -118,7 +118,7 @@ const EmployeesFilterForm = ({
         {...register("phone")}
       />
       <Controller
-        name="subject"
+        name="subject_choices"
         control={control}
         defaultValue=""
         render={({ field }) => (
@@ -331,7 +331,7 @@ const EmployeesFilterForm = ({
               last_name: "",
               email: "",
               phone: "",
-              subject: "",
+              subject_choices: null,
               country: "",
               state: "",
               gender: "",
