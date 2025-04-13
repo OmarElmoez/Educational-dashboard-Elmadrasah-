@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import { MuiTable } from "@/components";
-import { useQuery } from "@tanstack/react-query";
-import { queryClient } from "@/main";
+// import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEmployees } from "@/services/employees";
 import avatar from "@/assets/avatar.png";
 
 import "./teacherDataTable.css";
 import EmployeesFilterForm from "./filter-form/EmployeesFilterForm";
+import useTanStackQuery from "../../../../hooks/useTanStackQuery.ts";
 
 type Subject = {
   id: number;
@@ -34,42 +34,18 @@ export type TEmployeeFilterData = {
   resignation_date_end: string,
 };
 
-const EmployeesList = () => {
-  const navigate = useNavigate();
 
-  const [page, setPage] = useState(1);
+const EmployeesList = () => {
+
+  const navigate = useNavigate();
 
   const [searchTerms, setSearchTerms] = useState<TEmployeeFilterData | null>(
     null
   );
 
-  const increasePage = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  const {data: students, isPending, increasePage, decreasePage, setPage} = useTanStackQuery(
+    {queryKeyPrefix: "employees", fetchFn: getEmployees, filters: searchTerms});
 
-  const decreasePage = () => {
-    setPage((prevPage) => prevPage - 1);
-  };
-
-  const { data: students, isPending } = useQuery({
-    queryKey: ["employees", { page, searchTerms }],
-    queryFn: () => getEmployees({ page, searchTerms }),
-    staleTime: 0.5 * 60 * 1000,
-  });
-
-  useEffect(() => {
-    if (students?.next) {
-      const nextPageNumber = page + 1;
-      const nextPageQueryKey = ["employees", { page: nextPageNumber, searchTerms }];
-
-      if (!queryClient.getQueryData(nextPageQueryKey)) {
-        queryClient.prefetchQuery({
-          queryKey: nextPageQueryKey,
-          queryFn: () => getEmployees({ page: nextPageNumber, searchTerms }),
-        });
-      }
-    }
-  }, [students, page, searchTerms]);
 
   const initialColumns: GridColDef[] = [
     {
@@ -109,7 +85,7 @@ const EmployeesList = () => {
       headerAlign: "center",
       renderCell: (params) => (
         <button
-          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
           disabled={!params.row.id}
           onClick={() =>
             navigate(`/admin/employees/employee-profile/${params.row.id}`)
@@ -194,7 +170,7 @@ const EmployeesList = () => {
               navigate(`/admin/employees/edit-employee/${params.row.id}`)
             }
           >
-            <EditPenIcon />
+            <EditPenIcon/>
           </button>
         );
       },
@@ -212,7 +188,7 @@ const EmployeesList = () => {
       rows={students?.results}
       columns={initialColumns}
       loading={isPending}
-      filterForm={<EmployeesFilterForm submitFn={onSearchHandler} />}
+      filterForm={<EmployeesFilterForm submitFn={onSearchHandler}/>}
       nextFn={() => increasePage()}
       previousFn={() => decreasePage()}
       next={students?.next as string}

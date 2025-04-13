@@ -1,49 +1,16 @@
-import { useEffect, useState } from "react";
-import {
-  GridColDef,
-} from "@mui/x-data-grid";
+import { GridColDef, } from "@mui/x-data-grid";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import { MuiTable } from "@/components";
-import { useQuery } from "@tanstack/react-query";
 import { getFamilies } from "@/services/families.ts";
-import { queryClient } from "@/main.tsx";
+import useTanStackQuery from "@/hooks/useTanStackQuery.ts";
 
 const FamiliesList = () => {
+
   const navigate = useNavigate();
 
-  const [page, setPage] = useState(1);
-
-  const increasePage = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  const decreasePage = () => {
-    setPage((prevPage) => prevPage - 1);
-  };
-
-  const { data: families, isPending } = useQuery({
-    queryKey: ["families", { page }],
-    queryFn: () => getFamilies({ page }),
-    staleTime: 0.5 * 60 * 1000
-  });
-
-  useEffect(() => {
-    if (families?.next) {
-      const nextPageNumber = page + 1;
-      const nextPageQueryKey = [
-        "families",
-        { page: nextPageNumber },
-      ];
-
-      if (!queryClient.getQueryData(nextPageQueryKey)) {
-        queryClient.prefetchQuery({
-          queryKey: nextPageQueryKey,
-          queryFn: () => getFamilies({ page: nextPageNumber }),
-        });
-      }
-    }
-  }, [families, page]);
+  const {data: families, isPending, increasePage, decreasePage} = useTanStackQuery(
+    {queryKeyPrefix: 'families', fetchFn: getFamilies});
 
   const initialColumns: GridColDef[] = [
     {
@@ -58,7 +25,7 @@ const FamiliesList = () => {
       flex: 1,
       renderCell: (params) => (
         <button
-          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
           disabled={!params.row.id}
           onClick={() =>
             navigate(`/admin/students/families-list/${params.row.id}`)
@@ -112,13 +79,13 @@ const FamiliesList = () => {
       filterable: false,
       renderCell: (params) => (
         <button
-          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
           disabled={!params.row.id}
           onClick={() =>
             navigate(`/admin/students/families-list/${params.row.id}/edit`)
           }
         >
-          <EditPenIcon />
+          <EditPenIcon/>
         </button>
       ),
       cellClassName: "edit-cell",

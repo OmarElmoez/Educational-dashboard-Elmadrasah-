@@ -6,16 +6,17 @@ import createSearchParamsString from "@/utils/createSearchParamsString";
 
 export const getEmployees = async ({
                                      page,
-                                     searchTerms,
+                                     filters,
                                    }: {
   page: number;
-  searchTerms?: TEmployeeFilterData | null;
+  filters?: TEmployeeFilterData | null;
 }) => {
+
   try {
     let url = "/employee/modify/";
 
-    if (searchTerms) {
-      const queryStr = createSearchParamsString(searchTerms)
+    if (filters) {
+      const queryStr = createSearchParamsString(filters)
       url += `?${queryStr}&page=${page}`;
     } else {
       url += `?page=${page}`;

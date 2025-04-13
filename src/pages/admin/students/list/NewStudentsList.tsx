@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   GridColDef,
 } from "@mui/x-data-grid";
@@ -6,45 +5,15 @@ import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import "./newStudentsList.css";
 import { MuiTable } from "@/components";
-import { useQuery } from "@tanstack/react-query";
 import { getStudents } from "@/services/students";
-import { queryClient } from "@/main";
+import useTanStackQuery from "@/hooks/useTanStackQuery.ts";
 
 const NewStudentsList = () => {
+
   const navigate = useNavigate();
 
-  const [page, setPage] = useState(1);
-
-  const increasePage = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  const decreasePage = () => {
-    setPage((prevPage) => prevPage - 1);
-  };
-
-  const { data: students, isPending } = useQuery({
-    queryKey: ["students", { page }],
-    queryFn: () => getStudents({ page }),
-    staleTime: 0.5 * 60 * 1000
-  });
-
-  useEffect(() => {
-    if (students?.next) {
-      const nextPageNumber = page + 1;
-      const nextPageQueryKey = [
-        "students",
-        { page: nextPageNumber },
-      ];
-
-      if (!queryClient.getQueryData(nextPageQueryKey)) {
-        queryClient.prefetchQuery({
-          queryKey: nextPageQueryKey,
-          queryFn: () => getStudents({ page: nextPageNumber }),
-        });
-      }
-    }
-  }, [students, page]);
+  const {data: students, isPending, increasePage, decreasePage} = useTanStackQuery(
+    {queryKeyPrefix: 'students', fetchFn: getStudents});
 
   const initialColumns: GridColDef[] = [
     {
@@ -130,8 +99,8 @@ const NewStudentsList = () => {
       loading={isPending}
       nextFn={() => increasePage()}
       previousFn={() => decreasePage()}
-      next={students?.next as string}
-      previous={students?.previous as string}
+      next={students?.next || ""}
+      previous={students?.previous || ""}
     />
   );
 };

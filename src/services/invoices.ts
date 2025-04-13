@@ -6,19 +6,19 @@ import createSearchParamsString from "@/utils/createSearchParamsString";
 
 type TProps = {
   page: number | null;
-  searchTerm?: {
+  filters?: {
     startDate: string;
     endDate: string;
     status: TStatus;
   } | null;
 };
 
-export const getInvoices = async ({ searchTerm, page }: TProps) => {
+export const getInvoices = async ({ filters, page }: TProps) => {
   let url = "customer/invoices/";
 
   try {
-    if (searchTerm) {
-      const queryStr = createSearchParamsString(searchTerm);
+    if (filters) {
+      const queryStr = createSearchParamsString(filters);
       url += `?${queryStr}&page=${page}`;
     } else {
       url += `?page=${page}`;

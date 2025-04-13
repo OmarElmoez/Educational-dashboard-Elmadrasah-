@@ -39,7 +39,7 @@ const FilterForm = ({submitFn}: FilterFormProps) => {
           setValue={setValue}
           label="من"
           register={register}
-          name="startDate"
+          name="date"
           error=""
           removePreviewChoices={removePreviewChoices}
           style={{alignSelf: 'flex-end'}}
@@ -49,7 +49,7 @@ const FilterForm = ({submitFn}: FilterFormProps) => {
           setValue={setValue}
           label="الى"
           register={register}
-          name="endDate"
+          name="due_date"
           error=""
           removePreviewChoices={removePreviewChoices}
           style={{alignSelf: 'flex-end'}}
@@ -81,8 +81,8 @@ const FilterForm = ({submitFn}: FilterFormProps) => {
             reset();
             setRemovePreviewChoices(true)
             submitFn({
-              startDate: '',
-              endDate: '',
+              date: '',
+              due_date: '',
               status: ''
             })
           }}

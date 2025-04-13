@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TStatus } from "@/types/Dropdown";
 import { MuiTable } from "@/components";
@@ -7,53 +7,23 @@ import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import SearchIcon from "@/assets/search_icon.svg?react";
 import FilterForm from "@/pages/admin/lists/invoice/FilterForm.tsx";
-import { useQuery } from "@tanstack/react-query";
-import { getInvoices } from "@/services/invoices";
-import { queryClient } from "@/main";
+import useTanStackQuery from "../../../hooks/useTanStackQuery.ts";
+import { getInvoices } from "@/services/invoices.ts";
 
 export type TFilterData = {
-  startDate: string;
-  endDate: string;
+  date: string;
+  due_date: string;
   status: TStatus;
 };
 // -----------------------------------------------------------------------------------------
 const InvoicesList = () => {
+
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState<TFilterData | null>(null);
 
-  const [page, setPage] = useState(1);
-
-  const { data: invoices, isPending } = useQuery({
-    queryKey: ["invoices", { page, searchTerm }],
-    queryFn: () => getInvoices({ page, searchTerm }),
-    staleTime: 60 * 1000,
-  });
-
-  useEffect(() => {
-    if (invoices?.next) {
-      const nextPageNumber = page + 1;
-      const nextPageQueryKey = [
-        "invoices",
-        { page: nextPageNumber, searchTerm },
-      ];
-
-      if (!queryClient.getQueryData(nextPageQueryKey)) {
-        queryClient.prefetchQuery({
-          queryKey: nextPageQueryKey,
-          queryFn: () => getInvoices({ page: nextPageNumber, searchTerm }),
-        });
-      }
-    }
-  }, [invoices, page, searchTerm]);
-
-  const increasePage = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  const decreasePage = () => {
-    setPage((prevPage) => prevPage - 1);
-  };
+  const {data: invoices, isPending, increasePage, decreasePage, setPage} = useTanStackQuery(
+    {queryKeyPrefix: "invoices", fetchFn: getInvoices, filters: searchTerm});
 
   const onSearchHandler = (data: TFilterData) => {
     setSearchTerm(data);
