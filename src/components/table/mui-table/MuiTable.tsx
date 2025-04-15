@@ -140,7 +140,7 @@ const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
           }}
           localeText={arabicLocaleText}
           rows={rows}
-          // pageSizeOptions={[10, 20, 50]}
+          pageSizeOptions={[100]}
           rowCount={rowCount}
           paginationModel={paginationModel}
           paginationMode="server"
