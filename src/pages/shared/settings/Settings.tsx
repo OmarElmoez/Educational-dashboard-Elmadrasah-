@@ -1,13 +1,13 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import styles from "./settings.module.css";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 import { useContext } from "react";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import Button from "@mui/material/Button";
 
 const { nav } = styles;
 const SettingsPage = () => {
-  const {  user } = useAppSelector((state) => state.profile);
+  // const {  user } = useAppSelector((state) => state.profile);
   const { setHeaderTitle } = useContext(CalendarContext);
   const navigate = useNavigate();
   const currentPath = window.location.pathname;
@@ -31,16 +31,16 @@ const SettingsPage = () => {
         >
           تغيير كلمة المرور
         </Button>
-        {user?.user_type === "Admin" && (
-          <>
-          <Button
-            variant={currentPath.includes("roles") ? "contained" : "outlined"}
-            onClick={() => handleNavigation("roles", "الأدوار والمسؤوليات")}
-            >
-            الأدوار والمسؤوليات
-          </Button>
-            </>
-        )}
+        {/*{user?.user_type === "Admin" && (*/}
+        {/*  <>*/}
+        {/*  <Button*/}
+        {/*    variant={currentPath.includes("roles") ? "contained" : "outlined"}*/}
+        {/*    onClick={() => handleNavigation("roles", "الأدوار والمسؤوليات")}*/}
+        {/*    >*/}
+        {/*    الأدوار والمسؤوليات*/}
+        {/*  </Button>*/}
+        {/*    </>*/}
+        {/*)}*/}
       </nav>
       <section>
         <Outlet />
