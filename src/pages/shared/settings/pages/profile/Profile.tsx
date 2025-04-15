@@ -85,7 +85,7 @@ const Profile = () => {
               className="inputField"
               id="email"
               {...register("email")}
-              disabled
+              disabled={user?.user_type === "Teacher"}
             />
           </div>
           <div className="group">
@@ -125,7 +125,7 @@ const Profile = () => {
           </div>
         </section>
 
-        {user?.user_type === "Admin" && (
+        {user?.user_type !== "Teacher" && (
           <div className={saveChangesBtn}>
             <button type="submit" disabled={loading === "pending"}>
               {loading === "pending" ? "جاري الحفظ..." : "حفظ التغييرات"}

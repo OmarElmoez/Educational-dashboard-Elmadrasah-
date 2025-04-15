@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 
 const { nav } = styles;
 const SettingsPage = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const {  user } = useAppSelector((state) => state.profile);
   const { setHeaderTitle } = useContext(CalendarContext);
   const navigate = useNavigate();
   const currentPath = window.location.pathname;
@@ -25,14 +25,14 @@ const SettingsPage = () => {
         >
           البيانات الشخصية 
         </Button>
-        {user?.user_type === "Admin" && (
-          <>
-          <Button
+        <Button
           variant={currentPath.includes("security") ? "contained" : "outlined"}
           onClick={() => handleNavigation("security", " الملف الشخصي")}
         >
           تغيير كلمة المرور
         </Button>
+        {user?.user_type === "Admin" && (
+          <>
           <Button
             variant={currentPath.includes("roles") ? "contained" : "outlined"}
             onClick={() => handleNavigation("roles", "الأدوار والمسؤوليات")}
