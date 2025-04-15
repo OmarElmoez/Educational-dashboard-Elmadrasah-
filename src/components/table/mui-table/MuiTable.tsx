@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import Paper from "@mui/material/Paper";
-import Drawer from '@mui/material/Drawer';
+import Drawer from "@mui/material/Drawer";
 import {
   DataGrid,
   GridColDef,
@@ -8,10 +8,9 @@ import {
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarExport,
-  GridToolbarFilterButton
+  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { Button } from "@mui/material";
-import Box from "@mui/material/Box";
 
 const arabicLocaleText = {
   columnMenuSortAsc: "ترتيب تصاعدي",
@@ -71,57 +70,69 @@ const CustomToolbar = () => (
         utf8WithBom: true,
       }}
     />
-    <GridToolbarFilterButton/>
-    <GridToolbarColumnsButton/>
+    <GridToolbarFilterButton />
+    <GridToolbarColumnsButton />
   </GridToolbarContainer>
 );
 
 type TTableProps<T extends Record<string, unknown>, U extends GridColDef> = {
-  rows: T[] | undefined,
-  columns: U[],
-  loading: boolean,
-  filterForm?: ReactNode,
-  nextFn: () => void,
-  next: string | null,
-  previous: string | null,
-  previousFn: () => void,
-}
+  rows: T[] | undefined;
+  rowCount?: number;
+  columns: U[];
+  loading: boolean;
+  filterForm?: ReactNode;
+  nextFn: () => void;
+  next?: string | null;
+  previous?: string | null;
+  previousFn: () => void;
+};
 
 const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
-                                                                             rows,
-                                                                             columns,
-                                                                             loading,
-                                                                             filterForm,
-                                                                             nextFn,
-                                                                             previousFn,
-                                                                             next,
-                                                                             previous,
-                                                                           }: TTableProps<T, U>) => {
-
+  rows,
+  rowCount,
+  columns,
+  loading,
+  filterForm,
+  nextFn,
+  previousFn,
+}: TTableProps<T, U>) => {
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
-    pageSize: 10,
+    pageSize: 100,
   });
-
-  const [openDrawer, setOpenDrawer] = useState(false)
-
+  const [openDrawer, setOpenDrawer] = useState(false);
   const toggleDrawer = (status: boolean) => () => {
     setOpenDrawer(status);
-  }
+  };
+  const handlePaginationModelChange = (model: GridPaginationModel) => {
+    setPaginationModel(model);
+    if (model.page > paginationModel.page) {
+      nextFn();
+    } else if (model.page < paginationModel.page) {
+      previousFn();
+    }
+  };
 
   return (
     <>
-      {filterForm && <>
+      {filterForm && (
+        <>
           <div className="text-left">
-              <Button onClick={toggleDrawer(true)}>+ بحث متقدم</Button>
+            <Button onClick={toggleDrawer(true)}>+ بحث متقدم</Button>
           </div>
-          <Drawer open={openDrawer} onClose={toggleDrawer(false)} SlideProps={{
-            direction: "right",
-          }} keepMounted>
+          <Drawer
+            open={openDrawer}
+            onClose={toggleDrawer(false)}
+            SlideProps={{
+              direction: "right",
+            }}
+            keepMounted
+          >
             {filterForm}
           </Drawer>
-      </>}
-      <Paper sx={{height: "auto", width: "100%"}}>
+        </>
+      )}
+      <Paper sx={{ height: "auto", width: "100%" }}>
         <DataGrid
           sx={{
             border: 0,
@@ -129,13 +140,15 @@ const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
           }}
           localeText={arabicLocaleText}
           rows={rows}
-          pageSizeOptions={[10, 20, 50]}
-          columns={columns}
+          // pageSizeOptions={[10, 20, 50]}
+          rowCount={rowCount}
           paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
+          paginationMode="server"
+          onPaginationModelChange={handlePaginationModelChange}
+          columns={columns}
           checkboxSelection
           disableRowSelectionOnClick
-          slots={{toolbar: CustomToolbar}}
+          slots={{ toolbar: CustomToolbar }}
           loading={loading}
           slotProps={{
             loadingOverlay: {
@@ -143,30 +156,23 @@ const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
               noRowsVariant: "skeleton",
             },
             panel: {
-              placement: 'auto-start'
-            }
+              placement: "auto-start",
+            },
           }}
         />
       </Paper>
-      <Box
-        sx={{display: "flex", justifyContent: "center", gap: 2, padding: 2}}
+      {/* <Box
+        sx={{ display: "flex", justifyContent: "center", gap: 2, padding: 2 }}
       >
-        <Button
-          variant="contained"
-          onClick={previousFn}
-          disabled={!previous}
-        >
+        <Button variant="contained" onClick={previousFn} disabled={!previous}>
           المجموعة السابقة
         </Button>
-        <Button variant="contained"
-                onClick={nextFn}
-                disabled={!next}
-        >
+        <Button variant="contained" onClick={nextFn} disabled={!next}>
           المجموعة التالية
         </Button>
-      </Box>
+      </Box> */}
     </>
-  )
-}
+  );
+};
 
 export default MuiTable;

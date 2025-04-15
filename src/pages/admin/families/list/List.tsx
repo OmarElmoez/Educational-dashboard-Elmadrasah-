@@ -11,7 +11,6 @@ const FamiliesList = () => {
 
   const {data: families, isPending, increasePage, decreasePage} = useTanStackQuery(
     {queryKeyPrefix: 'families', fetchFn: getFamilies});
-
   const initialColumns: GridColDef[] = [
     {
       field: "id",
@@ -95,6 +94,7 @@ const FamiliesList = () => {
   return (
     <MuiTable
       rows={families?.results}
+      rowCount={families?.count || 0}
       columns={initialColumns}
       loading={isPending}
       nextFn={() => increasePage()}

@@ -95,6 +95,7 @@ const NewStudentsList = () => {
   return (
     <MuiTable
       rows={students?.results}
+      rowCount={students?.count}
       columns={initialColumns}
       loading={isPending}
       nextFn={() => increasePage()}

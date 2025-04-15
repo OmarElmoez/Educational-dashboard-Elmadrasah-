@@ -43,7 +43,7 @@ const EmployeesList = () => {
     null
   );
 
-  const {data: students, isPending, increasePage, decreasePage, setPage} = useTanStackQuery(
+  const {data: employees, isPending, increasePage, decreasePage, setPage} = useTanStackQuery(
     {queryKeyPrefix: "employees", fetchFn: getEmployees, filters: searchTerms});
 
 
@@ -185,14 +185,15 @@ const EmployeesList = () => {
 
   return (
     <MuiTable
-      rows={students?.results}
+      rows={employees?.results}
+      rowCount={employees?.count}
       columns={initialColumns}
       loading={isPending}
       filterForm={<EmployeesFilterForm submitFn={onSearchHandler}/>}
       nextFn={() => increasePage()}
       previousFn={() => decreasePage()}
-      next={students?.next as string}
-      previous={students?.previous as string}
+      next={employees?.next as string}
+      previous={employees?.previous as string}
     />
   );
 };
