@@ -87,7 +87,7 @@ const GeneralUnscheduledLists = () => {
       setStudentsCount(res.count);
     });
 
-    getUnscheduledFamilyList(1, null).then((res) => {
+    getUnscheduledFamilyList({page: 1}).then((res) => {
       setFamiliesCount(res.count);
     });
   }, []);

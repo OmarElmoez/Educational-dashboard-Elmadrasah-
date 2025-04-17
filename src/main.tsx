@@ -13,7 +13,10 @@ import { FeedbackProvider } from "./store/context";
 import { ThemeProvider } from "@mui/material";
 import "./global.css";
 
+import { registerLicense } from '@syncfusion/ej2-base'
+
 const queryClient = new QueryClient();
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtfdHVVRmJYUkF/W0FWYUA=');
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider clientId="381013725217-ud8vf0e6va9i9mjvko45popltcu43efn.apps.googleusercontent.com">

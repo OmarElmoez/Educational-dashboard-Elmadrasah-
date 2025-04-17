@@ -1,5 +1,12 @@
 @import "tailwindcss";
-
+@import "@syncfusion/ej2-base/styles/material.css";
+@import "@syncfusion/ej2-react-grids/styles/material.css";
+@import "@syncfusion/ej2-buttons/styles/material.css";
+@import "@syncfusion/ej2-dropdowns/styles/material.css";
+@import "@syncfusion/ej2-inputs/styles/material.css";
+@import "@syncfusion/ej2-navigations/styles/material.css";
+@import "@syncfusion/ej2-popups/styles/material.css";
+@import "@syncfusion/ej2-splitbuttons/styles/material.css";
 @font-face {
   font-family: "Expo";
   src: url("./fonts/ExpoArabicLight.ttf") format("truetype");
@@ -668,4 +675,26 @@ input#formatted_number::placeholder {
   background: #f1f1f1;
   border-radius: 10px;
   overflow: hidden;
+}
+
+/* Syncfusion Table */
+.syncfusion-grid {
+  font-family: 'Expo','IBM Plex Sans Arabic', sans-serif !important;
+}
+
+.e-pager.e-rtl .e-parentmsgbar {
+  float: right !important;
+  direction: ltr;
+}
+
+.e-grid .e-emptyrow td {
+  text-align: center !important;
+  font-weight: 500;
+  color: #666;
+}
+
+.e-grid.e-rtl td.e-rowcell,
+.e-grid.e-rtl .e-headercell .e-headercelldiv {
+  text-align: center !important;
+  padding-inline: 0 !important;
 }

@@ -41,9 +41,7 @@ const useTanStackQuery = <T>({
 
   const [page, setPage] = useState<number>(initialPage);
 
-  console.log('from tanstack query, filters: ', filters);
   const params = useMemo(() => ({ page, filters }), [page, filters]);
-  console.log('from tanstack query, params: ', params);
 
   const queryKey = [queryKeyPrefix, params];
 
