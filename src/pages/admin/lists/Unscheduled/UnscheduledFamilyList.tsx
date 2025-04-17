@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 // import { useState } from "react";
 // import { TABLE_HEAD_DATA } from "@/constants";
 // import MainTable from "@/components/table/MainTable";
@@ -26,7 +27,11 @@ import { Box, Button } from "@mui/material";
 //   debounceSearchTerm: string | null;
 // };
 // -----------------------------------------------------------------------------------------
-const UnscheduledFamilyList = () => {
+
+type UnscheduledFamilyListProps = {
+  setFamiliesCount: React.Dispatch<React.SetStateAction<number>>;
+};
+const UnscheduledFamilyList : React.FC<UnscheduledFamilyListProps> = ({ setFamiliesCount }) => {
   // const filterFormRef = useRef<TModalRef>(null);
 
   // table data states:
@@ -36,9 +41,15 @@ const UnscheduledFamilyList = () => {
   // const [searchTerm, setSearchTerm] = useState<FilterFormData | null>(null);
   // const [checkRows, setCheckRows] = useState<number[]>([]);
 
-  const {data: families, increasePage, decreasePage, page} = useTanStackQuery({
-    queryKeyPrefix: 'families', fetchFn: getUnscheduledFamilyList
+  const {data: unscheduledFamilies, increasePage, decreasePage, page} = useTanStackQuery({
+    queryKeyPrefix: 'unscheduledFamilies', fetchFn: getUnscheduledFamilyList
   })
+
+    useEffect(() => {
+      if (unscheduledFamilies?.count !== undefined) {
+        setFamiliesCount(unscheduledFamilies?.count || 0);
+      }
+    }, [unscheduledFamilies, setFamiliesCount]);
 
   // handle change pages:
   // const handleNextPage = () => {
@@ -129,7 +140,7 @@ const UnscheduledFamilyList = () => {
       {/*</BasicModal>*/}
 
       <GridComponent
-        dataSource={families?.results || []}
+        dataSource={unscheduledFamilies?.results || []}
         enableRtl={true}
         cssClass="syncfusion-grid"
         detailTemplate={detailTemplate}

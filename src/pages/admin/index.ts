@@ -27,7 +27,7 @@ const InvoicesList = lazy(() => import('./lists/InvoicesList'));
 const PackageBalanceList = lazy(() => import('./lists/balance/PackageBalanceList'));
 const InvoiceDetails = lazy(() => import('./lists/invoice/InvoiceDetails'));
 const GeneralUnscheduledLists = lazy(() => import('./lists/Unscheduled/GeneralUnscheduledLists'));
-const UnscheduledList = lazy(() => import('./lists/Unscheduled/UnscheduledList'));
+const UnscheduledSeparateStudentsTable = lazy(() => import('@/components/table/unscheduled-tables/UnscheduledSeparateStudentsTable'));
 const UnscheduledFamilyList = lazy(() => import('./lists/Unscheduled/UnscheduledFamilyList'));
 const GeneralScheduledEmployeesLists = lazy(
   () => import('./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists'));
@@ -53,7 +53,7 @@ export {
   ScheduleLesson,
   RescheduleLesson,
   GeneralUnscheduledLists,
-  UnscheduledList,
+  UnscheduledSeparateStudentsTable,
   UnscheduledFamilyList,
   GeneralScheduledEmployeesLists,
   SchedulingErrorsTableList,

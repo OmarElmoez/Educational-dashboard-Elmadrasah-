@@ -3,6 +3,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { TAllEmployeesData } from "@/types/table";
 import { TEmployeeFilterData } from "@/pages/admin/employees/list/EmployeesList";
 import createSearchParamsString from "@/utils/createSearchParamsString";
+import { TAddEmployeeFormData } from "@/schemas/AddEmployeeSchema";
 
 export const getEmployees = async ({
                                      page,
@@ -28,3 +29,14 @@ export const getEmployees = async ({
     throw axiosErrorHandler(error);
   }
 };
+
+type TSpecificEmployeeResponse = TAddEmployeeFormData;
+
+export const getSpecificEmployee = async (employeeID: number): Promise<TSpecificEmployeeResponse> => {
+  try {
+    const response = await axiosInstance.get<TSpecificEmployeeResponse>(`/employee/modify/${employeeID}`);
+    return response.data;
+  } catch (error) {
+    return axiosErrorHandler(error)
+  }
+}

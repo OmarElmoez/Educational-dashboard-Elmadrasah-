@@ -22,30 +22,36 @@ export type TEmployeeFilterData = {
   last_name: string;
   email: string;
   phone: string;
-  subject_choices: string | null,
-  country: string,
-  state: string,
-  gender: string,
-  is_active: string,
-  teacher_language: string[] | string,
-  hire_date_start: string,
-  hire_date_end: string,
-  resignation_date_start: string,
-  resignation_date_end: string,
+  subject_choices: string | null;
+  country: string;
+  state: string;
+  gender: string;
+  is_active: string;
+  teacher_language: string[] | string;
+  hire_date_start: string;
+  hire_date_end: string;
+  resignation_date_start: string;
+  resignation_date_end: string;
 };
 
-
 const EmployeesList = () => {
-
   const navigate = useNavigate();
 
   const [searchTerms, setSearchTerms] = useState<TEmployeeFilterData | null>(
     null
   );
 
-  const {data: employees, isPending, increasePage, decreasePage, setPage} = useTanStackQuery(
-    {queryKeyPrefix: "employees", fetchFn: getEmployees, filters: searchTerms});
-
+  const {
+    data: employees,
+    isPending,
+    increasePage,
+    decreasePage,
+    setPage,
+  } = useTanStackQuery({
+    queryKeyPrefix: "employees",
+    fetchFn: getEmployees,
+    filters: searchTerms,
+  });
 
   const initialColumns: GridColDef[] = [
     {
@@ -85,7 +91,7 @@ const EmployeesList = () => {
       headerAlign: "center",
       renderCell: (params) => (
         <button
-          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
+          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
           onClick={() =>
             navigate(`/admin/employees/employee-profile/${params.row.id}`)
@@ -170,7 +176,7 @@ const EmployeesList = () => {
               navigate(`/admin/employees/edit-employee/${params.row.id}`)
             }
           >
-            <EditPenIcon/>
+            <EditPenIcon />
           </button>
         );
       },
@@ -189,7 +195,7 @@ const EmployeesList = () => {
       rowCount={employees?.count}
       columns={initialColumns}
       loading={isPending}
-      filterForm={<EmployeesFilterForm submitFn={onSearchHandler}/>}
+      filterForm={<EmployeesFilterForm submitFn={onSearchHandler} />}
       nextFn={() => increasePage()}
       previousFn={() => decreasePage()}
       next={employees?.next as string}

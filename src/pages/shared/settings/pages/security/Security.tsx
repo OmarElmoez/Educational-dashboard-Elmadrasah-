@@ -164,7 +164,7 @@ const Security = () => {
                     onChange={handleChange}
                   />
                   {errors.confirm_new_password && (
-                    <span className="error">{errors.confirm_new_password}</span>
+                    <div className="error">{errors.confirm_new_password}</div>
                   )}
                 </div>
               </section>

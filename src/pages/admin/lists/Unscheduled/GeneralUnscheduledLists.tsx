@@ -1,110 +1,44 @@
-import { useEffect, useRef, useState } from "react";
-// import { Link } from "react-router-dom";
+import { useState } from "react";
 import styles from "../lists.module.css";
-import { TModalRef } from "@/types/shared";
-// import FilterIcon from "@/assets/filter_icon.svg?react";
-// import AddStudentIcon from "@/assets/add_user_icon.svg?react";
-// import FamilyIcon from "@/assets/family_icon.svg?react";
-// import Download from "@/assets/download.svg?react";
-// import UploadIcon from "@/assets/upload_icon.svg?react";
 import { Row } from "@/components";
-import {
-  getUnscheduledFamilyList,
-  getUnscheduledList,
-} from "@/services/unscheduled";
 import UnscheduledFamilyList from "./UnscheduledFamilyList";
-import UnscheduledList from "./UnscheduledList";
-
-// -----------------------------------------------------------------------------------------
-// const LIST_OPTIONS = [
-//   { id: 1, link: "", title: "إضافة عائلة جديدة", icon: <FamilyIcon /> },
-//   { id: 2, link: "", title: "تنزيل الطلاب", icon: <UploadIcon /> },
-//   { id: 3, link: "", title: "استيراد الطلاب", icon: <Download /> },
-//   { id: 4, link: "", title: "إضافة طالب جديد", icon: <AddStudentIcon /> },
-// ];
-
-// -----------------------------------------------------------------------------------------
+import UnscheduledSeparateStudentsTable from "@/components/table/unscheduled-tables/UnscheduledSeparateStudentsTable";
 const {
   balance_container,
-  // balance_left,
   balance_right,
   balance_right_header,
   balance_right_header_title,
   tab_button,
   active_tab_button,
-  // header_filter,
-  // filter_button,
-  // link_item,
   divider,
 } = styles;
 
-
 // -----------------------------------------------------------------------------------------
 const GeneralUnscheduledLists = () => {
-  const filterStudentFormRef = useRef<TModalRef>(null);
-  const filterFamilyFormRef = useRef<TModalRef>(null);
-
-  // table data states:
-  const [allDataCount, setAllDataCount] = useState<number>(0);
-  const [studentsCount, setStudentsCount] = useState<number>(0);
-  const [familiesCount, setFamiliesCount] = useState<number>(0);
-  const [debounceSearchTerm] = useState<string | null>(null);
-
   const [activeTab, setActiveTab] = useState<string>("family");
-
+  const [familiesCount, setFamiliesCount] = useState<number>(0);
+  const [studentsCount, setStudentsCount] = useState<number>(0);
   const TABS = [
     {
       id: "family",
       title: "طلاب عائلات",
-      component: UnscheduledFamilyList,
-      formRef: filterFamilyFormRef,
+      component: UnscheduledFamilyList({ setFamiliesCount }),
     },
     {
       id: "independent",
       title: "طلاب مستقلين",
-      component: UnscheduledList,
-      formRef: filterStudentFormRef,
+      component: UnscheduledSeparateStudentsTable({ setStudentsCount }),
     },
   ];
-
-  // Debounce Function
-  // const handleSearch = (debouncedSearchTerm: string | null) => {
-
-    // setDebounceSearchTerm(debouncedSearchTerm);
-    //   get All Data length
-    // getUnscheduledList(1, null).then((res) => {
-    //   setStudentsCount(res.count);
-    // });
-    //
-    // getUnscheduledFamilyList(1, null).then((res) => {
-    //   setFamiliesCount(res.count);
-    // });
-  // }
-
-  useEffect(() => {
-    // get All Data length
-    getUnscheduledList(1, null).then((res) => {
-      setStudentsCount(res.count);
-    });
-
-    getUnscheduledFamilyList({page: 1}).then((res) => {
-      setFamiliesCount(res.count);
-    });
-  }, []);
-
-  useEffect(() => {
-    setAllDataCount(studentsCount + familiesCount);
-  }, [studentsCount, familiesCount]);
 
   return (
     <>
       <section className={balance_container}>
         <div className={balance_right}>
           <h3 className={balance_right_header_title}>
-            الطلاب الغير مجدولين ({allDataCount})
+            الطلاب الغير مجدولين ({(studentsCount || 0) + (familiesCount || 0)})
           </h3>
           <div className={balance_right_header} style={{ alignItems: "end" }}>
-            {/* TABS BAR */}
             <Row style={{ marginBottom: ".4rem" }}>
               {TABS.map((tab) => (
                 <button
@@ -115,57 +49,22 @@ const GeneralUnscheduledLists = () => {
                   }
                 >
                   {tab.title} (
-                  {tab.id === "family" ? familiesCount : studentsCount})
+                  {tab.id === "family"
+                    ? familiesCount || 0
+                    : studentsCount || 0}
+                  )
                 </button>
               ))}
             </Row>
-
-            {/* <div className={header_filter}>
-              <DebounceSearchBox handleSearch={handleSearch} />
-
-              <button
-                className={filter_button}
-                onClick={() => {
-                  if(activeTab === 'family') {
-                    filterFamilyFormRef?.current?.open()
-                  } else {
-                    filterStudentFormRef?.current?.open()
-                  }
-                }}
-              >
-                <FilterIcon />
-              </button>
-            </div> */}
-
-
           </div>
-
           <hr className={divider} style={{ marginTop: 0 }} />
-
           <div className="main_page_container">
             {TABS.map(
               (tab) =>
-                tab.id === activeTab && (
-                  <div key={tab.id}>
-                    <tab.component formRef={tab.formRef} debounceSearchTerm={debounceSearchTerm} />
-                  </div>
-                )
+                tab.id === activeTab && <div key={tab.id}>{tab.component}</div>
             )}
           </div>
         </div>
-
-        {/* <div className={balance_left}>
-          <ul>
-            {LIST_OPTIONS.map((item) => (
-              <li key={item.id}>
-                <Link to={item.link} className={link_item}>
-                  {item.icon}
-                  <p>{item.title}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div> */}
       </section>
     </>
   );

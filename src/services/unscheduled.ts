@@ -38,28 +38,33 @@ type TUnscheduledResponse = {
  * @returns A promise that resolves to the response data, which includes the count, next and previous page URLs, and the list of unscheduled items.
  */
 
-export const getUnscheduledList = async (
-  page: number,
-  searchTerm: FilterFormData | null
-): Promise<TUnscheduledResponse> => {
-  const response = await axiosInstance.get<TUnscheduledResponse>(
-    "/event/unscheduled-students/?type=individual",
-    {
-      params: {
-        page: page,
-        ...searchTerm,
-      },
-    }
-  );
-
-  return response.data;
-};
-
 type TFamilyProps = {
   page: number;
   filters?: FilterFormData;
 }
 
+export const getUnscheduledList = async (
+  {
+    page,
+    filters
+  }: TFamilyProps): Promise<TUnscheduledResponse> => {
+  let url = "/event/unscheduled-students/?type=individual";
+
+  try {
+    if (filters) {
+      const queryStr = createSearchParamsString(filters);
+      url += `?${queryStr}&page=${page}`;
+    } else {
+      url += `&page=${page}`;
+    }
+
+    const response = await axiosInstance.get<TUnscheduledResponse>(url);
+
+    return response.data
+  } catch (error) {
+    throw axiosErrorHandler(error)
+  }
+}
 export const getUnscheduledFamilyList = async (
   {
     page,
@@ -84,7 +89,10 @@ export const getUnscheduledFamilyList = async (
 }
 
 
-export const getscheduledWinnersTeachersList = async (std_id: string, id: string): Promise<TdraftLessonsStatusResponse[]> => {
+export const getscheduledWinnersTeachersList = async (
+  std_id: string,
+  id: string
+): Promise<TdraftLessonsStatusResponse[]> => {
   // const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`event/draft-lessons/scheduled/?customer_id=86&package_id=5`);
   const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(
     `/event/draft-lessons/scheduled/?customer_id=${std_id}&package_id=${id}`);
@@ -92,7 +100,10 @@ export const getscheduledWinnersTeachersList = async (std_id: string, id: string
   return response.data;
 };
 
-export const getscheduledParticipantsTeachersList = async (std_id: string, id: string): Promise<TdraftLessonsStatusResponse[]> => {
+export const getscheduledParticipantsTeachersList = async (
+  std_id: string,
+  id: string
+): Promise<TdraftLessonsStatusResponse[]> => {
   // const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`/event/draft-lessons/participants/?`);
   const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(
     `/event/draft-lessons/participants/?customer_id=${std_id}&package_id=${id}`);
@@ -100,7 +111,10 @@ export const getscheduledParticipantsTeachersList = async (std_id: string, id: s
   return response.data;
 };
 
-export const getscheduledErrorsList = async (std_id: string, id: string): Promise<TdraftLessonsStatusResponse[]> => {
+export const getscheduledErrorsList = async (
+  std_id: string,
+  id: string
+): Promise<TdraftLessonsStatusResponse[]> => {
   // const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(`/event/draft-lessons/scheduling_error/?customer_id=13&package_id=27`);
   const response = await axiosInstance.get<TdraftLessonsStatusResponse[]>(
     `/event/draft-lessons/scheduling_error/?customer_id=${std_id}&package_id=${id}`);

@@ -29,9 +29,9 @@
 
 .group {
   flex: 1;
-  display: grid;
+  display: flex;
   gap: 0.8rem;
-  position: relative;
+  flex-direction: column;
 }
 
 .group label {
