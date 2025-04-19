@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
   DateOrTimePicker,
   Dropdown,
@@ -12,68 +12,93 @@ import {
 import { STATUS_OPTIONS, TIMEZONES_OPTIONS } from "@/constants";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
-import { actGetDropdownOptions, actSendDataToServer } from "@/store/single-actions";
+import {
+  actGetDropdownOptions,
+  actSendDataToServer,
+} from "@/store/single-actions";
 import { Heading } from "@/components/UI";
 import { useForm } from "react-hook-form";
 import { TDataForSpecificEmployee } from "@/schemas/AddEmployeeSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EditEmployeeSchema, TEditEmployeeForm } from '@/schemas/EditEmployeeSchema.ts';
-import { EVENTS_TYPE, WAGE_TYPES, WORK_WAGE_TYPES, } from "@/constants/dropdown-options";
+import {
+  EditEmployeeSchema,
+  TEditEmployeeForm,
+} from "@/schemas/EditEmployeeSchema.ts";
+import {
+  EVENTS_TYPE,
+  WAGE_TYPES,
+  WORK_WAGE_TYPES,
+} from "@/constants/dropdown-options";
 import createListOfIds from "./utils/createListOfIds.ts";
 import { useFeedback } from "@/store/context";
 import usePredefinedChoices from "./hooks/usePredefinedChoices.ts";
-import actGetSpecificEmployees from "@/store/table/act/actGetSpecificEmployee.ts";
 import { useComponentLoading } from "@/hooks";
+import { getSpecificEmployee } from "@/services/employees.ts";
 
 const EditEmployeeForm = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const location = useLocation();
-  const [specificEmployeeData, setSpecificEmployeeData] = useState<TDataForSpecificEmployee>(location.state)
+  const [specificEmployeeData, setSpecificEmployeeData] =
+    useState<TDataForSpecificEmployee>(location.state);
   const dispatch = useAppDispatch();
-  const {openFeedbackModal} = useFeedback();
+  const { openFeedbackModal } = useFeedback();
   const navigate = useNavigate();
-  const {setPending, isPending, setFailed, setSucceeded} = useComponentLoading()
+  const { setPending, isPending, setFailed, setSucceeded } =
+    useComponentLoading();
   const {
     register,
     handleSubmit,
     control,
-    formState: {errors},
+    formState: { errors },
     setValue,
     reset,
   } = useForm<TEditEmployeeForm>({
     mode: "onBlur",
-    resolver: zodResolver(EditEmployeeSchema)
+    resolver: zodResolver(EditEmployeeSchema),
   });
-  const setPreviousData = useCallback((response: TDataForSpecificEmployee) => {
-    setValue('is_active', response.is_active ? "true" : "false");
-    setValue('subject_choices', createListOfIds(response?.subject_choices_response || []) || [" "]);
-    setValue('initial_students', createListOfIds(response?.initial_students_response || []) || [" "]);
-    setValue('groups_id', createListOfIds(response?.groups || []));
-    setValue('user_permissions_id', createListOfIds(response?.user_permissions || []));
-    setValue('employee_wage', response?.employee_wage || '')
-    setValue('work_wage', response?.work_wage || '')
-  }, [setValue])
+  const setPreviousData = useCallback(
+    (response: TDataForSpecificEmployee) => {
+      setValue("is_active", response.is_active ? "true" : "false");
+      setValue(
+        "subject_choices",
+        createListOfIds(response?.subject_choices_response || []) || [" "]
+      );
+      setValue(
+        "initial_students",
+        createListOfIds(response?.initial_students_response || []) || [" "]
+      );
+      setValue("groups_id", createListOfIds(response?.groups || []));
+      setValue(
+        "user_permissions_id",
+        createListOfIds(response?.user_permissions || [])
+      );
+      setValue("employee_wage", response?.employee_wage || "");
+      setValue("work_wage", response?.work_wage || "");
+    },
+    [setValue]
+  );
 
   const [wage, setWage] = useState({
     wage_type: "",
     work_wage_type: "",
-  })
+  });
 
+  const params = useParams();
+  const employeeId = Number(params.id);
   useEffect(() => {
-    dispatch(actGetSpecificEmployees({employeeID: Number(id)})).unwrap().then(
-      (res) => {
-        // @ts-ignore
-        setSpecificEmployeeData(res);
+    if (employeeId) {
+      getSpecificEmployee(employeeId).then((data) => {
+        setSpecificEmployeeData(data);
         setWage({
-          wage_type: res?.wage_type,
-          work_wage_type: res?.work_wage_type,
-        })
-      }
-    );
-  }, [dispatch, id]);
+          wage_type: data?.wage_type,
+          work_wage_type: data?.work_wage_type,
+        });
+      });
+    }
+  }, [employeeId]);
 
   useEffect(() => {
-    dispatch(actGetDropdownOptions({optionsFor: "subjects"}));
+    dispatch(actGetDropdownOptions({ optionsFor: "subjects" }));
     if (specificEmployeeData) {
       reset(specificEmployeeData);
       setPreviousData(specificEmployeeData);
@@ -81,26 +106,28 @@ const EditEmployeeForm = () => {
   }, [dispatch, reset, setPreviousData, specificEmployeeData]);
 
   const isTeacher = specificEmployeeData?.include_as_teacher === true;
-  const isStaff = specificEmployeeData?.employee_type === 'Staff';
+  const isStaff = specificEmployeeData?.employee_type === "Staff";
 
-  const ONLY_STAFF = !isTeacher && isStaff
+  const ONLY_STAFF = !isTeacher && isStaff;
 
   const onSubmit = (data: TEditEmployeeForm) => {
     if (data.is_active === "") {
       setFailed();
-      openFeedbackModal('failed', "برجاء تحديد الحالة.");
+      openFeedbackModal("failed", "برجاء تحديد الحالة.");
       return;
     }
 
     const processedData = {
       ...data,
-      groups_id: data['groups_id']?.map(item => Number(item)),
-      user_permissions_id: data['user_permissions_id']?.map(item => Number(item)),
-      subject_choices: data['subject_choices']?.map(item => Number(item)),
-      initial_students: data['initial_students']?.map(item => Number(item)),
-      is_active: data["is_active"] === "true" ? 'True' : 'False',
-      full_name: data['full_name'] || "",
-    }
+      groups_id: data["groups_id"]?.map((item) => Number(item)),
+      user_permissions_id: data["user_permissions_id"]?.map((item) =>
+        Number(item)
+      ),
+      subject_choices: data["subject_choices"]?.map((item) => Number(item)),
+      initial_students: data["initial_students"]?.map((item) => Number(item)),
+      is_active: data["is_active"] === "true" ? "True" : "False",
+      full_name: data["full_name"] || "",
+    };
     setPending();
     dispatch(
       actSendDataToServer({
@@ -108,43 +135,60 @@ const EditEmployeeForm = () => {
         formData: processedData,
         hasFiles: true,
         isEdit: true,
-        id
+        id,
       })
     )
-    .unwrap()
-    .then((res) => {
-      if (typeof res === 'string' || (typeof res === "object" && res !== null && Object.values(res).every(
-        errors => Array.isArray(errors)))) {
-        setFailed();
-        openFeedbackModal('failed', "حدثت مشكلة أثناء إرسال طلبك.");
-        return;
-      }
+      .unwrap()
+      .then((res) => {
+        if (
+          typeof res === "string" ||
+          (typeof res === "object" &&
+            res !== null &&
+            Object.values(res).every((errors) => Array.isArray(errors)))
+        ) {
+          setFailed();
+          openFeedbackModal("failed", "حدثت مشكلة أثناء إرسال طلبك.");
+          return;
+        }
 
-      setSucceeded();
-      openFeedbackModal("succeeded", "تم تعديل بيانات الموظف بنجاح!");
-      navigate(-1);
-    })
-    .catch((error) => {
-      setFailed();
-      openFeedbackModal("failed", error);
-    });
+        setSucceeded();
+        openFeedbackModal("succeeded", "تم تعديل بيانات الموظف بنجاح!");
+        navigate(-1);
+      })
+      .catch((error) => {
+        setFailed();
+        openFeedbackModal("failed", error);
+      });
   };
 
-  const subjectChoices = usePredefinedChoices(specificEmployeeData, 'subject_choices_response');
-  const initialStudentsChoices = usePredefinedChoices(specificEmployeeData, 'initial_students_response');
-  const groupsIdsChoices = usePredefinedChoices(specificEmployeeData, 'groups');
-  const userPermissionsChoices = usePredefinedChoices(specificEmployeeData, 'user_permissions');
+  const subjectChoices = usePredefinedChoices(
+    specificEmployeeData,
+    "subject_choices_response"
+  );
+  const initialStudentsChoices = usePredefinedChoices(
+    specificEmployeeData,
+    "initial_students_response"
+  );
+  const groupsIdsChoices = usePredefinedChoices(specificEmployeeData, "groups");
+  const userPermissionsChoices = usePredefinedChoices(
+    specificEmployeeData,
+    "user_permissions"
+  );
 
   return (
     <>
-      {!specificEmployeeData && <div className="loadingBox">
-          <LoadingIndicator/>
-      </div>}
-      {isPending && <div className="loadingBox">
-          <LoadingIndicator/>
-      </div>}
+      {!specificEmployeeData && (
+        <div className="loadingBox">
+          <LoadingIndicator />
+        </div>
+      )}
+      {isPending && (
+        <div className="loadingBox">
+          <LoadingIndicator />
+        </div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Heading text="نوع الموظف"/>
+        <Heading text="نوع الموظف" />
         <Row>
           <Dropdown
             label="الحالة"
@@ -204,9 +248,9 @@ const EditEmployeeForm = () => {
             label="الهاتف المحمول"
           />
         </Row>
-        <hr className="hr"/>
+        <hr className="hr" />
         <span className="mainContainer">
-          <Heading text="المرفقات"/>
+          <Heading text="المرفقات" />
         </span>
 
         <Row>
@@ -247,7 +291,7 @@ const EditEmployeeForm = () => {
             register={register}
             name="national_id_expiration_date"
             error={errors.national_id_expiration_date?.message as string}
-            style={{alignSelf: 'flex-end'}}
+            style={{ alignSelf: "flex-end" }}
             predefinedDate={specificEmployeeData?.national_id_expiration_date}
           />
         </Row>
@@ -269,27 +313,29 @@ const EditEmployeeForm = () => {
             register={register}
             name="passport_expiration_date"
             error={errors.passport_expiration_date?.message as string}
-            style={{alignSelf: 'flex-end'}}
+            style={{ alignSelf: "flex-end" }}
             predefinedDate={specificEmployeeData?.passport_expiration_date}
           />
         </Row>
-        {!ONLY_STAFF && <>
-            <hr className="hr"/>
-            <Heading text="المواد"/>
+        {!ONLY_STAFF && (
+          <>
+            <hr className="hr" />
+            <Heading text="المواد" />
             <Row>
-                <MultiChoices
-                    register={register}
-                    name="subject_choices"
-                    disabled={!isTeacher && isStaff}
-                    error={errors.subject_choices?.message as string}
-                    predefinedChoices={subjectChoices}
-                    setValue={setValue}
-                />
-                <article className="group"></article>
+              <MultiChoices
+                register={register}
+                name="subject_choices"
+                disabled={!isTeacher && isStaff}
+                error={errors.subject_choices?.message as string}
+                predefinedChoices={subjectChoices}
+                setValue={setValue}
+              />
+              <article className="group"></article>
             </Row>
-        </>}
-        <hr className="hr"/>
-        <Heading text="تفاصيل التوظيف"/>
+          </>
+        )}
+        <hr className="hr" />
+        <Heading text="تفاصيل التوظيف" />
 
         <Row>
           <InputField
@@ -302,21 +348,24 @@ const EditEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        {!ONLY_STAFF && <>
+        {!ONLY_STAFF && (
+          <>
             <Row>
-                <Dropdown
-                    label="نوع أجر الدرس"
-                    name="wage_type"
-                    register={register}
-                    options={WAGE_TYPES}
-                    disabled={!isTeacher && isStaff}
-                    handleChange={(val) => setWage((prev) => ({
-                      ...prev,
-                      wage_type: val,
-                    }))}
-                    error={errors.wage_type?.message as string}
-                    isEdit
-                />
+              <Dropdown
+                label="نوع أجر الدرس"
+                name="wage_type"
+                register={register}
+                options={WAGE_TYPES}
+                disabled={!isTeacher && isStaff}
+                handleChange={(val) =>
+                  setWage((prev) => ({
+                    ...prev,
+                    wage_type: val,
+                  }))
+                }
+                error={errors.wage_type?.message as string}
+                isEdit
+              />
 
               {wage.wage_type === "wage" ? (
                 <InputField
@@ -332,19 +381,21 @@ const EditEmployeeForm = () => {
               )}
             </Row>
             <Row>
-                <Dropdown
-                    label="نوع الأجر غير التدريسي"
-                    name="work_wage_type"
-                    register={register}
-                    options={WORK_WAGE_TYPES}
-                    disabled={!isTeacher && isStaff}
-                    error={errors.work_wage_type?.message as string}
-                    handleChange={(val) => setWage((prev) => ({
-                      ...prev,
-                      work_wage_type: val,
-                    }))}
-                    isEdit
-                />
+              <Dropdown
+                label="نوع الأجر غير التدريسي"
+                name="work_wage_type"
+                register={register}
+                options={WORK_WAGE_TYPES}
+                disabled={!isTeacher && isStaff}
+                error={errors.work_wage_type?.message as string}
+                handleChange={(val) =>
+                  setWage((prev) => ({
+                    ...prev,
+                    work_wage_type: val,
+                  }))
+                }
+                isEdit
+              />
 
               {wage.work_wage_type === "wage" ? (
                 <InputField
@@ -359,31 +410,33 @@ const EditEmployeeForm = () => {
                 <article className="group"></article>
               )}
             </Row>
-        </>}
+          </>
+        )}
 
-        {!ONLY_STAFF && <>
-            <hr className="hr"/>
+        {!ONLY_STAFF && (
+          <>
+            <hr className="hr" />
 
-            <Heading text="الطلاب المعينون"/>
+            <Heading text="الطلاب المعينون" />
 
             <Row>
-                <MultiChoices
-                    register={register}
-                    name="initial_students"
-                    disabled={!isTeacher && isStaff}
-                    error={errors.initial_students?.message as string}
-                    predefinedChoices={initialStudentsChoices}
-                    setValue={setValue}
-                />
+              <MultiChoices
+                register={register}
+                name="initial_students"
+                disabled={!isTeacher && isStaff}
+                error={errors.initial_students?.message as string}
+                predefinedChoices={initialStudentsChoices}
+                setValue={setValue}
+              />
 
-                <article className="group"></article>
+              <article className="group"></article>
             </Row>
-        </>}
+          </>
+        )}
 
+        <hr className="hr" />
 
-        <hr className="hr"/>
-
-        <Heading text="إنشاء رابط الحصة"/>
+        <Heading text="إنشاء رابط الحصة" />
 
         <Row>
           <Dropdown
@@ -397,8 +450,8 @@ const EditEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr"/>
-        <Heading text="إضافة صلاحيات"/>
+        <hr className="hr" />
+        <Heading text="إضافة صلاحيات" />
         <Row>
           <MultiChoices
             register={register}
@@ -411,9 +464,9 @@ const EditEmployeeForm = () => {
           <article className="group"></article>
         </Row>
 
-        <hr className="hr"/>
+        <hr className="hr" />
 
-        <Heading text="إضافة صلاحيات خاصة"/>
+        <Heading text="إضافة صلاحيات خاصة" />
         <Row>
           <MultiChoices
             register={register}
@@ -430,7 +483,6 @@ const EditEmployeeForm = () => {
         </button>
       </form>
     </>
-  )
-    ;
+  );
 };
 export default EditEmployeeForm;

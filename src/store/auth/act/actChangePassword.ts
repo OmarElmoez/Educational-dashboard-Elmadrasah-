@@ -25,9 +25,7 @@ const actChangePassword = createAsyncThunk(
         return response.data;
       }
 
-      return rejectWithValue(
-        response.data?.message || "Password change failed"
-      );
+      return rejectWithValue(response);
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

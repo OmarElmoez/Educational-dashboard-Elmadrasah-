@@ -7,16 +7,16 @@ type TResponseData<T> = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: T[],
-}
+  results: T[];
+};
 
 type TProps<T> = {
-  queryKeyPrefix: string,
-  fetchFn: (params: { page: number } & TFilters) => Promise<TResponseData<T>>,
-  filters?: TFilters | null,
-  staleTime?: number,
-  initialPage?: number,
-}
+  queryKeyPrefix: string;
+  fetchFn: (params: { page: number } & TFilters) => Promise<TResponseData<T>>;
+  filters?: TFilters | null;
+  staleTime?: number;
+  initialPage?: number;
+};
 
 type THookResponse<T> = {
   page: number;
@@ -27,16 +27,15 @@ type THookResponse<T> = {
   data: TResponseData<T> | undefined;
   isPending: boolean;
   error: Error | null;
-}
+};
 
 const useTanStackQuery = <T>({
-                               queryKeyPrefix,
-                               fetchFn,
-                               filters,
-                               staleTime = 0.5 * 60 * 1000,
-                               initialPage = 1
-                             }: TProps<T>): THookResponse<T> => {
-
+  queryKeyPrefix,
+  fetchFn,
+  filters,
+  staleTime = 0.5 * 60 * 1000,
+  initialPage = 1,
+}: TProps<T>): THookResponse<T> => {
   const queryClient = useQueryClient();
 
   const [page, setPage] = useState<number>(initialPage);
@@ -45,14 +44,10 @@ const useTanStackQuery = <T>({
 
   const queryKey = [queryKeyPrefix, params];
 
-  const {
-    data,
-    isPending,
-    error
-  } = useQuery({
+  const { data, isPending, error } = useQuery({
     queryKey,
     queryFn: () => fetchFn(params),
-    staleTime
+    staleTime,
   });
 
   const increasePage = () => {
@@ -92,8 +87,8 @@ const useTanStackQuery = <T>({
     goToPage,
     data,
     isPending,
-    error
+    error,
   };
-}
+};
 
 export default useTanStackQuery;

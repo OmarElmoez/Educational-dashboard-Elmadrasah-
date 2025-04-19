@@ -1,35 +1,32 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "@/store/hooks";
 import { TDataForSpecificEmployee } from "@/schemas/AddEmployeeSchema";
-import actGetSpecificEmployees from "@/store/table/act/actGetSpecificEmployee";
 import Styles from "./EmployeeProfileData.module.css";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import { SimpleTable } from "@/pages/shared/components";
 import { LoadingIndicator } from "@/components";
+import { getSpecificEmployee } from "@/services/employees";
 
 const { sectionContainer, infoContainer, iconButton } = Styles;
 const EmployeeProfileData = () => {
   const [specificEmployeeData, setSpecificEmployeeData] =
     useState<TDataForSpecificEmployee>();
-  const dispatch = useAppDispatch();
-  const params = useParams();
-  const employeeId = Number(params.id);
-  const navigate = useNavigate();
+    const params = useParams();
+    const navigate = useNavigate();
+    const employeeId = Number(params.id);
+      useEffect(() => {
+        if (employeeId) {
+          getSpecificEmployee(employeeId).then((data) => {
+            setSpecificEmployeeData(data);
+          });
+        }
+      }, [employeeId]);
   const editEmployee = () => {
     navigate(`/admin/employees/edit-employee/${employeeId}`, {
       state: specificEmployeeData,
     });
   };
-  useEffect(() => {
-    dispatch(actGetSpecificEmployees({ employeeID: employeeId })).then(
-      (res) => {
-        setSpecificEmployeeData(res.payload as TDataForSpecificEmployee);
-      }
-    );
-    // eslint-disable-next-line
-  }, [dispatch, employeeId]);
   return (
     <>
       {!specificEmployeeData && <div className="loadingBox">
