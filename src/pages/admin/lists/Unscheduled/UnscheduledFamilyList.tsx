@@ -255,7 +255,7 @@ const UnscheduledFamilyList : React.FC<UnscheduledFamilyListProps> = ({ setFamil
           onClick={() => {
             decreasePage();
           }}
-          disabled={page <= 1}
+          disabled={!unscheduledFamilies?.previous}
         >
           <svg
             width="20"
@@ -278,7 +278,7 @@ const UnscheduledFamilyList : React.FC<UnscheduledFamilyListProps> = ({ setFamil
           onClick={() => {
             increasePage();
           }}
-          // disabled={!families?.count || page >= Math.ceil(families.count / 10)}
+          disabled={!unscheduledFamilies?.next}
         >
           <svg
             width="20"
