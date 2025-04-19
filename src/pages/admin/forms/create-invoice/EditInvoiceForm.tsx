@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { actGetData, actGetDropdownOptions, actSendDataToServer, } from "@/store/single-actions";
 import { useFeedback } from "@/store/context";
 import { DateOrTimePicker, Dropdown, InputField, LoadingIndicator, Row, SingleCheckbox, } from "@/components";
@@ -42,7 +42,7 @@ const EditInvoiceForm = () => {
   const dispatch = useAppDispatch();
 
   const {id} = useParams();
-  const {credintials} = useAppSelector((state) => state.auth);
+  // const {credintials} = useAppSelector((state) => state.auth);
   const {openFeedbackModal} = useFeedback();
   const navigate = useNavigate();
 
@@ -65,7 +65,7 @@ const EditInvoiceForm = () => {
     mode: "onBlur",
     resolver: zodResolver(EditInvoiceSchema),
     defaultValues: {
-      tax_treatment: "Tax Exclusive",
+      // tax_treatment: "Tax Exclusive",
       // formatted_number: invoiceNumber,
       payment_allocations: [],
       charges: [],
@@ -165,6 +165,7 @@ const EditInvoiceForm = () => {
         // setValue('formatted_number', res.formatted_number)
         setCustomer(res.customer)
         setInvoiceData(res)
+        setTreatmentType(res.tax_treatment)
       })
       .catch((err) => console.error(err));
     };
@@ -178,9 +179,9 @@ const EditInvoiceForm = () => {
 
   const [invoiceData, setInvoiceData] = useState<TEditInvoiceFormData>()
 
-  const [treatmentType, setTreatmentType] = useState<TTax_Treatment>(
-    watch("tax_treatment")
-  );
+  const [treatmentType, setTreatmentType] = useState<TTax_Treatment>();
+
+  const [taxCount, setTaxCount] = useState("");
 
   const handleFilter = async () => {
     if (watchFiltration) {
@@ -237,7 +238,7 @@ const EditInvoiceForm = () => {
   };
 
 
-  const watchFields = watch(["tax_treatment", "tax_count"]);
+  // const watchFields = watch(["tax_count"]);
 
   //  calculate packagesAmount and chargesAmount
   const calculateAmounts = useCallback(() => {
@@ -265,28 +266,29 @@ const EditInvoiceForm = () => {
       let salesTax = 0;
 
       // const [taxTreatment] = watchFields;
+      if (treatmentType) {
+        switch (treatmentType) {
+          case "Tax Exclusive":
+            salesTax = (salesTaxRate / 100) * subtotal;
+            total = subtotal + salesTax;
+            subtotal;
+            break;
 
-      switch (treatmentType) {
-        case "Tax Exclusive":
-          salesTax = (salesTaxRate / 100) * subtotal;
-          total = subtotal + salesTax;
-          subtotal;
-          break;
+          case "Tax Inclusive":
+            salesTax = (salesTaxRate / 100) * subtotal;
+            subtotal = subtotal - salesTax;
+            total = subtotal + salesTax;
+            break;
 
-        case "Tax Inclusive":
-          salesTax = (salesTaxRate / 100) * subtotal;
-          subtotal = subtotal - salesTax;
-          total = subtotal + salesTax;
-          break;
+          case "Tax Exempt":
+            salesTax = 0;
+            total = subtotal;
+            subtotal;
+            break;
 
-        case "Tax Exempt":
-          salesTax = 0;
-          total = subtotal;
-          subtotal;
-          break;
-
-        default:
-          throw new Error("Invalid tax treatment");
+          default:
+            throw new Error("Invalid tax treatment");
+        }
       }
 
       return {total, salesTax, subtotal};
@@ -301,20 +303,20 @@ const EditInvoiceForm = () => {
 
     setValue("subtotal", sub_total.toFixed(2));
 
-    const [tax_treatment, tax_count] = watchFields;
+    // const [tax_treatment, tax_count] = watchFields;
 
-    if (tax_treatment !== null && tax_count !== "" && tax_count !== undefined) {
+    if (treatmentType !== null && taxCount !== "" && taxCount !== undefined) {
 
       const {total, salesTax, subtotal} = calculateTotal(
         parseFloat(sub_total.toString()),
-        parseFloat(tax_count)
+        parseFloat(taxCount)
       );
 
       setValue("total", total.toFixed(2));
       setValue("sales_tax_total", salesTax.toFixed(2));
       setValue("subtotal", subtotal.toFixed(2));
     }
-  }, [calculateAmounts, calculateTotal, setValue, watchFields]);
+  }, [calculateAmounts, calculateTotal, setValue, taxCount, treatmentType]);
   useEffect(() => {
     handleCalcTax();
   }, [handleCalcTax, treatmentType]);
@@ -384,15 +386,16 @@ const EditInvoiceForm = () => {
     .unwrap()
     .then((res: vatRes[]) => {
       setValue("tax_count", `${res[0].vat_rate}`)
+      setTaxCount(res[0].vat_rate)
     });
-    // eslint-disable-next-line
-  }, [dispatch, credintials?.token]);
+
+  }, [dispatch, setValue]);
 
   const {isPending, setPending, setFailed, setSucceeded} = useComponentLoading();
 
   const onSubmit = (data: TEditInvoiceFormData) => {
 
-    data.tax_count = parseFloat(data.tax_count).toString();
+    data.tax_count = data.tax_count && parseFloat(data.tax_count).toString();
 
     data.status = dataStatus;
     if (chargesFields?.length === 0 && packagesFields?.length === 0) {
@@ -618,6 +621,7 @@ const EditInvoiceForm = () => {
               register={register}
               chosen={`${servicesList[index]}.value`}
               error={errors?.packages?.[index]?.service?.message as string}
+              // isEdit
             />
 
             <InputField

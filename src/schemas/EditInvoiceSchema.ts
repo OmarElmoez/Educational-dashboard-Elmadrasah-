@@ -20,7 +20,7 @@ export const EditInvoiceSchema = z.object({
     .default("Tax Exclusive"),
   subtotal: z.string().optional(),
   sales_tax_total: z.string().nullable().optional(),
-  tax_count: z.string(),
+  tax_count: z.string().optional(),
   total: z.string().nullable().optional(),
 
   terms_text: z.string().nullable().optional(),

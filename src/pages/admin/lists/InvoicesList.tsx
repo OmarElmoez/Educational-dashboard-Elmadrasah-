@@ -96,11 +96,11 @@ const InvoicesList = () => {
             <SearchIcon />
           </button>
           <button
-            style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+            style={{cursor: params.row.id ? "pointer" : "not-allowed", visibility: params.row.status !== "Paid" ? "visible" : 'hidden'}}
             disabled={!params.row.id}
             onClick={() => navigate(`/admin/edit-invoice/${params.row.id}`)}
           >
-            <EditPenIcon />
+            <EditPenIcon/>
           </button>
         </div>
       ),
