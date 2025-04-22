@@ -3,7 +3,7 @@ import {
 } from "@mui/x-data-grid";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
-import "./newStudentsList.css";
+import "./studentsList.css";
 import { MuiTable } from "@/components";
 import { getStudents } from "@/services/students";
 import useTanStackQuery from "@/hooks/useTanStackQuery.ts";

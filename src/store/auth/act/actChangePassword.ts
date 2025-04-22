@@ -14,7 +14,7 @@ const actChangePassword = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
 
     try {
-      const url = "/user/change_password/";
+      const url = "/user/change_password";
       const data = {
         old_password: formData.old_password,
         new_password: formData.new_password,

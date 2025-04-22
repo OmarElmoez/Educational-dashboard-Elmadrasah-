@@ -111,6 +111,7 @@ const InvoicesList = () => {
   return (
     <MuiTable
       rows={invoices?.results}
+      rowCount={invoices?.count}
       columns={initialColumns}
       loading={isPending}
       filterForm={<FilterForm submitFn={onSearchHandler} />}

@@ -17,7 +17,7 @@ const CopyInvoicesForm = lazy(() => import('./forms/create-invoice/CopyInvoicesF
 const ScheduleLesson = lazy(() => import('./forms/scheduling/ScheduleLesson'));
 const RescheduleLesson = lazy(() => import('./forms/scheduling/RescheduleLesson'));
 // LIST:
-const StudentsList = lazy(() => import('./students/list/NewStudentsList.tsx'));
+const StudentsList = lazy(() => import('./students/list/studentsList.tsx'));
 const EditStudent = lazy(() => import('./students/edit/EditStudent.tsx'));
 const StudentProfile = lazy(() => import('./students/profile/StudentProfile'));
 const FamiliesList = lazy(() => import('./families/list/List.tsx'));
