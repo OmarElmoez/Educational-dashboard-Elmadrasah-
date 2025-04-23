@@ -33,7 +33,7 @@ export const CalendarContext = createContext<TCalendarContextType>({
 
 const CalendarProvider = ({children}: { children: ReactNode }) => {
 
-  const [headerTitle, setHeaderTitle] = useState('');
+  const [headerTitle, setHeaderTitle] = useState(() => localStorage.getItem('headerTitle') || '');
 
   const [classesPageActiveId, setClassesPageActiveId] = useState(0)
   const [joinClassPageActiveId, setJoinClassPageActiveId] = useState(0)

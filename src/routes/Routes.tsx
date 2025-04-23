@@ -317,7 +317,6 @@ const router = createBrowserRouter([
           <PackageBalanceList/>
         </PageSuspense>,
       },
-
       {
         path: 'schedule-lesson/:id/:credit/:package_id',
         element: <PageSuspense>

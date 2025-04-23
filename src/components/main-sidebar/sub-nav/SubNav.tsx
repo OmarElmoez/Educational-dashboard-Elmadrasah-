@@ -31,6 +31,7 @@ const SubNav = ({style, subLinks, setIsSubNavOpen}: {
           <NavLink to={link.path} key={link.title} className={sub_nav__link} onClick={() => {
             setIsSubNavOpen(false)
             link.page_title && setHeaderTitle(link.page_title)
+            link.page_title && localStorage.setItem('headerTitle', link.page_title)
           }}>
             {link.icon}
             <span>{link.title}</span>

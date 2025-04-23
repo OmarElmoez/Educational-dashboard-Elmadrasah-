@@ -96,6 +96,10 @@ const MainSidebar = ({data}: TSidebarProps) => {
                 key={title}
                 onClick={() => {
                   setActiveLinkTitle(title);
+                  { children === undefined &&
+                    setHeaderTitle(title)
+                    localStorage.setItem('headerTitle', title)
+                  }
                   handleToggle();
                 }}
               >
@@ -147,12 +151,18 @@ const MainSidebar = ({data}: TSidebarProps) => {
           <menu className={main_menu}>
             <p className={support}>الدعم</p>
             <li>
-              <NavLink to="settings" onClick={() => setHeaderTitle("اعدادات الحساب")}>
+              <NavLink to="settings" onClick={() => {
+                setHeaderTitle("اعدادات الحساب")
+                localStorage.setItem('headerTitle', "اعدادات الحساب")
+              }}>
                 <SettingsIcon/>
               </NavLink>
             </li>
             <li>
-              <NavLink to="help" onClick={() => setHeaderTitle("المساعدة")}>
+              <NavLink to="help" onClick={() => {
+                setHeaderTitle("المساعدة")
+                localStorage.setItem('headerTitle', "المساعدة")
+              }}>
                 <HelpIcon/>
               </NavLink>
             </li>

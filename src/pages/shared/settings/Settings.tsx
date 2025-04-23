@@ -15,6 +15,7 @@ const SettingsPage = () => {
   const handleNavigation = (path: string, title: string) => {
     navigate(path);
     setHeaderTitle(title);
+    localStorage.setItem('headerTitle', title)
   };
   return (
     <>
