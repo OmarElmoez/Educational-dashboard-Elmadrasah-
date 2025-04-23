@@ -8,20 +8,40 @@ import {
   Inject,
 } from "@syncfusion/ej2-react-grids";
 import { Box, Button } from "@mui/material";
+import Drawer from "@mui/material/Drawer";
+import { useState } from "react";
+import FilterForm from "@/pages/admin/orders/FilterForm.tsx";
+
+export type TOrdersFilterData = {
+  start_date: string;
+  end_date: string;
+};
+
 const OrdersList = () => {
+
+  const [searchTerm, setSearchTerm] = useState<TOrdersFilterData | null>(null);
+
   const {
     data: orders,
     page,
     increasePage,
     decreasePage,
-  } = useTanStackQuery({ queryKeyPrefix: "orders", fetchFn: getOrders });
+    setPage,
+  } = useTanStackQuery({ queryKeyPrefix: "orders", fetchFn: getOrders, filters: searchTerm });
+
+  const onSearchHandler = (data: TOrdersFilterData) => {
+    setSearchTerm(data);
+    setPage(1)
+  };
 
   const detailTemplate = (props: {
     items: {
       id: number;
+      quantity: number;
       product_title: string;
       variant_title: string;
       price: string;
+      discount: string;
     }[];
   }) => {
     return (
@@ -30,25 +50,58 @@ const OrdersList = () => {
           <ColumnDirective
             field="product_title"
             headerText="المنتج"
-            textAlign="Center"
           />
           <ColumnDirective
             field="variant_title"
             headerText="الباقة"
-            textAlign="Center"
+          />
+          <ColumnDirective
+            field="quantity"
+            headerText="الكمية"
+          />
+          <ColumnDirective
+            field="discount"
+            headerText="الخصم"
+            template={(props: {
+              discount: number;
+              price: number;
+            }) =>
+              props.discount && props.price
+                ? `${((props.discount / props.price) * 100).toFixed(
+                  2
+                )} %`
+                : "لا توجد بيانات"
+            }
           />
           <ColumnDirective
             field="price"
             headerText="السعر"
-            textAlign="Center"
           />
         </ColumnsDirective>
       </GridComponent>
     );
   };
 
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const toggleDrawer = (status: boolean) => () => {
+    setOpenDrawer(status);
+  };
+
   return (
     <>
+        <div className="text-left">
+          <Button onClick={toggleDrawer(true)}>+ بحث متقدم</Button>
+        </div>
+        <Drawer
+          open={openDrawer}
+          onClose={toggleDrawer(false)}
+          SlideProps={{
+            direction: "right",
+          }}
+          keepMounted
+        >
+          <FilterForm submitFn={onSearchHandler} />
+        </Drawer>
       <GridComponent
         dataSource={orders?.results || []}
         enableRtl={true}
@@ -79,9 +132,9 @@ const OrdersList = () => {
               total_price: number;
             }) =>
               props.total_discount && props.total_price
-                ? `${((props.total_discount / props.total_price) * 100).toFixed(
+                ? ` ${((props.total_discount / props.total_price) * 100).toFixed(
                     2
-                  )}%`
+                  )} %`
                 : "لا توجد بيانات"
             }
           />
