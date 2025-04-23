@@ -10,7 +10,7 @@ import {
 import { Box, Button } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { useState } from "react";
-import FilterForm from "@/pages/admin/orders/FilterForm.tsx";
+import FilterForm from "../FilterForm.tsx";
 
 export type TOrdersFilterData = {
   start_date: string;
