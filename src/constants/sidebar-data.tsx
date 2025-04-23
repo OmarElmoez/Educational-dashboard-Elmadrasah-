@@ -30,6 +30,7 @@ import {
 import StudentIcon from "@/assets/student.svg?react";
 import UploadIcon from "@/assets/upload_icon.svg?react";
 import RolesIcon from "@/assets/roles.svg?react";
+import NewOrdersIcon from "@/assets/new-orders.svg?react";
 
 const SIDEBAR_DATA = {
   Student: [
@@ -232,6 +233,12 @@ const SIDEBAR_DATA = {
           path: "invoices/create-credit-memo",
           icon: <ClientReportIcon />,
           page_title: "إصدار مذكرة ائتمان",
+        },
+        {
+          title: "الطلبات الجديدة",
+          path: "invoices/new-orders",
+          icon: <NewOrdersIcon />,
+          page_title: "الطلبات الجديدة",
         },
       ],
     },

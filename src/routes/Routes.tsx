@@ -42,6 +42,7 @@ import CheckAuth from "@/routes/CheckAuth.tsx";
 import HourlyLessonsAdmin from './../pages/admin/tables/hourlyTables/HourlyTable';
 import EditEmployeeForm from '../pages/admin/forms/edit/EditEmpolyeeForm';
 import EmployeeProfileData from '../pages/admin/employees/employeeProfile/EmployeeProfileData';
+import OrdersList from '../pages/admin/orders/list/ordersList';
 
 const router = createBrowserRouter([
   // Login Routes
@@ -254,6 +255,12 @@ const router = createBrowserRouter([
         path: 'students/students-list',
         element: <PageSuspense>
           <StudentsList/>
+        </PageSuspense>,
+      },
+      {
+        path: 'invoices/new-orders',
+        element: <PageSuspense>
+          <OrdersList/>
         </PageSuspense>,
       },
       {
