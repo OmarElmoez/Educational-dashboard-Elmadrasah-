@@ -10,6 +10,7 @@ import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import {INNER_ROUTES_TITLES} from "@/constants/sidebar-data.tsx";
 import { useLocation } from "react-router-dom";
 
+
 const {
   header,
   wrapper,
@@ -44,6 +45,17 @@ const Header = () => {
     });
   };
 
+  // const [language, setLanguage] = useState('ar');
+  //
+  // const {t, i18n} = useTranslation();
+  //
+  // useEffect(() => {
+  //   void i18n.changeLanguage(language);
+  //   document.documentElement.lang = language;
+  //   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  //   document.documentElement.className = language
+  // }, [i18n, language]);
+
   return (
     <>
       {loading === "pending" && <div className="loadingBox">
@@ -53,6 +65,7 @@ const Header = () => {
         <section className={wrapper}>
           <div className={textBox}>
             <span>{INNER_ROUTES_TITLES[pageRoute as keyof typeof INNER_ROUTES_TITLES] || headerTitle || "الجدول"}</span>
+            {/*<span>{t(TRANSLATION_KEYS.common.msg)}</span>*/}
           </div>
           <div className={box}>
             <div className={notifications} onClick={getNotificationsHandler}>
@@ -66,6 +79,10 @@ const Header = () => {
                 <UserPhoto/>
               )}
             </div>
+            {/*<div className={notifications} onClick={() => setLanguage(*/}
+            {/*  prev => prev === 'ar' ? 'en' : 'ar')}>*/}
+            {/*  {language === 'ar' ? "EN" : "Ar"}*/}
+            {/*</div>*/}
           </div>
         </section>
       </header>

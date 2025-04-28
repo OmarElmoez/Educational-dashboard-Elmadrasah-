@@ -13,6 +13,8 @@ import { FeedbackProvider } from "./store/context";
 import { ThemeProvider } from "@mui/material";
 import "./global.css";
 
+import "@/utils/i18n";
+
 import { registerLicense } from '@syncfusion/ej2-base'
 
 const queryClient = new QueryClient();
