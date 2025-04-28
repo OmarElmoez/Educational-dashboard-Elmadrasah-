@@ -10,7 +10,7 @@ import {
   UploadFile,
 } from "@/components";
 import { STATUS_OPTIONS, TIMEZONES_OPTIONS } from "@/constants";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import {
   actGetDropdownOptions,
@@ -34,12 +34,10 @@ import { useFeedback } from "@/store/context";
 import usePredefinedChoices from "./hooks/usePredefinedChoices.ts";
 import { useComponentLoading } from "@/hooks";
 import { getSpecificEmployee } from "@/services/employees.ts";
+import { useQuery } from '@tanstack/react-query';
 
 const EditEmployeeForm = () => {
   const { id } = useParams();
-  const location = useLocation();
-  const [specificEmployeeData, setSpecificEmployeeData] =
-    useState<TDataForSpecificEmployee>(location.state);
   const dispatch = useAppDispatch();
   const { openFeedbackModal } = useFeedback();
   const navigate = useNavigate();
@@ -85,17 +83,17 @@ const EditEmployeeForm = () => {
 
   const params = useParams();
   const employeeId = Number(params.id);
+  const { data: specificEmployeeData } = useQuery<TDataForSpecificEmployee>({
+    queryKey: ["specificEmployee", employeeId],
+    queryFn: () => getSpecificEmployee(employeeId),
+    enabled: !!employeeId,
+  });
   useEffect(() => {
-    if (employeeId) {
-      getSpecificEmployee(employeeId).then((data) => {
-        setSpecificEmployeeData(data);
-        setWage({
-          wage_type: data?.wage_type,
-          work_wage_type: data?.work_wage_type,
-        });
-      });
-    }
-  }, [employeeId]);
+    setWage({
+      wage_type: specificEmployeeData?.wage_type || "",
+      work_wage_type: specificEmployeeData?.work_wage_type || "",
+    });
+  }, [specificEmployeeData]);
 
   useEffect(() => {
     dispatch(actGetDropdownOptions({ optionsFor: "subjects" }));

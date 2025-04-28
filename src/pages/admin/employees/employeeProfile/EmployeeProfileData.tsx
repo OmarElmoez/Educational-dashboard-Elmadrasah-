@@ -1,27 +1,21 @@
-import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { TDataForSpecificEmployee } from "@/schemas/AddEmployeeSchema";
 import Styles from "./EmployeeProfileData.module.css";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import { SimpleTable } from "@/pages/shared/components";
 import { LoadingIndicator } from "@/components";
 import { getSpecificEmployee } from "@/services/employees";
+import { useQuery } from "@tanstack/react-query";
 
 const { sectionContainer, infoContainer, iconButton } = Styles;
 const EmployeeProfileData = () => {
-  const [specificEmployeeData, setSpecificEmployeeData] =
-    useState<TDataForSpecificEmployee>();
     const params = useParams();
     const navigate = useNavigate();
     const employeeId = Number(params.id);
-      useEffect(() => {
-        if (employeeId) {
-          getSpecificEmployee(employeeId).then((data) => {
-            setSpecificEmployeeData(data);
-          });
-        }
-      }, [employeeId]);
+    const { data: specificEmployeeData } = useQuery({
+      queryKey: ["specificEmployeeData"],
+      queryFn: () => getSpecificEmployee(employeeId)
+    });
   const editEmployee = () => {
     navigate(`/admin/employees/edit-employee/${employeeId}`, {
       state: specificEmployeeData,
@@ -179,12 +173,10 @@ const EmployeeProfileData = () => {
           <h2>المواد: </h2>
           {specificEmployeeData &&
             specificEmployeeData?.subject_choices_response?.map((subject) => {
-              return (
-                <>
+              return (  
                   <span key={subject.id}>
                     {`,${subject.name_ar}` || "لايوجد"}
                   </span>
-                </>
               );
             })}
         </div>

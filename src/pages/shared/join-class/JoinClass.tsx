@@ -171,7 +171,7 @@ const JoinClass = () => {
     });
   };
   const handleAttendanceTime = () => {
-    if (classId) {
+    if (classId && !displayEntranceTime) {
       actGetSpecificLessonData(classId).then((res) => {
         setEntranceTimeControl({
           startTimeTeacher: res?.start_time_employee || "",
@@ -179,6 +179,8 @@ const JoinClass = () => {
         });
         setDisplayEntranceTime(!displayEntranceTime);
       });
+    } else {
+      setDisplayEntranceTime(!displayEntranceTime);
     }
   };
 
