@@ -4,6 +4,7 @@ import styles from "./settings.module.css";
 import { useContext } from "react";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import Button from "@mui/material/Button";
+import { useAppSelector } from "@/store/hooks";
 
 const { nav } = styles;
 const SettingsPage = () => {
@@ -11,6 +12,7 @@ const SettingsPage = () => {
   const { setHeaderTitle } = useContext(CalendarContext);
   const navigate = useNavigate();
   const currentPath = window.location.pathname;
+  const {credintials} = useAppSelector((state) => state.auth);
 
   const handleNavigation = (path: string, title: string) => {
     navigate(path);
@@ -22,13 +24,19 @@ const SettingsPage = () => {
        <nav className={nav}>
         <Button
           variant={currentPath.endsWith("/settings") ? "contained" : "outlined"}
-          onClick={() => handleNavigation("", "الملف الشخصي")}
+          onClick={() => {
+            handleNavigation("", "الملف الشخصي")
+            credintials?.role === 'Admin' && localStorage.setItem('activatedPath', 'settings')
+          }}
         >
           البيانات الشخصية 
         </Button>
         <Button
           variant={currentPath.includes("security") ? "contained" : "outlined"}
-          onClick={() => handleNavigation("security", " الملف الشخصي")}
+          onClick={() => {
+            handleNavigation("security", " الملف الشخصي")
+            credintials?.role === 'Admin' && localStorage.setItem('activatedPath', 'settings/security')
+          }}
         >
           تغيير كلمة المرور
         </Button>

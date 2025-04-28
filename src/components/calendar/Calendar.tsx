@@ -14,6 +14,7 @@ const {calendar_container, calendar_btn, months_wrapper, months_names, weekAbbre
 const Calendar = ({setIsHourClicked}: {setIsHourClicked?: Dispatch<SetStateAction<boolean>>}) => {
 
   const {clickedDate, setClickedDate, classesPageActiveId, setClassesPageActiveId} = useContext(CalendarContext);
+  console.log('clickedDate', clickedDate);
 
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
 
@@ -136,7 +137,15 @@ const Calendar = ({setIsHourClicked}: {setIsHourClicked?: Dispatch<SetStateActio
 
       <div className={days_wrapper}>
         {calendarDays.map(({day}, index) => {
-          const isToday = day.getTime() === today.getTime()
+          const isSameDay = (dateA: Date, dateB: Date): boolean => {
+            return (
+              dateA.getFullYear() === dateB.getFullYear() &&
+              dateA.getMonth() === dateB.getMonth() &&
+              dateA.getDate() === dateB.getDate()
+            );
+          };
+          const isToday = isSameDay(day, today);
+
           const isClicked = (day.getTime() === clickedDate.getTime()) && classesPageActiveId === 2;
           const beforeToday = day.getTime() < today.getTime()
           return (

@@ -18,7 +18,7 @@ const ProtectedRoute = ({
   const {credintials, user} = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    // This condition to prevent sending a request to get the profile form the server when logging out
+    // This condition to prevent sending a request to get the profile from the server when logging out
     if (credintials?.token === '') return;
     dispatch(actGetUserProfile()).unwrap().then((res) => {
       if (res?.user?.user_type !== credintials?.role) {

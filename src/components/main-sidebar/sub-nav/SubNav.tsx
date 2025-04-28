@@ -32,6 +32,7 @@ const SubNav = ({style, subLinks, setIsSubNavOpen}: {
             setIsSubNavOpen(false)
             link.page_title && setHeaderTitle(link.page_title)
             link.page_title && localStorage.setItem('headerTitle', link.page_title)
+            localStorage.setItem('activatedPath', link.path)
           }}>
             {link.icon}
             <span>{link.title}</span>

@@ -140,6 +140,12 @@ const ScheduleLesson = () => {
 
   const onSubmit = (data: TScheduleLessonFormData) => {
 
+    if (teachersOptions.length === 0 && selectedTeachersType === "true") {
+      setLoading('failed');
+      openFeedbackModal("failed", `غير متاح مدرسين للجدولة التلقائي`);
+      return;
+    }
+
     setLoading('pending');
 
     const scheduledClasses = data.subjects.reduce(

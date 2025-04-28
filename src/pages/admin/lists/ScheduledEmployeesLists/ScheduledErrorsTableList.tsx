@@ -13,7 +13,7 @@ const ScheduledErrorsTableList = () => {
   const [tableData, setTableData] = useState<
     TdraftLessonsStatusResponse[] | null
   >(null);
-
+console.log('tableData', tableData);
   const { std_id, id } = useParams();
   const navigate = useNavigate();
 
@@ -27,6 +27,7 @@ const ScheduledErrorsTableList = () => {
       getscheduledErrorsList(std_id, id).then((res) => {
         if (res?.length) {
           setTableData(res);
+          console.log('from scheduled errors, ', res);
         }
       });
     }
@@ -38,7 +39,6 @@ const ScheduledErrorsTableList = () => {
         <MainTable 
         headData={TABLE_HEAD_DATA["scheduledStatus"]}
         >
-        
           {tableData &&
             tableData?.map((row) => (
               <EmployeeDetailsTableRow

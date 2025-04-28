@@ -27,7 +27,6 @@ const Header = () => {
   const pageRoute = location.pathname;
 
   const {headerTitle} = useContext(CalendarContext);
-  console.log('from header component header title is: ', headerTitle)
 
   const dispatch = useAppDispatch();
 

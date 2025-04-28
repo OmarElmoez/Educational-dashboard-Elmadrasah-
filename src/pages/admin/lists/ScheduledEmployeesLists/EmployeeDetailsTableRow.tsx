@@ -26,6 +26,9 @@ const EmployeeDetailsTableRow = <T extends Record<string, any>>({
     accept_datetime,
     lessons_count,
   } = rowData;
+
+  console.log('rowData', rowData);
+
   return (
     <tr key={rowData.id}>
       <td>
