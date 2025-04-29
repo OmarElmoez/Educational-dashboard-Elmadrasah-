@@ -27,7 +27,7 @@ export const setupTestWrapper = (
 ) => {
   const { customState = {}, setupMocks = true } = options;
 
-  // Default persist state that was previously duplicated
+  // Default persists state that was previously duplicated
   const defaultPersist = {
     _persist: {
       version: -1,
@@ -35,7 +35,7 @@ export const setupTestWrapper = (
     }
   };
 
-  // Create initial state with all reducers
+  // Create an initial state with all reducers
   const defaultState = {
     auth: {
       ...auth(undefined, { type: 'INIT' }),
@@ -106,7 +106,7 @@ export const setupTestWrapper = (
     }));
   }
 
-  // Create wrapper component with all providers
+  // Create a wrapper component with all providers
   const Wrapper = ({ children }: { children: ReactNode }) => (
     <GoogleOAuthProvider clientId="381013725217-ud8vf0e6va9i9mjvko45popltcu43efn.apps.googleusercontent.com">
       <Provider store={store}>

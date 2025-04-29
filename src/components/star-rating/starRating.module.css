@@ -5,6 +5,7 @@
 .stars_container {
   display: flex;
   align-items: center;
+  gap: 0.4rem;
 }
 
 .stars_container svg {
@@ -13,7 +14,7 @@
 }
 
 .stars_container button svg {
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
 }
 

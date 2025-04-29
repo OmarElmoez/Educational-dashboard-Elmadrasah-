@@ -1,10 +1,4 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState, } from "react";
 import { createPortal } from "react-dom";
 import ExistIcon from "@/assets/exist.svg?react";
 
@@ -15,11 +9,12 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReviewSchema, TReview } from "@/schemas/ReviewSchema";
 import { actPostReviewAnswers } from "@/store/review-questions/reviewSlice";
-import {ReviewFeedback, StarRating} from "@/components";
+import { ReviewFeedback, StarRating } from "@/components";
 import { TModalRef } from "@/types/shared";
 import displayFeedbackModal from "@/utils/displayFeedbackModal";
+import { useFeedback } from "@/store/context";
 
-const { reviewForm } = styles;
+const {reviewForm} = styles;
 
 type TModalProps = {
   lesson_id: number | undefined;
@@ -31,7 +26,7 @@ export type TEnteredData = {
   choices: number[];
 };
 
-const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
+const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
   const dialog = useRef<HTMLDialogElement>(null);
   const reviewDialog = useRef<TModalRef>(null);
 
@@ -47,7 +42,7 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
     };
   });
 
-  const { records, loading, error } = useAppSelector(
+  const {records, loading, error} = useAppSelector(
     (state) => state.reviewQuestions
   );
 
@@ -57,15 +52,25 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
     reset,
     setValue,
     register,
-    formState: { errors },
+    formState: {errors},
   } = useForm<TReview>({
     resolver: zodResolver(ReviewSchema),
   });
 
-  const { credintials } = useAppSelector((state) => state.auth);
+  const {credintials} = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
+  const {openFeedbackModal} = useFeedback();
+
   const onSubmit: SubmitHandler<TReview> = (data) => {
+
+    const submittedValues = Object.values(data);
+
+    if (!submittedValues[0] || !submittedValues[1] || !submittedValues[2]) {
+      openFeedbackModal('failed', "برجاء اعطاء تقييم")
+      return;
+    }
+
     const lesson = lesson_id;
 
     const questions: TEnteredData[] = [];
@@ -109,14 +114,14 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
     };
 
     dispatch(actPostReviewAnswers(formattedData))
-      .unwrap()
-      .then(() => {
-        reset();
-        dialog.current?.close();
-        displayFeedbackModal({
-          ref: reviewDialog,
-        });
+    .unwrap()
+    .then(() => {
+      reset();
+      dialog.current?.close();
+      displayFeedbackModal({
+        ref: reviewDialog,
       });
+    });
   };
 
   // if (loading === "failed") {
@@ -148,13 +153,16 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
         status={reviewFeedback}
         error={error ?? ""}
       />
-      <dialog className={`${reviewForm} modal`} ref={dialog}>
+      <dialog className={`${reviewForm} modal py-[2.4rem] px-[1.6rem]`} ref={dialog}>
         <header>
-          <h1>نرجو منك مشاركة ملاحظاتك وآرائك حول الطالب</h1>
-          <ExistIcon onClick={() => dialog.current?.close()} />
+          <div>
+            <h1 className="text-[2rem] text-black font-medium">{credintials?.role === 'Teacher' ? 'تقييم الطالب' : 'تقييم المعلم'}</h1>
+            <p className="mt-[1rem] text-[#A0A1A7] text-[1.4rem] font-base">إعطاء تعليق علي مستوي {credintials?.role === 'Teacher' ? 'الطالب' : 'المٌعلم'} خلال السيشن.</p>
+          </div>
+          <ExistIcon onClick={() => dialog.current?.close()}/>
         </header>
         <section>
-          <form method="post" onSubmit={handleSubmit(onSubmit)}>
+          <form method="post" onSubmit={handleSubmit(onSubmit)} className="mt-[2rem]!">
             {records.map((record) => (
               <article key={record.id} className={styles.questionBox}>
                 <h3>{record.question_ar}</h3>
@@ -166,7 +174,7 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
                         name={record.id.toString()}
                         control={control}
                         defaultValue={[]}
-                        render={({ field: { onChange, value } }) => (
+                        render={({field: {onChange, value}}) => (
                           <>
                             {Array.isArray(value) && (
                               <label key={choice.id}>
@@ -190,7 +198,7 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
                     ))}
 
                   {record.type === "rate" &&
-                      <StarRating name={record.id.toString()} setValue={setValue} register={register} />
+                      <StarRating name={record.id.toString()} setValue={setValue} register={register}/>
                   }
 
                   {record.type === "write" && (
@@ -198,12 +206,13 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
                       name={record.id.toString()}
                       control={control}
                       defaultValue=""
-                      render={({ field: { onChange, value } }) => (
+                      render={({field: {onChange, value}}) => (
                         <textarea
                           value={value as string}
                           onChange={(e) => {
                             onChange(e.target.value);
                           }}
+                          placeholder="اكتب معلوماتك الإضافية"
                         />
                       )}
                     />
@@ -221,7 +230,7 @@ const ReviewForm = forwardRef(({ lesson_id }: TModalProps, ref) => {
               {loading === "pending" ? "...جاري الارسال" : "ارسال"}
             </button>
             {error && (
-              <p className="error" style={{ textAlign: "center" }}>
+              <p className="error" style={{textAlign: "center"}}>
                 {error}
               </p>
             )}
