@@ -46,7 +46,6 @@ const EmployeesFilterForm = ({
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("selected country from useEffect: ", selectedCountry);
     if (selectedCountry) {
       dispatch(actGetStates({ country: selectedCountry }));
     }

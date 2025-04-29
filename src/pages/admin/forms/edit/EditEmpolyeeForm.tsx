@@ -13,7 +13,6 @@ import { STATUS_OPTIONS, TIMEZONES_OPTIONS } from "@/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import {
-  actGetDropdownOptions,
   actSendDataToServer,
 } from "@/store/single-actions";
 import { Heading } from "@/components/UI";
@@ -96,7 +95,6 @@ const EditEmployeeForm = () => {
   }, [specificEmployeeData]);
 
   useEffect(() => {
-    dispatch(actGetDropdownOptions({ optionsFor: "subjects" }));
     if (specificEmployeeData) {
       reset(specificEmployeeData);
       setPreviousData(specificEmployeeData);
