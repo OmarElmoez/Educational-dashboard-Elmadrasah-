@@ -60,7 +60,6 @@ const MainSidebar = ({data}: TSidebarProps) => {
   const activeTitleSubLinks: TPath[] | undefined = SIDEBAR_DATA[`${credintials?.role}` as keyof typeof SIDEBAR_DATA].find(
     obj => obj.title === activeLinkTitle)?.children
 
-
   const handleToggle = useCallback(() => {
     setIsSubNavOpen((prevState) => !prevState)
 
