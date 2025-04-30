@@ -4,12 +4,12 @@ import styles from './starRating.module.css'
 
 const {stars_container} = styles;
 
-type TStarRatingProps = {
+type TRateProps = {
   numberOfStars?: number,
   defaultRate?: number,
 }
 
-const StarRating = ({numberOfStars = 5, defaultRate = 0}: TStarRatingProps) => {
+const Rate = ({numberOfStars = 5, defaultRate = 0}: TRateProps) => {
 
   return (
       <section className={stars_container}>
@@ -24,4 +24,4 @@ const StarRating = ({numberOfStars = 5, defaultRate = 0}: TStarRatingProps) => {
   )
 }
 
-export default StarRating;
+export default Rate;

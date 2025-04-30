@@ -21,10 +21,10 @@ const reviewSlice = createSlice({
   name: "review",
   initialState,
   reducers: {
-    // setInitialState: (state) => {
-    //   state.loading = "idle",
-    //   state.error = null
-    // },
+    setInitialState: (state) => {
+      state.loading = "idle"
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(actGetReviewQuestions.pending, (state) => {
@@ -61,6 +61,6 @@ const reviewSlice = createSlice({
 
 export { actGetReviewQuestions, actPostReviewAnswers }
 
-// export const { setInitialState } = reviewSlice.actions
+export const { setInitialState } = reviewSlice.actions
 
 export default reviewSlice.reducer

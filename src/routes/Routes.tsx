@@ -29,7 +29,7 @@ import {
   RescheduleLesson,
   ScheduleLesson,
   StudentsList,
-  AdminRolesPage, EditStudent, StudentProfile,FamiliesList, FamilyProfile, EditFamily, EmployeesList
+  AdminRolesPage, EditStudent, StudentProfile, FamiliesList, FamilyProfile, EditFamily, EmployeesList, Reviews
 } from "@/pages/admin";
 import {TeacherClassesPage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
@@ -344,6 +344,10 @@ const router = createBrowserRouter([
       {
         path: 'roles',
         element: <PageSuspense><AdminRolesPage /></PageSuspense>
+      },
+      {
+        path: 'inbox/reviews',
+        element: <PageSuspense><Reviews /></PageSuspense>
       },
       {
         path: '*',

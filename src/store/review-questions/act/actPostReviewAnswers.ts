@@ -1,8 +1,7 @@
-
 import { TEnteredData } from "@/components/review-form/ReviewForm";
-import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "@/utils/axiosInstance.ts";
+import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
 
 const actPostReviewAnswers = createAsyncThunk(
   "review-questions/actPostReviewAnswers",
@@ -19,7 +18,7 @@ const actPostReviewAnswers = createAsyncThunk(
       const url =
         "/dashboard/review_answer/";
 
-      await axiosInstance.post(url, data);
+      return await axiosInstance.post(url, data);
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
     }

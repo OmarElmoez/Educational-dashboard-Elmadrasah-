@@ -1,6 +1,5 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState, } from "react";
+import { forwardRef, useImperativeHandle, useRef, } from "react";
 import { createPortal } from "react-dom";
-import ExistIcon from "@/assets/exist.svg?react";
 
 import styles from "./reviewForm.module.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -9,10 +8,9 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReviewSchema, TReview } from "@/schemas/ReviewSchema";
 import { actPostReviewAnswers } from "@/store/review-questions/reviewSlice";
-import { ReviewFeedback, StarRating } from "@/components";
-import { TModalRef } from "@/types/shared";
-import displayFeedbackModal from "@/utils/displayFeedbackModal";
+import { StarRating } from "@/components";
 import { useFeedback } from "@/store/context";
+
 
 const {reviewForm} = styles;
 
@@ -28,11 +26,6 @@ export type TEnteredData = {
 
 const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
   const dialog = useRef<HTMLDialogElement>(null);
-  const reviewDialog = useRef<TModalRef>(null);
-
-  const [reviewFeedback, setReviewFeedback] = useState<"succeeded" | "failed">(
-    "succeeded"
-  );
 
   useImperativeHandle(ref, () => {
     return {
@@ -42,7 +35,7 @@ const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
     };
   });
 
-  const {records, loading, error} = useAppSelector(
+  const {records, loading} = useAppSelector(
     (state) => state.reviewQuestions
   );
 
@@ -64,12 +57,12 @@ const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
 
   const onSubmit: SubmitHandler<TReview> = (data) => {
 
-    const submittedValues = Object.values(data);
-
-    if (!submittedValues[0] || !submittedValues[1] || !submittedValues[2]) {
-      openFeedbackModal('failed', "برجاء اعطاء تقييم")
-      return;
-    }
+    // const submittedValues = Object.values(data);
+    //
+    // if (!submittedValues[0] || !submittedValues[1] || !submittedValues[2]) {
+    //   openFeedbackModal('failed', "برجاء اعطاء تقييم")
+    //   return;
+    // }
 
     const lesson = lesson_id;
 
@@ -84,11 +77,13 @@ const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
 
       switch (record.type) {
         case "rate":
-          enteredData.rate = Number(data[record.id]);
+          enteredData.rate = Number(data[record.id]) || null;
+          enteredData.answer = null;
           break;
 
         case "write":
           enteredData.answer = data[record.id] as string;
+          enteredData.rate = null;
           break;
 
         default:
@@ -115,13 +110,16 @@ const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
 
     dispatch(actPostReviewAnswers(formattedData))
     .unwrap()
-    .then(() => {
+    .then((res: any) => {
+      if(res.status === 400) {
+        openFeedbackModal("failed", JSON.parse(res.response).error)
+        reset();
+        return;
+      }
       reset();
       dialog.current?.close();
-      displayFeedbackModal({
-        ref: reviewDialog,
-      });
-    });
+      openFeedbackModal('succeeded', 'تم التقييم بنجاح')
+    })
   };
 
   // if (loading === "failed") {
@@ -134,32 +132,15 @@ const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
   //   });
   // }
 
-  useEffect(() => {
-    if (loading === "failed") {
-      setReviewFeedback("failed");
-      dialog.current?.close();
-      // dispatch(setInitialState());
-      reset();
-      displayFeedbackModal({
-        ref: reviewDialog,
-      });
-    }
-  }, [loading, dispatch, reset]);
-
   return createPortal(
     <>
-      <ReviewFeedback
-        ref={reviewDialog}
-        status={reviewFeedback}
-        error={error ?? ""}
-      />
       <dialog className={`${reviewForm} modal py-[2.4rem] px-[1.6rem]`} ref={dialog}>
         <header>
           <div>
             <h1 className="text-[2rem] text-black font-medium">{credintials?.role === 'Teacher' ? 'تقييم الطالب' : 'تقييم المعلم'}</h1>
             <p className="mt-[1rem] text-[#A0A1A7] text-[1.4rem] font-base">إعطاء تعليق علي مستوي {credintials?.role === 'Teacher' ? 'الطالب' : 'المٌعلم'} خلال السيشن.</p>
           </div>
-          <ExistIcon onClick={() => dialog.current?.close()}/>
+          {/*<ExistIcon onClick={() => dialog.current?.close()}/>*/}
         </header>
         <section>
           <form method="post" onSubmit={handleSubmit(onSubmit)} className="mt-[2rem]!">
@@ -225,15 +206,15 @@ const ReviewForm = forwardRef(({lesson_id}: TModalProps, ref) => {
             ))}
             <button
               type="submit"
-              disabled={loading === "pending" || error !== null}
+              disabled={loading === "pending"}
             >
               {loading === "pending" ? "...جاري الارسال" : "ارسال"}
             </button>
-            {error && (
-              <p className="error" style={{textAlign: "center"}}>
-                {error}
-              </p>
-            )}
+            {/*{error && (*/}
+            {/*  <p className="error" style={{textAlign: "center"}}>*/}
+            {/*    {error}*/}
+            {/*  </p>*/}
+            {/*)}*/}
           </form>
         </section>
       </dialog>

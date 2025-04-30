@@ -39,7 +39,7 @@ const ReviewFeedback = forwardRef(({ status, error }: { status: "succeeded" | "f
     },
     "failed": {
       icon: <FailedFeedback />,
-      title: "حدثت مشكلة اثناء إرسال تقييمك.",
+      title: "حدث خطأ اثناء التقييم.",
       desc: error
     }
   }

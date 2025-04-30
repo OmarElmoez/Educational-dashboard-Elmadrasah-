@@ -33,6 +33,7 @@ const GeneralScheduledEmployeesLists = lazy(
   () => import('./lists/ScheduledEmployeesLists/GeneralScheduledEmployeesLists'));
 const SchedulingErrorsTableList = lazy(() => import('./lists/ScheduledEmployeesLists/ScheduledErrorsTableList'));
 const EmployeesList = lazy(() => import('./employees/list/EmployeesList.tsx'))
+const Reviews = lazy(() => import('./inbox/reviews.tsx'));
 
 export {
   AdminClassesPage,
@@ -63,5 +64,6 @@ export {
   FamiliesList,
   FamilyProfile,
   EditFamily,
-  EmployeesList
+  EmployeesList,
+  Reviews
 };
