@@ -1,28 +1,43 @@
 import { Button } from "@/components/UI";
-import { ReactNode } from "react";
+import CheckCircle from '@/assets/check-circle.svg?react'
+import CloseIcon from "@/assets/inbox-close-icon.svg?react"
+import DownloadIcon from '@/assets/download.svg?react'
 
 type TInboxButtonProps = {
-  title: string;
-  bgColor?: string;
   onClick: () => void;
-  icon?: ReactNode;
+  type: 'accept' | 'reject' | 'download';
 }
 
-const InboxButton = ({title, onClick, bgColor = "var('main-color')", icon}: TInboxButtonProps) => {
+const TYPE_VARIANTS = {
+  accept: {
+    icon: <CheckCircle />,
+    bgColor: "var(--main-color)",
+  },
+  reject: {
+    icon: <CloseIcon />,
+    bgColor: '#C92516',
+  },
+  download: {
+    icon: <DownloadIcon />,
+    bgColor: '#EDA61C',
+  }
+}
+
+const InboxButton = ({onClick, type}: TInboxButtonProps) => {
+
   return (
     <Button
       style={{
       fontSize: '1.4rem',
       fontWeight: 400,
-      height: '48px',
-      width: '113px',
-      paddingBlock: '1.4rem',
-      backgroundColor: bgColor,
+      paddingBlock: '0',
+      backgroundColor: "transparent",
+      width: 'fit-content',
+      height: 'auto'
       }}
       onClick={onClick}
     >
-      {icon}
-      {title}
+      {TYPE_VARIANTS[type].icon}
     </Button>
   )
 }
