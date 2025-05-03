@@ -341,7 +341,6 @@ const JoinClass = () => {
           </>
         ) : (
           <>
-            <p onClick={() => openReviewForm()}>open review form</p>
             <Card>
               <Heading
                 text="الدرس الحالي"
