@@ -7,12 +7,13 @@ type TButtonProps = {
   variant?: 'text' | 'outlined' | 'contained';
   children: ReactNode;
   style?: CSSProperties;
+  disableKey?: boolean;
   onClick?: () => void;
 }
 
-const Button = ({children, style, onClick}: TButtonProps) => {
+const Button = ({children, style, onClick, disableKey}: TButtonProps) => {
   return (
-    <button className={button} style={style} onClick={onClick}>
+    <button className={button} style={style} onClick={onClick} disabled={disableKey}>
       {children}
     </button>
   )

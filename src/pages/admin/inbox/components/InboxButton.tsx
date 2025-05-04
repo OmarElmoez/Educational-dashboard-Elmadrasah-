@@ -1,11 +1,12 @@
 import { Button } from "@/components/UI";
 import CheckCircle from '@/assets/check-circle.svg?react'
 import CloseIcon from "@/assets/inbox-close-icon.svg?react"
-import DownloadIcon from '@/assets/download.svg?react'
+import EyeIcon from '@/assets/EyeIcon.svg?react'
 
 type TInboxButtonProps = {
   onClick: () => void;
-  type: 'accept' | 'reject' | 'download';
+  type: 'accept' | 'reject' | 'view';
+  disableKey?: boolean;
 }
 
 const TYPE_VARIANTS = {
@@ -17,13 +18,13 @@ const TYPE_VARIANTS = {
     icon: <CloseIcon />,
     bgColor: '#C92516',
   },
-  download: {
-    icon: <DownloadIcon />,
-    bgColor: '#EDA61C',
+  view: {
+    icon: <EyeIcon />,
+    bgColor: '#0650A7',
   }
 }
 
-const InboxButton = ({onClick, type}: TInboxButtonProps) => {
+const InboxButton = ({onClick, type, disableKey}: TInboxButtonProps) => {
 
   return (
     <Button
@@ -36,6 +37,7 @@ const InboxButton = ({onClick, type}: TInboxButtonProps) => {
       height: 'auto'
       }}
       onClick={onClick}
+      disableKey={disableKey}
     >
       {TYPE_VARIANTS[type].icon}
     </Button>

@@ -346,7 +346,7 @@ const router = createBrowserRouter([
         element: <PageSuspense><AdminRolesPage /></PageSuspense>
       },
       {
-        path: 'inbox/reviews',
+        path: 'inbox',
         element: <PageSuspense><Reviews /></PageSuspense>
       },
       {

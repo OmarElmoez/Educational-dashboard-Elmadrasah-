@@ -262,26 +262,27 @@ const SIDEBAR_DATA = {
       path: "inbox",
       icon: <RolesIcon />,
       page_title: "العمليات",
-      children: [
-        {
-          title: "الملفات",
-          path: "inbox/files",
-          icon: <UploadIcon />,
-          page_title: "الملفات"
-        },
-        {
-          title: "الريفيوهات",
-          path: "inbox/reviews",
-          icon: <UploadIcon />,
-          page_title: "ريفيوهات"
-        },
-        {
-          title: "الملاحظات",
-          path: "inbox/notes",
-          icon: <UploadIcon />,
-          page_title: "الملاحظات"
-        }
-      ]
+      children: undefined
+      //  [
+      //   {
+      //     title: "الملفات",
+      //     path: "inbox/files",
+      //     icon: <UploadIcon />,
+      //     page_title: "الملفات"
+      //   },
+      //   {
+      //     title: "الريفيوهات",
+      //     path: "inbox/reviews",
+      //     icon: <UploadIcon />,
+      //     page_title: "ريفيوهات"
+      //   },
+      //   {
+      //     title: "الملاحظات",
+      //     path: "inbox/notes",
+      //     icon: <UploadIcon />,
+      //     page_title: "الملاحظات"
+      //   }
+      // ]
     }
   ],
 
