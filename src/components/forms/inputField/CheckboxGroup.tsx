@@ -46,6 +46,7 @@ export const SingleCheckbox = <T extends FieldValues>({
   disabled = false,
   error,
   className = "",
+  labelStyle = {},
 }: TSingleCheckbox<T>) => {
   return (
     <div className={`flex-start ${className}`}>
@@ -57,7 +58,7 @@ export const SingleCheckbox = <T extends FieldValues>({
           className="checkboxInput"
           disabled={disabled}
         />
-        {label}
+        <span style={labelStyle}>{label}</span>
       </label>
       {error && <p className="error">{error}</p>}
     </div>

@@ -44,4 +44,5 @@ export type TSingleCheckbox<T extends FieldValues> = {
   error?: string;
   className?: string;
   disabled?: boolean;
+  labelStyle?: CSSProperties;
 };

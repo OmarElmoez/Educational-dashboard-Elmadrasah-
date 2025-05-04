@@ -14,7 +14,6 @@ const {calendar_container, calendar_btn, months_wrapper, months_names, weekAbbre
 const Calendar = ({setIsHourClicked}: {setIsHourClicked?: Dispatch<SetStateAction<boolean>>}) => {
 
   const {clickedDate, setClickedDate, classesPageActiveId, setClassesPageActiveId} = useContext(CalendarContext);
-  console.log('clickedDate', clickedDate);
 
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
 

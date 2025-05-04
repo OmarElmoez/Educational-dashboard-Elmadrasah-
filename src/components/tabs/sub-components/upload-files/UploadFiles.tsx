@@ -1,21 +1,20 @@
-import UploadIcon from '@/assets/uploadFile.svg?react';
 import AddIcon from '@/assets/add.svg?react';
 import DeleteIcon from '@/assets/delete.svg?react'
 import EditIcon from '@/assets/edit.svg?react';
 import WatchIcon from '@/assets/watch.svg?react';
 import styles from './uploadFiles.module.css'
-import {BasicModal} from "@/components";
-import {useEffect, useRef, useState} from "react";
-import {TModalRef} from "@/types/shared.ts";
+import { BasicModal } from "@/components";
+import { useEffect, useRef, useState } from "react";
+import { TModalRef } from "@/types/shared.ts";
 import UploadEduFilesForm from "@/components/tabs/sub-components/upload-files/upload-form/UploadEduFilesForm.tsx";
-import {actDeleteLessonFile, actGetLessonFiles} from "@/services/lessons.ts";
-import {TLessonFile} from "@/schemas/LessonSchema.ts";
-import {useAppSelector} from "@/store/hooks.ts";
-import {useFeedback} from "@/store/context";
+import { actDeleteLessonFile, actGetLessonFiles } from "@/services/lessons.ts";
+import { TLessonFile } from "@/schemas/LessonSchema.ts";
+import { useAppSelector } from "@/store/hooks.ts";
+import { useFeedback } from "@/store/context";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import getFileIcon from "@/utils/getFileIcon.tsx";
 
-const {action_box, files_container, uploaded_by, file_action_box, file_dateInfo} = styles;
+const {action_box, files_container, file_action_box, file_dateInfo} = styles;
 
 const UPLOADED_BY_CASES = {
   Admin: 'الادمن',
@@ -117,21 +116,19 @@ const UploadFiles = ({classId}: { classId: string }) => {
             const FileIcon = getFileIcon(file.file);
             return (
               <li key={file.id}>
-                <div style={{display: "flex", alignItems: "center", gap: "0.8rem"}}>
-                  <p style={{minWidth: "1.6rem"}}>{FileIcon}</p>
+                <div style={{display: "flex", flexDirection: 'column', gap: "0.8rem"}}>
+                  <p style={{minWidth: "1.6rem", display: 'flex', gap: "0.8rem", alignItems: 'center'}}>{FileIcon} <span
+                    style={{color: "#000"}}>{file.title}</span>
+                    {file.is_exam && <span className="w-[56px] h-[15px] bg-[#D51919] text-white text-[0.8rem] rounded-[3px] flex justify-center items-center mr-[0.2rem]">ملف اختبار</span>}
+                  </p>
                   <p style={{display: "grid", gap: "0.4rem"}}>
-                    <span style={{color: "#000"}}>{file.title}</span>
-                    <span className={file_dateInfo}>{formatFullArabicDate(file.uploaded_at)}</span>
+                    <span className={file_dateInfo}>{formatFullArabicDate(
+                      file.uploaded_at)} {file.uploaded_by === credintials?.role ? 'بواسطتك' : `بواسطة ${UPLOADED_BY_CASES[file.uploaded_by as keyof typeof UPLOADED_BY_CASES]}`}</span>
                   </p>
                 </div>
 
 
                 <div style={{display: "flex", alignItems: "center", gap: "1.2rem"}}>
-
-                  <div className={`${uploaded_by} ${file_action_box}`}>
-                    <UploadIcon/>
-                    <span>{file.uploaded_by === credintials?.role ? 'بواسطتك' : `بواسطة ${UPLOADED_BY_CASES[file.uploaded_by as keyof typeof UPLOADED_BY_CASES]}`}</span>
-                  </div>
 
                   <button className={file_action_box} style={{backgroundColor: "#DDEEE3"}}
                           onClick={() => watchFileHandler(file.file)}>

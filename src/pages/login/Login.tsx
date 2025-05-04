@@ -39,10 +39,10 @@ const Login = () => {
   const onSubmit: SubmitHandler<TFormData> = (data) => {
     dispatch(actAuthLogin(data))
       .unwrap()
-      .then((res) => {
-        if (typeof res === "string") {
-          openFeedbackModal('failed', res);
-          return ;
+      .then((res: any) => {
+        if(res.status === 400) {
+          openFeedbackModal("failed", JSON.parse(res.response).error)
+          return;
         }
         if (res.set_password_url) {
           navigate(`/set-password`);

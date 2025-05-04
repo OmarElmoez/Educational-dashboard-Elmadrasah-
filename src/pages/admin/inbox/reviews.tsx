@@ -13,8 +13,6 @@ const Reviews = () => {
     fetchFn: getReviews,
   })
 
-  console.log(reviews)
-
   return <>
     {isPending && <div className="loadingBox">
         <LoadingIndicator/>

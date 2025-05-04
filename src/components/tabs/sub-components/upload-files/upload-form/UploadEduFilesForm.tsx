@@ -1,17 +1,17 @@
-import {ChangeEvent, useRef, useState} from "react";
-import {useForm} from "react-hook-form";
+import { ChangeEvent, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import UploadIcon from '@/assets/upload.svg?react'
 import PdfIcon from "@/assets/pdf.svg?react";
 import WordIcon from "@/assets/word.svg?react";
 import styles from './uploadEduFilesForm.module.css'
 import PreviewBox from "@/components/tabs/sub-components/upload-files/preview-box/PreviewBox.tsx";
-import {useAppDispatch} from "@/store/hooks.ts";
+import { useAppDispatch } from "@/store/hooks.ts";
 import actSendEduUploadedFiles from "@/store/single-actions/actSendEduUploadedFiles.ts";
-import {useParams} from "react-router-dom";
-import {useFeedback} from "@/store/context";
-import {LoadingIndicator} from "@/components";
-import {TLessonFile} from "@/schemas/LessonSchema.ts";
-import {actEditLessonFileName} from "@/services/lessons.ts";
+import { useParams } from "react-router-dom";
+import { useFeedback } from "@/store/context";
+import { LoadingIndicator, SingleCheckbox } from "@/components";
+import { TLessonFile } from "@/schemas/LessonSchema.ts";
+import { actEditLessonFileName } from "@/services/lessons.ts";
 
 const {title_box, upload_box, upload_box_holds_files, submit_btn, preview_wrapper, preview_icon, preview_img} = styles;
 
@@ -24,6 +24,7 @@ type TFilePreview = {
 export type TSubmittedData = {
   title: string,
   files: File[],
+  is_exam: boolean,
 }
 
 type TUploadedEduFilesFormProps = {
@@ -170,23 +171,32 @@ const UploadEduFilesForm = ({
       </div>
 
       {loading ?
-        <div style={{display: "flex", alignItems: 'center', justifyContent: "center"}}><LoadingIndicator/></div> :
+        <div style={{display: "flex", alignItems: 'center', justifyContent: "center"}}><LoadingIndicator/></div>
+        :
         isEdit ? "" :
-          <div className={ previewFiles.length > 0 ? upload_box_holds_files : upload_box} onClick={() => fileInputRef.current?.click()}>
-            {previewFiles.length === 0 ?
-              <>
-                <UploadIcon/>
+          <>
+            <div className={previewFiles.length > 0 ? upload_box_holds_files : upload_box}
+                 onClick={() => fileInputRef.current?.click()}>
+              {previewFiles.length === 0 ?
+                <>
+                  <UploadIcon/>
 
-                <h5>قم بتحميل <span>الملف</span></h5>
+                  <h5>قم بتحميل <span>الملف</span></h5>
 
-                <p>قم بتحميل ملف PDF أو صورة مربعة بصيغة .jpg أو .png.</p>
-              </> : renderPreview()
-            }
-          </div>}
+                  <p>قم بتحميل ملف PDF أو صورة مربعة بصيغة .jpg أو .png.</p>
+                </> : renderPreview()
+              }
+            </div>
+            <SingleCheckbox className="mt-[2.4rem]" register={register} name="is_exam" label="ملف اختبار"
+                            labelStyle={{fontSize: '1.6rem', color: '#000'}}/>
+          </>
+      }
+
 
       <button className={submit_btn} disabled={loading}>
         {isEdit ? "تعديل" : "رفع الملف"}
       </button>
+
     </form>
   )
 }

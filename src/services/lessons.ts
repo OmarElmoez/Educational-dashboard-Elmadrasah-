@@ -1,8 +1,9 @@
-import {TLesson, TLessonFile} from "@/schemas/LessonSchema.ts";
+import { TLesson, TLessonFile } from "@/schemas/LessonSchema.ts";
 import axiosInstance from "@/utils/axiosInstance.ts";
 import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
-import {TTrackFromServer} from "@/components/tabs/sub-components/summary/Summary.tsx";
-import {TTrack} from "@/schemas/AddTrackSchema.ts";
+import { TTrackFromServer } from "@/components/tabs/sub-components/summary/Summary.tsx";
+import { TTrack } from "@/schemas/AddTrackSchema.ts";
+import { TPostResponse } from "@/types/shared";
 
 const actGetSpecificLessonData = async (classId: string): Promise<TLesson> => {
   try {
@@ -79,6 +80,23 @@ const actGetSharedLessons = async (classId: string): Promise<TLesson[]> => {
   }
 }
 
+// ============================= Lesson Notes =============================
+const sendNoteToAdmin = async ({classId, data}: { classId: string, data: { description: string } }): Promise<TPostResponse> => {
+  try {
+    return await axiosInstance.post(`event/note/${classId}/admin/`, data)
+  } catch (error) {
+    return axiosErrorHandler(error)
+  }
+}
+
+const sendBehaviorNote = async ({classId, data}: { classId: string, data: { description: string } }): Promise<TPostResponse> => {
+  try {
+    return await axiosInstance.post(`event/note/${classId}/behavior/`, data)
+  } catch (error) {
+    return axiosErrorHandler(error)
+  }
+}
+
 export {
   actGetSpecificLessonData,
   actGetLessonFiles,
@@ -87,4 +105,6 @@ export {
   actGetLessonTracks,
   actAddNewTrack,
   actGetSharedLessons,
+  sendNoteToAdmin,
+  sendBehaviorNote
 };

@@ -6,7 +6,8 @@ export const lessonFileSchema = z.object({
   file: z.string().url(),
   title: z.string(),
   uploaded_at: z.string().datetime(),
-  uploaded_by: z.string()
+  uploaded_by: z.string(),
+  is_exam: z.boolean(),
 });
 
 export type TLessonFile = z.infer<typeof lessonFileSchema>

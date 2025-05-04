@@ -36,6 +36,12 @@ type TService = "charges" | "packages" | "lessons";
 
 type TTax_Treatment = "Tax Exclusive" | "Tax Inclusive" | "Tax Exempt";
 
+type TPostResponse = {
+  response: string,
+  status: number,
+  data: { message: string }
+}
+
 export type {
   TLoading,
   TUserRole,
@@ -44,5 +50,6 @@ export type {
   TModalRef,
   TResponseOption,
   TService,
-  TTax_Treatment
+  TTax_Treatment,
+  TPostResponse
 };
