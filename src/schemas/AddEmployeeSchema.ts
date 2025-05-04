@@ -125,6 +125,9 @@ export type TDataForSpecificEmployee = Omit<TAddEmployeeFormData, TKeysToOmit> &
   groups: { id: number; name: string }[];
   user_permissions: { id: number; codename: string }[];
   is_active: boolean;
+  total_attended: number;
+  student_count: number;
+  average_rating: number;
   subject_choices_response: { id: number; name_ar: string, name_en: string }[];
   initial_students_response: {
     id: number;

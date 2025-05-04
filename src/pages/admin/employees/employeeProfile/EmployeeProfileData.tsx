@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Styles from "./EmployeeProfileData.module.css";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
@@ -6,16 +6,19 @@ import { SimpleTable } from "@/pages/shared/components";
 import { LoadingIndicator } from "@/components";
 import { getSpecificEmployee } from "@/services/employees";
 import { useQuery } from "@tanstack/react-query";
+import StarIcon from "@/assets/star.svg?react"
 
-const { sectionContainer, infoContainer, iconButton } = Styles;
+const {sectionContainer, infoContainer, iconButton} = Styles;
 const EmployeeProfileData = () => {
-    const params = useParams();
-    const navigate = useNavigate();
-    const employeeId = Number(params.id);
-    const { data: specificEmployeeData } = useQuery({
-      queryKey: ["specificEmployeeData"],
-      queryFn: () => getSpecificEmployee(employeeId)
-    });
+  const params = useParams();
+  const navigate = useNavigate();
+  const employeeId = Number(params.id);
+  const {data: specificEmployeeData} = useQuery({
+    queryKey: ["specificEmployeeData"],
+    queryFn: () => getSpecificEmployee(employeeId)
+  });
+
+  console.log('data for employees', specificEmployeeData);
   const editEmployee = () => {
     navigate(`/admin/employees/edit-employee/${employeeId}`, {
       state: specificEmployeeData,
@@ -28,15 +31,18 @@ const EmployeeProfileData = () => {
       </div>}
       <div className="flex justify-between mb-[4.8rem]">
         <div className="flex items-center gap-[2rem]">
-        <p className="font-medium text-[2.4rem]">{specificEmployeeData?.full_name || `${specificEmployeeData?.first_name} ${specificEmployeeData?.last_name}`}</p>
-        <EditPenIcon className={iconButton} onClick={editEmployee} />
+          <p
+            className="font-medium text-[2.4rem]">{specificEmployeeData?.full_name || `${specificEmployeeData?.first_name} ${specificEmployeeData?.last_name}`}</p>
+          <EditPenIcon className={iconButton} onClick={editEmployee}/>
         </div>
         {specificEmployeeData?.is_active ? (
-          <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[var(--main-color)] text-[#FFFFFF]">
+          <span
+            className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[var(--main-color)] text-[#FFFFFF]">
             نشط
           </span>
         ) : (
-          <span className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">
+          <span
+            className="w-[126px] h-[35px] flex justify-center items-center rounded-[10px] bg-[#8D8D8D] text-[#FFFFFF]">
             غير نشط
           </span>
         )}
@@ -85,7 +91,28 @@ const EmployeeProfileData = () => {
           <span>{specificEmployeeData?.time_zone || "لايوجد"}</span>
         </div>
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
+      {/* Section Statistics */}
+      <section className={sectionContainer}>
+        <p>إحصائيات المدرس الحالية</p>
+        <div className={infoContainer}>
+          <h2>عدد الحصص التى اجرها:</h2>
+          <span>{specificEmployeeData?.total_attended ? `${specificEmployeeData?.total_attended}` : "لم يتم اجراء حصص بعد"}</span>
+        </div>
+        <div className={infoContainer}>
+          <h2>عدد الطلاب لديه:</h2>
+          <span>{specificEmployeeData?.student_count ? `${specificEmployeeData?.student_count}` : "لا يوجد"}</span>
+        </div>
+        <div className={infoContainer}>
+          <h2>تقيم:</h2>
+          <span className="flex gap-[0.8rem] items-center">{specificEmployeeData?.average_rating ? `${<StarIcon style={{
+            color: '#FFB800',
+            width: '1.6rem',
+            height: '1.6rem'
+          }}/>} ${specificEmployeeData?.average_rating} / 5` : "لا يوجد تقييم بعد"}</span>
+        </div>
+      </section>
+      <hr className="hr"/>
       {/* Section Two Bio Information */}
       <section className={sectionContainer}>
         <p>المؤهلات الدراسية</p>
@@ -99,7 +126,7 @@ const EmployeeProfileData = () => {
         </div>
         <div className={infoContainer}></div>
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
       {/* Section Three Available Times */}
       <section className={sectionContainer}>
         <p>المواعيد المتاحة</p>
@@ -107,7 +134,7 @@ const EmployeeProfileData = () => {
           <span>أخر تحديث</span>
           <span>
             {(specificEmployeeData &&
-              formatFullArabicDate(specificEmployeeData?.updated_at)) ||
+                formatFullArabicDate(specificEmployeeData?.updated_at)) ||
               "لايوجد"}
           </span>
         </div>
@@ -117,7 +144,7 @@ const EmployeeProfileData = () => {
         </div>
         <div className={infoContainer}></div>
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
       {/* Section Four Bio Information */}
       <section className={sectionContainer}>
         <p>تفاصيل الموظف</p>
@@ -173,8 +200,8 @@ const EmployeeProfileData = () => {
           <h2>المواد: </h2>
           {specificEmployeeData &&
             specificEmployeeData?.subject_choices_response?.map((subject) => {
-              return (  
-                  <span key={subject.id}>
+              return (
+                <span key={subject.id}>
                     {`,${subject.name_ar}` || "لايوجد"}
                   </span>
               );
@@ -185,7 +212,7 @@ const EmployeeProfileData = () => {
           <span>{specificEmployeeData?.additional_notes || "لايوجد"}</span>
         </div>
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
       {/* Section Five Employee Link */}
       <section className={sectionContainer}>
         <p>رابط موقع المعلم</p>
@@ -205,7 +232,7 @@ const EmployeeProfileData = () => {
         </div>
         <div className={infoContainer}></div>
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
       {/* Section Six Students */}
       <section className={sectionContainer}>
         <p>الطلاب المعينون</p>
@@ -215,7 +242,7 @@ const EmployeeProfileData = () => {
           noDataMsg="لا يوجد طلاب !"
         />
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
       {/* Section Seven Notifications */}
       <section className={sectionContainer}>
         <p>الإشعارات</p>
@@ -250,7 +277,7 @@ const EmployeeProfileData = () => {
           </span>
         </div>
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
       {/* Section Eight Employee Account */}
       <section className={sectionContainer}>
         <p>حساب المستخدم</p>
@@ -280,7 +307,7 @@ const EmployeeProfileData = () => {
         </div>
         <div className={infoContainer}></div>
       </section>
-      <hr className="hr" />
+      <hr className="hr"/>
     </>
   );
 };
