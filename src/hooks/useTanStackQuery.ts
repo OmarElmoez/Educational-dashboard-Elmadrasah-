@@ -26,6 +26,7 @@ type THookResponse<T> = {
   goToPage: (page: number) => void;
   data: TResponseData<T> | undefined;
   isPending: boolean;
+  isFetching: boolean;
   error: Error | null;
 };
 
@@ -44,7 +45,7 @@ const useTanStackQuery = <T>({
 
   const queryKey = [queryKeyPrefix, params];
 
-  const { data, isPending, error } = useQuery({
+  const { data, isFetching, isPending, error } = useQuery({
     queryKey,
     queryFn: () => fetchFn(params),
     staleTime,
@@ -87,6 +88,7 @@ const useTanStackQuery = <T>({
     goToPage,
     data,
     isPending,
+    isFetching,
     error,
   };
 };

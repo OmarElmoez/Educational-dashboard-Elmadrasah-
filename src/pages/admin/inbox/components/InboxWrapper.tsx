@@ -29,14 +29,12 @@ const InboxWrapper = ({children, review }: TInboxWrapperProps) => {
           <div className="flex gap-[0.8rem] items-center">
           <h2 className="text-black text-[1.5rem]">
             {review?.reviewed_by === "Teacher"
-              ? `قام المعلم ${review?.reviewer_name} بتقييم الطالب ${review?.reviewed_name} مادة ${review?.subject_name}`
-              : `قام الطالب ${review?.reviewer_name} بتقييم المعلم ${review?.reviewed_name} مادة ${review?.subject_name}`}
+              ? `قام المعلم ${review?.reviewer_name} بتقييم الطالب ${review?.reviewed_name} ${review?.subject_name === null ?  "" : `مادة ${review?.subject_name}` }`
+              : `قام الطالب ${review?.reviewer_name} بتقييم المعلم ${review?.reviewed_name} ${review?.subject_name === null? "" : `مادة ${review?.subject_name}`}`}
           </h2>
-          <span className="">
             {review?.reviewed_by === "Teacher"
               ? <span className="w-[7rem] h-[1.8rem]  flex items-center justify-center bg-[#7AB790] text-white text-[0.8rem] rounded-sm">تقييم المُعلم</span>
               : <span className="w-[7rem] h-[1.8rem]  flex items-center justify-center bg-[#FFB800] text-white text-[0.8rem] rounded-sm">تقييم الطالب</span>}
-          </span>
               </div>
           <div className="flex gap-[0.8rem]">
             {review?.answer && (

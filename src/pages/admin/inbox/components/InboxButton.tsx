@@ -25,19 +25,21 @@ const TYPE_VARIANTS = {
 }
 
 const InboxButton = ({onClick, type, disableKey}: TInboxButtonProps) => {
-
+const isDisabled = disableKey 
   return (
     <Button
+      onClick={isDisabled ? undefined : onClick}
+      disableKey={isDisabled}
       style={{
-      fontSize: '1.4rem',
-      fontWeight: 400,
-      paddingBlock: '0',
-      backgroundColor: "transparent",
-      width: 'fit-content',
-      height: 'auto'
+        fontSize: '1.4rem',
+        fontWeight: 400,
+        paddingBlock: '0',
+        backgroundColor: isDisabled ? '#ccc' : 'transparent',
+        width: 'fit-content',
+        height: 'auto',
+        cursor: isDisabled ? 'not-allowed' : 'pointer',
+        opacity: isDisabled ? 0.3 : 1,
       }}
-      onClick={onClick}
-      disableKey={disableKey}
     >
       {TYPE_VARIANTS[type].icon}
     </Button>

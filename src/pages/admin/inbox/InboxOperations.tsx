@@ -5,28 +5,47 @@ import { getInboxData } from "@/services/inbox.ts";
 import { LoadingIndicator } from "@/components";
 import { Box, Button } from "@mui/material";
 import UploadedFiles from "./components/UploadedFiles.tsx";
-
-const Reviews = () => {
+import { useAppDispatch } from "@/store/hooks.ts";
+import actVerifingFiles from "@/store/notifications/act/actVerifingFiles.ts";
+import { useQueryClient } from "@tanstack/react-query";
+import NotesOperations from "./components/NotesOperations.tsx";
+const InboxOperations = () => {
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const {
     data: inboxData,
     isPending,
+    isFetching,
     page,
     increasePage,
     decreasePage,
   } = useTanStackQuery({
-    queryKeyPrefix: "reviews",
+    queryKeyPrefix: "inboxData",
     fetchFn: getInboxData,
   });
   const viewFileHandler = (url: string) => {
     window.open(url, "_blank");
   };
+  const handleVerifingFiles = (fileId: number, action: string) => {
+    dispatch(actVerifingFiles({ file_id: fileId, action }))
+      .unwrap()
+      .then(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["inboxData"],
+        });
+      })
+      .catch((err) => {
+        console.error("Verification failed", err);
+      });
+  };
   return (
     <>
-      {isPending && (
-        <div className="loadingBox">
-          <LoadingIndicator />
-        </div>
-      )}
+      {isPending ||
+        (isFetching && (
+          <div className="loadingBox">
+            <LoadingIndicator />
+          </div>
+        ))}
       <div className="grid gap-[2.4rem]">
         {inboxData?.results.map((item) => {
           switch (item.type) {
@@ -57,21 +76,36 @@ const Reviews = () => {
                       onClick={() => {
                         viewFileHandler(item?.data?.file);
                       }}
-                      />
+                    />
                     <InboxButton
                       type="accept"
-                      onClick={() => console.log("accept")}
-                      disableKey= {item?.data.is_verified === true ? true : false}  
-                      />
+                      onClick={() =>
+                        handleVerifingFiles(
+                          item?.data?.id,
+                          "set_is_verified_true"
+                        )
+                      }
+                      disableKey={
+                        item?.data.is_verified === true ? true : false
+                      }
+                    />
                     <InboxButton
                       type="reject"
-                      onClick={() => console.log("reject")}
-                      disableKey= {item?.data.is_verified === false ? true : false}  
+                      onClick={() =>
+                        handleVerifingFiles(
+                          item?.data?.id,
+                          "set_is_verified_false"
+                        )
+                      }
+                      disableKey={
+                        item?.data.is_verified === false ? true : false
+                      }
                     />
-
                   </UploadedFiles>
                 </>
               );
+            case "note":
+              return <NotesOperations key={item?.data?.id} noteData={item?.data} />;
             default:
               return null;
           }
@@ -136,4 +170,4 @@ const Reviews = () => {
   );
 };
 
-export default Reviews;
+export default InboxOperations;

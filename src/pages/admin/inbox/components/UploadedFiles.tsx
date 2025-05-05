@@ -43,17 +43,21 @@ const UploadedFiles = ({ children, uploadedFileData }: TInboxWrapperProps) => {
           <div className="flex gap-[0.8rem] items-center">
             <h2 className="text-black text-[1.5rem]">
               {uploadedFileData?.uploaded_by === "Teacher"
-                ? `قام المعلم ${uploadedFileData?.teacher_name} برفع الملفات الخاصة بمادة  ${uploadedFileData?.subject_name} للطالب ${uploadedFileData?.student_name}`
-                : `قام الطالب ${uploadedFileData?.student_name} برفع الملفات الخاصة بمادة  ${uploadedFileData?.subject_name} للمعلم ${uploadedFileData?.teacher_name}`}
+                ? `قام المعلم ${uploadedFileData?.teacher_name} برفع الملفات  ${uploadedFileData?.subject_name === null? "" : `الخاصة بمادة ${uploadedFileData?.subject_name}`} للطالب ${uploadedFileData?.student_name}`
+                : `قام الطالب ${uploadedFileData?.student_name} برفع الملفات  ${uploadedFileData?.subject_name === null? "" : `الخاصة بمادة ${uploadedFileData?.subject_name}`} للمعلم ${uploadedFileData?.teacher_name}`}
             </h2>
-            <span className="">
+            {uploadedFileData?.is_exam ? (
+              <span className="w-[7rem] h-[1.8rem] flex items-center justify-center bg-[#C92516] text-white text-[0.8rem] rounded-sm">
+                إختبار
+              </span>
+            ) : (
               <span className="w-[7rem] h-[1.8rem] flex items-center justify-center bg-[#1C8A44] text-white text-[0.8rem] rounded-sm">
                 ملفات
               </span>
-            </span>
+            )}
           </div>
           <div className="flex items-center gap-[0.8rem]">
-              {getFileIcon(uploadedFileData?.file)}
+            {getFileIcon(uploadedFileData?.file)}
             <p className="text-[#969292] text-[1.4rem]">
               {uploadedFileData?.title}
             </p>

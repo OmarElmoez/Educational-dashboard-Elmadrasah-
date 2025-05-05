@@ -29,6 +29,21 @@ export type TFileData = {
   teacher_image: string | null;
   subject_name: string;
 };
+
+export type TNoteData = {
+  id: number;
+  sent_by: string;
+  teacher_name: string;
+  teacher_image: string;
+  student_name: string;
+  student_image: string;
+  subject_name: string;
+  description: string;
+  status: string;
+  created_at: string;
+  user: number;
+  lesson: number;
+};
 export type TItem =
   | {
       type: "review";
@@ -39,6 +54,11 @@ export type TItem =
       type: "file";
       created_at: string;
       data: TFileData;
+    }
+  | {
+      type: "note";
+      created_at: string;
+      data: TNoteData;
     };
 type TInboxResponse = {
   count: number;

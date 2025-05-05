@@ -90,7 +90,7 @@ export type TScheduleLessonFormDataForServer = Omit<TScheduleLessonFormData, TKe
     gender: string | null,
   }]
   service_id: number;
-  time_id: number;
+  time_id?: number;
   employee_id: number | null;
   follow_up_type: number;
   is_auto: boolean;

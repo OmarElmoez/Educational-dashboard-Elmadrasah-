@@ -8,7 +8,7 @@ import {
   RadioButtonsGroup,
   Row,
 } from "@/components";
-import { Heading } from "@/components/UI"
+import { Heading } from "@/components/UI";
 import { TIMEZONES_OPTIONS } from "@/constants";
 import { FOLLOW_UP_OPTIONS } from "@/constants/dropdown-options";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -29,7 +29,7 @@ import removeDuplicates from "@/utils/removeDuplicates";
 import { useFeedback } from "@/store/context";
 import PostScheduleLessonSchema, {
   TScheduleLessonFormData,
-  TScheduleLessonFormDataForServer
+  TScheduleLessonFormDataForServer,
 } from "@/schemas/postScheduleLessonSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import actSendScheduleLessonData from "@/store/single-actions/actSendScheduleLessonData.ts";
@@ -47,35 +47,33 @@ const ScheduleLesson = () => {
   const [servicesList, setServicesList] = useState<TOption[]>([]);
   const dispatch = useAppDispatch();
 
-  const {credintials} = useAppSelector((state) => state.auth);
-  const [loading, setLoading] = useState<TLoading>('idle')
+  const { credintials } = useAppSelector((state) => state.auth);
+  const [loading, setLoading] = useState<TLoading>("idle");
 
   const [customerData, setCustomerData] = useState<TLeadFlowData>();
 
   const {
     register,
-    formState: {errors},
+    formState: { errors },
     watch,
     handleSubmit,
     control,
     setValue,
     reset,
     getValues,
-  } = useForm<TScheduleLessonFormData>(
-    {
-      defaultValues: {
-        subjects: [{gender: "", language: "", student_credit: "", subject: ""}],
-        repeat: false,
-        lesson_draft_id: null
-      },
-      resolver: zodResolver(PostScheduleLessonSchema),
-    }
-  );
-  const {id, credit, package_id} = useParams();
+  } = useForm<TScheduleLessonFormData>({
+    defaultValues: {
+      subjects: [{ gender: "", language: "", student_credit: "", subject: "" }],
+      repeat: false,
+      lesson_draft_id: null,
+    },
+    resolver: zodResolver(PostScheduleLessonSchema),
+  });
+  const { id, credit, package_id } = useParams();
 
-  const {openFeedbackModal} = useFeedback();
+  const { openFeedbackModal } = useFeedback();
 
-  const {fields} = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "subjects",
   });
@@ -84,23 +82,21 @@ const ScheduleLesson = () => {
     reset({
       ...getValues(),
       repeat_every: null,
-      repeat_monthly: '',
+      repeat_monthly: "",
       repeat_count: undefined,
       repeat_times: undefined,
       end_repeat_on: undefined,
       repeat_monthly_date: null,
-      on_quarter: '',
+      on_quarter: "",
       end_repeat: null,
       repeat: false,
-    })
-  }
+    });
+  };
 
   const [predefinedDate, setPredefinedDate] = useState("");
 
   useEffect(() => {
-    dispatch(
-      actGetDropdownOptions({optionsFor: "services"})
-    ).then((res) => {
+    dispatch(actGetDropdownOptions({ optionsFor: "services" })).then((res) => {
       if (Array.isArray(res?.payload)) {
         setServicesList(res.payload);
       }
@@ -110,11 +106,12 @@ const ScheduleLesson = () => {
   useEffect(() => {
     // you should pass the id (get from useParams) to the action
     if (id && credit) {
-      dispatch(actGetScheduleLessonData({id, credit})).unwrap()
-      .then((res) => {
-        setCustomerData(res);
-        setValue('lesson_credit', credit)
-      })
+      dispatch(actGetScheduleLessonData({ id, credit }))
+        .unwrap()
+        .then((res) => {
+          setCustomerData(res);
+          setValue("lesson_credit", credit);
+        });
     }
   }, [credit, dispatch, id, setValue]);
 
@@ -122,7 +119,7 @@ const ScheduleLesson = () => {
 
   const scheduleRef = useRef<TModalRef>(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // We use this method because the data came from the server is duplicated.
   const studentsOptions = Array.from(
@@ -132,21 +129,19 @@ const ScheduleLesson = () => {
     new Set(createOptionsFrom(customerData?.time))
   );
 
-
   const subjectsOptions = Array.from(
     new Set(createOptionsFrom(customerData?.subjects))
   );
   const teachersOptions = removeDuplicates(customerData?.teachers);
 
   const onSubmit = (data: TScheduleLessonFormData) => {
-
     if (teachersOptions.length === 0 && selectedTeachersType === "true") {
-      setLoading('failed');
+      setLoading("failed");
       openFeedbackModal("failed", `غير متاح مدرسين للجدولة التلقائي`);
       return;
     }
 
-    setLoading('pending');
+    setLoading("pending");
 
     const scheduledClasses = data.subjects.reduce(
       (total: number, subject: any) => {
@@ -156,33 +151,38 @@ const ScheduleLesson = () => {
     );
 
     if (scheduledClasses > Number(data.lesson_credit)) {
-      openFeedbackModal("warning", `لا يمكن جدولة أكثر من ${data.lesson_credit} حصص`);
+      openFeedbackModal(
+        "warning",
+        `لا يمكن جدولة أكثر من ${data.lesson_credit} حصص`
+      );
       return;
     }
 
-    if (data.is_auto === 'true') {
-      data.teacher_ids = customerData?.teachers.map(teacher => teacher.id);
+    if (data.is_auto === "true") {
+      data.teacher_ids = customerData?.teachers.map((teacher) => teacher.id);
     }
-
     const processedData = {
       ...data,
       description: data.description === "" ? null : data.description,
-      end_repeat_on: data.end_repeat_on === undefined ? null : data.end_repeat_on,
-      received_days: customerData?.days.map(day => day.id.toString()),
+      end_repeat_on:
+        data.end_repeat_on === undefined ? null : data.end_repeat_on,
+      received_days: customerData?.days.map((day) => day.id.toString()),
       days: data.days === "" ? null : data.days,
       repeat_every: data.repeat_every === "" ? null : data.repeat_every,
-      package_id: Number(package_id)
-    }
+      package_id: Number(package_id),
+    };
 
     const serverData: TScheduleLessonFormDataForServer = {
       ...processedData,
       student_id: Number(data.student_id),
-      subjects: [{
-        subject: Number(data.subjects[0].subject),
-        student_credit: Number(data.subjects[0].student_credit),
-        language: data.subjects[0].language,
-        gender: data.subjects[0].gender,
-      }],
+      subjects: [
+        {
+          subject: Number(data.subjects[0].subject),
+          student_credit: Number(data.subjects[0].student_credit),
+          language: data.subjects[0].language,
+          gender: data.subjects[0].gender,
+        },
+      ],
       lesson_credit: Number(data.lesson_credit),
       location_id: Number(data.location_id),
       service_id: Number(data.service_id),
@@ -192,27 +192,27 @@ const ScheduleLesson = () => {
       repeat_count: Number(data.repeat_count) || 0,
       repeat_times: Number(data.repeat_times) || 0,
       is_auto: data.is_auto === "true",
-    }
-
-    dispatch(actSendScheduleLessonData(serverData)).unwrap().then((res) => {
-      if (res?.error) {
+    };
+    const {time_id, ...remainData} = serverData
+    dispatch(actSendScheduleLessonData(remainData)).unwrap().then((res) => {
+      if (res?.status === 400) {
         setLoading('failed')
         const conflictsDiv = (
           <div>
-            {res?.conflicts?.map((msg, index) => (
+            {JSON.parse(res?.response).conflicts?.map((msg : string, index : number) => (
               <p key={index} className="mt-2 text-[1.1rem] text-red-500">{msg}</p>
             ))}
           </div>
         );
-        openFeedbackModal('failed', res?.error, conflictsDiv);
+        openFeedbackModal('failed', JSON.parse(res?.response).error, conflictsDiv);
         return;
+      } else {
+        setLoading('succeeded')
+        openFeedbackModal("succeeded", "تمت الجدولة بنجاح")
+        navigate('/admin/calendar/all-unscheduled-list')
       }
-      setLoading('succeeded')
-      openFeedbackModal("succeeded", "تمت الجدولة بنجاح")
-      navigate('/admin/calendar/all-unscheduled-list')
     });
   };
-
 
   useEffect(() => {
     setValue("start_date", predefinedDate);
@@ -220,11 +220,16 @@ const ScheduleLesson = () => {
 
   return (
     <>
-      {(loading === 'pending' || !customerData) && <div className="loadingBox">
-          <LoadingIndicator/>
-      </div>}
-      <BasicModal ref={scheduleRef} headerText="ضبط إعادة التكرار"
-                  headerTextStyle={{fontSize: "1.8rem", fontWeight: "500"}}>
+      {(loading === "pending" || !customerData) && (
+        <div className="loadingBox">
+          <LoadingIndicator />
+        </div>
+      )}
+      <BasicModal
+        ref={scheduleRef}
+        headerText="ضبط إعادة التكرار"
+        headerTextStyle={{ fontSize: "1.8rem", fontWeight: "500" }}
+      >
         <ScheduleForm
           className="modal__form"
           onClose={() => scheduleRef.current?.close()}
@@ -251,35 +256,35 @@ const ScheduleLesson = () => {
             error={errors.lesson_credit?.message as string}
             disabled
           />
-
         </Row>
 
-        <Heading text="مواقيت الإتاحة للطالب" style={{marginTop: "2.8rem"}}/>
+        <Heading text="مواقيت الإتاحة للطالب" style={{ marginTop: "2.8rem" }} />
 
         <Row>
           <>
             <article className="group">
               <span className="adminFormLabel">الايام</span>
               {customerData?.days.length !== 0 ? (
-                  <section
-                    className="inputField"
-                    style={{display: "flex", gap: "1rem", flexWrap: "wrap", paddingBlock: "0.7rem"}}
-                  >
-                    {customerData?.days.map((day) => {
-                        return (
-                          <span
-                            style={previewTeacherStyle}
-                            key={day.id}
-                          >
+                <section
+                  className="inputField"
+                  style={{
+                    display: "flex",
+                    gap: "1rem",
+                    flexWrap: "wrap",
+                    paddingBlock: "0.7rem",
+                  }}
+                >
+                  {customerData?.days.map((day) => {
+                    return (
+                      <span style={previewTeacherStyle} key={day.id}>
                         {day.name}
                       </span>
-                        );
-                      }
-                    )}
-                  </section>)
-                :
-                (<span className="error">لم يتم تحديد أيام</span>)
-              }
+                    );
+                  })}
+                </section>
+              ) : (
+                <span className="error">لم يتم تحديد أيام</span>
+              )}
             </article>
           </>
 
@@ -324,15 +329,15 @@ const ScheduleLesson = () => {
         </Row>
 
         {fields.map((field, index) => (
-          <Row key={field.id} style={{alignItems: "center"}}>
+          <Row key={field.id} style={{ alignItems: "center" }}>
             <Dropdown
               // don't use subjects[${index}], it doesn't work.
               name={`subjects.${index}.gender`}
               register={register}
               label="النوع"
               options={[
-                {label: "معلم", value: "Male"},
-                {label: "معلمة", value: "Female"},
+                { label: "معلم", value: "Male" },
+                { label: "معلمة", value: "Female" },
               ]}
               error={errors.subjects?.[index]?.gender?.message as string}
             />
@@ -342,48 +347,56 @@ const ScheduleLesson = () => {
               register={register}
               label="اللغة"
               options={[
-                {label: "الإنجليزية", value: "en"},
-                {label: "العربية", value: "ar"},
+                { label: "الإنجليزية", value: "en" },
+                { label: "العربية", value: "ar" },
               ]}
               error={errors.subjects?.[index]?.language?.message as string}
             />
 
-            {customerData?.subjects.length !== 0 && <Dropdown
+            {customerData?.subjects.length !== 0 && (
+              <Dropdown
                 name={`subjects.${index}.subject`}
                 register={register}
                 label="المادة"
                 options={subjectsOptions}
                 error={errors.subjects?.[index]?.subject?.message as string}
-            />}
+              />
+            )}
 
-            {customerData?.subjects.length === 0 &&
-                <DropdownWithSearch register={register} name={`subjects.${index}.subject`} setValue={setValue}
-                                    label="المادة"
-                                    optionsFor="subjects"/>
-            }
+            {customerData?.subjects.length === 0 && (
+              <DropdownWithSearch
+                register={register}
+                name={`subjects.${index}.subject`}
+                setValue={setValue}
+                label="المادة"
+                optionsFor="subjects"
+              />
+            )}
 
             <InputField
               label="عدد الحصص"
               placeholder="4"
               register={register}
               name={`subjects.${index}.student_credit`}
-              error={errors.subjects?.[index]?.student_credit?.message as string}
+              error={
+                errors.subjects?.[index]?.student_credit?.message as string
+              }
               type="number"
             />
           </Row>
         ))}
 
-        <Heading text="اختيار المٌعلمين" style={{marginTop: "2.8rem"}}/>
+        <Heading text="اختيار المٌعلمين" style={{ marginTop: "2.8rem" }} />
 
         <Row>
           <RadioButtonsGroup
             register={register}
             name="is_auto"
             options={[
-              {label: "اختيار يدوي", value: "false"},
-              {label: "اختيار تلقائي", value: "true"},
+              { label: "اختيار يدوي", value: "false" },
+              { label: "اختيار تلقائي", value: "true" },
             ]}
-            style={{gap: "11.6rem"}}
+            style={{ gap: "11.6rem" }}
             error=""
           />
         </Row>
@@ -391,23 +404,30 @@ const ScheduleLesson = () => {
         <Row>
           {selectedTeachersType === "false" && (
             <>
+              <DropdownWithSearch
+                label="المعلمين"
+                name="employee_id"
+                register={register}
+                optionsFor="teachers"
+                setValue={setValue}
+              />
 
-              <DropdownWithSearch label="المعلمين" name="employee_id" register={register} optionsFor="teachers"
-                                  setValue={setValue}/>
-
-
-              <DropdownWithSearch label="الموقع الأفتراضي" name="location_id" register={register} optionsFor="locations"
-                                  setValue={setValue}/>
-
+              <DropdownWithSearch
+                label="الموقع الأفتراضي"
+                name="location_id"
+                register={register}
+                optionsFor="locations"
+                setValue={setValue}
+              />
             </>
           )}
 
-          {(selectedTeachersType === "true" && teachersOptions.length !== 0) ?
+          {selectedTeachersType === "true" && teachersOptions.length !== 0 ? (
             <>
               <article className="group">
                 <section
                   className="inputField"
-                  style={{display: "flex", gap: "1rem", flexWrap: "wrap"}}
+                  style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
                 >
                   {teachersOptions.map((teacher) =>
                     teacher.subjects.map((subject: any) => {
@@ -416,22 +436,24 @@ const ScheduleLesson = () => {
                           style={previewTeacherStyle}
                           key={`${teacher.id}_${subject.id}`}
                         >
-                        {teacher.first_name} {teacher.last_name} -{" "}
+                          {teacher.first_name} {teacher.last_name} -{" "}
                           {subject.name}
-                      </span>
+                        </span>
                       );
                     })
                   )}
                 </section>
               </article>
               <article className="group"></article>
-            </> : (selectedTeachersType === '' || selectedTeachersType === 'true') ? (
-              <span className="error">لا يوجد مدرسين</span>) : ''
-          }
+            </>
+          ) : selectedTeachersType === "" || selectedTeachersType === "true" ? (
+            <span className="error">لا يوجد مدرسين</span>
+          ) : (
+            ""
+          )}
         </Row>
 
         <Row>
-
           <DateOrTimePicker
             setValue={setValue}
             label="بداية الدرس"
@@ -441,11 +463,10 @@ const ScheduleLesson = () => {
             onChange={(val: string) => setPredefinedDate(val)}
           />
 
-          {customerData?.time.length === 0 ?
+          {selectedTeachersType === "false" ? (
             <>
-
               <DateOrTimePicker
-                type='time'
+                type="time"
                 setValue={setValue}
                 label="وقت البدء"
                 register={register}
@@ -454,21 +475,20 @@ const ScheduleLesson = () => {
               />
 
               <DateOrTimePicker
-                type='time'
+                type="time"
                 setValue={setValue}
                 label="وقت الانتهاء"
                 register={register}
                 name="to_time"
                 error={errors.to_time?.message as string}
               />
-
-            </> : <article className="group"></article>}
-
-
+            </>
+          ) : (
+            <article className="group"></article>
+          )}
         </Row>
 
-        <Row style={{marginTop: "2.8rem"}}>
-
+        <Row style={{ marginTop: "2.8rem" }}>
           <InputField
             label="معلومات إضافية"
             placeholder="اكتب معلوماتك الإضافية"
@@ -481,7 +501,7 @@ const ScheduleLesson = () => {
           <article className="group"></article>
         </Row>
 
-        <Heading text="خيارات المتابعة" style={{marginTop: "4.8rem"}}/>
+        <Heading text="خيارات المتابعة" style={{ marginTop: "4.8rem" }} />
 
         <Row>
           <Dropdown
@@ -506,15 +526,15 @@ const ScheduleLesson = () => {
             paddingInline: "1.6rem",
           }}
           onClick={() => {
-            scheduleRef.current?.open()
-            setValue('repeat', true)
+            scheduleRef.current?.open();
+            setValue("repeat", true);
           }}
         >
-          <RepeatIcon/>
+          <RepeatIcon />
           <span>إعادة التكرار</span>
         </button>
 
-        <Row style={{justifyContent: "flex-end", marginTop: "1.4rem"}}>
+        <Row style={{ justifyContent: "flex-end", marginTop: "1.4rem" }}>
           <button type="submit" className="btn submit-btn">
             حفظ
           </button>
@@ -522,7 +542,7 @@ const ScheduleLesson = () => {
             type="button"
             className="btn cancel-btn"
             onClick={() => {
-              reset()
+              reset();
             }}
           >
             إلغاء
@@ -530,8 +550,7 @@ const ScheduleLesson = () => {
         </Row>
       </form>
     </>
-  )
-    ;
+  );
 };
 
 export default ScheduleLesson;

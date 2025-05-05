@@ -31,6 +31,7 @@ import StudentIcon from "@/assets/student.svg?react";
 import UploadIcon from "@/assets/upload_icon.svg?react";
 import RolesIcon from "@/assets/roles.svg?react";
 import NewOrdersIcon from "@/assets/new-orders.svg?react";
+import InboxIcon from "@/assets/inbox_icon.svg?react";
 
 const SIDEBAR_DATA = {
   Student: [
@@ -260,7 +261,7 @@ const SIDEBAR_DATA = {
     {
       title: "العمليات",
       path: "inbox",
-      icon: <RolesIcon />,
+      icon: <InboxIcon />,
       page_title: "العمليات",
       children: undefined
       //  [
