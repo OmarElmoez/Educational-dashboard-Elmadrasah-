@@ -13,7 +13,6 @@ const ScheduledErrorsTableList = () => {
   const [tableData, setTableData] = useState<
     TdraftLessonsStatusResponse[] | null
   >(null);
-console.log('tableData', tableData);
   const { std_id, id } = useParams();
   const navigate = useNavigate();
 
@@ -27,7 +26,6 @@ console.log('tableData', tableData);
       getscheduledErrorsList(std_id, id).then((res) => {
         if (res?.length) {
           setTableData(res);
-          console.log('from scheduled errors, ', res);
         }
       });
     }

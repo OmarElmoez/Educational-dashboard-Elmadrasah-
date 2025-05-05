@@ -34,7 +34,6 @@ const HourlyLessonsAdmin = () => {
   useEffect(() => {
     setHourlyLessonsForAllHours(location.state.data);
     setHourlyLessons(location.state.data.lessons);
-    console.log(location.state.data);
     setDate(location.state.date);
     let startTime = location.state.date.start;
     let endTime = location.state.date.end;
@@ -43,7 +42,6 @@ const HourlyLessonsAdmin = () => {
     setLoading(false);
   }, [location]);
   // TEMP: use date and time to fix deployment
-  console.log(date, time);
   function addHoursToTime(inputTime: string) {
     let timeParts = inputTime.split(":");
     let date = new Date();

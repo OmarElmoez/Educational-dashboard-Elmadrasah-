@@ -8,7 +8,6 @@ interface FileViewerProps {
 
 const getFileType = (url: string): FileType => {
 
-console.log("url", url);
   const extension = url.split(".").pop()?.toLowerCase();
 
   switch (extension) {
