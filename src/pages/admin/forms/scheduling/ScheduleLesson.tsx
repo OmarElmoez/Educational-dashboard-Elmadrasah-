@@ -199,7 +199,7 @@ const ScheduleLesson = () => {
         setLoading('failed')
         const conflictsDiv = (
           <div>
-            {JSON.parse(res?.response).conflicts?.map((msg : string, index : number) => (
+            {JSON.parse(res?.response).conflicts?.map((msg: string, index: number) => (
               <p key={index} className="mt-2 text-[1.1rem] text-red-500">{msg}</p>
             ))}
           </div>

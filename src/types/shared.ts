@@ -38,6 +38,8 @@ type TTax_Treatment = "Tax Exclusive" | "Tax Inclusive" | "Tax Exempt";
 
 type TPostResponse = {
   response: string,
+  error?: string;
+  conflicts?: string[];
   status: number,
   data: { message: string }
 }

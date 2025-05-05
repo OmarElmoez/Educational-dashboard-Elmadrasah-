@@ -26,6 +26,7 @@ const HourlyLessonsAdmin = () => {
   const [displayDate, setDisplayDate] = useState<string>();
   const [date, setDate] = useState<Dayjs | null>(null);
   const [time, setTime] = useState<Dayjs | null>(null);
+  console.log(date, time);
   const [hourlyLessonsForAllHours, setHourlyLessonsForAllHours] =
     useState<TimeSlotInfo>(defaultTimeSlotInfo);
   const [hourlyLessons, setHourlyLessons] = useState<THourLesson[]>([]);

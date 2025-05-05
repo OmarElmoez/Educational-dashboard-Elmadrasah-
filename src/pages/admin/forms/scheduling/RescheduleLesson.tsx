@@ -223,22 +223,24 @@ const RescheduleLesson = () => {
       is_auto: data.is_auto === "true",
     }
 
-    dispatch(actSendScheduleLessonData(serverData)).unwrap().then((res) => {
-      if (res?.error) {
+    const {time_id, ...remainData} = serverData
+    dispatch(actSendScheduleLessonData(remainData)).unwrap().then((res) => {
+      if (res?.status === 400) {
         setLoading('failed')
         const conflictsDiv = (
           <div>
-            {res?.conflicts?.map((msg, index) => (
+            {JSON.parse(res?.response).conflicts?.map((msg: string, index: number) => (
               <p key={index} className="mt-2 text-[1.1rem] text-red-500">{msg}</p>
             ))}
           </div>
         );
-        setLoading('succeeded')
-        openFeedbackModal('failed', res?.error, conflictsDiv);
+        openFeedbackModal('failed', JSON.parse(res?.response).error, conflictsDiv);
         return;
+      } else {
+        setLoading('succeeded')
+        openFeedbackModal("succeeded", "تمت الجدولة بنجاح")
+        navigate('/admin/calendar/all-unscheduled-list')
       }
-      openFeedbackModal("succeeded", "تمت إعادة الجدولة بنجاح", "")
-      navigate('/admin/calendar/all-unscheduled-list')
     });
 
   };
