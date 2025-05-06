@@ -44,7 +44,7 @@ const Login = () => {
           openFeedbackModal("failed", JSON.parse(res.response).error)
           return;
         }
-        if (res.password === '') {
+        if (res.set_password_url) {
           navigate(`/set-password`);
         } else {
           if (res.user?.phone === null) {
@@ -90,7 +90,7 @@ const Login = () => {
         <input type="password" className={formInput} {...register("password")} placeholder="كلمة المرور" />
         {errors.password && <p className="error">{errors.password.message}</p>}
 
-        <Link to="#">هل نسيت كلمة المرور؟</Link>
+        <Link to="confirm-email">هل نسيت كلمة المرور؟</Link>
         <button type="submit" disabled={loading === "pending"}>
           {loading === "pending" ? "جاري التسجيل..." : "تسجيل الدخول"}
         </button>

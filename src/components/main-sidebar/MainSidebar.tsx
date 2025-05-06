@@ -50,6 +50,7 @@ const MainSidebar = ({data}: TSidebarProps) => {
     dispatch(logout());
     dispatch(resetMonthLessons())
     dispatch(resetTodayLessons())
+    localStorage.removeItem('activatedPath')
     if (fcmToken) {
       dispatch(
         actFCMLogout({token: credintials?.token, FCM_token: fcmToken})
