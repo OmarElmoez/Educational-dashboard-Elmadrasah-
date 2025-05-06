@@ -13,7 +13,7 @@ const CheckAuth = ({children}: { children: ReactNode }) => {
     const activatedPath = localStorage.getItem('activatedPath');
     if (credintials?.role) {
       activatedPath === `/${credintials?.role?.toLowerCase()}` ? navigate(
-        `/${credintials?.role?.toLowerCase()}`) : navigate(`/${credintials?.role?.toLowerCase()}/${activatedPath}`)
+        `/${credintials?.role?.toLowerCase()}`) : navigate(`/${credintials?.role?.toLowerCase()}/${activatedPath || ''}`)
 
       if (credintials?.role !== 'Admin' && Month_lessons.length !== 0) {
         dispatch(actGetLessonsByMonth({date: `${new Date().getMonth() + 1}-${new Date().getFullYear()}`}))

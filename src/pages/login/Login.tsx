@@ -44,7 +44,7 @@ const Login = () => {
           openFeedbackModal("failed", JSON.parse(res.response).error)
           return;
         }
-        if (res.set_password_url) {
+        if (res.password === '') {
           navigate(`/set-password`);
         } else {
           if (res.user?.phone === null) {
