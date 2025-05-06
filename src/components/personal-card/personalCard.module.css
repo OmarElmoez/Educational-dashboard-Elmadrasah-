@@ -1,5 +1,6 @@
 .cardContainer{
   display: flex;
+  gap: 4rem;
   justify-content: space-between;
 }
 
@@ -17,7 +18,7 @@
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  /*width: 15rem;*/
+  width: 20rem;
   color: var(--secondary-color);
   direction: rtl;
 }
@@ -26,8 +27,17 @@
   margin-top: 1.2rem;
   font-size: 1.6rem;
   color: #ACACAC;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 20rem;
 }
-
+.subject_section h4 {
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 26rem;
+}
 menu {
   color: #616161;
   margin-top: 2rem;

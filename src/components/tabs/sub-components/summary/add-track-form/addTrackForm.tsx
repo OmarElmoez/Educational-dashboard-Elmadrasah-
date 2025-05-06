@@ -70,24 +70,23 @@ const AddTrackForm = ({addNewTrack}: { addNewTrack: (track: TTrackFromServer) =>
 
   return (
     <form method="post" className={trackForm} onSubmit={handleSubmit(onSubmit)}>
-      <Row style={{ alignItems: "flex-start" }}>
+      <Row style={{ alignItems: "flex-start", marginBottom: "0rem" }}>
         <span>عنوان</span>
-        <InputField name="title" register={register} error={errors.title?.message as string} />
-        {/*<input type="text" className='inputField' {...register('title')} />*/}
+        <InputField style={{paddingBottom: "2.4rem"}} name="title" register={register} error={errors.title?.message as string} />
       </Row>
 
-      <Row style={{ alignItems: "flex-start" }}>
+      <Row style={{ alignItems: "flex-start", marginBottom: "0rem" }}>
         <span>الحالة</span>
-        <Dropdown name="status" options={TRACK_STATUS_OPTIONS} register={register}
+        <Dropdown style={{paddingBottom: "2.4rem"}} name="status" options={TRACK_STATUS_OPTIONS} register={register}
                   error={errors.status?.message as string}/>
       </Row>
 
-      <Row style={{alignItems: "flex-start"}}>
+      <Row style={{alignItems: "flex-start", marginBottom: "3.6rem"}}>
         <span>الوصف</span>
         <textarea {...register("description")} />
       </Row>
       {errors &&
-          <p className="error" style={{marginTop: "-1rem", marginBottom: "1rem"}}>{errors.description?.message}</p>}
+          <p className="error" style={{marginTop: "-1.4rem", marginBottom: "0rem"}}>{errors.description?.message}</p>}
 
       <Row style={{gap: "1.9rem", alignItems: "flex-start"}}>
         <span>الأهداف</span>

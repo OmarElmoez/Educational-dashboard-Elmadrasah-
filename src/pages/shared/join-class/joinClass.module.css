@@ -4,7 +4,10 @@
   align-items: baseline;
 }
 .attendance_box {
-  margin-top: 2.5rem;
+  margin-top: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .lesson_actions {
@@ -29,7 +32,6 @@
   background-color: var(--main-color);
 }
 
-
 .lesson_status {
   position: absolute;
   left: 2.4rem;
@@ -45,7 +47,8 @@
 }
 .lesson_indicator {
   display: flex;
-  justify-content: space-between;
+  gap: 1.6rem;
+  /* justify-content: space-between; */
   align-items: center;
   margin-top: 3rem;
 }

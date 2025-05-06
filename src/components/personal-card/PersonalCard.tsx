@@ -17,6 +17,7 @@ const {
   cardContainer,
   teacher_details,
   stu_goals,
+  subject_section,
 } = styles;
 
 type TPersonalCardProps = {
@@ -28,6 +29,7 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
   const isTeacher = cardFor === "Teacher";
   const isStudent = cardFor === "Student" || cardFor === "Family";
   const isAdmin = cardFor === "Admin";
+  console.log(person);
   if (isAdmin) {
     return (
       <Card>
@@ -37,77 +39,92 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
         />
         <div className={cardContainer}>
           <div>
-          <section className={personal_info}>
-           <ImgBox size="56px">
-              {person.employee_image ? (
-                <img
-                src={person.employee_image}
-                alt="employee image"
-                style={{ minWidth: "56px" }}
-                />
-              ) : (
-                <ImgPlaceholder style={{ minWidth: "56px" }} />
-              )}
-            </ImgBox>
-            <div className={text_box}>
-              <h4 title={person?.employee_name}> المعلم : {person?.employee_name}</h4>
-              <p>{`أستاذ مادة : ${person.subject || "لا يوجد"}`}</p>
-            </div>
-          </section>
-          <div>
-          <h4> المواد : {person.subject}</h4>
-          </div>
-          <menu>
-          <li>
-            {person.employee_country === "Egypt" ? <EgyptFlag /> : <EmiratesFlag />}
-            <span>دولة المُعلم : {person.employee_country || "لا يوجد"}</span>
-          </li>
-          <li>
-            <LanguageIcon />
-            <span>
-             لغة المُعلم : 
-               {person.employee_language
-                ? person.employee_language === "ar"
-                  ? " العربية"
-                  : " الانجليزية"
-                : "غير محددة"}
-            </span>
-          </li>
-        </menu>
+            <section className={personal_info}>
+              <ImgBox size="56px">
+                {person.employee_image ? (
+                  <img
+                    src={person.employee_image}
+                    alt="employee image"
+                    style={{ minWidth: "56px" }}
+                  />
+                ) : (
+                  <ImgPlaceholder style={{ minWidth: "56px" }} />
+                )}
+              </ImgBox>
+              <div className={text_box}>
+                <h4 title={person?.employee_name}>
+                  {" "}
+                  المعلم : {person?.employee_name}
+                </h4>
+                <p title={person?.teacher_bio}>{` التخصص : ${
+                  person.teacher_bio || "لا يوجد"
+                }`}</p>
               </div>
-          <div>
-          <section className={personal_info}>
-           <ImgBox size="56px">
-              {person.image ? (
-                <img
-                src={person.image}
-                alt="employee image"
-                style={{ minWidth: "56px" }}
-                />
-              ) : (
-                <ImgPlaceholder style={{ minWidth: "56px" }} />
-              )}
-            </ImgBox>
-            <div className={text_box}>
-              <h4 title={person?.name}> الطالب : {person?.name}</h4>
-              <p>{` طالب بالصف : ${person.grade || "لا يوجد"}`}</p>
+            </section>
+            <div className={subject_section}>
+              <h4 title={person?.subject}> المواد : {person.subject}</h4>
             </div>
-          </section>
-          <div>
-          <h4 title={person?.student_goal}> هدف الطالب : {person.student_goal || "لا يوجد"}</h4>
+            <menu>
+              <li>
+                {person.employee_country === "Egypt" ? (
+                  <EgyptFlag />
+                ) : (
+                  <EmiratesFlag />
+                )}
+                <span>
+                  دولة المُعلم : {person.employee_country || "لا يوجد"}
+                </span>
+              </li>
+              <li>
+                <LanguageIcon />
+                <span>
+                  لغة المُعلم :
+                  {person.employee_language
+                    ? person.employee_language === "ar"
+                      ? " العربية"
+                      : " الانجليزية"
+                    : "غير محددة"}
+                </span>
+              </li>
+            </menu>
           </div>
-          <menu>
-          <li>
-            {person.country === "Egypt" ? <EgyptFlag /> : <EmiratesFlag />}
-            <span>دولة الطالب : {person.country || "لا يوجد"}</span>
-          </li>
-          <li>
-          <OnlineClassIcon style={{ minWidth: "24px" }} />
-            <span>رصيد حصص الطالب : {person.number_of_lessons || "لا يوجد"}</span>
-          </li>
-        </menu>
+          <div>
+            <section className={personal_info}>
+              <ImgBox size="56px">
+                {person.image ? (
+                  <img
+                    src={person.image}
+                    alt="employee image"
+                    style={{ minWidth: "56px" }}
+                  />
+                ) : (
+                  <ImgPlaceholder style={{ minWidth: "56px" }} />
+                )}
+              </ImgBox>
+              <div className={text_box}>
+                <h4 title={person?.name}> الطالب : {person?.name}</h4>
+                <p>{` طالب بالصف : ${person.grade || "لا يوجد"}`}</p>
               </div>
-
+            </section>
+            <div>
+              <h4 title={person?.student_goal}>
+                {" "}
+                هدف الطالب : {person.student_goal || "لا يوجد"}
+              </h4>
+            </div>
+            <menu>
+              <li>
+                {person.country === "Egypt" ? <EgyptFlag /> : <EmiratesFlag />}
+                <span>دولة الطالب : {person.country || "لا يوجد"}</span>
+              </li>
+              <li>
+                <OnlineClassIcon style={{ minWidth: "24px" }} />
+                <span>
+                  رصيد حصص الطالب : {person.number_of_lessons || "لا يوجد"}
+                </span>
+              </li>
+            </menu>
+          </div>
         </div>
       </Card>
     );
@@ -115,7 +132,7 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
   return (
     <Card>
       <Heading
-        text={isTeacher ? "تفاصيل المعلم" : "تفاصيل الطالب"}
+        text={isTeacher ? "تفاصيل الطالب " : "تفاصيل المعلم"}
         style={{ fontSize: "2rem", margin: "0", fontWeight: "500" }}
       />
       <div className={cardContainer}>
@@ -137,18 +154,18 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
               <h4 title={person?.name}>{person?.name}</h4>
               <p>
                 {isTeacher
-                  ? `أستاذ مادة : ${person.subject || "لا يوجد"}`
-                  : `طالب بالصف ${person.grade ? person.grade : "لا يوجد"}`}
+                  ? `طالب بالصف ${person.grade ? person.grade : "لا يوجد"}`
+                  : `أستاذ مادة : ${person.subject || "لا يوجد"}`}
               </p>
             </div>
           </section>
-          {isTeacher && (
+          {(isTeacher || isStudent) && (
             <section className={rate_box}>
               <span>التقييم</span>
               <Stars />
             </section>
           )}
-          {isStudent && (
+          {isTeacher && (
             <section className={goalsAndSubjects}>
               <div>
                 <Heading
@@ -167,19 +184,17 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
                   text="هدف الطالب :"
                   style={{ fontSize: "1.6rem", margin: "0" }}
                 />
-                {person.student_goal ? (
+             
                   <span className={stu_goals} title={person.student_goal}>
-                    {person.student_goal}
+                    {person.student_goal || "لا يوجد"}
                   </span>
-                ) : (
-                  <span className={stu_goals}>لا يوجد</span>
-                )}
+             
               </div>
             </section>
           )}
         </div>
         <menu>
-          {isTeacher && (
+          {(isTeacher || isStudent) && (
             <li>
               <GraduationIcon style={{ minWidth: "24px" }} />
               <span className={teacher_details} title={person.teacher_bio}>

@@ -41,7 +41,7 @@ const STATUS_TEXT = {
 export type TPersonInfo = {
   name: string;
   employee_name?: string;
-  subject: string | null;
+  subject?: string;
   employee_subject?: string | null;
   image: string | null;
   employee_image?: string | null;
@@ -109,7 +109,7 @@ const JoinClass = () => {
           setPerson({
             name: res.participants[0].student_name,
             employee_name: res.employee_name,
-            subject: res.subject_name,
+            subject: res.subject_name || "",
             image: res.participants[0].image,
             employee_image: res.employee_image,
             grade: res.participants[0].grade,
@@ -128,7 +128,7 @@ const JoinClass = () => {
               : res.employee_name,
             grade: res.participants[0].grade,
             image: isTeacher ? res.participants[0].image : res.employee_image,
-            subject: res.subject,
+            subject: res.subject || "",
             country: isTeacher
               ? res.participants[0].country
               : res.employee_country,
@@ -209,15 +209,6 @@ const JoinClass = () => {
                 style={{ fontSize: "2rem", marginTop: "0", marginBottom: "0" }}
               />
               <section className={attendance_box}>
-                {lessonData?.from_datetime && (
-                  <>
-                    <div className={start_timer}>
-                      <CalculateTimeToStartLesson
-                        fromTime={lessonData?.from_datetime}
-                      />
-                    </div>
-                  </>
-                )}
                 <div
                   style={{
                     display: "flex",
@@ -232,6 +223,8 @@ const JoinClass = () => {
                   />
                   <span>{`(${displayTime})`}</span>
                 </div>
+                <div>
+
                 {lessonData?.status && (
                   <>
                     <span className={lesson_status}>
@@ -239,6 +232,16 @@ const JoinClass = () => {
                     </span>
                   </>
                 )}
+                {lessonData?.from_datetime && (
+                  <>
+                    <div className={start_timer}>
+                      <CalculateTimeToStartLesson
+                        fromTime={lessonData?.from_datetime}
+                      />
+                    </div>
+                  </>
+                )}
+                </div>
               </section>
 
               <section className={student_classes}>
@@ -248,7 +251,12 @@ const JoinClass = () => {
                     color="success"
                     onClick={handleAttendanceTime}
                   >
-                    <img src={FingerprintScan} alt="fingerprint" />
+                    <img
+                      width="24px"
+                      height="24px"
+                      src={FingerprintScan}
+                      alt="fingerprint"
+                    />
                   </IconButton>
                   {displayEntranceTime ? (
                     <>
@@ -283,7 +291,7 @@ const JoinClass = () => {
                   className={lesson_indicator}
                   style={{ marginTop: "1.2rem" }}
                 >
-                  <div style={{ width: "90%" }}>
+                  <div style={{ width: "85%" }}>
                     <ProgressBar
                       style={{ marginTop: "0rem" }}
                       width={`${
@@ -294,8 +302,9 @@ const JoinClass = () => {
                   </div>
                   <p
                     style={{
-                      textAlign: "left",
+                      textAlign: "right",
                       color: "var(--main-color)",
+                      width: "15%",
                     }}
                   >
                     أتم{" "}
@@ -347,15 +356,6 @@ const JoinClass = () => {
                 style={{ fontSize: "2rem", marginTop: "0", marginBottom: "0" }}
               />
               <section className={attendance_box}>
-                {lessonData?.from_datetime && (
-                  <>
-                    <div className={start_timer}>
-                      <CalculateTimeToStartLesson
-                        fromTime={lessonData?.from_datetime}
-                      />
-                    </div>
-                  </>
-                )}
                 <div
                   style={{
                     display: "flex",
@@ -369,11 +369,20 @@ const JoinClass = () => {
                     style={{ fontSize: "2rem", fontWeight: "400", margin: "0" }}
                   />
                 </div>
-                {lessonData?.status && (
-                  <span className={lesson_status}>
-                    {STATUS_TEXT[lessonData.status]}
-                  </span>
-                )}
+                <div>
+                  {lessonData?.status && (
+                    <span className={lesson_status}>
+                      {STATUS_TEXT[lessonData.status]}
+                    </span>
+                  )}
+                  {lessonData?.from_datetime && (
+                    <span className={start_timer}>
+                      <CalculateTimeToStartLesson
+                        fromTime={lessonData?.from_datetime}
+                      />
+                    </span>
+                  )}
+                </div>
               </section>
               <section
                 className={student_classes}
@@ -444,7 +453,7 @@ const JoinClass = () => {
                   </section>
                 </div>
                 <div className={lesson_indicator}>
-                  <div style={{ width: "90%" }}>
+                  <div style={{ width: "85%" }}>
                     <ProgressBar
                       style={{ marginTop: "0rem" }}
                       width={`${
@@ -455,8 +464,9 @@ const JoinClass = () => {
                   </div>
                   <p
                     style={{
-                      textAlign: "left",
+                      textAlign: "right",
                       color: "var(--main-color)",
+                      width: "15%",
                     }}
                   >
                     أتم{" "}

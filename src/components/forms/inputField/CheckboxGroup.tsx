@@ -50,8 +50,8 @@ export const SingleCheckbox = <T extends FieldValues>({
 }: TSingleCheckbox<T>) => {
   return (
     <div className={`flex-start ${className}`}>
-      <label className="checkboxItem">
-        <span className={`checkmark ${disabled && 'disabled_btn'}`}></span>
+      <label style={{paddingBlock:'0rem'}}  className="checkboxItem">
+        <span style={{ width: "24px", height: "24px" }} className={`checkmark ${disabled && 'disabled_btn'}`}></span>
         <input
           type="checkbox"
           {...register(name, { required: isRequired })}
