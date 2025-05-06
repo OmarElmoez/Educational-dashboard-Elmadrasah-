@@ -3,8 +3,9 @@ import styles from "./login.module.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetPasswordSchema, { TFormValues, } from "@/schemas/SetPasswordSchema";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { actSetPassword } from "@/store/auth/authSlice.ts";
+import ResetPasswordServices from "@/services/resetPassword";
 
 const {loginBox, formInput} = styles;
 export type TFormValuesWithEmail = TFormValues & {
@@ -14,6 +15,7 @@ const SetPassword = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {modified_email} = useAppSelector((state) => state.auth);
 
@@ -25,15 +27,24 @@ const SetPassword = () => {
     mode: "onBlur",
     resolver: zodResolver(SetPasswordSchema),
   });
-
-
-  const onSubmit: SubmitHandler<TFormValuesWithEmail> = (data) => {
-    if (modified_email) {
-      data["email"] = modified_email;
+  const {state} = location;
+  const onSubmit: SubmitHandler<TFormValuesWithEmail> = async (data) => {
+    if (state.submittedData) {
+      const updatedData = state.submittedData;
+      updatedData["password"] = data.new_password;
+   await ResetPasswordServices.resetNewPassword(updatedData).then((res) => {
+    if(res?.status === 201) {
+      navigate('/')
     }
-    dispatch(actSetPassword(data))
-    .unwrap()
-    .then((data) => data.user.user_type && navigate(`/${data.user.user_type.toLowerCase()}`));
+   })
+    }else {
+      if (modified_email) {
+        data["email"] = modified_email;
+      }
+      dispatch(actSetPassword(data))
+      .unwrap()
+      .then((data) => data.user.user_type && navigate(`/${data.user.user_type.toLowerCase()}`));
+    }
   };
 
   return (

@@ -1,6 +1,5 @@
 import { OTPInput, SlotProps } from 'input-otp'
 import { cn } from "@/utils/util.ts";
-
 import OtpEmailIcon from '@/assets/otp-email.svg?react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from "react-hook-form";
@@ -8,6 +7,7 @@ import { Button } from "@/components/UI";
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useComponentLoading } from "@/hooks";
+import ResetPasswordServices from '@/services/resetPassword';
 
 const otpSchema = z.object({
   otp: z.string()
@@ -22,7 +22,7 @@ const otpSchema = z.object({
   )
 });
 
-type OtpFormData = z.infer<typeof otpSchema>;
+export type OtpFormData = z.infer<typeof otpSchema>;
 
 
 function FakeCaret() {
@@ -42,7 +42,7 @@ function Slot(props: SlotProps) {
         'transition-all duration-300',
         'border-border border-y border-r border-l rounded-lg border-[#1C8A44]',
         'group-hover:border-accent-foreground/20 group-focus-within:border-accent-foreground/20',
-        'outline outline-0 outline-accent-foreground/20',
+        'outline-0 outline-accent-foreground/20',
         {'outline-accent-foreground': props.isActive},
       )}
     >
@@ -68,19 +68,24 @@ const OtpCode = () => {
     resolver: zodResolver(otpSchema),
   });
 
-  const onSubmit = (data: any) => {
-    setPending()
+  const onSubmit = async (data: any) => {
     const submittedData = state.data;
     submittedData.otp = data.otp;
-    console.log('from otp code', submittedData);
-    setTimeout(() => {
-      setSucceeded();
-      navigate('/set-password', {
-        state: {
-          submittedData
-        },
-      })
-    }, 500)
+    await ResetPasswordServices.verifyOtp(submittedData).then((res)=>{
+      if(res?.status === 200) {
+        setSucceeded();
+        navigate('/set-password', {
+          state: {
+            submittedData
+          },
+        })
+      }else{
+        console.log(res);
+      }
+    }).catch((err)=>{
+      console.log(err);
+      setPending();
+    })
   }
 
   return (
