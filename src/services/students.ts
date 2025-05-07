@@ -22,7 +22,7 @@ export const getStudents = async ({ page }: TProps) => {
     }
 
     const response = await axiosInstance.get<TResponse>(url);
-    return response.data;
+    return response.data || response;
   } catch (error) {
     throw axiosErrorHandler(error);
   }

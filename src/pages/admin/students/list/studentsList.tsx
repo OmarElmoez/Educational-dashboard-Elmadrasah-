@@ -7,7 +7,7 @@ import "./studentsList.css";
 import { MuiTable } from "@/components";
 import { getStudents } from "@/services/students";
 import useTanStackQuery from "@/hooks/useTanStackQuery.ts";
-
+import { Error } from "@/pages/shared";
 const NewStudentsList = () => {
 
   const navigate = useNavigate();
@@ -91,18 +91,20 @@ const NewStudentsList = () => {
       cellClassName: "edit-cell",
     },
   ];
-
-  return (
-    <MuiTable
-      rows={students?.results}
-      rowCount={students?.count}
-      columns={initialColumns}
-      loading={isPending}
-      nextFn={() => increasePage()}
-      previousFn={() => decreasePage()}
-      next={students?.next || ""}
-      previous={students?.previous || ""}
-    />
+console.log({students})
+  return (<>
+    {students?.status === 403?<Error type="noAccess"/>: <MuiTable
+    rows={students?.results}
+    rowCount={students?.count}
+    columns={initialColumns}
+    loading={isPending}
+    nextFn={() => increasePage()}
+    previousFn={() => decreasePage()}
+    next={students?.next || ""}
+    previous={students?.previous || ""}
+    />}
+   
+    </>
   );
 };
 

@@ -3,10 +3,8 @@ import { GridColDef } from "@mui/x-data-grid";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import { MuiTable } from "@/components";
-// import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEmployees } from "@/services/employees";
 import avatar from "@/assets/avatar.png";
-
 import "./teacherDataTable.css";
 import EmployeesFilterForm from "./filter-form/EmployeesFilterForm";
 import useTanStackQuery from "../../../../hooks/useTanStackQuery.ts";
@@ -192,7 +190,7 @@ const EmployeesList = () => {
 
   return (
     <>
-      {employees?.status === 403 ? <Error type="notFound"/> : <MuiTable
+      {employees?.status === 403 ? <Error type="noAccess"/> : <MuiTable
         rows={employees?.results}
         rowCount={employees?.count}
         columns={initialColumns}

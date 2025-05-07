@@ -9,6 +9,7 @@ type TCustomer = {
   customer?: number;
   customer_type?: string;
   name?: string;
+  status?: number;
 };
 
 type TTableResponse = {
