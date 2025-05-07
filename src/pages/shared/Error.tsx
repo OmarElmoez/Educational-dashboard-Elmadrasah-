@@ -31,5 +31,6 @@ const Error = ({type, isLogin = false}: { type: keyof typeof LottieFilesPaths, i
   )
 }
 
+
 export default Error;
 
