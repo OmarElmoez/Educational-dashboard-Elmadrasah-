@@ -8,7 +8,7 @@ const ResetPasswordServices = {
   forgetPassword: async (data: TFormData) => {
     try {
       const response = await axiosInstance.post('/user/forget/', data);
-      return response.data;
+      return response;
     } catch (error) {
       throw axiosErrorHandler(error);
     }
@@ -18,7 +18,7 @@ const ResetPasswordServices = {
   verifyOtp: async (data: OtpFormData) => {
     try {
       const response = await axiosInstance.post('/user/verify/', data);
-      return response.data;
+      return response;
     } catch (error) {
       throw axiosErrorHandler(error);
     }
@@ -27,20 +27,20 @@ const ResetPasswordServices = {
   resetNewPassword: async (data: TFormValuesWithEmail) => {
     try {
       const response = await axiosInstance.post('/user/reset/', data);
-      return response.data;
+      return response;
     } catch (error) {
       throw axiosErrorHandler(error);
     }
   },
 
-  // resendOtp: async (data: EmailPayload) => {
-  //   try {
-  //     const response = await axiosInstance.post('/user/resend/', data);
-  //     return response.data;
-  //   } catch (error) {
-  //     throw axiosErrorHandler(error);
-  //   }
-  // },
+  resendOtp: async (data: TFormData) => {
+    try {
+      const response = await axiosInstance.post('/user/resend/', data);
+      return response;
+    } catch (error) {
+      throw axiosErrorHandler(error);
+    }
+  },
 };
 
 export default ResetPasswordServices;

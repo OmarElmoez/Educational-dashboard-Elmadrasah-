@@ -24,15 +24,15 @@ const ConfirmEmail = () => {
   const navigate = useNavigate();
 
 
-  const {register, handleSubmit, formState: {errors}} = useForm<TFormData>(
+  const {register, handleSubmit, setError, formState: {errors}} = useForm<TFormData>(
     {
       resolver: zodResolver(ConfirmEmailSchema),
     }
   );
 
   const onSubmit = async (data: TFormData) => {
+    setPending();
     await ResetPasswordServices.forgetPassword(data).then((res)=>{
-      console.log(res);
       if(res?.status === 201) {
         setSucceeded();
         navigate('/otp-code', {
@@ -40,12 +40,13 @@ const ConfirmEmail = () => {
             data
           },
         })
-      }else{
-        console.log(res);
+      }else if(res?.status === 400) {
+        setSucceeded();
+        setError("email", {
+          type: "manual",
+          message: "البريد الإلكتروني غير صحيح" ,
+        });
       }
-    }).catch((err)=>{
-      console.log(err);
-      setPending();
     })
   }
 
