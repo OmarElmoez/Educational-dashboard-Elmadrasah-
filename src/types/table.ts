@@ -94,6 +94,7 @@ type TBalanceResponse = {
   results: TBalance[];
 };
 type TEmployeesData = {
+  status: number;
   id: number;
   first_name: string | null;
   last_name: string | null;
@@ -195,6 +196,7 @@ type TAllEmployeesData = {
   next: string | null;
   previous: string | null;
   results: TEmployeesData[];
+  status: number
 };
 type TFamilyData = {
   id: number;

@@ -23,7 +23,7 @@ export const getEmployees = async ({
     }
 
     const response = await axiosInstance.get<TAllEmployeesData>(url);
-    return response.data;
+    return response.data || response;
   } catch (error) {
     throw axiosErrorHandler(error);
   }

@@ -51,6 +51,7 @@ const useTanStackQuery = <T>({
     staleTime,
   });
 
+
   const increasePage = () => {
     setPage((prevPage) => prevPage + 1);
   };

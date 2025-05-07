@@ -10,6 +10,7 @@ import avatar from "@/assets/avatar.png";
 import "./teacherDataTable.css";
 import EmployeesFilterForm from "./filter-form/EmployeesFilterForm";
 import useTanStackQuery from "../../../../hooks/useTanStackQuery.ts";
+import { Error } from "@/pages/shared";
 
 type Subject = {
   id: number;
@@ -190,17 +191,20 @@ const EmployeesList = () => {
   };
 
   return (
-    <MuiTable
-      rows={employees?.results}
-      rowCount={employees?.count}
-      columns={initialColumns}
-      loading={isPending}
-      filterForm={<EmployeesFilterForm submitFn={onSearchHandler} />}
-      nextFn={() => increasePage()}
-      previousFn={() => decreasePage()}
-      next={employees?.next as string}
-      previous={employees?.previous as string}
-    />
+    <>
+      {employees?.status === 403 ? <Error type="notFound"/> : <MuiTable
+        rows={employees?.results}
+        rowCount={employees?.count}
+        columns={initialColumns}
+        loading={isPending}
+        filterForm={<EmployeesFilterForm submitFn={onSearchHandler} />}
+        nextFn={() => increasePage()}
+        previousFn={() => decreasePage()}
+        next={employees?.next as string}
+        previous={employees?.previous as string}
+      /> }
+
+    </>
   );
 };
 
