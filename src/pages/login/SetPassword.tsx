@@ -28,7 +28,7 @@ const SetPassword = () => {
   });
   const { state } = location;
   const onSubmit: SubmitHandler<TFormValuesWithEmail> = async (data) => {
-    if (state.submittedData) {
+    if (state) {
       const updatedData = state.submittedData;
       updatedData["password"] = data.new_password;
       await ResetPasswordServices.resetNewPassword(updatedData).then((res) => {
