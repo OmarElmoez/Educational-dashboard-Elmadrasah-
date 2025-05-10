@@ -60,7 +60,7 @@ export const getUnscheduledList = async (
 
     const response = await axiosInstance.get<TUnscheduledResponse>(url);
 
-    return response.data
+    return response.data || response;
   } catch (error) {
     throw axiosErrorHandler(error)
   }
@@ -82,7 +82,7 @@ export const getUnscheduledFamilyList = async (
 
     const response = await axiosInstance.get<TUnscheduledResponse>(url);
 
-    return response.data
+    return response.data || response;
   } catch (error) {
     throw axiosErrorHandler(error)
   }

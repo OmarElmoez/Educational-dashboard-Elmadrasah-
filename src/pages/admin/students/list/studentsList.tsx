@@ -91,7 +91,6 @@ const NewStudentsList = () => {
       cellClassName: "edit-cell",
     },
   ];
-console.log({students})
   return (<>
     {students?.status === 403?<Error type="noAccess"/>: <MuiTable
     rows={students?.results}

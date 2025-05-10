@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { MuiTable } from "@/components";
 import useTanStackQuery from "@/hooks/useTanStackQuery.ts";
 import { getUnscheduledList } from "@/services/unscheduled";
-
+import { Error } from "@/pages/shared";
 type UnscheduledSeparateStudentsTableProps = {
   setStudentsCount: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -129,17 +129,22 @@ const UnscheduledSeparateStudentsTable: React.FC<UnscheduledSeparateStudentsTabl
   
   return (
     <>
+    {!isPending && unscheduledStudents?.status === 403 ? (
+      <Error type="noAccess" />
+    ) : (
       <MuiTable
-        rows={unscheduledStudents?.results}
-        rowCount={unscheduledStudents?.count}
-        columns={initialColumns}
-        loading={isPending}
-        nextFn={() => increasePage()}
-        previousFn={() => decreasePage()}
-        next={unscheduledStudents?.next || ""}
-        previous={unscheduledStudents?.previous || ""}
-      />
-    </>
+      rows={unscheduledStudents?.results}
+      rowCount={unscheduledStudents?.count}
+      columns={initialColumns}
+      loading={isPending}
+      nextFn={() => increasePage()}
+      previousFn={() => decreasePage()}
+      next={unscheduledStudents?.next || ""}
+      previous={unscheduledStudents?.previous || ""}
+    />
+    )}
+  </>
+
   );
 };
 

@@ -9,7 +9,7 @@ import SearchIcon from "@/assets/search_icon.svg?react";
 import FilterForm from "@/pages/admin/lists/invoice/FilterForm.tsx";
 import useTanStackQuery from "../../../hooks/useTanStackQuery.ts";
 import { getInvoices } from "@/services/invoices.ts";
-
+import { Error } from "@/pages/shared";
 export type TFilterData = {
   date: string;
   due_date: string;
@@ -109,7 +109,10 @@ const InvoicesList = () => {
   ];
 
   return (
-    <MuiTable
+    <>
+    {!isPending && invoices?.status === 403 ? (
+      <Error type="noAccess" />
+    ) : (<> <MuiTable
       rows={invoices?.results}
       rowCount={invoices?.count}
       columns={initialColumns}
@@ -119,7 +122,9 @@ const InvoicesList = () => {
       previousFn={() => decreasePage()}
       next={invoices?.next || ""}
       previous={invoices?.previous || ""}
-    />
+      /></>)}
+   
+      </>
   );
 };
 

@@ -190,18 +190,21 @@ const EmployeesList = () => {
 
   return (
     <>
-      {employees?.status === 403 ? <Error type="noAccess"/> : <MuiTable
-        rows={employees?.results}
-        rowCount={employees?.count}
-        columns={initialColumns}
-        loading={isPending}
-        filterForm={<EmployeesFilterForm submitFn={onSearchHandler} />}
-        nextFn={() => increasePage()}
-        previousFn={() => decreasePage()}
-        next={employees?.next as string}
-        previous={employees?.previous as string}
-      /> }
-
+      {employees?.status === 403 ? (
+        <Error type="noAccess" />
+      ) : (
+        <MuiTable
+          rows={employees?.results}
+          rowCount={employees?.count}
+          columns={initialColumns}
+          loading={isPending}
+          filterForm={<EmployeesFilterForm submitFn={onSearchHandler} />}
+          nextFn={() => increasePage()}
+          previousFn={() => decreasePage()}
+          next={employees?.next as string}
+          previous={employees?.previous as string}
+        />
+      )}
     </>
   );
 };

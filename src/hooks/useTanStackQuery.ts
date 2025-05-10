@@ -35,7 +35,7 @@ const useTanStackQuery = <T>({
   queryKeyPrefix,
   fetchFn,
   filters,
-  staleTime = 0.5 * 60 * 1000,
+  staleTime = 0.5*60*1000,
   initialPage = 1,
 }: TProps<T>): THookResponse<T> => {
   const queryClient = useQueryClient();

@@ -103,9 +103,9 @@ const JoinClass = () => {
           canJoinStudent: res?.participants[0]?.can_join,
         });
         setLessonData(res);
+        let timeRange = `${res?.from_time} - ${res?.to_time}`;
+        setDisplayTime(convertToArabicTime(timeRange));
         if (credintials?.role === "Admin") {
-          let timeRange = `${res?.from_time} - ${res?.to_time}`;
-          setDisplayTime(convertToArabicTime(timeRange));
           setPerson({
             name: res.participants[0].student_name,
             employee_name: res.employee_name,
@@ -368,6 +368,7 @@ const JoinClass = () => {
                     text="حضور الدرس"
                     style={{ fontSize: "2rem", fontWeight: "400", margin: "0" }}
                   />
+                  <span>{`(${displayTime})`}</span>
                 </div>
                 <div>
                   {lessonData?.status && (

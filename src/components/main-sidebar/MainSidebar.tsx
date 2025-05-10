@@ -13,7 +13,7 @@ import SubNav from "@/components/main-sidebar/sub-nav/SubNav.tsx";
 import SIDEBAR_DATA from "../../constants/sidebar-data.tsx";
 import { CalendarContext } from "@/store/context/CalendarContext.tsx";
 import { resetMonthLessons, resetTodayLessons } from "@/store/lessons/LessonsSlice.ts";
-
+import { useQueryClient } from '@tanstack/react-query';
 type TSidebarProps = {
   data: TPath[];
 };
@@ -45,8 +45,9 @@ const MainSidebar = ({data}: TSidebarProps) => {
   const [activeLinkTitle, setActiveLinkTitle] = useState("")
 
   const {fcmToken} = useFirebaseMessaging();
-
+  const queryClient = useQueryClient();
   const signoutHandler = () => {
+    queryClient.clear();
     dispatch(logout());
     dispatch(resetMonthLessons())
     dispatch(resetTodayLessons())

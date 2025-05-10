@@ -26,7 +26,7 @@ export const getInvoices = async ({ filters, page }: TProps) => {
 
     const response = await axiosInstance.get<TInvoiceResponse>(url);
 
-    return response.data;
+    return response.data || response;
   } catch (error) {
     throw axiosErrorHandler(error);
   }
