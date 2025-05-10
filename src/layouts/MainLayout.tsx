@@ -23,8 +23,7 @@ const MainLayout = ({ sideBarData }: { sideBarData: TPath[] }) => {
       console.log("Service worker is not supported in this browser.");
     }
   }, []);
-  // const UXCAM_KEY = "uhzcv7ycmitvbo4";
-  const UXCAM_KEY = "gqnevw23bexz0l1";
+  const UXCAM_KEY = "uhzcv7ycmitvbo4";
 
   useEffect(() => {
     loadUxCam(UXCAM_KEY);
