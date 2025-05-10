@@ -3,7 +3,6 @@ import { Header, MainSidebar } from "@/components";
 import { TPath } from "@/types/shared";
 import { CalendarProvider } from "@/store/context/";
 import { useEffect } from "react";
-import { loadUxCam } from "@/utils/loadUXCam";
 const MainLayout = ({ sideBarData }: { sideBarData: TPath[] }) => {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -22,11 +21,6 @@ const MainLayout = ({ sideBarData }: { sideBarData: TPath[] }) => {
       // Service worker is not supported
       console.log("Service worker is not supported in this browser.");
     }
-  }, []);
-  const UXCAM_KEY = "uhzcv7ycmitvbo4";
-
-  useEffect(() => {
-    loadUxCam(UXCAM_KEY);
   }, []);
 
   return (
