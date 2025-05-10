@@ -67,9 +67,9 @@ type TInboxResponse = {
   results: TItem[];
 };
 
-export const getInboxData = async (): Promise<TInboxResponse> => {
+export const getInboxData = async ({page}:{page: number}): Promise<TInboxResponse> => {
   try {
-    const response = await axiosInstance.get<TInboxResponse>(`/event/inbox/`);
+    const response = await axiosInstance.get<TInboxResponse>(`/event/inbox/?page=${page}`);
     return response.data;
   } catch (error) {
     return axiosErrorHandler(error);
