@@ -362,10 +362,6 @@ const router = createBrowserRouter([
         path: '*',
         element: <Error type="notFound"/>
       },
-      // {
-      //   path: 'not-allowed',
-      //   element: <Error type="notFound"/>
-      // }
     ],
   },
 

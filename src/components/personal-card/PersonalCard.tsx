@@ -29,7 +29,6 @@ const PersonalCard = ({ cardFor, person }: TPersonalCardProps) => {
   const isTeacher = cardFor === "Teacher";
   const isStudent = cardFor === "Student" || cardFor === "Family";
   const isAdmin = cardFor === "Admin";
-  console.log(person);
   if (isAdmin) {
     return (
       <Card>

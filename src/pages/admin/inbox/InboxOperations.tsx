@@ -38,6 +38,8 @@ const InboxOperations = () => {
         console.error("Verification failed", err);
       });
   };
+  console.log("isFetching", isFetching);
+  console.log("isPending", isPending);
   return (
     <>
       {isPending ||
