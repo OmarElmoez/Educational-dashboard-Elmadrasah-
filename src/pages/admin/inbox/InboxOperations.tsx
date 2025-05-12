@@ -109,7 +109,7 @@ const InboxOperations = () => {
         </Button>
       </Box>
       <div className="grid gap-[2.4rem]">
-        {inboxData?.results.map((item) => {
+        {inboxData?.results?.map((item) => {
           switch (item.type) {
             case "review":
               return (

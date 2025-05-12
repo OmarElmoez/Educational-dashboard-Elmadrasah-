@@ -256,7 +256,14 @@ const SIDEBAR_DATA = {
       icon: <ReportsIcon />,
       phone_icon: <PH_reportsIcon />,
       page_title: "التقارير",
-      children: undefined
+      children: [
+        {
+          title: "تقارير اليوم",
+          path: "reports/daily",
+          icon: <ReportsIcon />,
+          page_title: "تقارير اليوم",
+        }
+      ]
     },
     {
       title: "العمليات",

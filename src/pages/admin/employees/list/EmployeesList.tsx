@@ -9,6 +9,7 @@ import "./teacherDataTable.css";
 import EmployeesFilterForm from "./filter-form/EmployeesFilterForm";
 import useTanStackQuery from "../../../../hooks/useTanStackQuery.ts";
 import { Error } from "@/pages/shared";
+import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 
 type Subject = {
   id: number;
@@ -161,6 +162,13 @@ const EmployeesList = () => {
           return "لا توجد مواد مختارة";
         }
       },
+    },
+    {
+      field: "last_login",
+      headerName: "اخر تسجيل دخول",
+      flex: 1.5,
+      headerAlign: "center",
+      renderCell: (params) => formatFullArabicDate(params.value),
     },
     {
       field: "id",

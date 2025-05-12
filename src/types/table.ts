@@ -115,6 +115,7 @@ type TEmployeesData = {
   state: string | null;
   country: string | null;
   zip: string | "";
+  last_login: string | null;
   time_zone: string | null;
   additional_notes: string | "";
   birth_date: string | null;
