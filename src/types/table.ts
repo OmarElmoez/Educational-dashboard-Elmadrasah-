@@ -198,7 +198,7 @@ type TAllEmployeesData = {
   next: string | null;
   previous: string | null;
   results: TEmployeesData[];
-  status: number
+  status: number;
 };
 type TFamilyData = {
   id: number;
@@ -216,6 +216,19 @@ type TAllFamiliesData = {
   previous: string | null;
   results: TFamilyData[];
 };
+type TTeacherReport = {
+  employee_id: number;
+  employee_name: string;
+  lesson_count_today: number;
+  attended_lesson_count: number;
+  last_login: string | null;
+};
+type TAllTeachersReportData = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: TTeacherReport[];
+};
 export type {
   TCustomer,
   TTableResponse,
@@ -229,4 +242,6 @@ export type {
   TEmployeesData,
   TFamilyData,
   TAllFamiliesData,
+  TTeacherReport,
+  TAllTeachersReportData
 };

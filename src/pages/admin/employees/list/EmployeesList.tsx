@@ -166,7 +166,7 @@ const EmployeesList = () => {
     {
       field: "last_login",
       headerName: "اخر تسجيل دخول",
-      flex: 1.5,
+      flex: 1.7,
       headerAlign: "center",
       renderCell: (params) => formatFullArabicDate(params.value),
     },

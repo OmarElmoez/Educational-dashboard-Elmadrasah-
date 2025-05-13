@@ -17,8 +17,6 @@ const EmployeeProfileData = () => {
     queryKey: ["specificEmployeeData"],
     queryFn: () => getSpecificEmployee(employeeId)
   });
-
-  console.log('data for employees', specificEmployeeData);
   const editEmployee = () => {
     navigate(`/admin/employees/edit-employee/${employeeId}`, {
       state: specificEmployeeData,

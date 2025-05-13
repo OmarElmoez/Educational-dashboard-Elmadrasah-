@@ -44,6 +44,7 @@ import HourlyLessonsAdmin from './../pages/admin/tables/hourlyTables/HourlyTable
 import EditEmployeeForm from '../pages/admin/forms/edit/EditEmpolyeeForm';
 import EmployeeProfileData from '../pages/admin/employees/employeeProfile/EmployeeProfileData';
 import OrdersList from '../pages/admin/orders/list/ordersList';
+import TeachersDailyReport from '../pages/admin/reports/teachersDailyReport';
 
 const router = createBrowserRouter([
   // Login Routes
@@ -353,6 +354,10 @@ const router = createBrowserRouter([
       {
         path: 'roles',
         element: <PageSuspense><AdminRolesPage /></PageSuspense>
+      },
+      {
+        path: 'reports/daily',
+        element: <PageSuspense><TeachersDailyReport /></PageSuspense>
       },
       {
         path: 'inbox',
