@@ -4,6 +4,7 @@ import { Rate } from "@/components";
 import { ReactNode } from "react";
 import { TReviewData } from "@/services/inbox";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
+import { useNavigate } from "react-router-dom";
 
 type TInboxWrapperProps = {
   children?: ReactNode;
@@ -11,9 +12,12 @@ type TInboxWrapperProps = {
 };
 
 const InboxWrapper = ({children, review }: TInboxWrapperProps) => {
+
+  const navigate = useNavigate();
+
   return (
     <article className="pb-[1.6rem] border-b-1 border-[#E4E4E4] border-dashed flex justify-between items-center">
-      <section className="flex items-center gap-[1.4rem]">
+      <section className="flex items-center gap-[1.4rem]" onClick={() => navigate(`/admin/calendar/join-class/${review.lesson}`)} style={{ cursor: "pointer"}}>
         <ImgBox size="63px">
           {review?.reviewer_image ? (
             <img

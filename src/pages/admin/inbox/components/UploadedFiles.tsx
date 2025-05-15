@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { TFileData } from "@/services/inbox";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
 import getFileIcon from "@/utils/getFileIcon";
+import { useNavigate } from "react-router-dom";
 
 type TInboxWrapperProps = {
   children?: ReactNode;
@@ -11,6 +12,9 @@ type TInboxWrapperProps = {
 };
 
 const UploadedFiles = ({ children, uploadedFileData }: TInboxWrapperProps) => {
+
+  const navigate = useNavigate();
+
   return (
     <article className="pb-[1.6rem] border-b-1 border-[#E4E4E4] border-dashed flex justify-between items-center">
       <section className="flex items-center gap-[1.4rem]">
@@ -39,7 +43,7 @@ const UploadedFiles = ({ children, uploadedFileData }: TInboxWrapperProps) => {
             <ImgPlaceholder style={{ minWidth: "56px" }} />
           )}
         </ImgBox>
-        <div className="grid gap-[1.4rem]">
+        <div className="grid gap-[1.4rem]" onClick={() => navigate(`/admin/calendar/join-class/${uploadedFileData.lesson}`)} style={{ cursor: "pointer"}}>
           <div className="flex gap-[0.8rem] items-center">
             <h2 className="text-black text-[1.5rem]">
               {uploadedFileData?.uploaded_by === "Teacher"

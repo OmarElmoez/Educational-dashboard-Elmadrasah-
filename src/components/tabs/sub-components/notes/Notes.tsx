@@ -80,7 +80,7 @@ const Notes = () => {
           backgroundColor: '#C92516'
         }}>
           <FlagIcon/>
-          <span>إرسال</span>
+          <span>التبليغ عن مشكلة</span>
         </Button>
       </form>
     </article>

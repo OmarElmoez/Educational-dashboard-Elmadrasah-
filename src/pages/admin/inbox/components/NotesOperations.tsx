@@ -2,12 +2,16 @@ import { ImgBox } from "@/components/UI";
 import ImgPlaceholder from "@/assets/person-placeholder.svg?react";
 import { TNoteData } from "@/services/inbox";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
+import { useNavigate } from "react-router-dom";
 
 type TNotesOperationsProps = {
   noteData: TNoteData;
 };
 
 const NotesOperations = ({ noteData }: TNotesOperationsProps) => {
+
+  const navigate = useNavigate();
+
   return (
     <article className="pb-[1.6rem] border-b-1 border-[#E4E4E4] border-dashed flex justify-between items-center">
       <section className="flex items-center gap-[1.4rem]">
@@ -36,7 +40,7 @@ const NotesOperations = ({ noteData }: TNotesOperationsProps) => {
             <ImgPlaceholder style={{ minWidth: "56px" }} />
           )}
         </ImgBox>
-        <div className="grid gap-[1.4rem]">
+        <div className="grid gap-[1.4rem]" onClick={() => navigate(`/admin/calendar/join-class/${noteData.lesson}`)} style={{ cursor: "pointer"}}>
           <div className="flex gap-[0.8rem] items-center">
             <h2 className="text-black text-[1.5rem]">
               {noteData?.sent_by === "Teacher"

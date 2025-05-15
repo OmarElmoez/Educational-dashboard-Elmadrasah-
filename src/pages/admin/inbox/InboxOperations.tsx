@@ -15,7 +15,6 @@ const InboxOperations = () => {
   const {
     data: inboxData,
     isPending,
-    isFetching,
     page,
     increasePage,
     decreasePage,
@@ -41,12 +40,11 @@ const InboxOperations = () => {
 
   return (
     <>
-      {isPending ||
-        (isFetching && (
+      {isPending && (
           <div className="loadingBox">
             <LoadingIndicator />
           </div>
-        ))}
+        )}
       <Box
         sx={{
           display: "flex",
