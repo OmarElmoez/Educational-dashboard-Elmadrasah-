@@ -1,6 +1,5 @@
 import { GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-// import "./studentsList.css";
 import { MuiTable } from "@/components";
 import { getTeachersReports } from "@/services/teachersReports";
 import useTanStackQuery from "@/hooks/useTanStackQuery.ts";
@@ -42,6 +41,11 @@ const TeachersDailyReport = () => {
       ),
     },
     {
+      field: "monthly_lesson_count",
+      headerName: "عدد الحصص الشهرية",
+      flex: 1,
+    },
+    {
       field: "lesson_count_today",
       headerName: "عدد الحصص اليوم",
       flex: 1,
@@ -63,6 +67,11 @@ const TeachersDailyReport = () => {
       {teachersReportData?.status === 403 ? (
         <Error type="noAccess" />
       ) : (
+        <>
+        <div>
+           إجمالي عدد الحصص اليومية : {" "}
+          {teachersReportData?.total_lessons_today || 0 }
+        </div>
         <MuiTable
           rows={teachersReportData?.results}
           rowCount={teachersReportData?.count}
@@ -72,7 +81,8 @@ const TeachersDailyReport = () => {
           previousFn={() => decreasePage()}
           next={teachersReportData?.next || ""}
           previous={teachersReportData?.previous || ""}
-        />
+          />
+          </>
       )}
     </>
   );

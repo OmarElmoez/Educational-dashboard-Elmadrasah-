@@ -9,6 +9,7 @@ type TResponseData<T> = {
   previous: string | null;
   results: T[];
   status?: number;
+  total_lessons_today?: number;
 };
 
 type TProps<T> = {

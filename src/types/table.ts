@@ -227,7 +227,8 @@ type TAllTeachersReportData = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: TTeacherReport[];
+  results: TTeacherReport[],
+  total_lessons_today: number;
 };
 export type {
   TCustomer,
