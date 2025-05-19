@@ -320,6 +320,14 @@ menu {
   text-align: center !important;
 }
 
+.MuiDataGrid-toolbarContainer {
+  justify-content: flex-end;
+}
+
+.MuiTablePagination-toolbar {
+  flex-direction: row-reverse !important;
+}
+
 /* change the font of google button */
 .nsm7Bb-HzV7m-LgbsSe {
   border-radius: 1rem !important;
