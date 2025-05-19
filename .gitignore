@@ -26,3 +26,4 @@ dist-ssr
 improvements.txt
 
 .env
+.vite
