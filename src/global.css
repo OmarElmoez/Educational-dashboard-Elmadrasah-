@@ -316,6 +316,10 @@ menu {
   padding: 0;
 }
 
+.MuiDataGrid-root .MuiDataGrid-cell {
+  text-align: center !important;
+}
+
 /* change the font of google button */
 .nsm7Bb-HzV7m-LgbsSe {
   border-radius: 1rem !important;
