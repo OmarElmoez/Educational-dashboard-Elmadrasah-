@@ -14,3 +14,27 @@ export const getTeachersReports = async ({ page }: { page: number }) => {
     throw axiosErrorHandler(error);
   }
 };
+
+type TSpecificTeacherReport = {
+  id: number,
+  name: string,
+  status: string,
+  from_datetime: string,
+  from_time: string,
+  time_zone: string,
+  teacher_name: string,
+  student_name: string,
+}
+
+type TSpecificTeacherReportResponse = {
+  results: TSpecificTeacherReport[];
+};
+
+export const getSpecificTeacherReport = async ({id}: {id: string | undefined}) => {
+  try {
+    const response = await axiosInstance.get<TSpecificTeacherReportResponse>(`/event/today_lessons/${id}`);
+    return response.data;
+  } catch (e) {
+    throw axiosErrorHandler(e);
+  }
+}

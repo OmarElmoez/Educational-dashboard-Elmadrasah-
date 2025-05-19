@@ -30,21 +30,16 @@ import {
   ScheduleLesson,
   StudentsList,
   AdminRolesPage, EditStudent, StudentProfile, FamiliesList, FamilyProfile, EditFamily, EmployeesList,
-  InboxOperations
+  InboxOperations, TeachersDailyReport, SpecificTeacherReport, HourlyLessonsAdmin, EditEmployeeForm, OrdersList, EmployeeProfileData,
+  ScheduledErrorsTableList
 } from "@/pages/admin";
 import {TeacherClassesPage, TeacherStudentsPage,} from "@/pages/teacher";
 import {FamilyNotesPage, Classes as FamilyClasses} from "@/pages/family";
 import {Error, HelpPage, JoinClass, NotificationsPage, Profile, Roles, Security, SettingsPage} from "@/pages/shared";
 import { ConfirmEmail, Login, OtpCode, PhoneNumber, SetPassword } from "@/pages/login";
 import {SIDEBAR_DATA} from "@/constants";
-import ScheduledErrorsTableList from "@/pages/admin/lists/ScheduledEmployeesLists/ScheduledErrorsTableList";
 import PageSuspense from "@/components/page-suspense/PageSuspense.tsx";
 import CheckAuth from "@/routes/CheckAuth.tsx";
-import HourlyLessonsAdmin from './../pages/admin/tables/hourlyTables/HourlyTable';
-import EditEmployeeForm from '../pages/admin/forms/edit/EditEmpolyeeForm';
-import EmployeeProfileData from '../pages/admin/employees/employeeProfile/EmployeeProfileData';
-import OrdersList from '../pages/admin/orders/list/ordersList';
-import TeachersDailyReport from '../pages/admin/reports/teachersDailyReport';
 
 const router = createBrowserRouter([
   // Login Routes
@@ -358,6 +353,10 @@ const router = createBrowserRouter([
       {
         path: 'reports/daily',
         element: <PageSuspense><TeachersDailyReport /></PageSuspense>
+      },
+      {
+        path: 'reports/daily/:id',
+        element: <PageSuspense><SpecificTeacherReport /></PageSuspense>
       },
       {
         path: 'inbox',

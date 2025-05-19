@@ -103,11 +103,11 @@ const EmployeeProfileData = () => {
         </div>
         <div className={infoContainer}>
           <h2>تقيم:</h2>
-          <span className="flex gap-[0.8rem] items-center">{specificEmployeeData?.average_rating ? `${<StarIcon style={{
+          <span className="flex gap-[0.8rem] items-center">{specificEmployeeData?.average_rating && <StarIcon style={{
             color: '#FFB800',
             width: '1.6rem',
             height: '1.6rem'
-          }}/>} ${specificEmployeeData?.average_rating} / 5` : "لا يوجد تقييم بعد"}</span>
+          }}/>} {specificEmployeeData?.average_rating ? `${specificEmployeeData?.average_rating} / 5` : "لا يوجد تقييم بعد"}</span>
         </div>
       </section>
       <hr className="hr"/>

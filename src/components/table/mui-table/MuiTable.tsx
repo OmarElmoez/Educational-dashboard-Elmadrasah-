@@ -81,10 +81,10 @@ type TTableProps<T extends Record<string, unknown>, U extends GridColDef> = {
   columns: U[];
   loading: boolean;
   filterForm?: ReactNode;
-  nextFn: () => void;
+  nextFn?: () => void;
   next?: string | null;
   previous?: string | null;
-  previousFn: () => void;
+  previousFn?: () => void;
 };
 
 const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
@@ -107,9 +107,13 @@ const MuiTable = <T extends Record<string, unknown>, U extends GridColDef>({
   const handlePaginationModelChange = (model: GridPaginationModel) => {
     setPaginationModel(model);
     if (model.page > paginationModel.page) {
-      nextFn();
+      if (nextFn) {
+        nextFn();
+      }
     } else if (model.page < paginationModel.page) {
-      previousFn();
+      if (previousFn) {
+        previousFn();
+      }
     }
   };
 

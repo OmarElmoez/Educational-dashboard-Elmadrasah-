@@ -34,6 +34,14 @@ const GeneralScheduledEmployeesLists = lazy(
 const SchedulingErrorsTableList = lazy(() => import('./lists/ScheduledEmployeesLists/ScheduledErrorsTableList'));
 const EmployeesList = lazy(() => import('./employees/list/EmployeesList.tsx'))
 const InboxOperations = lazy(() => import('./inbox/InboxOperations.tsx'));
+const TeachersDailyReport = lazy(() => import('./reports/TeachersDailyReport'));
+const SpecificTeacherReport = lazy(() => import('./reports/SpecificTeacherReport'));
+const HourlyLessonsAdmin = lazy(() => import('./tables/hourlyTables/HourlyTable.tsx'));
+const EditEmployeeForm = lazy(() => import('./forms/edit/EditEmpolyeeForm'));
+const EmployeeProfileData = lazy(() => import('./employees/employeeProfile/EmployeeProfileData'));
+const OrdersList = lazy(() => import('./orders/list/ordersList'));
+const ScheduledErrorsTableList = lazy(() => import('./lists/ScheduledEmployeesLists/ScheduledErrorsTableList'));
+
 
 export {
   AdminClassesPage,
@@ -65,5 +73,12 @@ export {
   FamilyProfile,
   EditFamily,
   EmployeesList,
-  InboxOperations
+  InboxOperations,
+  TeachersDailyReport,
+  SpecificTeacherReport,
+  HourlyLessonsAdmin,
+  EditEmployeeForm,
+  EmployeeProfileData,
+  OrdersList,
+  ScheduledErrorsTableList,
 };

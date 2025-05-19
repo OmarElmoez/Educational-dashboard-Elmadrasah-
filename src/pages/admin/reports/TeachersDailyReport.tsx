@@ -33,7 +33,7 @@ const TeachersDailyReport = () => {
           style={{ cursor: params.row.id ? "pointer" : "not-allowed", }}
           disabled={!params.row.id}
           onClick={() =>
-            navigate(`/admin/employees/employee-profile/${params.row.id}`)
+            navigate(`/admin/reports/daily/${params.row.id}`)
           }
         >
           {params.value}
