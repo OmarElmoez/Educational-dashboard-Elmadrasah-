@@ -8,6 +8,7 @@ const ResetPasswordServices = {
   forgetPassword: async (data: TFormData) => {
     try {
       const response = await axiosInstance.post('/user/forget/', data);
+      console.log('from sending otp: ', response);
       return response;
     } catch (error) {
       throw axiosErrorHandler(error);

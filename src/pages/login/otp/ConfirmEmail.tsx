@@ -5,6 +5,7 @@ import { useComponentLoading } from "@/hooks";
 import styles from "../login.module.css";
 import { useNavigate } from "react-router-dom";
 import ResetPasswordServices from "@/services/resetPassword";
+import { useFeedback } from "@/store/context";
 const { loginBox, formInput } = styles;
 
 const ConfirmEmailSchema = z.object({
@@ -19,7 +20,7 @@ export type TFormData = z.infer<typeof ConfirmEmailSchema>;
 
 const ConfirmEmail = () => {
 
-  const {isPending, setPending, setSucceeded} = useComponentLoading();
+  const {isPending, setPending, setSucceeded, setFailed} = useComponentLoading();
 
   const navigate = useNavigate();
 
@@ -29,6 +30,8 @@ const ConfirmEmail = () => {
       resolver: zodResolver(ConfirmEmailSchema),
     }
   );
+
+  const {openFeedbackModal} = useFeedback();
 
   const onSubmit = async (data: TFormData) => {
     setPending();
@@ -40,13 +43,20 @@ const ConfirmEmail = () => {
             data
           },
         })
-      }else if(res?.status === 400) {
-        setSucceeded();
+        return;
+      }
+
+      if(res?.status === 400) {
+        setFailed();
         setError("email", {
           type: "manual",
           message: "البريد الإلكتروني غير صحيح" ,
         });
+      return;
       }
+
+      setFailed();
+      openFeedbackModal('failed', "Failed to send OTP", "something went wrong, please try again later")
     })
   }
 
