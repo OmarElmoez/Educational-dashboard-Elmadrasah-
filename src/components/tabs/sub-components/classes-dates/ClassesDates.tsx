@@ -8,6 +8,14 @@ import { LoadingIndicator } from "@/components";
 
 const {classes_wrapper, duration} = styles;
 
+const STATUS_COLORS = {
+  'Attended': '#0650A7',
+  'Scheduled': '#1C8A44',
+  'Progressing': '#828684',
+  'Missed': '#F64E60',
+  'Cancelled': '#F64E60',
+}
+
 const ClassesDates = ({classId}: {classId: string}) => {
 
   const [sharedLessons, setSharedLessons] = useState<TLesson[]>([])
@@ -34,6 +42,7 @@ const ClassesDates = ({classId}: {classId: string}) => {
             <article key={lesson.id}>
               <span>{formatDateIntoArabic(new Date(lesson.from_date))}</span>
               <span>{lesson.name}</span>
+              <span className={duration} style={{width: '150px', backgroundColor: STATUS_COLORS[lesson.status], color: '#f4f4f4', fontWeight: '400'}}>{lesson.status}</span>
               <span className={duration}>{lesson.duration_minutes} دقيقة</span>
             </article>
           )

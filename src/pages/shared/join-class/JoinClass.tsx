@@ -218,7 +218,7 @@ const JoinClass = () => {
                 >
                   <VideoCallIcon />
                   <Heading
-                    text="ميعاد الدرس"
+                    text="موعد الحصة"
                     style={{ fontSize: "2rem", fontWeight: "400", margin: "0" }}
                   />
                   <span>{`(${displayTime})`}</span>
@@ -486,7 +486,7 @@ const JoinClass = () => {
         text="تفاصيل الحصة"
         style={{ fontSize: "3.2rem", marginTop: "4.8rem" }}
       />
-      <Tabs tabs={generateTabs({ lessonData, classId, isTeacher })} />
+      <Tabs tabs={generateTabs({ lessonData, classId })} />
     </>
   );
 };
