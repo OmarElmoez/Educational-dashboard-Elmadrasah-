@@ -9,7 +9,6 @@ type TNotesOperationsProps = {
 };
 
 const NotesOperations = ({ noteData }: TNotesOperationsProps) => {
-
   const navigate = useNavigate();
 
   return (
@@ -40,24 +39,38 @@ const NotesOperations = ({ noteData }: TNotesOperationsProps) => {
             <ImgPlaceholder style={{ minWidth: "56px" }} />
           )}
         </ImgBox>
-        <div className="grid gap-[1.4rem]" onClick={() => navigate(`/admin/calendar/join-class/${noteData.lesson}`)} style={{ cursor: "pointer"}}>
+        <div
+          className="grid gap-[1.4rem]"
+          onClick={() =>
+            navigate(`/admin/calendar/join-class/${noteData.lesson}`)
+          }
+          style={{ cursor: "pointer" }}
+        >
           <div className="flex gap-[0.8rem] items-center">
             <h2 className="text-black text-[1.5rem]">
-              {noteData?.sent_by === "Teacher"
-                ? `قام المعلم ${noteData?.teacher_name} بإرسال ملاحظة إلى  ${
-                    noteData?.status === "Admin" ? "الإدارة" : "العائلة"
-                  } خاصة بالطالب ${noteData?.student_name}`
-                : `قامت عائلة ${noteData?.student_name} بإرسال ملاحظة إلى  ${
-                    noteData?.status === "Admin"
-                      ? `الإدارة خاصة بالمعلم ${noteData?.teacher_name}`
-                      : `المعلم ${noteData?.teacher_name}`
-                  }`}
+              {noteData?.status === "Admin" ? (
+                <>
+                  {noteData?.sent_by === "Teacher"
+                    ? `قام المعلم ${noteData?.teacher_name} بإرسال ملاحظة إلى الإدارة خاصة بالطالب ${noteData?.student_name}`
+                    : `قامت عائلة ${noteData?.student_name} بإرسال ملاحظة إلى الإدارة خاصة بالمعلم ${noteData?.teacher_name}`}
+                </>
+              ) : (
+                <>
+                  {noteData?.sent_by === "Teacher"
+                    ? `قام المعلم ${noteData?.teacher_name} بإرسال شكوى إلى الإدارة خاصة بالطالب ${noteData?.student_name}`
+                    : `قامت عائلة ${noteData?.student_name} بإرسال شكوى إلى الإدارة خاصة بالمعلم ${noteData?.teacher_name}`}
+                </>
+              )}
             </h2>
-            <span className="">
-              <span className="w-[7rem] h-[1.8rem] flex items-center justify-center bg-[#0650A7] text-white text-[0.8rem] rounded-sm">
+            {noteData?.status === "Admin" ? (
+              <span className="w-[7rem] h-[2.2rem] flex items-center justify-center bg-[#1C8A44] text-white text-[0.8rem] rounded-sm">
                 ملاحظة
               </span>
-            </span>
+            ) : (
+              <span className="w-[7rem] h-[2.2rem] flex items-center justify-center bg-[#C92516] text-white text-[0.8rem] rounded-sm">
+                إبلاغ عن مشكلة
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-[0.8rem]">
             <p className="text-[#969292] text-[1.4rem]">

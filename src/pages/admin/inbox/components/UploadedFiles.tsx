@@ -51,11 +51,11 @@ const UploadedFiles = ({ children, uploadedFileData }: TInboxWrapperProps) => {
                 : `قام الطالب ${uploadedFileData?.student_name} برفع الملفات  ${uploadedFileData?.subject_name === null? "" : `الخاصة بمادة ${uploadedFileData?.subject_name}`} للمعلم ${uploadedFileData?.teacher_name}`}
             </h2>
             {uploadedFileData?.is_exam ? (
-              <span className="w-[7rem] h-[1.8rem] flex items-center justify-center bg-[#C92516] text-white text-[0.8rem] rounded-sm">
+              <span className="w-[7rem] h-[2.2rem] flex items-center justify-center bg-[#8D2323] text-white text-[0.8rem] rounded-sm">
                 إختبار
               </span>
             ) : (
-              <span className="w-[7rem] h-[1.8rem] flex items-center justify-center bg-[#1C8A44] text-white text-[0.8rem] rounded-sm">
+              <span className="w-[7rem] h-[2.2rem] flex items-center justify-center bg-[#E96221] text-white text-[0.8rem] rounded-sm">
                 ملفات
               </span>
             )}

@@ -15,6 +15,7 @@ const InboxOperations = () => {
   const {
     data: inboxData,
     isPending,
+    isFetching,
     page,
     increasePage,
     decreasePage,
@@ -40,22 +41,24 @@ const InboxOperations = () => {
 
   return (
     <>
-      {isPending && (
+      {isPending ||
+        (isFetching && (
           <div className="loadingBox">
             <LoadingIndicator />
           </div>
-        )}
+        ))}
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           gap: 2,
-          padding: 2,
-          marginBottom: 2,
+          padding: 1,
+          marginBottom: 1,
           position: "sticky",
           top: 0,
           zIndex: 10,
+          backgroundColor: "#fff",
         }}
       >
         <Button

@@ -37,8 +37,8 @@ const InboxWrapper = ({children, review }: TInboxWrapperProps) => {
               : `قام الطالب ${review?.reviewer_name} بتقييم المعلم ${review?.reviewed_name} ${review?.subject_name === null? "" : `مادة ${review?.subject_name}`}`}
           </h2>
             {review?.reviewed_by === "Teacher"
-              ? <span className="w-[7rem] h-[1.8rem]  flex items-center justify-center bg-[#7AB790] text-white text-[0.8rem] rounded-sm">تقييم المُعلم</span>
-              : <span className="w-[7rem] h-[1.8rem]  flex items-center justify-center bg-[#FFB800] text-white text-[0.8rem] rounded-sm">تقييم الطالب</span>}
+              ? <span className="w-[7rem] h-[2.2rem]  flex items-center justify-center bg-[#76509E] text-white text-[0.8rem] rounded-sm">تقييم المُعلم</span>
+              : <span className="w-[7rem] h-[2.2rem]  flex items-center justify-center bg-[#FFB800] text-white text-[0.8rem] rounded-sm">تقييم الطالب</span>}
               </div>
           <div className="flex gap-[0.8rem]">
             {review?.answer && (
