@@ -58,7 +58,6 @@ const AdminClassesPage = () => {
     <>
       <WelcomeSection img={<CalendarImg/>} imgWidth="370" text="نأمل لك يوم عمل سعيد مع المدرسة . كوم" setIsHourClicked={setIsHourClicked} />
       <ScheduleForDay tabs={ADMIN_TABS} />
-
       <ClassesForDay lessonsForClickedHour={lessonsForClickedHour} isHourClicked={isHourClicked} />
     </>
   );

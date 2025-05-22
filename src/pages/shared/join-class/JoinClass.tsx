@@ -236,7 +236,7 @@ const JoinClass = () => {
                   <>
                     <div className={start_timer}>
                       <CalculateTimeToStartLesson
-                        fromTime={lessonData?.from_datetime}
+                        fromTime={lessonData?.from_time}
                       />
                     </div>
                   </>
@@ -379,7 +379,7 @@ const JoinClass = () => {
                   {lessonData?.from_datetime && (
                     <span className={start_timer}>
                       <CalculateTimeToStartLesson
-                        fromTime={lessonData?.from_datetime}
+                        fromTime={lessonData?.from_time}
                       />
                     </span>
                   )}

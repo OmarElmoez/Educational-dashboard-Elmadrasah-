@@ -1,9 +1,19 @@
 import { useState, useEffect, JSX } from "react";
 import ClockIcon from "@/assets/clock.svg?react";
 
-const calculateTimeRemaining = (fromTime: string): JSX.Element | string => {
-  const fromDate = new Date(fromTime);
+const calculateTimeRemaining = (timeOnly: string): JSX.Element | string => {
   const now = new Date();
+
+  // Combine today's date with the given time
+  const [hours, minutes, seconds] = timeOnly.split(":").map(Number);
+  const fromDate = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    hours,
+    minutes,
+    seconds
+  );
 
   const diffInSeconds = Math.floor((fromDate.getTime() - now.getTime()) / 1000);
 
@@ -12,14 +22,14 @@ const calculateTimeRemaining = (fromTime: string): JSX.Element | string => {
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInMinutes / 60);
 
-  const hours = diffInHours;
-  const minutes = diffInMinutes % 60;
-  const seconds = diffInSeconds % 60;
+  const displayHours = diffInHours;
+  const displayMinutes = diffInMinutes % 60;
+  const displaySeconds = diffInSeconds % 60;
 
   const parts = [];
-  if (hours > 0) parts.push(`${hours} س`);
-  if (minutes > 0) parts.push(`${minutes} د`);
-  if (seconds > 0) parts.push(`${seconds} ث`);
+  if (displayHours > 0) parts.push(`${displayHours} س`);
+  if (displayMinutes > 0) parts.push(`${displayMinutes} د`);
+  if (displaySeconds > 0) parts.push(`${displaySeconds} ث`);
 
   if (parts.length > 0) {
     return (
@@ -31,17 +41,30 @@ const calculateTimeRemaining = (fromTime: string): JSX.Element | string => {
           color: "#AAB8AF",
         }}
       >
-        <ClockIcon style={{ stroke: "#AAB8AF", width:"2rem", height:"2rem" }} />
+        <ClockIcon
+          style={{ stroke: "#AAB8AF", width: "2rem", height: "2rem" }}
+        />
         <span>{`سوف يبدأ خلال ${parts.join(" و ")}`}</span>
       </div>
     );
   } else {
-    return "سوف يبدأ قريبًا";
+    return (
+      <div
+        style={{
+          display: "flex",
+          gap: "0.4rem",
+          fontSize: "1rem",
+          color: "#AAB8AF",
+        }}
+      >
+        سوف يبدأ قريبًا
+      </div>
+    );
   }
 };
 
 interface CalculateTimeToStartLessonProps {
-  fromTime: string;
+  fromTime: string; // should now be in "HH:mm:ss" format
 }
 
 const CalculateTimeToStartLesson = ({

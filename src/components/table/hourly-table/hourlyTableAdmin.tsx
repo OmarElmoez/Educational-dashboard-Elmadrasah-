@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import convertAppTime from "@/utils/convertAppTime.ts";
-import { Typography, Box } from '@mui/material';
+import { Typography, Box } from "@mui/material";
 import "./overrideHourlyTable.css";
 import { THourLesson } from "@/store/tabs/TabsSlice.ts";
 
@@ -22,37 +22,21 @@ const columns: GridColDef[] = [
   },
   {
     field: "start_time_employee",
-    headerName: "وقت الدخول المدرس",
+    headerName: "توقيت دخول المُعلم",
     flex: 1,
     headerAlign: "center",
-    renderCell: (params) => {
-      let employeeTime = params.value;
-      let formattedEmployeeTime;
-      if (employeeTime === null) {
-        employeeTime = "لا يوجد";
-        return <div>{employeeTime}</div>;
-      } else {
-        formattedEmployeeTime = convertAppTime(employeeTime);
-        return <div>{formattedEmployeeTime}</div>;
-      }
-    },
+    renderCell: ({ value }) => (
+      <div>{value === null ? "لا يوجد" : convertAppTime(value)}</div>
+    ),
   },
   {
     field: "start_time_student",
-    headerName: "وقت الدخول الطالب",
+    headerName: "توقيت دخول الطالب",
     flex: 1,
     headerAlign: "center",
-    renderCell: (params) => {
-      let studentTime = params.value;
-      let formattedStudentTime;
-      if (studentTime === null) {
-        studentTime = "لا يوجد";
-        return <div>{studentTime}</div>;
-      } else {
-        formattedStudentTime = convertAppTime(studentTime);
-        return <div>{formattedStudentTime}</div>;
-      }
-    },
+    renderCell: ({ value }) => (
+      <div>{value === null ? "لا يوجد" : convertAppTime(value)}</div>
+    ),
   },
   {
     field: "student_name",
@@ -94,10 +78,12 @@ const paginationModel = { page: 0, pageSize: 10 };
 
 const CustomToolbar = () => (
   <GridToolbarContainer>
-    <GridToolbarExport   csvOptions={{
-    fileName: 'El Madrasah Dashboard',
-    utf8WithBom: true,
-  }}/>
+    <GridToolbarExport
+      csvOptions={{
+        fileName: "El Madrasah Dashboard",
+        utf8WithBom: true,
+      }}
+    />
     <GridToolbarFilterButton />
     <GridToolbarColumnsButton />
   </GridToolbarContainer>
@@ -109,35 +95,41 @@ const localeToolbarText = {
   toolbarExport: "",
 };
 
-const HourlyTableAdmin = ({ hourlyLessons, loading}:{hourlyLessons : THourLesson[], loading: boolean}) => {
-const CustomNoRowsOverlay = () => {
-  return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="100%"
-    >
-      <Typography variant="h6" color="textSecondary">
-        لا توجد حصص متاحة فى هذا التوقيت
-      </Typography>
-    </Box>
-  );
-};
-const CustomNoResultsOverlay = () => {
-  return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="100%"
-    >
-      <Typography variant="h6" color="textSecondary">
-        لا توجد نتائج متاحة لهذا التصنيف
-      </Typography>
-    </Box>
-  );
-};
+const HourlyTableAdmin = ({
+  hourlyLessons,
+  loading,
+}: {
+  hourlyLessons: THourLesson[];
+  loading: boolean;
+}) => {
+  const CustomNoRowsOverlay = () => {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+      >
+        <Typography variant="h6" color="textSecondary">
+          لا توجد حصص متاحة فى هذا التوقيت
+        </Typography>
+      </Box>
+    );
+  };
+  const CustomNoResultsOverlay = () => {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+      >
+        <Typography variant="h6" color="textSecondary">
+          لا توجد نتائج متاحة لهذا التصنيف
+        </Typography>
+      </Box>
+    );
+  };
   return (
     <>
       <Paper sx={{ height: "auto", width: "100%" }}>
@@ -148,20 +140,20 @@ const CustomNoResultsOverlay = () => {
           pageSizeOptions={[10, 50]}
           checkboxSelection
           sx={{
-            border:0,
+            border: 0,
             paddingTop: "1rem",
-        }}
+          }}
           localeText={localeToolbarText}
           slots={{
             toolbar: CustomToolbar,
             noRowsOverlay: CustomNoRowsOverlay,
             noResultsOverlay: CustomNoResultsOverlay,
           }}
-          loading= {loading}
+          loading={loading}
           slotProps={{
             loadingOverlay: {
-              variant: 'skeleton',
-              noRowsVariant: 'skeleton',
+              variant: "skeleton",
+              noRowsVariant: "skeleton",
             },
           }}
         />
