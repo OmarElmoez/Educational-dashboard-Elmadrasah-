@@ -21,7 +21,7 @@ const TeachersDailyReport = () => {
     {
       field: "id",
       headerName: "ID",
-      flex: 0.5,
+      flex: 0.4,
       filterable: false,
     },
     {
@@ -54,6 +54,12 @@ const TeachersDailyReport = () => {
       field: "attended_lesson_count",
       headerName: "عدد الحصص التي حضرها",
       flex: 1,
+    },
+    {
+      field: "last_activity",
+      headerName: "تاريخ أخر نشاط",
+      flex: 1.5,
+      renderCell: (params) => (params.value ? formatFullArabicDate(params.value) : "لا يوجد"),
     },
     {
       field: "last_login",
