@@ -27,7 +27,7 @@ const TeachersDailyReport = () => {
     {
       field: "employee_name",
       headerName: "اسم المُعلم",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => (
         <button
           style={{ cursor: params.row.id ? "pointer" : "not-allowed", }}
@@ -52,7 +52,7 @@ const TeachersDailyReport = () => {
     },
     {
       field: "attended_lesson_count",
-      headerName: "عدد الحصص التي حضرها",
+      headerName: "عدد حصص الحضور",
       flex: 1,
     },
     {
