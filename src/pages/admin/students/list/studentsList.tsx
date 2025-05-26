@@ -1,6 +1,4 @@
-import {
-  GridColDef,
-} from "@mui/x-data-grid";
+import { GridColDef, } from "@mui/x-data-grid";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import "./studentsList.css";
@@ -8,12 +6,35 @@ import { MuiTable } from "@/components";
 import { getStudents } from "@/services/students";
 import useTanStackQuery from "@/hooks/useTanStackQuery.ts";
 import { Error } from "@/pages/shared";
+import StudentsFilterForm from "@/pages/admin/students/list/filter-form/StudentsFilterForm.tsx";
+import getOnlyKeysWithData from "@/utils/getOnlyKeysWithData.ts";
+import { useState } from "react";
+
+export type TStudentFilterData = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  subject_choices: string | null;
+  is_active: string;
+};
+
 const NewStudentsList = () => {
 
   const navigate = useNavigate();
 
-  const {data: students, isPending, increasePage, decreasePage} = useTanStackQuery(
-    {queryKeyPrefix: 'students', fetchFn: getStudents});
+  const [searchTerms, setSearchTerms] = useState<Record<string, unknown> | null>(
+    null
+  );
+
+  const {data: students, isPending, increasePage, decreasePage, setPage} = useTanStackQuery(
+    {queryKeyPrefix: 'students', fetchFn: getStudents, filters: searchTerms});
+
+  const onSearchHandler = (data: TStudentFilterData) => {
+
+    const filteredData = getOnlyKeysWithData(data)
+    setSearchTerms(filteredData);
+    setPage(1);
+  };
 
   const initialColumns: GridColDef[] = [
     {
@@ -28,7 +49,7 @@ const NewStudentsList = () => {
       flex: 1,
       renderCell: (params) => (
         <button
-          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
           disabled={!params.row.id}
           onClick={() => navigate(`/admin/students/profile/${params.row.id}`)}
         >
@@ -79,30 +100,30 @@ const NewStudentsList = () => {
       filterable: false,
       renderCell: (params) => (
         <button
-          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
+          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
           disabled={!params.row.id}
           onClick={() =>
             navigate(`/admin/students/profile/${params.row.id}/edit`)
           }
         >
-          <EditPenIcon />
+          <EditPenIcon/>
         </button>
       ),
       cellClassName: "edit-cell",
     },
   ];
   return (<>
-    {students?.status === 403?<Error type="noAccess"/>: <MuiTable
-    rows={students?.results}
-    rowCount={students?.count}
-    columns={initialColumns}
-    loading={isPending}
-    nextFn={() => increasePage()}
-    previousFn={() => decreasePage()}
-    next={students?.next || ""}
-    previous={students?.previous || ""}
-    />}
-   
+      {students?.status === 403 ? <Error type="noAccess"/> : <MuiTable
+        rows={students?.results}
+        rowCount={students?.count}
+        columns={initialColumns}
+        loading={isPending}
+        nextFn={() => increasePage()}
+        previousFn={() => decreasePage()}
+        filterForm={<StudentsFilterForm submitFn={onSearchHandler} />}
+        next={students?.next || ""}
+        previous={students?.previous || ""}
+      />}
     </>
   );
 };

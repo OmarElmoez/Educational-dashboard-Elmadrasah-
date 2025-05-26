@@ -1,9 +1,12 @@
 import axiosInstance from "@/utils/axiosInstance";
 import axiosErrorHandler from "@/utils/axiosErrorHandler";
 import { TCustomer } from "@/types/table";
+import createSearchParamsString from "@/utils/createSearchParamsString.ts";
+import { TStudentFilterData } from "@/pages/admin/students/list/studentsList.tsx";
 
 type TProps = {
   page: number,
+  filters?: TStudentFilterData | null;
 };
 
 type TResponse = {
@@ -13,12 +16,15 @@ type TResponse = {
   results: TCustomer[];
 };
 
-export const getStudents = async ({ page }: TProps) => {
+export const getStudents = async ({ page, filters }: TProps) => {
   try {
     let url = "/customer/students/";
 
-    if (page) {
-      url += `?page=${page}`
+    if (filters) {
+      const queryStr = createSearchParamsString(filters);
+      url += `?${queryStr}&page=${page}`;
+    } else {
+      url += `?page=${page}`;
     }
 
     const response = await axiosInstance.get<TResponse>(url);
