@@ -1,8 +1,9 @@
 import axiosInstance from "@/utils/axiosInstance.ts";
 import axiosErrorHandler from "@/utils/axiosErrorHandler.ts";
-import { TStudentInvoice, TStudentPayment } from '../schemas/AddStudentSchema';
+import { TStudentInvoice, TStudentPayment } from "../schemas/AddStudentSchema";
 import { TFamilyData } from "@/types/table.ts";
-
+import { TFamilyFilterData } from "@/pages/admin/families/list/List";
+import createSearchParamsString from "@/utils/createSearchParamsString";
 type Teacher = {
   id: number;
   first_name: string;
@@ -130,21 +131,26 @@ export type TSpecificFamilyResponse = {
   created_at: string;
   updated_at: string;
   user: number;
-    invoices: TStudentInvoice[],
-    payments: TStudentPayment[],
+  invoices: TStudentInvoice[];
+  payments: TStudentPayment[];
 };
 
-export const getSpecificFamily = async (id: string): Promise<TSpecificFamilyResponse> => {
+export const getSpecificFamily = async (
+  id: string
+): Promise<TSpecificFamilyResponse> => {
   try {
-    const response = await axiosInstance.get<TSpecificFamilyResponse>(`/customer/family/${id}/`);
+    const response = await axiosInstance.get<TSpecificFamilyResponse>(
+      `/customer/family/${id}/`
+    );
     return response.data;
   } catch (error) {
-    return axiosErrorHandler(error)
+    return axiosErrorHandler(error);
   }
-}
+};
 
 type TProps = {
   page: number,
+  filters?: TFamilyFilterData | null;
 };
 
 type TResponse = {
@@ -154,16 +160,19 @@ type TResponse = {
   results: TFamilyData[];
 };
 
-export const getFamilies = async ({ page }: TProps) => {
+export const getFamilies = async ({ page, filters }: TProps) => {
   try {
     let url = "/customer/families";
 
-    if (page) {
-      url += `?page=${page}`
+    if (filters) {
+      const queryStr = createSearchParamsString(filters);
+      url += `?${queryStr}&page=${page}`;
+    } else {
+      url += `?page=${page}`;
     }
 
     const response = await axiosInstance.get<TResponse>(url);
-    return response.data;
+    return response.data || response;
   } catch (error) {
     throw axiosErrorHandler(error);
   }

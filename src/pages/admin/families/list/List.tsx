@@ -1,16 +1,45 @@
-import { GridColDef, } from "@mui/x-data-grid";
+import { useState } from "react";
+import { GridColDef } from "@mui/x-data-grid";
 import EditPenIcon from "@/assets/edit_pen.svg?react";
 import { useNavigate } from "react-router-dom";
 import { MuiTable } from "@/components";
 import { getFamilies } from "@/services/families.ts";
 import useTanStackQuery from "@/hooks/useTanStackQuery.ts";
+import getOnlyKeysWithData from "@/utils/getOnlyKeysWithData.ts";
+import FamiliesFilterForm from "./filter-form/FamiliesFilterForm";
+
+export type TFamilyFilterData = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  mobile_phone: number | null;
+  is_active: string;
+};
 
 const FamiliesList = () => {
-
   const navigate = useNavigate();
+  const [searchTerms, setSearchTerms] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
 
-  const {data: families, isPending, increasePage, decreasePage} = useTanStackQuery(
-    {queryKeyPrefix: 'families', fetchFn: getFamilies});
+  const {
+    data: families,
+    isPending,
+    increasePage,
+    decreasePage,
+    setPage,
+  } = useTanStackQuery({
+    queryKeyPrefix: "families",
+    fetchFn: getFamilies,
+    filters: searchTerms,
+  });
+
+  const onSearchHandler = (data: TFamilyFilterData) => {
+    const filteredData = getOnlyKeysWithData(data);
+    setSearchTerms(filteredData);
+    setPage(1);
+  };
   const initialColumns: GridColDef[] = [
     {
       field: "id",
@@ -24,7 +53,7 @@ const FamiliesList = () => {
       flex: 1,
       renderCell: (params) => (
         <button
-          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
+          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
           onClick={() =>
             navigate(`/admin/students/families-list/${params.row.id}`)
@@ -78,13 +107,13 @@ const FamiliesList = () => {
       filterable: false,
       renderCell: (params) => (
         <button
-          style={{cursor: params.row.id ? "pointer" : "not-allowed"}}
+          style={{ cursor: params.row.id ? "pointer" : "not-allowed" }}
           disabled={!params.row.id}
           onClick={() =>
             navigate(`/admin/students/families-list/${params.row.id}/edit`)
           }
         >
-          <EditPenIcon/>
+          <EditPenIcon />
         </button>
       ),
       cellClassName: "edit-cell",
@@ -99,6 +128,7 @@ const FamiliesList = () => {
       loading={isPending}
       nextFn={() => increasePage()}
       previousFn={() => decreasePage()}
+      filterForm={<FamiliesFilterForm submitFn={onSearchHandler} />}
       next={families?.next || ""}
       previous={families?.previous || ""}
     />
