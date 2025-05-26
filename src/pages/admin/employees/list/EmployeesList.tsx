@@ -10,6 +10,7 @@ import EmployeesFilterForm from "./filter-form/EmployeesFilterForm";
 import useTanStackQuery from "../../../../hooks/useTanStackQuery.ts";
 import { Error } from "@/pages/shared";
 import formatFullArabicDate from "@/utils/formatFullArabicDate.ts";
+import getOnlyKeysWithData from "@/utils/getOnlyKeysWithData.ts";
 
 type Subject = {
   id: number;
@@ -37,7 +38,7 @@ export type TEmployeeFilterData = {
 const EmployeesList = () => {
   const navigate = useNavigate();
 
-  const [searchTerms, setSearchTerms] = useState<TEmployeeFilterData | null>(
+  const [searchTerms, setSearchTerms] = useState<Record<string, unknown> | null>(
     null
   );
 
@@ -192,7 +193,9 @@ const EmployeesList = () => {
   ];
 
   const onSearchHandler = (data: TEmployeeFilterData) => {
-    setSearchTerms(data);
+
+    const filteredData = getOnlyKeysWithData(data)
+    setSearchTerms(filteredData);
     setPage(1);
   };
 
