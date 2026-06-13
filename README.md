@@ -1,30 +1,89 @@
-# React + TypeScript + Vite
+# Elmadrasah LMS Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Elmadrasah Dashboard is a React + TypeScript web app for managing an education workflow. It is a role-based portal with separate experiences for admins, teachers, students, and families.
 
-Currently, two official plugins are available:
+The app is built for an Arabic-first, right-to-left interface and also ships with English translations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Core Areas
 
-## Expanding the ESLint configuration
+- Admins manage the operational side of the platform: dashboard, calendar, classes, unscheduled lessons, students, families, employees, invoices, roles, reports, and inbox workflows.
+- Teachers can view their classes, student lists, notifications, and account settings.
+- Students can open their class schedule, join live classes, and manage their profile and security settings.
+- Families can view classes, read notes, join live classes, and manage their account settings.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Authentication Flow
 
-- Configure the top-level `parserOptions` property like this:
+The login area includes:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- Sign in
+- Set phone number
+- Set password
+- Confirm email
+- OTP verification
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Protected routes redirect users by role and keep each area isolated.
+
+## Tech Stack
+
+- React 18
+- TypeScript
+- Vite
+- React Router
+- Redux Toolkit
+- Redux Persist
+- TanStack Query
+- Material UI
+- Tailwind CSS v4
+- Firebase Cloud Messaging
+- Google OAuth
+- i18next
+- Vitest
+
+## Project Structure
+
+- `src/pages/` contains role-based pages and screens.
+- `src/components/` contains reusable UI components.
+- `src/layouts/` contains the login and main application layouts.
+- `src/routes/` contains route definitions and route guards.
+- `src/store/` contains Redux slices, async actions, and shared context providers.
+- `src/services/` contains API service modules.
+- `src/utils/` contains helpers, formatters, and localization setup.
+- `src/constants/` contains sidebar data, options, and shared configuration.
+
+## Setup
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Set the backend base URL in `.env`:
+   ```bash
+   VITE_URL_SERVER=https://your-api-url.example
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Firebase
+
+The app initializes Firebase Messaging from the root `firebase-config.ts` file. If you move the app to a different Firebase project, update that file with the new project settings.
+
+## Scripts
+
+- `npm run dev` starts the Vite development server.
+- `npm run build` runs TypeScript type-checking and creates a production build.
+- `npm run lint` runs ESLint.
+- `npm run preview` serves the production build locally.
+- `npm run test` runs the Vitest suite.
+- `npm run test:ui` opens the Vitest UI.
+
+## Deployment
+
+The repository includes a multi-stage `Dockerfile` for development and production builds. The production image serves the Vite output through Nginx.
+
+## Notes
+
+- The UI uses RTL by default.
+- Notifications are handled through Firebase Cloud Messaging.
+- Some integrations are wired directly in the app, so review environment-specific values before deploying elsewhere.
