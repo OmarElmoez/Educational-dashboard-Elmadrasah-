@@ -1,0 +1,12 @@
+node_modules/
+.idea/
+qodana.yaml
+
+.git/
+.gitignore
+.env
+
+dist/
+vitest.config.ts
+README.md
+improvements.txt
